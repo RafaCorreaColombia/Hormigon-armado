@@ -2,187 +2,117 @@
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
 <div style="font-family:'Segoe UI', Arial, sans-serif; ...
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Momento Resistente - NSR-10</title>
 
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
-<div style="font-family:'Segoe UI', Arial, sans-serif; color:#333; line-height:1.6; max-width:950px; margin:auto; border:1px solid #e0e0e0; padding:30px; border-radius:10px; background-color:#fdfdfd;">
+    <style>
+        body {
+            background-color: #f0f2f5; /* Color de fondo suave para que resalte el cuadro */
+            padding: 40px 20px;       /* Espacio exterior para que no pegue al borde del celular */
+        }
+        .contenedor-principal {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            line-height: 1.8;
+            max-width: 900px;
+            margin: auto;
+            border: 1px solid #ddd;
+            padding: 50px;           /* PADDING GENEROSO: Aqu√≠ es donde se arregla lo diminuto */
+            border-radius: 15px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* Sombra para que se vea elegante */
+        }
+        h2, h3 { color: #c0392b; }
+        .seccion-titulo {
+            background: #f8f9fa;
+            padding: 15px;
+            border-left: 6px solid #2c3e50;
+            margin-top: 30px;
+        }
+        .formula-box {
+            background: #fff;
+            border: 1px solid #eee;
+            padding: 20px;
+            text-align: center;
+            font-size: 1.2em;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        li { margin-bottom: 10px; }
+    </style>
+</head>
+<body>
 
-    <!-- ENCABEZADO -->
-    <div style="text-align:center; border-bottom:2px solid #c0392b; padding-bottom:12px; margin-bottom:30px;">
-        <h2 style="color:#c0392b; margin-bottom:5px;">
-            Momento Resistente ñ Ejemplo NumÈrico Completo
-        </h2>
-        <p style="font-style:italic; color:#666;">
-            De la geometrÌa al momento de diseÒo, paso a paso
+<div class="contenedor-principal">
+
+    <div style="text-align:center; border-bottom:2px solid #c0392b; padding-bottom:20px; margin-bottom:40px;">
+        <h2 style="margin-bottom:10px;">Momento Resistente ‚Äì Ejemplo Num√©rico Completo</h2>
+        <p style="font-style:italic; color:#666; font-size: 1.1em;">
+            Dise√±o de Estructuras de Concreto I - UIS
         </p>
     </div>
 
     <p>
-        En esta secciÛn vamos a construir el c·lculo completo del momento resistente
-        de una secciÛn de concreto armado. La idea no es solo llegar a un n˙mero,
-        sino entender quÈ est· pasando en cada etapa del proceso.
+        En esta secci√≥n vamos a construir el c√°lculo completo del momento resistente
+        de una secci√≥n de concreto armado. La idea no es solo llegar a un n√∫mero,
+        sino entender qu√© est√° pasando en cada etapa del proceso f√≠sico y normativo.
     </p>
 
-    <!-- ===================== -->
-    <h3 style="background:#f4f4f4; padding:10px; border-left:5px solid #2c3e50;">
-        1. Planteamiento del problema
-    </h3>
-
+    <h3 class="seccion-titulo">1. Planteamiento del problema</h3>
     <p>
-        Analizaremos una <strong>viga rectangular de concreto armado</strong>,
-        sometida ˙nicamente a flexiÛn (sin carga axial).
-        El objetivo es encontrar su <strong>momento resistente M<sub>n</sub></strong>.
+        Analizaremos una <strong>viga rectangular</strong> sometida √∫nicamente a flexi√≥n. 
+        Buscamos el momento nominal $M_n$ que equilibra las fuerzas internas.
     </p>
 
-    <!-- IMAGEN DE REFERENCIA -->
-    <div style="text-align:center; margin:20px 0;">
-        <img src="https://lms.uis.edu.co/ava/draftfile.php/610615/user/draft/985447250/planta%20%281%29.png" alt="GeometrÌa de la secciÛn" style="max-width:100%; border:1px solid #ccc; padding:10px; border-radius:8px;">
-        <p style="font-size:0.9em; color:#666;">
-            Figura 1. GeometrÌa y disposiciÛn del refuerzo (referencia visual)
-        </p>
+    <h3 class="seccion-titulo">2. Datos del ejemplo (Geometr√≠a y Materiales)</h3>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; background: #fdfdfd; padding: 20px; border-radius: 10px;">
+        <ul>
+            <li><strong>Ancho (b):</strong> 30 cm</li>
+            <li><strong>Altura total (h):</strong> 55 cm</li>
+            <li><strong>Peralte efectivo (d):</strong> 50 cm</li>
+        </ul>
+        <ul>
+            <li><strong>Concreto (f‚Ä≤c):</strong> 28 MPa</li>
+            <li><strong>Acero (fy):</strong> 420 MPa</li>
+            <li><strong>√Årea de Acero (As):</strong> 6.0 cm¬≤</li>
+        </ul>
     </div>
 
-    <!-- ===================== -->
-    <h3 style="background:#f4f4f4; padding:10px; border-left:5px solid #2c3e50;">
-        2. Datos del ejemplo
-    </h3>
-
-    <ul>
-        <li><strong>Ancho de la secciÛn, b:</strong> 30 cm</li>
-        <li><strong>Altura total, h:</strong> 55 cm</li>
-        <li><strong>Profundidad efectiva, d:</strong> 50 cm</li>
-        <li><strong>Resistencia del concreto, f'<sub>c</sub>:</strong> 28 MPa</li>
-        <li><strong>Esfuerzo de fluencia del acero, f<sub>y</sub>:</strong> 420 MPa</li>
-        <li><strong>MÛdulo del acero, E<sub>s</sub>:</strong> 200 000 MPa</li>
-        <li><strong>¡rea de acero a tracciÛn, A<sub>s</sub>:</strong> 6.0 cm≤</li>
-    </ul>
-
+    <h3 class="seccion-titulo">3. Hip√≥tesis de Deformaciones</h3>
     <p>
-        A partir de estos datos, todo el an·lisis se basa en
-        <strong>compatibilidad de deformaciones y equilibrio de fuerzas</strong>.
+        Asumimos compatibilidad de deformaciones lineales. El concreto falla a $\epsilon_{cu} = 0.003$.
     </p>
-
-    <!-- ===================== -->
-    <h3 style="background:#f4f4f4; padding:10px; border-left:5px solid #2c3e50;">
-        3. Diagrama de deformaciones
-    </h3>
-
-    <p>
-        Se asume que el concreto alcanza una deformaciÛn m·xima
-        e<sub>cu</sub> = 0.003 en la fibra comprimida.
-        El diagrama de deformaciones es lineal y define toda la soluciÛn.
-    </p>
-
-    <!-- ESPACIO PARA DIAGRAMA DE DEFORMACIONES -->
-    <div style="border:2px dashed #bbb; padding:25px; margin:20px 0; text-align:center; color:#888;">
-        <strong>Espacio para gr·fico:</strong><br>
-        Diagrama de deformaciones (e)
-        <br>
-        (concreto en compresiÛn y acero a tracciÛn)
+    <div class="formula-box">
+        $\epsilon_t = 0.003 \cdot \frac{(d - c)}{c}$
     </div>
 
-    <p>
-        En este punto se propone un valor inicial del eje neutro, c,
-        medido desde la fibra superior.
-    </p>
+    <h3 class="seccion-titulo">4. Fuerzas y Equilibrio</h3>
+    <p>Para vigas, la compresi√≥n en el bloque de Whitney debe ser igual a la tensi√≥n en el acero:</p>
+    <div class="formula-box">
+        $0.85 \cdot f'c \cdot b \cdot a = A_s \cdot f_s$
+    </div>
+    <p>Donde $a = \beta_1 \cdot c$. Para 28 MPa, $\beta_1 = 0.85$.</p>
 
-    <!-- ===================== -->
-    <h3 style="background:#f4f4f4; padding:10px; border-left:5px solid #2c3e50;">
-        4. C·lculo de deformaciÛn y esfuerzo del acero
-    </h3>
-
-    <p>
-        La deformaciÛn del acero se obtiene por semejanza de tri·ngulos:
-    </p>
-
-    <p style="text-align:center; font-weight:bold;">
-        e<sub>t</sub> = 0.003 ∑ (d - c) / c
-    </p>
-
-    <p>
-        Luego se calcula el esfuerzo en el acero:
-    </p>
-
-    <p style="text-align:center; font-weight:bold;">
-        f<sub>s</sub> = mÌnimo ( f<sub>y</sub>, E<sub>s</sub> ∑ |e<sub>t</sub>| )
-    </p>
-
-    <p>
-        Esto permite determinar si el acero fluye o no en el ejemplo.
-    </p>
-
-    <!-- ===================== -->
-    <h3 style="background:#f4f4f4; padding:10px; border-left:5px solid #2c3e50;">
-        5. Fuerzas internas
-    </h3>
-
-    <p>
-        Las fuerzas resistentes de la secciÛn son:
-    </p>
-
-    <ul>
-        <li>
-            <strong>Concreto (compresiÛn):</strong><br>
-            C<sub>c</sub> = 0.85 ∑ f'<sub>c</sub> ∑ b ∑ a
-            <br>
-            donde a = ﬂ<sub>1</sub> ∑ c
-        </li>
-        <li>
-            <strong>Acero (tracciÛn):</strong><br>
-            T = A<sub>s</sub> ∑ f<sub>s</sub>
-        </li>
-    </ul>
-
-    <!-- ESPACIO PARA DIAGRAMA DE FUERZAS -->
-    <div style="border:2px dashed #bbb; padding:25px; margin:20px 0; text-align:center; color:#888;">
-        <strong>Espacio para gr·fico:</strong><br>
-        Esquema de fuerzas internas (C<sub>c</sub> y T)
+    <h3 class="seccion-titulo">5. Resultado del Momento</h3>
+    <p>Sumando momentos respecto al centro pl√°stico ($h/2$):</p>
+    <div class="formula-box" style="background-color: #f4fff4; border: 1px solid #c2e0c2;">
+        $M_n = C_c \cdot (\frac{h}{2} - \frac{a}{2}) + T \cdot (d - \frac{h}{2})$
     </div>
 
-    <!-- ===================== -->
-    <h3 style="background:#f4f4f4; padding:10px; border-left:5px solid #2c3e50;">
-        6. CondiciÛn de equilibrio
-    </h3>
-
-    <p>
-        En vigas, la suma de fuerzas axiales debe ser cero:
-    </p>
-
-    <p style="text-align:center; font-weight:bold;">
-        C<sub>c</sub> = T
-    </p>
-
-    <p>
-        Esta condiciÛn permite ajustar el valor del eje neutro c
-        hasta cumplir el equilibrio interno.
-    </p>
-
-    <!-- ===================== -->
-    <h3 style="background:#f4f4f4; padding:10px; border-left:5px solid #2c3e50;">
-        7. C·lculo del momento resistente
-    </h3>
-
-    <p>
-        El momento resistente se calcula sumando momentos internos
-        respecto al centro pl·stico de la secciÛn:
-    </p>
-
-    <p style="text-align:center; font-weight:bold;">
-        M<sub>n</sub> =
-        C<sub>c</sub> ∑ ( h/2 - a/2 ) + T ∑ ( d - h/2 )
-    </p>
-
-    <p>
-        El momento de diseÒo se obtiene multiplicando por el factor f,
-        definido seg˙n el nivel de deformaciÛn del acero.
-    </p>
-
-    <hr style="margin-top:35px;">
-
-    <p style="text-align:center; color:#7f8c8d;">
-        <em>
-            Si el diagrama de deformaciones es coherente y el equilibrio cierra,
-            el resultado es consistente. El resto es orden y aritmÈtica.
-        </em>
+    <hr style="margin-top:50px; border: 0; border-top: 1px solid #eee;">
+    <p style="text-align:center; color:#95a5a6; font-size: 0.9em;">
+        Material preparado para la Universidad Industrial de Santander. <br>
+        <em>"El dise√±o estructural es el arte de usar materiales que no conocemos bien para formar estructuras que no podemos analizar con precisi√≥n."</em>
     </p>
 
 </div>
+
+</body>
+</html>
