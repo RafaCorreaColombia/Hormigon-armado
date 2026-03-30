@@ -1,0 +1,188 @@
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<div style="font-family:'Segoe UI', Arial, sans-serif; ...
+
+
+<div style="font-family:'Segoe UI', Arial, sans-serif; color:#333; line-height:1.6; max-width:950px; margin:auto; border:1px solid #e0e0e0; padding:30px; border-radius:10px; background-color:#fdfdfd;">
+
+    <!-- ENCABEZADO -->
+    <div style="text-align:center; border-bottom:2px solid #c0392b; padding-bottom:12px; margin-bottom:30px;">
+        <h2 style="color:#c0392b; margin-bottom:5px;">
+            Momento Resistente – Ejemplo Numérico Completo
+        </h2>
+        <p style="font-style:italic; color:#666;">
+            De la geometría al momento de diseño, paso a paso
+        </p>
+    </div>
+
+    <p>
+        En esta sección vamos a construir el cálculo completo del momento resistente
+        de una sección de concreto armado. La idea no es solo llegar a un número,
+        sino entender qué está pasando en cada etapa del proceso.
+    </p>
+
+    <!-- ===================== -->
+    <h3 style="background:#f4f4f4; padding:10px; border-left:5px solid #2c3e50;">
+        1. Planteamiento del problema
+    </h3>
+
+    <p>
+        Analizaremos una <strong>viga rectangular de concreto armado</strong>,
+        sometida únicamente a flexión (sin carga axial).
+        El objetivo es encontrar su <strong>momento resistente M<sub>n</sub></strong>.
+    </p>
+
+    <!-- IMAGEN DE REFERENCIA -->
+    <div style="text-align:center; margin:20px 0;">
+        <img src="https://lms.uis.edu.co/ava/draftfile.php/610615/user/draft/985447250/planta%20%281%29.png" alt="Geometría de la sección" style="max-width:100%; border:1px solid #ccc; padding:10px; border-radius:8px;">
+        <p style="font-size:0.9em; color:#666;">
+            Figura 1. Geometría y disposición del refuerzo (referencia visual)
+        </p>
+    </div>
+
+    <!-- ===================== -->
+    <h3 style="background:#f4f4f4; padding:10px; border-left:5px solid #2c3e50;">
+        2. Datos del ejemplo
+    </h3>
+
+    <ul>
+        <li><strong>Ancho de la sección, b:</strong> 30 cm</li>
+        <li><strong>Altura total, h:</strong> 55 cm</li>
+        <li><strong>Profundidad efectiva, d:</strong> 50 cm</li>
+        <li><strong>Resistencia del concreto, f'<sub>c</sub>:</strong> 28 MPa</li>
+        <li><strong>Esfuerzo de fluencia del acero, f<sub>y</sub>:</strong> 420 MPa</li>
+        <li><strong>Módulo del acero, E<sub>s</sub>:</strong> 200 000 MPa</li>
+        <li><strong>Área de acero a tracción, A<sub>s</sub>:</strong> 6.0 cm²</li>
+    </ul>
+
+    <p>
+        A partir de estos datos, todo el análisis se basa en
+        <strong>compatibilidad de deformaciones y equilibrio de fuerzas</strong>.
+    </p>
+
+    <!-- ===================== -->
+    <h3 style="background:#f4f4f4; padding:10px; border-left:5px solid #2c3e50;">
+        3. Diagrama de deformaciones
+    </h3>
+
+    <p>
+        Se asume que el concreto alcanza una deformación máxima
+        e<sub>cu</sub> = 0.003 en la fibra comprimida.
+        El diagrama de deformaciones es lineal y define toda la solución.
+    </p>
+
+    <!-- ESPACIO PARA DIAGRAMA DE DEFORMACIONES -->
+    <div style="border:2px dashed #bbb; padding:25px; margin:20px 0; text-align:center; color:#888;">
+        <strong>Espacio para gráfico:</strong><br>
+        Diagrama de deformaciones (e)
+        <br>
+        (concreto en compresión y acero a tracción)
+    </div>
+
+    <p>
+        En este punto se propone un valor inicial del eje neutro, c,
+        medido desde la fibra superior.
+    </p>
+
+    <!-- ===================== -->
+    <h3 style="background:#f4f4f4; padding:10px; border-left:5px solid #2c3e50;">
+        4. Cálculo de deformación y esfuerzo del acero
+    </h3>
+
+    <p>
+        La deformación del acero se obtiene por semejanza de triángulos:
+    </p>
+
+    <p style="text-align:center; font-weight:bold;">
+        e<sub>t</sub> = 0.003 · (d - c) / c
+    </p>
+
+    <p>
+        Luego se calcula el esfuerzo en el acero:
+    </p>
+
+    <p style="text-align:center; font-weight:bold;">
+        f<sub>s</sub> = mínimo ( f<sub>y</sub>, E<sub>s</sub> · |e<sub>t</sub>| )
+    </p>
+
+    <p>
+        Esto permite determinar si el acero fluye o no en el ejemplo.
+    </p>
+
+    <!-- ===================== -->
+    <h3 style="background:#f4f4f4; padding:10px; border-left:5px solid #2c3e50;">
+        5. Fuerzas internas
+    </h3>
+
+    <p>
+        Las fuerzas resistentes de la sección son:
+    </p>
+
+    <ul>
+        <li>
+            <strong>Concreto (compresión):</strong><br>
+            C<sub>c</sub> = 0.85 · f'<sub>c</sub> · b · a
+            <br>
+            donde a = ß<sub>1</sub> · c
+        </li>
+        <li>
+            <strong>Acero (tracción):</strong><br>
+            T = A<sub>s</sub> · f<sub>s</sub>
+        </li>
+    </ul>
+
+    <!-- ESPACIO PARA DIAGRAMA DE FUERZAS -->
+    <div style="border:2px dashed #bbb; padding:25px; margin:20px 0; text-align:center; color:#888;">
+        <strong>Espacio para gráfico:</strong><br>
+        Esquema de fuerzas internas (C<sub>c</sub> y T)
+    </div>
+
+    <!-- ===================== -->
+    <h3 style="background:#f4f4f4; padding:10px; border-left:5px solid #2c3e50;">
+        6. Condición de equilibrio
+    </h3>
+
+    <p>
+        En vigas, la suma de fuerzas axiales debe ser cero:
+    </p>
+
+    <p style="text-align:center; font-weight:bold;">
+        C<sub>c</sub> = T
+    </p>
+
+    <p>
+        Esta condición permite ajustar el valor del eje neutro c
+        hasta cumplir el equilibrio interno.
+    </p>
+
+    <!-- ===================== -->
+    <h3 style="background:#f4f4f4; padding:10px; border-left:5px solid #2c3e50;">
+        7. Cálculo del momento resistente
+    </h3>
+
+    <p>
+        El momento resistente se calcula sumando momentos internos
+        respecto al centro plástico de la sección:
+    </p>
+
+    <p style="text-align:center; font-weight:bold;">
+        M<sub>n</sub> =
+        C<sub>c</sub> · ( h/2 - a/2 ) + T · ( d - h/2 )
+    </p>
+
+    <p>
+        El momento de diseño se obtiene multiplicando por el factor f,
+        definido según el nivel de deformación del acero.
+    </p>
+
+    <hr style="margin-top:35px;">
+
+    <p style="text-align:center; color:#7f8c8d;">
+        <em>
+            Si el diagrama de deformaciones es coherente y el equilibrio cierra,
+            el resultado es consistente. El resto es orden y aritmética.
+        </em>
+    </p>
+
+</div>
