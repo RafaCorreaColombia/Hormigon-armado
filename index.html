@@ -57,40 +57,51 @@
             </ul>
         </div>
 
-    <h3 class="w3-border-red">Formulación del Modelo de Flexión</h3>
-    <p>Para automatizar el cálculo en hojas de vida real, utilizamos estas expresiones generales:</p>
-    
-    <div class="w3-row-padding">
-        <div class="w3-half">
-            <div class="w3-card w3-container w3-padding-16 w3-white" style="min-height: 250px;">
-                <b class="w3-text-red">1. Deformación y Esfuerzo ($i$-ésima capa)</b>
-                <p style="font-size: 0.95em;">Por semejanza de triángulos:</p>
-                $$\epsilon_{ti} = \epsilon_{cu} \frac{(d_i - c)}{c}$$
-                <p style="font-size: 0.95em;">Esfuerzo considerando fluencia ($f_y$):</p>
-                $$f_{si} = \text{signo}(\epsilon_{ti}) \cdot \min(f_y, E_s \cdot |\epsilon_{ti}|)$$
-                <p class="w3-small w3-text-grey">*Nota: $\epsilon_{ti} < 0$ es compresión en este modelo.</p>
-            </div>
-        </div>
 
-        <div class="w3-half">
-            <div class="w3-card w3-container w3-padding-16 w3-white" style="min-height: 250px;">
-                <b class="w3-text-red">2. Equilibrio de Fuerzas ($P_n$)</b>
-                <p style="font-size: 0.95em;">Concreto (Bloque de Whitney):</p>
-                $$C_c = 0.85 \cdot f'c \cdot (\beta_1 \cdot c \cdot b - A_{s,comp})$$
-                <p style="font-size: 0.95em;">Fuerza resultante en la sección:</p>
-                $$P_n = C_c + \sum_{i=1}^{n} (A_{si} \cdot f_{si})$$
-                <p class="w3-small w3-text-grey">*Para vigas buscamos $P_n = 0$.</p>
-            </div>
+
+
+
+
+<h3 class="w3-border-red">Formulación del Modelo de Flexión</h3>
+<p>Para automatizar el cálculo en hojas de vida real, utilizamos estas expresiones generales:</p>
+
+<div class="w3-row-padding">
+    <div class="w3-third w3-margin-bottom">
+        <div class="w3-card w3-container w3-padding-16 w3-white" style="min-height: 320px;">
+            <b class="w3-text-red">1. Deformación y Esfuerzo ($i$)</b>
+            <p style="font-size: 0.9em;">Por semejanza de triángulos:</p>
+            $$\epsilon_{ti} = \epsilon_{cu} \frac{(d_i - c)}{c}$$
+            <p style="font-size: 0.9em;">Esfuerzo con fluencia ($f_y$):</p>
+            $$f_{si} = \text{signo}(\epsilon_{ti}) \cdot \min(f_y, E_s \cdot |\epsilon_{ti}|)$$
+            <p class="w3-small w3-text-grey">*Nota: $\epsilon_{ti} < 0$ es compresión.</p>
         </div>
     </div>
 
-    <div class="w3-container w3-margin-top">
-        <div class="w3-card w3-padding w3-white">
-            <b class="w3-text-red">3. Momento Nominal ($M_n$) respecto a $h/2$</b>
-            <p>Sumamos los momentos de todas las fuerzas internas respecto al centro plástico de la sección:</p>
+    <div class="w3-third w3-margin-bottom">
+        <div class="w3-card w3-container w3-padding-16 w3-white" style="min-height: 320px;">
+            <b class="w3-text-red">2. Equilibrio de Fuerzas ($P_n$)</b>
+            <p style="font-size: 0.9em;">Concreto (Bloque Whitney):</p>
+            $$C_c = 0.85 \cdot f'c \cdot (\beta_1 c b - A_{s,comp})$$
+            <p style="font-size: 0.9em;">Fuerza resultante total:</p>
+            $$P_n = C_c + \sum_{i=1}^{n} (A_{si} \cdot f_{si})$$
+            <p class="w3-small w3-text-grey">*En vigas buscamos $P_n = 0$.</p>
+        </div>
+    </div>
+
+    <div class="w3-third w3-margin-bottom">
+        <div class="w3-card w3-container w3-padding-16 w3-white" style="min-height: 320px;">
+            <b class="w3-text-red">3. Momento Nominal ($M_n$)</b>
+            <p style="font-size: 0.9em;">Respecto al eje plástico ($h/2$):</p>
             $$M_n = C_c \cdot \left( \frac{h}{2} - \frac{a}{2} \right) + \sum_{i=1}^{n} \left[ F_{si} \cdot \left( \frac{h}{2} - d_i \right) \right]$$
+            <p class="w3-small w3-text-grey">*Sumatoria de pares internos respecto al centro.</p>
         </div>
     </div>
+</div>
+
+
+
+
+
 
 
 
