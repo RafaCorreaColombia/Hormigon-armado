@@ -79,29 +79,29 @@
     <div class="iteracion-box">
         <strong>Resultados de Deformación y Esfuerzo:</strong>
         <ul>
-            <li>Fila 1: $\epsilon_{t1} = 0.003 \cdot \frac{100 - 59.05}{100} = \mathbf{0.00123}$ (Compresión)</li>
-            <li>Fila 2: $\epsilon_{t2} = 0.003 \cdot \frac{100 - 440.95}{100} = \mathbf{-0.01023}$ (Tensión)</li>
-            <li>Fila 3: $\epsilon_{t3} = 0.003 \cdot \frac{100 - 490.95}{100} = \mathbf{-0.01173}$ (Tensión)</li>
+            <li>Fila 1: $\epsilon_{t1} = 0.003 \cdot \frac{100 - 59.05}{100} = \mathbf{-0.00123}$ (Compresión)</li>
+            <li>Fila 2: $\epsilon_{t2} = 0.003 \cdot \frac{100 - 440.95}{100} = \mathbf{0.01023}$ (Tensión)</li>
+            <li>Fila 3: $\epsilon_{t3} = 0.003 \cdot \frac{100 - 490.95}{100} = \mathbf{0.01173}$ (Tensión)</li>
         </ul>
         <p><em>Nota: Como $|\epsilon_{ti}| > 0.0021$, todo el acero ha fluido ($f_s = 420$ MPa).</em></p>
     </div>
 
     <h3>4. Sumatoria de Fuerzas y Momentos ($h/2 = 275$ mm)</h3>
-    <p>Calculamos las fuerzas internas ($+$ Compresión, $-$ Tensión):</p>
+    <p>Calculamos las fuerzas internas ($-$ Compresión, $+$ Tensión):</p>
     <ul>
-        <li><strong>Concreto ($C_c$):</strong> $0.85 \cdot 28 \cdot (0.85 \cdot 100 \cdot 300 - 852) = \mathbf{586.55}$ kN</li>
-        <li><strong>Acero Fila 1:</strong> $852 \cdot 420 = \mathbf{357.84}$ kN (Compresión real considerando $\epsilon$)</li>
-        <li><strong>Acero Fila 2:</strong> $568 \cdot (-420) = \mathbf{-238.56}$ kN</li>
-        <li><strong>Acero Fila 3:</strong> $852 \cdot (-420) = \mathbf{-357.84}$ kN</li>
+        <li><strong>Concreto ($C_c$):</strong> $0.85 \cdot 28 \cdot (0.85 \cdot 100 \cdot 300 - 852) = \mathbf{-586.55}$ kN</li>
+        <li><strong>Acero Fila 1:</strong> $852 \cdot 420 = \mathbf{-357.84}$ kN (Compresión real considerando $\epsilon$)</li>
+        <li><strong>Acero Fila 2:</strong> $568 \cdot (-420) = \mathbf{238.56}$ kN</li>
+        <li><strong>Acero Fila 3:</strong> $852 \cdot (-420) = \mathbf{357.84}$ kN</li>
     </ul>
 
     <div class="dato-box" style="background-color: #e7f3fe; border-left-color: #2196f3;">
         <strong>Estado de Carga Resultante:</strong><br>
-        $P_n = \sum F = \mathbf{-198.09}$ kN (La sección está en tensión neta) <br>
+        $P_n = \sum F = \mathbf{-198.09}$ kN (La sección está en compresión) <br>
         $M_n = \sum M_{(h/2)} = \mathbf{299.03}$ kNm
     </div>
 
-    <p><strong>Conclusión Pedagógica:</strong> Como $P_n$ no es cero, esta sección <strong>no está trabajando como viga pura</strong> bajo este eje neutro. Para ser una viga ($P_n = 0$), ¿deberíamos subir o bajar el eje neutro $c$? (Pista: necesitamos más compresión).</p>
+    <p><strong>Conclusión Pedagógica:</strong> Como $P_n$ no es cero, esta sección <strong>no está trabajando como viga pura</strong> bajo este eje neutro. Para ser una viga ($P_n = 0$), ¿deberíamos subir o bajar el eje neutro $c$? (Pista: necesitamos menos compresión).</p>
 
     <hr style="margin-top:50px; border: 0; border-top: 1px solid #eee;">
     <p style="text-align:center; color:#95a5a6; font-size: 0.9em;">
