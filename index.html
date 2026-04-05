@@ -61,6 +61,50 @@
 
 
 
+<h3 class="w3-border-red">Formulación del Modelo de Flexión</h3>
+<p>Para tus hojas de cálculo, utiliza estas expresiones generales para cualquier número de capas:</p>
+
+<div class="w3-container">
+    <div class="w3-card-4 w3-container w3-padding-24 w3-white w3-margin-bottom w3-round-large">
+        <b class="w3-text-red" style="font-size: 1.2em;">1. Deformación y Esfuerzo ($i$-ésima capa)</b>
+        <p>Calculamos la deformación unitaria por compatibilidad y el esfuerzo limitando a la fluencia:</p>
+        <div style="overflow-x: auto; padding: 10px 0;">
+            $$\epsilon_{ti} = \epsilon_{cu} \frac{(d_i - c)}{c}$$
+            $$f_{si} = \text{signo}(\epsilon_{ti}) \cdot \min(f_y, E_s \cdot |\epsilon_{ti}|)$$
+        </div>
+        <p class="w3-small w3-text-grey"><i>Nota: $\epsilon_{ti} < 0$ indica compresión en la barra.</i></p>
+    </div>
+
+    <div class="w3-card-4 w3-container w3-padding-24 w3-white w3-margin-bottom w3-round-large">
+        <b class="w3-text-red" style="font-size: 1.2em;">2. Equilibrio de Fuerzas Axiales ($P_n$)</b>
+        <p>Suma de la compresión del concreto (Whitney) y las fuerzas en cada fila de acero:</p>
+        <div style="overflow-x: auto; padding: 10px 0;">
+            $$C_c = 0.85 \cdot f'c \cdot (\beta_1 \cdot c \cdot b - A_{s,comp})$$
+            $$P_n = C_c + \sum_{i=1}^{n} (A_{si} \cdot f_{si})$$
+        </div>
+        <p class="w3-small w3-text-grey"><i>*Para diseño de vigas, el objetivo es que $P_n = 0$.</i></p>
+    </div>
+
+    <div class="w3-card-4 w3-container w3-padding-24 w3-white w3-margin-bottom w3-round-large">
+        <b class="w3-text-red" style="font-size: 1.2em;">3. Momento Nominal ($M_n$)</b>
+        <p>Sumatoria de momentos respecto al centro plástico de la sección ($h/2$):</p>
+        <div style="overflow-x: auto; padding: 10px 0;">
+            $$M_n = C_c \cdot \left( \frac{h}{2} - \frac{a}{2} \right) + \sum_{i=1}^{n} \left[ F_{si} \cdot \left( \frac{h}{2} - d_i \right) \right]$$
+        </div>
+        <p class="w3-small w3-text-grey"><i>*Esta convención es la base para construir diagramas de interacción.</i></p>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
 
 <h3 class="w3-border-red">Formulación del Modelo de Flexión</h3>
 <p>Para automatizar el cálculo en hojas de vida real, utilizamos estas expresiones generales:</p>
