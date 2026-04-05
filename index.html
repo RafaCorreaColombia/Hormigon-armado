@@ -1,117 +1,112 @@
-<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-
-<div style="font-family:'Segoe UI', Arial, sans-serif; ...
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Momento Resistente - NSR-10</title>
+    <title>Análisis de Sección - NSR-10</title>
 
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            }
+        };
+    </script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
     <style>
-        body {
-            background-color: #f0f2f5; /* Color de fondo suave para que resalte el cuadro */
-            padding: 40px 20px;       /* Espacio exterior para que no pegue al borde del celular */
-        }
+        body { background-color: #f0f2f5; padding: 20px; font-family: 'Segoe UI', sans-serif; }
         .contenedor-principal {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: #333;
-            line-height: 1.8;
-            max-width: 900px;
-            margin: auto;
-            border: 1px solid #ddd;
-            padding: 50px;           /* PADDING GENEROSO: Aquí es donde se arregla lo diminuto */
-            border-radius: 15px;
-            background-color: #ffffff;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* Sombra para que se vea elegante */
+            max-width: 950px; margin: auto; border-radius: 15px;
+            background: white; padding: 40px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
-        h2, h3 { color: #c0392b; }
-        .seccion-titulo {
-            background: #f8f9fa;
-            padding: 15px;
-            border-left: 6px solid #2c3e50;
-            margin-top: 30px;
-        }
-        .formula-box {
-            background: #fff;
-            border: 1px solid #eee;
-            padding: 20px;
-            text-align: center;
-            font-size: 1.2em;
-            margin: 20px 0;
-            border-radius: 8px;
-        }
-        li { margin-bottom: 10px; }
+        h2, h3 { color: #c0392b; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .dato-box { background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 10px 0; border-left: 5px solid #2c3e50; }
+        .iteracion-box { background: #fff8f8; border: 1px solid #f5c6cb; padding: 20px; border-radius: 10px; margin: 20px 0; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: center; }
+        th { background-color: #2c3e50; color: white; }
+        .highlight { color: #c0392b; font-weight: bold; }
     </style>
 </head>
 <body>
 
 <div class="contenedor-principal">
-
-    <div style="text-align:center; border-bottom:2px solid #c0392b; padding-bottom:20px; margin-bottom:40px;">
-        <h2 style="margin-bottom:10px;">Momento Resistente – Ejemplo Numérico Completo</h2>
-        <p style="font-style:italic; color:#666; font-size: 1.1em;">
-            Diseño de Estructuras de Concreto I - UIS
-        </p>
+    <div style="text-align:center;">
+        <h2>Análisis de Flexocompresión - Ejemplo UIS</h2>
+        <p><em>"Encontrando el equilibrio: Eje neutro y compatibilidad"</em></p>
     </div>
 
-    <p>
-        En esta sección vamos a construir el cálculo completo del momento resistente
-        de una sección de concreto armado. La idea no es solo llegar a un número,
-        sino entender qué está pasando en cada etapa del proceso físico y normativo.
-    </p>
+    <h3>1. Definición de la Sección</h3>
+    <div class="dato-box">
+        <strong>Geometría:</strong> $b = 300$ mm, $h = 550$ mm. <br>
+        <strong>Materiales:</strong> $f'c = 28$ MPa, $f_y = 420$ MPa, $E_s = 200,000$ MPa. <br>
+        <strong>Refuerzo:</strong> Estribo #3, Recubrimiento 40 mm.
+    </div>
 
-    <h3 class="seccion-titulo">1. Planteamiento del problema</h3>
-    <p>
-        Analizaremos una <strong>viga rectangular</strong> sometida únicamente a flexión. 
-        Buscamos el momento nominal $M_n$ que equilibra las fuerzas internas.
-    </p>
+    <h3>2. Disposición de las Filas de Acero ($d_i$)</h3>
+    <table>
+        <tr>
+            <th>Fila</th>
+            <th>Descripción</th>
+            <th>Área ($mm^2$)</th>
+            <th>Posición $d_i$ (mm)</th>
+        </tr>
+        <tr>
+            <td>1 (Sup)</td>
+            <td>3 #6 (Compresión)</td>
+            <td>852</td>
+            <td>59.05</td>
+        </tr>
+        <tr>
+            <td>2 (Inf A)</td>
+            <td>2 #6 (Tensión 2)</td>
+            <td>568</td>
+            <td>440.95</td>
+        </tr>
+        <tr>
+            <td>3 (Inf B)</td>
+            <td>3 #6 (Tensión 1)</td>
+            <td>852</td>
+            <td>490.95</td>
+        </tr>
+    </table>
 
-    <h3 class="seccion-titulo">2. Datos del ejemplo (Geometría y Materiales)</h3>
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; background: #fdfdfd; padding: 20px; border-radius: 10px;">
+    <h3>3. Ensayo de Equilibrio (Suposición de $c = 100$ mm)</h3>
+    <p>Para esta iteración, fijamos la profundidad del eje neutro en <span class="highlight">$c = 100$ mm</span> y $\epsilon_{cu} = 0.003$. Calculamos las deformaciones unitarias $\epsilon_{ti}$ para cada fila:</p>
+
+    <div class="iteracion-box">
+        <strong>Resultados de Deformación y Esfuerzo:</strong>
         <ul>
-            <li><strong>Ancho (b):</strong> 30 cm</li>
-            <li><strong>Altura total (h):</strong> 55 cm</li>
-            <li><strong>Peralte efectivo (d):</strong> 50 cm</li>
+            <li>Fila 1: $\epsilon_{t1} = 0.003 \cdot \frac{100 - 59.05}{100} = \mathbf{0.00123}$ (Compresión)</li>
+            <li>Fila 2: $\epsilon_{t2} = 0.003 \cdot \frac{100 - 440.95}{100} = \mathbf{-0.01023}$ (Tensión)</li>
+            <li>Fila 3: $\epsilon_{t3} = 0.003 \cdot \frac{100 - 490.95}{100} = \mathbf{-0.01173}$ (Tensión)</li>
         </ul>
-        <ul>
-            <li><strong>Concreto (f′c):</strong> 28 MPa</li>
-            <li><strong>Acero (fy):</strong> 420 MPa</li>
-            <li><strong>Área de Acero (As):</strong> 6.0 cm²</li>
-        </ul>
+        <p><em>Nota: Como $|\epsilon_{ti}| > 0.0021$, todo el acero ha fluido ($f_s = 420$ MPa).</em></p>
     </div>
 
-    <h3 class="seccion-titulo">3. Hipótesis de Deformaciones</h3>
-    <p>
-        Asumimos compatibilidad de deformaciones lineales. El concreto falla a $\epsilon_{cu} = 0.003$.
-    </p>
-    <div class="formula-box">
-        $\epsilon_t = 0.003 \cdot \frac{(d - c)}{c}$
+    <h3>4. Sumatoria de Fuerzas y Momentos ($h/2 = 275$ mm)</h3>
+    <p>Calculamos las fuerzas internas ($+$ Compresión, $-$ Tensión):</p>
+    <ul>
+        <li><strong>Concreto ($C_c$):</strong> $0.85 \cdot 28 \cdot (0.85 \cdot 100 \cdot 300 - 852) = \mathbf{586.55}$ kN</li>
+        <li><strong>Acero Fila 1:</strong> $852 \cdot 420 = \mathbf{357.84}$ kN (Compresión real considerando $\epsilon$)</li>
+        <li><strong>Acero Fila 2:</strong> $568 \cdot (-420) = \mathbf{-238.56}$ kN</li>
+        <li><strong>Acero Fila 3:</strong> $852 \cdot (-420) = \mathbf{-357.84}$ kN</li>
+    </ul>
+
+    <div class="dato-box" style="background-color: #e7f3fe; border-left-color: #2196f3;">
+        <strong>Estado de Carga Resultante:</strong><br>
+        $P_n = \sum F = \mathbf{-198.09}$ kN (La sección está en tensión neta) <br>
+        $M_n = \sum M_{(h/2)} = \mathbf{299.03}$ kNm
     </div>
 
-    <h3 class="seccion-titulo">4. Fuerzas y Equilibrio</h3>
-    <p>Para vigas, la compresión en el bloque de Whitney debe ser igual a la tensión en el acero:</p>
-    <div class="formula-box">
-        $0.85 \cdot f'c \cdot b \cdot a = A_s \cdot f_s$
-    </div>
-    <p>Donde $a = \beta_1 \cdot c$. Para 28 MPa, $\beta_1 = 0.85$.</p>
-
-    <h3 class="seccion-titulo">5. Resultado del Momento</h3>
-    <p>Sumando momentos respecto al centro plástico ($h/2$):</p>
-    <div class="formula-box" style="background-color: #f4fff4; border: 1px solid #c2e0c2;">
-        $M_n = C_c \cdot (\frac{h}{2} - \frac{a}{2}) + T \cdot (d - \frac{h}{2})$
-    </div>
+    <p><strong>Conclusión Pedagógica:</strong> Como $P_n$ no es cero, esta sección <strong>no está trabajando como viga pura</strong> bajo este eje neutro. Para ser una viga ($P_n = 0$), ¿deberíamos subir o bajar el eje neutro $c$? (Pista: necesitamos más compresión).</p>
 
     <hr style="margin-top:50px; border: 0; border-top: 1px solid #eee;">
     <p style="text-align:center; color:#95a5a6; font-size: 0.9em;">
-        Material preparado para la Universidad Industrial de Santander. <br>
-        <em>"El diseño estructural es el arte de usar materiales que no conocemos bien para formar estructuras que no podemos analizar con precisión."</em>
+        Facultad de Ingenierías Fisicomecánicas - UIS
     </p>
-
 </div>
 
 </body>
