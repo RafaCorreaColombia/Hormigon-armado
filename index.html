@@ -185,52 +185,58 @@
                     <b class="w3-text-red">Numérico</b><br>Newton-Raphson o Bisección.
                 </div>
             </div>
-        </div>
-
+        
 <div class="w3-container w3-card-4 w3-white w3-round w3-margin-top w3-padding-32">
-    <h3 class="w3-center w3-text-red">Laboratorio Virtual: Ajuste de Equilibrio</h3>
-    <p class="w3-center">Mueve el eje neutro ($c$) para ver cómo cambian las deformaciones y fuerzas.</p>
+    <h3 class="w3-center w3-text-red">Laboratorio Virtual: Equilibrio Real (3 Filas)</h3>
+    <p class="w3-center">Ajusta <b>c</b> para equilibrar la sección. Objetivo: $P_n \approx 0$</p>
 
     <div class="w3-row-padding">
-        <div class="w3-third w3-container">
-            <div class="w3-panel w3-light-grey w3-padding w3-round">
+        <div class="w3-third">
+            <div class="w3-panel w3-light-grey w3-padding w3-round w3-card">
                 <label><b>Profundidad Eje Neutro ($c$):</b> <span id="valC" class="highlight">100</span> mm</label>
-                <input type="range" id="inputC" min="30" max="500" value="100" class="w3-select" oninput="actualizarSimulador()">
+                <input type="range" id="inputC" min="30" max="450" value="100" class="w3-select" oninput="actualizarSimulador()">
                 
                 <hr>
-                <label><b>Ancho de viga ($b$):</b> <span id="valB">300</span> mm</label>
+                <label><b>Ancho ($b$):</b> <span id="valB">300</span> mm</label>
                 <input type="range" id="inputB" min="200" max="500" step="50" value="300" class="w3-select" oninput="actualizarSimulador()">
             </div>
             
-            <div class="w3-panel w3-blue-grey w3-padding w3-round w3-text-white">
-                <strong>Resultado Pn:</strong><br>
-                <span id="resPn" style="font-size: 2em; font-weight: bold;">-198.1</span> kN
-                <p id="msgEquilibrio" class="w3-small">Sobra Compresión</p>
+            <div id="cardPn" class="w3-panel w3-padding w3-round w3-center">
+                <strong id="txtEstado">Sobra Compresión</strong><br>
+                <span id="resPn" style="font-size: 2.2em; font-weight: bold;">-198.1</span> <small>kN</small>
+            </div>
+            
+            <div class="w3-container w3-border w3-round w3-small">
+                <p><b>Ductilidad:</b> <span id="txtDuctilidad">--</span></p>
+                <p><b>Mn:</b> <span id="resMn">--</span> kNm</p>
             </div>
         </div>
 
         <div class="w3-third w3-center">
-            <b>Deformaciones ($\epsilon$)</b><br>
-            <svg id="svgDef" width="200" height="350" style="background:#fafafa; border:1px solid #eee;">
-                <line x1="100" y1="20" x2="100" y2="330" stroke="#ccc" stroke-width="1" />
-                <polygon id="polyDef" points="" fill="rgba(192, 57, 43, 0.2)" stroke="#c0392b" stroke-width="2" />
-                <text x="105" y="30" font-size="12" fill="red">εcu = 0.003</text>
-                <text id="txtEt" x="10" y="320" font-size="12" fill="blue">εt = ?</text>
-                <line id="lineC" x1="50" y1="20" x2="150" y2="20" stroke="black" stroke-dasharray="4" />
+            <b>Deformaciones ($\epsilon$)</b>
+            <svg id="svgDef" width="220" height="350" style="background:#f9f9f9; border-radius:8px;">
+                <line x1="110" y1="20" x2="110" y2="320" stroke="#999" stroke-width="1" />
+                <polygon id="polyDef" points="" fill="rgba(192, 57, 43, 0.15)" stroke="#c0392b" stroke-width="2" />
+                <text x="115" y="35" font-size="11" fill="#c0392b">εcu=0.003</text>
+                <text id="txtEtReal" x="20" y="310" font-size="11" fill="blue">εt=</text>
+                <line id="lineEN" x1="20" y1="0" x2="200" y2="0" stroke="black" stroke-dasharray="4" stroke-width="1" />
             </svg>
         </div>
 
         <div class="w3-third w3-center">
-            <b>Fuerzas ($C_c$ y $T$)</b><br>
-            <svg id="svgFzas" width="200" height="350" style="background:#fafafa; border:1px solid #eee;">
-                <rect id="rectWhitney" x="100" y="20" width="50" height="85" fill="#c0392b" opacity="0.6" />
-                <line id="vecCc" x1="150" y1="60" x2="100" y2="60" stroke="black" stroke-width="3" marker-end="url(#arrow)" />
-                <line id="vecT" x1="50" y1="300" x2="100" y2="300" stroke="blue" stroke-width="3" marker-end="url(#arrow)" />
+            <b>Fuerzas Internas</b>
+            <svg id="svgFzas" width="220" height="350" style="background:#f9f9f9; border-radius:8px;">
+                <rect id="rectWhitney" x="110" y="20" width="40" height="85" fill="#c0392b" opacity="0.4" />
                 
+                <line id="vecCc" x1="110" y1="0" x2="60" y2="0" stroke="#c0392b" stroke-width="4" marker-end="url(#arrowRed)" />
+                <line id="vecF1" x1="110" y1="0" x2="80" y2="0" stroke="black" stroke-width="2" marker-end="url(#arrowBlack)" />
+                <line id="vecF2" x1="110" y1="0" x2="140" y2="0" stroke="blue" stroke-width="2" marker-end="url(#arrowBlue)" />
+                <line id="vecF3" x1="110" y1="0" x2="160" y2="0" stroke="blue" stroke-width="2" marker-end="url(#arrowBlue)" />
+
                 <defs>
-                    <marker id="arrow" markerWidth="10" markerHeight="10" refX="0" refY="3" orient="auto" markerUnits="strokeWidth">
-                        <path d="M0,0 L0,6 L9,3 z" fill="#000" />
-                    </marker>
+                    <marker id="arrowRed" markerWidth="6" markerHeight="6" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#c0392b"/></marker>
+                    <marker id="arrowBlack" markerWidth="6" markerHeight="6" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="black"/></marker>
+                    <marker id="arrowBlue" markerWidth="6" markerHeight="6" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="blue"/></marker>
                 </defs>
             </svg>
         </div>
@@ -239,56 +245,102 @@
 
 <script>
 function actualizarSimulador() {
-    // 1. Obtener valores de los sliders
-    let c = parseFloat(document.getElementById('inputC').value);
-    let b = parseFloat(document.getElementById('inputB').value);
+    // 1. Inputs y Parámetros
+    const c = parseFloat(document.getElementById('inputC').value);
+    const b = parseFloat(document.getElementById('inputB').value);
     document.getElementById('valC').innerText = c;
     document.getElementById('valB').innerText = b;
 
-    // 2. Parámetros fijos
-    const d = 500;
-    const ecu = 0.003;
-    const fc = 28;
-    const fy = 420;
-    const beta1 = 0.85;
-    const As_total = 1425; // Suma aproximada de tus capas de tensión
+    const h = 550; const ecu = 0.003; const fc = 28; const fy = 420; const Es = 200000;
+    const capas = [
+        { d: 59.05,  as: 855.1, id: 'vecF1' },
+        { d: 440.95, as: 570.0, id: 'vecF2' },
+        { d: 490.95, as: 855.1, id: 'vecF3' }
+    ];
 
-    // 3. Cálculos de ingeniería
-    let a = beta1 * c;
-    let et = ecu * (d - c) / c;
-    let fs = Math.min(fy, 200000 * et);
+    // 2. Escalas Visuales
+    const escalaY = 300 / h; 
+    const escalaX = 15000; 
+    const escalaF = 0.15; 
+
+    // 3. Cálculos de Ingeniería
+    let a = 0.85 * c;
+    let Cc = -0.85 * fc * (a * b - 855.1) / 1000; // Solo restamos si c > d1
+    if (c < 59.05) Cc = -0.85 * fc * a * b / 1000;
+
+    let Pn = Cc;
+    let Mn = Cc * (h/2 - a/2) / 1000;
+    let etMax = 0;
+
+    // 4. Actualizar Vectores de Acero
+    capas.forEach(capa => {
+        let et = ecu * (capa.d - c) / c;
+        let fs = Math.max(-fy, Math.min(fy, Es * et));
+        let Fs = (capa.as * fs) / 1000;
+        Pn += Fs;
+        Mn += Fs * (h/2 - capa.d) / 1000;
+        if(capa.d > h/2) etMax = et;
+
+        // Visual Vector
+        let L = Math.abs(Fs) * escalaF;
+        let dir = fs >= 0 ? 1 : -1;
+        let yPx = 20 + (capa.d * escalaY);
+        let el = document.getElementById(capa.id);
+        el.setAttribute("y1", yPx); el.setAttribute("y2", yPx);
+        el.setAttribute("x1", 110); el.setAttribute("x2", 110 + (dir * L));
+    });
+
+    // 5. Actualizar Gráficos Visuales
+    // Eje Neutro
+    document.getElementById('lineEN').setAttribute("y1", 20 + c * escalaY);
+    document.getElementById('lineEN').setAttribute("y2", 20 + c * escalaY);
+
+    // Polígono Deformación
+    let etVis = ecu * (h - c) / c;
+    let xTop = 110 + (ecu * escalaX);
+    let xBot = 110 - (etVis * escalaX);
+    document.getElementById('polyDef').setAttribute("points", `${xTop},20 110,20 110,320 ${xBot},320`);
+    document.getElementById('txtEtReal').innerText = "εt_inf = " + etMax.toFixed(5);
+
+    // Bloque Whitney
+    let a_px = a * escalaY;
+    let rectW = document.getElementById('rectWhitney');
+    rectW.setAttribute("height", a_px);
+    rectW.setAttribute("width", b * 0.15);
     
-    let Cc = -0.85 * fc * a * b / 1000; // kN
-    let T = As_total * fs / 1000;      // kN
-    let Pn = Cc + T;
+    // Vector Cc
+    let Lc = Math.abs(Cc) * escalaF;
+    let vecCc = document.getElementById('vecCc');
+    let yCc = 20 + (a/2 * escalaY);
+    vecCc.setAttribute("y1", yCc); vecCc.setAttribute("y2", yCc);
+    vecCc.setAttribute("x1", 110); vecCc.setAttribute("x2", 110 - Lc);
 
-    // 4. Actualizar Textos
+    // 6. UI de Resultados
     document.getElementById('resPn').innerText = Pn.toFixed(1);
-    document.getElementById('txtEt').innerText = "εt = " + et.toFixed(5);
+    document.getElementById('resMn').innerText = Math.abs(Mn).toFixed(1);
     
-    let msg = document.getElementById('msgEquilibrio');
-    if(Math.abs(Pn) < 5) {
-        msg.innerText = "¡EQUILIBRIO LOGRADO!";
-        msg.style.color = "green";
+    let card = document.getElementById('cardPn');
+    let txt = document.getElementById('txtEstado');
+    if (Math.abs(Pn) < 10) {
+        card.className = "w3-panel w3-green w3-padding w3-round w3-center";
+        txt.innerText = "EQUILIBRIO (VIGA)";
     } else {
-        msg.innerText = Pn < 0 ? "Sobra Compresión (Sube c)" : "Sobra Tensión (Baja c)";
-        msg.style.color = "red";
+        card.className = Pn < 0 ? "w3-panel w3-red w3-padding w3-round w3-center" : "w3-panel w3-blue w3-padding w3-round w3-center";
+        txt.innerText = Pn < 0 ? "Sobra Compresión" : "Sobra Tensión";
     }
 
-    // 5. Actualizar Gráficos SVG
-    // Deformaciones
-    let xTraccion = 100 - (et * 5000); // Escala visual
-    document.getElementById('polyDef').setAttribute("points", `150,20 100,20 100,300 ${xTraccion},300`);
-    
-    // Fuerzas (Bloque Whitney)
-    let rectW = document.getElementById('rectWhitney');
-    rectW.setAttribute("height", a * 0.5); // Escala visual
-    rectW.setAttribute("width", b * 0.2); 
+    let duct = document.getElementById('txtDuctilidad');
+    if (etMax >= 0.005) { duct.innerText = "Dúctil (φ=0.9)"; duct.className = "w3-text-green"; }
+    else if (etMax <= 0.002) { duct.innerText = "Frágil (φ=0.65)"; duct.className = "w3-text-red"; }
+    else { duct.innerText = "Transición"; duct.className = "w3-text-orange"; }
 }
 
-// Ejecutar al cargar
 actualizarSimulador();
 </script>
+
+    
+    
+
 
 
 
