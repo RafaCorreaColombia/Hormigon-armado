@@ -106,44 +106,6 @@
 
 
 
-<h3 class="w3-border-red">Formulación del Modelo de Flexión</h3>
-<p>Para automatizar el cálculo en hojas de vida real, utilizamos estas expresiones generales:</p>
-
-<div class="w3-row-padding">
-    <div class="w3-third w3-margin-bottom">
-        <div class="w3-card w3-container w3-padding-16 w3-white" style="min-height: 320px;">
-            <b class="w3-text-red">1. Deformación y Esfuerzo ($i$)</b>
-            <p style="font-size: 0.9em;">Por semejanza de triángulos:</p>
-            $$\epsilon_{ti} = \epsilon_{cu} \frac{(d_i - c)}{c}$$
-            <p style="font-size: 0.9em;">Esfuerzo con fluencia ($f_y$):</p>
-            $$f_{si} = \text{signo}(\epsilon_{ti}) \cdot \min(f_y, E_s \cdot |\epsilon_{ti}|)$$
-            <p class="w3-small w3-text-grey">*Nota: $\epsilon_{ti} < 0$ es compresión.</p>
-        </div>
-    </div>
-
-    <div class="w3-third w3-margin-bottom">
-        <div class="w3-card w3-container w3-padding-16 w3-white" style="min-height: 320px;">
-            <b class="w3-text-red">2. Equilibrio de Fuerzas ($P_n$)</b>
-            <p style="font-size: 0.9em;">Concreto (Bloque Whitney):</p>
-            $$C_c = 0.85 \cdot f'c \cdot (\beta_1 c b - A_{s,comp})$$
-            <p style="font-size: 0.9em;">Fuerza resultante total:</p>
-            $$P_n = C_c + \sum_{i=1}^{n} (A_{si} \cdot f_{si})$$
-            <p class="w3-small w3-text-grey">*En vigas buscamos $P_n = 0$.</p>
-        </div>
-    </div>
-
-    <div class="w3-third w3-margin-bottom">
-        <div class="w3-card w3-container w3-padding-16 w3-white" style="min-height: 320px;">
-            <b class="w3-text-red">3. Momento Nominal ($M_n$)</b>
-            <p style="font-size: 0.9em;">Respecto al eje plástico ($h/2$):</p>
-            $$M_n = C_c \cdot \left( \frac{h}{2} - \frac{a}{2} \right) + \sum_{i=1}^{n} \left[ F_{si} \cdot \left( \frac{h}{2} - d_i \right) \right]$$
-            <p class="w3-small w3-text-grey">*Sumatoria de pares internos respecto al centro.</p>
-        </div>
-    </div>
-</div>
-
-
-
 
 
 
@@ -281,6 +243,11 @@
                     <b class="w3-text-red">Numérico</b><br>Newton-Raphson o Bisección.
                 </div>
             </div>
+
+
+
+
+
         
 <div class="w3-container w3-card-4 w3-white w3-round w3-margin-top w3-padding-32">
     <h3 class="w3-center w3-text-red">Laboratorio Virtual: Equilibrio Real (3 Filas)</h3>
@@ -290,7 +257,7 @@
         <div class="w3-third">
             <div class="w3-panel w3-light-grey w3-padding w3-round w3-card">
                 <label><b>Profundidad Eje Neutro ($c$):</b> <span id="valC" class="highlight">100</span> mm</label>
-                <input type="range" id="inputC" min="30" max="450" value="100" class="w3-select" oninput="actualizarSimulador()">
+                <input type="range" id="inputC" min="10" max="440" value="100" class="w3-select" oninput="actualizarSimulador()">
                 
                 <hr>
                 <label><b>Ancho ($b$):</b> <span id="valB">300</span> mm</label>
