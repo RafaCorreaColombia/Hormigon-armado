@@ -363,7 +363,19 @@ function actualizarSimulador() {
     let xTop = 110 + (ecu * escalaX);
     let xBot = 110 - (etVis * escalaX);
     document.getElementById('polyDef').setAttribute("points", `${xTop},20 110,20 110,320 ${xBot},320`);
-    document.getElementById('txtEtReal').innerText = "εt_inf = " + etMax.toFixed(5);
+
+    // --- AQUÍ ESTÁ EL ARREGLO DEL NÚMERO ---
+    let labelEt = document.getElementById('txtEtReal');
+    
+    // Posicionamos el texto 5 píxeles a la izquierda del punto inferior
+    labelEt.setAttribute("x", xBot - 75); 
+    labelEt.setAttribute("y", 315); // Un poco arriba de la base
+    
+    // Insertamos el valor real de la capa más traccionada
+    labelEt.textContent = "εt = " + etMax.toFixed(5);
+
+    
+//document.getElementById('txtEtReal').innerText = "εt_inf = " + etMax.toFixed(5);
 
     // Bloque Whitney
     let a_px = a * escalaY;
