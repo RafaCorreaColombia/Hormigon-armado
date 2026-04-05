@@ -143,21 +143,62 @@
             </ul>
         </div>
 
+   
+
         <h3>4. Sumatoria de Fuerzas y Momentos</h3>
-        <p>Resultados globales para $c = 100$ mm ($+$ Tensión, $-$ Compresión):</p>
-        <ul class="w3-ul w3-card w3-white">
-            <li class="w3-padding">Concreto ($C_c$): <span class="w3-right w3-text-red">$-586.5$ kN</span></li>
-            <li class="w3-padding">Acero Fila 1: <span class="w3-right w3-text-red">$-210.1$ kN</span></li>
-            <li class="w3-padding">Acero Fila 2: <span class="w3-right w3-text-green">$+239.4$ kN</span></li>
-            <li class="w3-padding">Acero Fila 3: <span class="w3-right w3-text-green">$+359.1$ kN</span></li>
-            <li class="w3-padding w3-light-grey w3-large">
-                <strong>$P_n$ Resultante:</strong> 
-                <span class="w3-right highlight">$-198.1$ kN</span>
-            </li>
-        </ul>
-        <p class="w3-panel w3-pale-yellow w3-leftbar w3-border-yellow w3-padding w3-margin-top">
-            <strong>Conclusión:</strong> El $P_n$ es negativo, lo que indica un exceso de compresión. El eje neutro debe <strong>subir</strong> para acercarse al comportamiento de viga pura ($P_n = 0$).
-        </p>
+        <p>Calculamos las fuerzas internas y sus momentos respecto al centro plástico ($h/2 = 275$ mm):</p>
+        
+        <div class="w3-responsive">
+            <table class="w3-table-all w3-card-2 w3-small">
+                <thead>
+                    <tr class="w3-dark-grey">
+                        <th>Componente</th>
+                        <th>Fuerza (kN)</th>
+                        <th>Brazo $z_i$ (m)</th>
+                        <th>Momento $M_i$ (kNm)</th>
+                    </tr>
+                </thead>
+                <tr>
+                    <td>Concreto ($C_c$)</td>
+                    <td class="w3-text-red">-586.5</td>
+                    <td>$0.275 - a/2 = \mathbf{0.2325}$</td>
+                    <td>-136.4</td>
+                </tr>
+                <tr>
+                    <td>Fila 1 (Comp)</td>
+                    <td class="w3-text-red">-210.1</td>
+                    <td>$0.275 - d_1 = \mathbf{0.2159}$</td>
+                    <td>-45.4</td>
+                </tr>
+                <tr>
+                    <td>Fila 2 (Tens)</td>
+                    <td class="w3-text-green">+239.4</td>
+                    <td>$0.275 - d_2 = \mathbf{-0.1659}$</td>
+                    <td>-39.7</td>
+                </tr>
+                <tr>
+                    <td>Fila 3 (Tens)</td>
+                    <td class="w3-text-green">+359.1</td>
+                    <td>$0.275 - d_3 = \mathbf{-0.2159}$</td>
+                    <td>-77.5</td>
+                </tr>
+                <tr class="w3-light-grey" style="font-weight:bold;">
+                    <td>TOTALES</td>
+                    <td>$P_n = \mathbf{-198.1}$ kN</td>
+                    <td>---</td>
+                    <td>$M_n = \mathbf{299.0}$ kNm</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="w3-panel w3-pale-blue w3-leftbar w3-border-blue w3-padding">
+            <p><strong>Interpretación Física:</strong> Aunque la sección resiste 299 kNm, lo hace "ayudada" por una compresión externa de 198.1 kN. Para que sea una <strong>viga real</strong>, el concreto y el acero deben arreglárselas solos para que $P_n = 0$.</p>
+        </div>
+
+
+
+
+
 
         <h3>5. Equilibrio de Viga Alcanzado ($P_n = 0$)</h3>
         <div class="w3-container w3-card-4 w3-green w3-round w3-padding-16 w3-margin-top">
