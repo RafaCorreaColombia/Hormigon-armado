@@ -38,6 +38,21 @@
         <p><em>"Encontrando el equilibrio: Eje neutro y compatibilidad"</em></p>
     </div>
 
+<h3>0. Fundamentos de Diseño (NSR-10 Cap. C.10)</h3>
+    <p>Todo el diseño estructural de concreto en Colombia se basa en estas hipótesis simplificadoras del Título C:</p>
+    <div class="dato-box" style="background-color: #f0f8ff; border-left-color: #0056b3;">
+        <ul>
+            <li><strong>C.10.2.2:</strong> Las secciones planas permanecen planas (Bernoulli-Euler).</li>
+            <li><strong>C.10.2.3:</strong> La deformación máxima útil del concreto en la fibra extrema se supone igual a $\epsilon_{cu} = 0.003$.</li>
+            <li><strong>C.10.2.7:</strong> El bloque rectangular de esfuerzos (Whitney) usa un factor $\beta_1$ que depende de $f'c$. Para 28 MPa, $\beta_1 = 0.85$.</li>
+            <li><strong>Resistencia de diseño:</strong> $P_u = \phi P_n$ y $M_u = \phi M_n$.</li>
+        </ul>
+    </div>
+
+
+
+
+    
     <h3>1. Definición de la Sección</h3>
 
 <div style="text-align: center; margin: 30px 0; padding: 15px; background-color: #fdfdfd; border: 1px solid #eee; border-radius: 10px;">
@@ -111,6 +126,31 @@
 
     <p><strong>Conclusión Pedagógica:</strong> Como $P_n$ no es cero, esta sección <strong>no está trabajando como viga pura</strong> bajo este eje neutro. Para ser una viga ($P_n = 0$), ¿deberíamos subir o bajar el eje neutro $c$? (Pista: necesitamos menos compresión).</p>
 
+    <h3>5. Buscando el Equilibrio de "Viga" ($P_n = 0$)</h3>
+    <p>En el ensayo anterior ($c=100$ mm), obtuvimos $P_n = -198.1$ kN. Como el valor es negativo (sobra compresión), el eje neutro debe <strong>subir</strong> para reducir el área de concreto comprimido.</p>
+    
+    <div class="iteracion-box" style="background-color: #f4fff4; border-color: #28a745;">
+        <strong>El Eje Neutro Ideal: <span class="highlight">$c = 79.91$ mm</span></strong>
+        <p>Al iterar (usando Solver, métodos numéricos o programación), encontramos que con este valor:</p>
+        <ul>
+            <li>Fuerza Concreto ($C_c$): $\approx \mathbf{-462.8}$ kN</li>
+            <li>Fuerza Acero Total ($T$): $\approx \mathbf{462.8}$ kN</li>
+            <li><strong>Resultado:</strong> $P_n = 0.00$ kN $\rightarrow$ <span style="color:green;"><strong>¡Equilibrio de Viga Alcanzado!</strong></span></li>
+            <li><strong>Momento Nominal:</strong> $M_n = \mathbf{262.5}$ kNm</li>
+        </ul>
+    </div>
+
+    <h3>6. ¿Cómo hallar este valor de $c$?</h3>
+    <p>Hallar el eje neutro no siempre es directo cuando hay muchas filas de acero. Los caminos del ingeniero son:</p>
+    <ol>
+        <li><strong>Ecuación Cuadrática:</strong> Si solo hay una fila, es despeje directo. Con 3 filas, la ecuación se vuelve polinómica y compleja.</li>
+        <li><strong>Método Numérico (Bisección/Newton-Raphson):</strong> Es lo que hacen los programas como SAP2000 o ETABS.</li>
+        <li><strong>Herramientas de cálculo:</strong> "Buscar Objetivo" o "Solver" en Excel, o un script en Python/Matlab.</li>
+        <li><strong>Iteración Manual:</strong> El viejo método de "tanteo" hasta que la suma de fuerzas cierre.</li>
+    </ol>
+
+
+    
     <hr style="margin-top:50px; border: 0; border-top: 1px solid #eee;">
     <p style="text-align:center; color:#95a5a6; font-size: 0.9em;">
         Facultad de Ingenierías Fisicomecánicas - UIS
