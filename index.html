@@ -254,7 +254,7 @@
         <div class="w3-container w3-pale-red w3-leftbar w3-border-red w3-padding-small">
             <h5 style="margin-bottom: 2px;"><b>Ficha Técnica del Modelo:</b></h5>
             <p class="w3-small" style="margin-top: 0;">
-                Este laboratorio calcula el equilibrio seccional considerando un recubrimiento libre de <b>40 mm</b>, estribos <b>#3</b> y refuerzo longitudinal <b>#6</b>. 
+                Este laboratorio calcula el equilibrio de una sección considerando un recubrimiento libre de <b>40 mm</b>, estribos <b>#3</b> y refuerzo longitudinal <b>#6</b>. 
                 Las variables <b>As1, As2 y As3</b> representan el área total de acero en cada fila. 
                 <br>
                 <span class="w3-tag w3-round w3-red" style="padding:2px 8px;">f'c = 28 MPa</span> 
@@ -273,11 +273,11 @@
                 <div class="w3-row-padding">
                     <div class="w3-half">
                         <label class="w3-tiny">Ancho b (mm)</label>
-                        <input type="number" id="inB" value="300" class="w3-input w3-border w3-round w3-small" oninput="actualizarSimulador()">
+                        <input type="number" id="inB" value="300" min="100" max="600" class="w3-input w3-border w3-round w3-small" oninput="actualizarSimulador()">
                     </div>
                     <div class="w3-half">
                         <label class="w3-tiny">Alto h (mm)</label>
-                        <input type="number" id="inH" value="550" class="w3-input w3-border w3-round w3-small" oninput="actualizarSimulador()">
+                        <input type="number" id="inH" value="550" min="200" max="800" class="w3-input w3-border w3-round w3-small" oninput="actualizarSimulador()">
                     </div>
                 </div>
                 <div class="w3-row-padding w3-margin-top">
@@ -333,8 +333,15 @@ function actualizarSimulador() {
     const getVal = (id, def) => document.getElementById(id) ? parseFloat(document.getElementById(id).value) : def;
 
     const c = getVal('inputC', 100);
-    const b = getVal('inB', 300);
-    const h = getVal('inH', 550);
+
+    // Capturar y limitar b entre 100 y 600
+    let b_raw = getVal('inB', 300);
+    const b = Math.max(100, Math.min(600, b_raw));
+
+    // Capturar y limitar h entre 200 y 800
+    let h_raw = getVal('inH', 550);
+    const h = Math.max(200, Math.min(800, h_raw));
+
     const recub = 40; // Recubrimiento libre
     const d_estribo = 9.525; // #3
     const d_barra = 19.05; // #6
