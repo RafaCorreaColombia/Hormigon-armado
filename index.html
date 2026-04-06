@@ -379,8 +379,8 @@ function actualizarSimulador() {
     ];
 
     capasParaCalculo.forEach(capa => {
-        // Si la profundidad de la barra es menor a 'c', está en la zona de concreto comprimido
-        if (capa.d < c) {
+        // Si la profundidad de la barra es menor a 'a', está en la zona de concreto comprimido
+        if (capa.d < a) {
             areaAceroEnCompresion += capa.as;
         }
     });
@@ -465,6 +465,44 @@ actualizarSimulador();
     
     
 
+     <div class="w3-container w3-margin-top">
+    <div class="w3-responsive w3-card-4">
+        <table class="w3-table-all w3-small">
+            <thead>
+                <tr class="w3-red">
+                    <th>Estado de la Sección</th>
+                    <th>Condición de Deformación</th>
+                    <th>Clasificación</th>
+                    <th>Factor $\phi$ (Sismo)</th>
+                </tr>
+            </thead>
+            <tr>
+                <td><b>Controlado por Tensión</b></td>
+                <td>$\epsilon_t \geq 0.005$</td>
+                <td class="w3-text-green"><b>Dúctil</b></td>
+                <td>0.90</td>
+            </tr>
+            <tr>
+                <td><b>Transición</b></td>
+                <td>$0.002 < \epsilon_t < 0.005$</td>
+                <td class="w3-text-orange"><b>Transición</b></td>
+                <td>$0.65 + 0.25 \frac{(\epsilon_t - \epsilon_{ty})}{(0.005 - \epsilon_{ty})}$</td>
+            </tr>
+            <tr>
+                <td><b>Controlado por Compresión</b></td>
+                <td>$\epsilon_t \leq \epsilon_{ty}$ ($\approx 0.0021$)</td>
+                <td class="w3-text-red"><b>Frágil</b></td>
+                <td>0.65 (Estribos)</td>
+            </tr>
+        </table>
+    </div>
+    
+    <div class="w3-panel w3-light-grey w3-leftbar w3-border-red w3-padding-small w3-margin-top">
+        <p class="w3-small">
+            <i>* Nota: Para un acero de $f_y = 420$ MPa, la deformación de fluencia es $\epsilon_{ty} = f_y / E_s = 0.0021$. Una sección dúctil garantiza aviso previo antes de la falla mediante grandes deflexiones y fisuración.</i>
+        </p>
+    </div>
+</div>       
 
 
 
