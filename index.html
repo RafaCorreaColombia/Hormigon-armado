@@ -79,10 +79,11 @@
         <b class="w3-text-red" style="font-size: 1.2em;">2. Equilibrio de Fuerzas Axiales ($P_n$)</b>
         <p>Suma de la compresión del concreto (Whitney) y las fuerzas en cada fila de acero:</p>
         <div style="overflow-x: auto; padding: 10px 0;">
-            $$C_c = 0.85 \cdot f'c \cdot (\beta_1 \cdot c \cdot b - A_{s,comp})$$
+            $$C_c = - 0.85 \cdot f'c \cdot (\beta_1 \cdot c \cdot b - A_{s,comp})$$
             $$P_n = C_c + \sum_{i=1}^{n} (A_{si} \cdot f_{si})$$
         </div>
         <p class="w3-small w3-text-grey"><i>*Para diseño de vigas, el objetivo es que $P_n = 0$.</i></p>
+        <p class="w3-small w3-text-grey"><i>*<b>Restricción Física:</b> El bloque de Whitney no puede exceder la altura de la viga: $a = \min(\beta_1 \cdot c, h)$.</i></p>
     </div>
 
     <div class="w3-card-4 w3-container w3-padding-24 w3-white w3-margin-bottom w3-round-large">
