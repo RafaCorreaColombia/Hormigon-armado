@@ -322,6 +322,9 @@ function actualizarSimulador() {
     const c = getVal('inputC', 100);
     const b = getVal('inB', 300);
     const h = getVal('inH', 550);
+    const recub = 40; // Recubrimiento libre
+    const d_estribo = 9.525; // #3
+    const d_barra = 19.05; // #6
     const as1 = getVal('inAs1', 855.1);
     const as2 = getVal('inAs2', 570.0);
     const as3 = getVal('inAs3', 855.1);
@@ -329,7 +332,10 @@ function actualizarSimulador() {
     document.getElementById('valC').innerText = c.toFixed(1);
 
     const ecu = 0.003; const fc = 28; const fy = 420; const Es = 200000;
-    const d1 = 59.05; const d2 = 440.95; const d3 = 490.95; 
+    // Recalculamos d basado en la nueva h para que no se salgan
+    const d1 = recub + d_estribo + d_barra/2; // ~59.05 mm
+    const d3 = h - (recub + d_estribo + d_barra/2); // Capa inferior extrema
+    const d2 = d3 - 50; // Segunda capa a 50mm de la primera 
 
     // 2. Escalas
     const escalaY = 300 / h; 
