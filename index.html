@@ -60,7 +60,6 @@
 
 
 
-
 <h3 class="w3-border-red">Formulación del Modelo de Flexión</h3>
 <p>Para tus hojas de cálculo, utiliza estas expresiones generales para cualquier número de capas:</p>
 
@@ -245,9 +244,7 @@
 
 
 
-
-
-        
+       
 <div class="w3-container w3-card-4 w3-white w3-round w3-margin-top w3-padding-32">
     <h3 class="w3-center w3-text-red">Laboratorio Virtual: Equilibrio Real (3 Filas)</h3>
     <p class="w3-center">Ajusta <b>c</b> para equilibrar la sección. Objetivo: $P_n \approx 0$</p>
@@ -256,19 +253,32 @@
         <div class="w3-third">
             <div class="w3-panel w3-light-grey w3-padding w3-round w3-card">
                 <label><b>Profundidad Eje Neutro ($c$):</b> <span id="valC" class="highlight">100</span> mm</label>
-                <input type="range" id="inputC" min="10" max="440" value="100" class="w3-select" oninput="actualizarSimulador()">
+                <input type="range" id="inputC" min="30" max="450" value="100" class="w3-select" oninput="actualizarSimulador()">
                 
                 <hr>
-                <label><b>Ancho ($b$):</b> <span id="valB">300</span> mm</label>
-                <input type="range" id="inputB" min="200" max="500" step="50" value="300" class="w3-select" oninput="actualizarSimulador()">
+                <div class="w3-row-padding">
+                    <div class="w3-half">
+                        <label class="w3-tiny">Ancho b (mm)</label>
+                        <input type="number" id="inB" value="300" class="w3-input w3-border w3-round w3-small" oninput="actualizarSimulador()">
+                    </div>
+                    <div class="w3-half">
+                        <label class="w3-tiny">Alto h (mm)</label>
+                        <input type="number" id="inH" value="550" class="w3-input w3-border w3-round w3-small" oninput="actualizarSimulador()">
+                    </div>
+                </div>
+                <div class="w3-row-padding w3-margin-top">
+                    <div class="w3-third"><label class="w3-tiny">As1</label><input type="number" id="inAs1" value="855.1" class="w3-input w3-border w3-round w3-tiny" oninput="actualizarSimulador()"></div>
+                    <div class="w3-third"><label class="w3-tiny">As2</label><input type="number" id="inAs2" value="570.0" class="w3-input w3-border w3-round w3-tiny" oninput="actualizarSimulador()"></div>
+                    <div class="w3-third"><label class="w3-tiny">As3</label><input type="number" id="inAs3" value="855.1" class="w3-input w3-border w3-round w3-tiny" oninput="actualizarSimulador()"></div>
+                </div>
             </div>
             
-            <div id="cardPn" class="w3-panel w3-padding w3-round w3-center">
+            <div id="cardPn" class="w3-panel w3-padding w3-round w3-center w3-card">
                 <strong id="txtEstado">Sobra Compresión</strong><br>
                 <span id="resPn" style="font-size: 2.2em; font-weight: bold;">-198.1</span> <small>kN</small>
             </div>
             
-            <div class="w3-container w3-border w3-round w3-small">
+            <div class="w3-container w3-border w3-round w3-small w3-white">
                 <p><b>Ductilidad:</b> <span id="txtDuctilidad">--</span></p>
                 <p><b>Mn:</b> <span id="resMn">--</span> kNm</p>
             </div>
@@ -279,8 +289,8 @@
             <svg id="svgDef" width="220" height="350" style="background:#f9f9f9; border-radius:8px;">
                 <line x1="110" y1="20" x2="110" y2="320" stroke="#999" stroke-width="1" />
                 <polygon id="polyDef" points="" fill="rgba(192, 57, 43, 0.15)" stroke="#c0392b" stroke-width="2" />
-                <text x="110" y="15" font-size="11" fill="#c0392b">εcu=0.003</text>
-                <text id="txtEtReal" x="20" y="310" font-size="11" fill="blue">εt=</text>
+                <text x="115" y="35" font-size="11" fill="#c0392b" font-weight="bold">εcu=0.003</text>
+                <text id="txtEtReal" x="20" y="310" font-size="11" fill="blue" font-weight="bold">εt=</text>
                 <line id="lineEN" x1="20" y1="0" x2="200" y2="0" stroke="black" stroke-dasharray="4" stroke-width="1" />
             </svg>
         </div>
@@ -289,12 +299,10 @@
             <b>Fuerzas Internas</b>
             <svg id="svgFzas" width="220" height="350" style="background:#f9f9f9; border-radius:8px;">
                 <rect id="rectWhitney" x="110" y="20" width="40" height="85" fill="#c0392b" opacity="0.4" />
-                
                 <line id="vecCc" x1="110" y1="0" x2="60" y2="0" stroke="#c0392b" stroke-width="4" marker-end="url(#arrowRed)" />
                 <line id="vecF1" x1="110" y1="0" x2="80" y2="0" stroke="black" stroke-width="2" marker-end="url(#arrowBlack)" />
                 <line id="vecF2" x1="110" y1="0" x2="140" y2="0" stroke="blue" stroke-width="2" marker-end="url(#arrowBlue)" />
                 <line id="vecF3" x1="110" y1="0" x2="160" y2="0" stroke="blue" stroke-width="2" marker-end="url(#arrowBlue)" />
-
                 <defs>
                     <marker id="arrowRed" markerWidth="6" markerHeight="6" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#c0392b"/></marker>
                     <marker id="arrowBlack" markerWidth="6" markerHeight="6" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="black"/></marker>
@@ -307,44 +315,37 @@
 
 <script>
 function actualizarSimulador() {
-    // 1. Capturar todos los datos del usuario
-    const c = parseFloat(document.getElementById('inputC').value);
-    const b = parseFloat(document.getElementById('inB').value);
-    const h = parseFloat(document.getElementById('inH').value);
-    
-    // Áreas de acero desde los inputs
-    const as1 = parseFloat(document.getElementById('inAs1').value);
-    const as2 = parseFloat(document.getElementById('inAs2').value);
-    const as3 = parseFloat(document.getElementById('inAs3').value);
+    // 1. Capturar datos con validación para que no se rompa si el ID no existe
+    const getVal = (id, def) => document.getElementById(id) ? parseFloat(document.getElementById(id).value) : def;
 
-    // Actualizar etiquetas de texto
+    const c = getVal('inputC', 100);
+    const b = getVal('inB', 300);
+    const h = getVal('inH', 550);
+    const as1 = getVal('inAs1', 855.1);
+    const as2 = getVal('inAs2', 570.0);
+    const as3 = getVal('inAs3', 855.1);
+
     document.getElementById('valC').innerText = c.toFixed(1);
 
-    // Parámetros fijos (UIS / NSR-10)
     const ecu = 0.003; const fc = 28; const fy = 420; const Es = 200000;
-    const d1 = 59.05; const d2 = 440.95; const d3 = 490.95; // Posiciones fijas por ahora
+    const d1 = 59.05; const d2 = 440.95; const d3 = 490.95; 
 
-    // 2. Escalas Dinámicas (Se adaptan a h)
+    // 2. Escalas
     const escalaY = 300 / h; 
     const escalaX = 15000; 
     const escalaF = 0.15; 
 
-    // 3. Cálculos de Ingeniería
+    // 3. Ingeniería
     let a = 0.85 * c;
     let Cc = -0.85 * fc * (a * b - (c > d1 ? as1 : 0)) / 1000;
-
-    // Cálculo de cada capa
-    let capasData = [
-        { d: d1, as: as1, id: 'vecF1' },
-        { d: d2, as: as2, id: 'vecF2' },
-        { d: d3, as: as3, id: 'vecF3' }
-    ];
 
     let Pn = Cc;
     let Mn = Cc * (h/2 - a/2) / 1000;
     let etMax = 0;
 
-    capasData.forEach(capa => {
+    let capas = [{ d: d1, as: as1, id: 'vecF1' }, { d: d2, as: as2, id: 'vecF2' }, { d: d3, as: as3, id: 'vecF3' }];
+
+    capas.forEach(capa => {
         let et = ecu * (capa.d - c) / c;
         let fs = Math.max(-fy, Math.min(fy, Es * et));
         let Fs = (capa.as * fs) / 1000;
@@ -352,38 +353,33 @@ function actualizarSimulador() {
         Mn += Fs * (h/2 - capa.d) / 1000;
         if(capa.d > h/2) etMax = et;
 
-        // Actualizar Flechas (Vectores)
         let L = Math.abs(Fs) * escalaF;
-        let dir = fs >= 0 ? 1 : -1;
         let yPx = 20 + (capa.d * escalaY);
         let el = document.getElementById(capa.id);
-        el.setAttribute("y1", yPx); el.setAttribute("y2", yPx);
-        el.setAttribute("x1", 110); el.setAttribute("x2", 110 + (dir * L));
+        if(el) {
+            el.setAttribute("y1", yPx); el.setAttribute("y2", yPx);
+            el.setAttribute("x1", 110); el.setAttribute("x2", 110 + (fs >= 0 ? 1 : -1) * L);
+        }
     });
 
-    // 4. Actualizar Gráficos (SVG)
-    // Eje Neutro
+    // 4. Gráficos
     document.getElementById('lineEN').setAttribute("y1", 20 + c * escalaY);
     document.getElementById('lineEN').setAttribute("y2", 20 + c * escalaY);
 
-    // Deformaciones
     let xTop = 110 + (ecu * escalaX);
     let etVis = ecu * (h - c) / c;
     let xBot = 110 - (etVis * escalaX);
     document.getElementById('polyDef').setAttribute("points", `${xTop},20 110,20 110,${20 + h*escalaY} ${xBot},${20 + h*escalaY}`);
     
-    // Etiqueta et (Debajo de la punta)
     let labelEt = document.getElementById('txtEtReal');
-    labelEt.setAttribute("x", xBot);
+    labelEt.setAttribute("x", xBot - 10);
     labelEt.setAttribute("y", 20 + h*escalaY + 20);
     labelEt.textContent = "εt = " + etMax.toFixed(5);
 
-    // Bloque Whitney
     let rectW = document.getElementById('rectWhitney');
     rectW.setAttribute("height", a * escalaY);
     rectW.setAttribute("width", b * 0.15);
 
-    // 5. UI Resultados
     document.getElementById('resPn').innerText = Pn.toFixed(1);
     document.getElementById('resMn').innerText = Math.abs(Mn).toFixed(1);
     
@@ -397,10 +393,8 @@ function actualizarSimulador() {
         txt.innerText = Pn < 0 ? "Sobra Compresión" : "Sobra Tensión";
     }
 
-    let duct = document.getElementById('txtDuctilidad');
-    duct.innerText = etMax >= 0.005 ? "Dúctil (φ=0.9)" : (etMax <= 0.002 ? "Frágil (φ=0.65)" : "Transición");
+    document.getElementById('txtDuctilidad').innerText = etMax >= 0.005 ? "Dúctil (φ=0.9)" : (etMax <= 0.002 ? "Frágil (φ=0.65)" : "Transición");
 }
-
 actualizarSimulador();
 </script>
 
