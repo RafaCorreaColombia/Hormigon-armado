@@ -532,6 +532,56 @@ actualizarSimulador();
 
 
 
+
+<div class="w3-row w3-margin-top">
+    <div class="w3-col l12 m12 s12">
+        <div class="w3-container w3-padding-small">
+            <h5 class="w3-border-bottom w3-border-red">7. Clasificación de la Sección y Ductilidad</h5>
+            <p class="w3-small">Según <b>ACI 318-19 21.2.2</b> y <b>NSR-10 C.10.3.3</b>:</p>
+            
+            <div class="w3-responsive w3-card-4">
+                <table class="w3-table-all w3-hoverable">
+                    <thead>
+                        <tr class="w3-red">
+                            <th style="width:25%">Estado de la Sección</th>
+                            <th style="width:25%">Condición ($\epsilon_t$)</th>
+                            <th style="width:25%">Clasificación</th>
+                            <th style="width:25%">Factor $\phi$ (Sismo)</th>
+                        </tr>
+                    </thead>
+                    <tr class="w3-white">
+                        <td><b>Controlado por Tracción</b></td>
+                        <td>$\epsilon_t \geq 0.005$</td>
+                        <td class="w3-text-green"><b>Dúctil</b></td>
+                        <td>0.90</td>
+                    </tr>
+                    <tr class="w3-white">
+                        <td><b>Transición</b></td>
+                        <td>$0.002 < \epsilon_t < 0.005$</td>
+                        <td class="w3-text-orange"><b>Transición</b></td>
+                        <td>Variación Lineal</td>
+                    </tr>
+                    <tr class="w3-white">
+                        <td><b>Controlado por Compresión</b></td>
+                        <td>$\epsilon_t \leq 0.002$</td>
+                        <td class="w3-text-red"><b>Frágil</b></td>
+                        <td>0.65</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div class="w3-panel w3-leftbar w3-light-grey w3-small w3-padding-16">
+                <p><i>Nota: El diseño sismorresistente busca secciones <b>Dúctiles</b> para garantizar la disipación de energía mediante la fluencia del acero antes de que el concreto falle por aplastamiento.</i></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
         <hr class="w3-margin-top-64">
         <footer class="w3-container w3-padding-32 w3-center w3-text-grey w3-light-grey w3-margin-top">
     <div class="w3-border-top w3-border-grey w3-padding-24" style="max-width: 600px; margin: auto;">
