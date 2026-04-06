@@ -40,13 +40,13 @@
     
     <div class="header-uis">
         <h1 class="w3-xxlarge">Análisis de Flexocompresión</h1>
-        <p class="w3-large"><em>"Encontrando el equilibrio: Eje neutro y compatibilidad de deformaciones"</em></p>
+        <p class="w3-large"><em>"Equilibrio: Eje neutro y compatibilidad de deformaciones"</em></p>
         <span class="w3-tag w3-white w3-text-red w3-round">NSR-10 / C.10</span>
     </div>
 
     <div class="contenido-body">
 
-        <h3>0. Fundamentos de Diseño (NSR-10 Cap. C.10)</h3>
+        <h3>Fundamentos de Diseño (NSR-10 Cap. C.10)</h3>
         <p>El diseño de elementos de concreto sometidos a flexión se rige por las hipótesis del Título C:</p>
         <div class="w3-panel dato-box w3-padding-16 w3-card-2">
             <ul class="w3-ul">
@@ -308,35 +308,44 @@
 
 <script>
 function actualizarSimulador() {
-    // 1. Inputs y Parámetros
+    // 1. Capturar todos los datos del usuario
     const c = parseFloat(document.getElementById('inputC').value);
-    const b = parseFloat(document.getElementById('inputB').value);
-    document.getElementById('valC').innerText = c;
-    document.getElementById('valB').innerText = b;
+    const b = parseFloat(document.getElementById('inB').value);
+    const h = parseFloat(document.getElementById('inH').value);
+    
+    // Áreas de acero desde los inputs
+    const as1 = parseFloat(document.getElementById('inAs1').value);
+    const as2 = parseFloat(document.getElementById('inAs2').value);
+    const as3 = parseFloat(document.getElementById('inAs3').value);
 
-    const h = 550; const ecu = 0.003; const fc = 28; const fy = 420; const Es = 200000;
-    const capas = [
-        { d: 59.05,  as: 855.1, id: 'vecF1' },
-        { d: 440.95, as: 570.0, id: 'vecF2' },
-        { d: 490.95, as: 855.1, id: 'vecF3' }
-    ];
+    // Actualizar etiquetas de texto
+    document.getElementById('valC').innerText = c.toFixed(1);
 
-    // 2. Escalas Visuales
+    // Parámetros fijos (UIS / NSR-10)
+    const ecu = 0.003; const fc = 28; const fy = 420; const Es = 200000;
+    const d1 = 59.05; const d2 = 440.95; const d3 = 490.95; // Posiciones fijas por ahora
+
+    // 2. Escalas Dinámicas (Se adaptan a h)
     const escalaY = 300 / h; 
-    const escalaX = 5000; 
+    const escalaX = 15000; 
     const escalaF = 0.15; 
 
     // 3. Cálculos de Ingeniería
     let a = 0.85 * c;
-    let Cc = -0.85 * fc * (a * b - 855.1) / 1000; // Solo restamos si c > d1
-    if (c < 59.05) Cc = -0.85 * fc * a * b / 1000;
+    let Cc = -0.85 * fc * (a * b - (c > d1 ? as1 : 0)) / 1000;
+
+    // Cálculo de cada capa
+    let capasData = [
+        { d: d1, as: as1, id: 'vecF1' },
+        { d: d2, as: as2, id: 'vecF2' },
+        { d: d3, as: as3, id: 'vecF3' }
+    ];
 
     let Pn = Cc;
     let Mn = Cc * (h/2 - a/2) / 1000;
     let etMax = 0;
 
-    // 4. Actualizar Vectores de Acero
-    capas.forEach(capa => {
+    capasData.forEach(capa => {
         let et = ecu * (capa.d - c) / c;
         let fs = Math.max(-fy, Math.min(fy, Es * et));
         let Fs = (capa.as * fs) / 1000;
@@ -344,7 +353,7 @@ function actualizarSimulador() {
         Mn += Fs * (h/2 - capa.d) / 1000;
         if(capa.d > h/2) etMax = et;
 
-        // Visual Vector
+        // Actualizar Flechas (Vectores)
         let L = Math.abs(Fs) * escalaF;
         let dir = fs >= 0 ? 1 : -1;
         let yPx = 20 + (capa.d * escalaY);
@@ -353,61 +362,44 @@ function actualizarSimulador() {
         el.setAttribute("x1", 110); el.setAttribute("x2", 110 + (dir * L));
     });
 
-    // 5. Actualizar Gráficos Visuales
+    // 4. Actualizar Gráficos (SVG)
     // Eje Neutro
     document.getElementById('lineEN').setAttribute("y1", 20 + c * escalaY);
     document.getElementById('lineEN').setAttribute("y2", 20 + c * escalaY);
 
-    // Polígono Deformación
-    let etVis = ecu * (h - c) / c;
+    // Deformaciones
     let xTop = 110 + (ecu * escalaX);
+    let etVis = ecu * (h - c) / c;
     let xBot = 110 - (etVis * escalaX);
-    document.getElementById('polyDef').setAttribute("points", `${xTop},20 110,20 110,320 ${xBot},320`);
-
-    // --- AQUÍ ESTÁ EL ARREGLO DEL NÚMERO ---
+    document.getElementById('polyDef').setAttribute("points", `${xTop},20 110,20 110,${20 + h*escalaY} ${xBot},${20 + h*escalaY}`);
+    
+    // Etiqueta et (Debajo de la punta)
     let labelEt = document.getElementById('txtEtReal');
-    
-    // Posicionamos el texto 5 píxeles a la izquierda del punto inferior
-    labelEt.setAttribute("x", xBot - 0); 
-    labelEt.setAttribute("y", 332); // Un poco arriba de la base
-    
-    // Insertamos el valor real de la capa más traccionada
+    labelEt.setAttribute("x", xBot);
+    labelEt.setAttribute("y", 20 + h*escalaY + 20);
     labelEt.textContent = "εt = " + etMax.toFixed(5);
 
-    
-//document.getElementById('txtEtReal').innerText = "εt_inf = " + etMax.toFixed(5);
-
     // Bloque Whitney
-    let a_px = a * escalaY;
     let rectW = document.getElementById('rectWhitney');
-    rectW.setAttribute("height", a_px);
+    rectW.setAttribute("height", a * escalaY);
     rectW.setAttribute("width", b * 0.15);
-    
-    // Vector Cc
-    let Lc = Math.abs(Cc) * escalaF;
-    let vecCc = document.getElementById('vecCc');
-    let yCc = 20 + (a/2 * escalaY);
-    vecCc.setAttribute("y1", yCc); vecCc.setAttribute("y2", yCc);
-    vecCc.setAttribute("x1", 110); vecCc.setAttribute("x2", 110 - Lc);
 
-    // 6. UI de Resultados
+    // 5. UI Resultados
     document.getElementById('resPn').innerText = Pn.toFixed(1);
     document.getElementById('resMn').innerText = Math.abs(Mn).toFixed(1);
     
     let card = document.getElementById('cardPn');
     let txt = document.getElementById('txtEstado');
     if (Math.abs(Pn) < 10) {
-        card.className = "w3-panel w3-green w3-padding w3-round w3-center";
+        card.className = "w3-panel w3-green w3-padding w3-round w3-center w3-card";
         txt.innerText = "EQUILIBRIO (VIGA)";
     } else {
-        card.className = Pn < 0 ? "w3-panel w3-red w3-padding w3-round w3-center" : "w3-panel w3-blue w3-padding w3-round w3-center";
+        card.className = Pn < 0 ? "w3-panel w3-red w3-padding w3-round w3-center w3-card" : "w3-panel w3-blue w3-padding w3-round w3-center w3-card";
         txt.innerText = Pn < 0 ? "Sobra Compresión" : "Sobra Tensión";
     }
 
     let duct = document.getElementById('txtDuctilidad');
-    if (etMax >= 0.005) { duct.innerText = "Dúctil (φ=0.9)"; duct.className = "w3-text-green"; }
-    else if (etMax <= 0.002) { duct.innerText = "Frágil (φ=0.65)"; duct.className = "w3-text-red"; }
-    else { duct.innerText = "Transición"; duct.className = "w3-text-orange"; }
+    duct.innerText = etMax >= 0.005 ? "Dúctil (φ=0.9)" : (etMax <= 0.002 ? "Frágil (φ=0.65)" : "Transición");
 }
 
 actualizarSimulador();
