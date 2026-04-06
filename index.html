@@ -82,8 +82,8 @@
             $$C_c = - 0.85 \cdot f'c \cdot (\beta_1 \cdot c \cdot b - A_{s,comp})$$
             $$P_n = C_c + \sum_{i=1}^{n} (A_{si} \cdot f_{si})$$
         </div>
-        <p class="w3-small w3-text-grey"><i>*Para diseño de vigas, el objetivo es que $P_n = 0$.</i></p>
-        <p class="w3-small w3-text-grey"><i>*<b>Restricción Física:</b> El bloque de Whitney no puede exceder la altura de la viga: $a = \min(\beta_1 \cdot c, h)$.</i></p>
+        <p class="w3-small w3-text-grey"><i>Para diseño de vigas, el objetivo es que $P_n = 0$.</i></p>
+        <p class="w3-small w3-text-grey"><i><b>Restricción Física:</b> El bloque de Whitney no puede exceder la altura de la viga: $a = \min(\beta_1 \cdot c, h)$.</i></p>
     </div>
 
     <div class="w3-card-4 w3-container w3-padding-24 w3-white w3-margin-bottom w3-round-large">
@@ -92,9 +92,9 @@
         <div style="overflow-x: auto; padding: 10px 0;">
             $$M_n = C_c \cdot \left( \frac{a}{2} - \frac{h}{2} \right) + \sum_{i=1}^{n} \left[ f_{si} \cdot \left( d_i - \frac{h}{2} \right) \right]$$
         </div>
-        <p class="w3-small w3-text-grey"><i>*Esta convención es la base para construir diagramas de interacción.</i></p>
+        <p class="w3-small w3-text-grey"><i>Esta convención es la base para construir diagramas de interacción.</i></p>
         <p class="w3-small w3-text-grey">
-            <i>*<b>Convención de signos:</b> Para simplificar la suma, se tomó el sentido <b>antihorario</b> como positivo, resultando en una suma escalar de magnitudes de momento respecto al centro plástico ($h/2$).</i>
+            <i><b>Convención de signos:</b> Para simplificar la suma, se tomó el sentido <b>antihorario</b> como positivo, resultando en una suma escalar de magnitudes de momento respecto al centro plástico ($h/2$).</i>
         </p>
     </div>
 </div>
@@ -484,54 +484,8 @@ function actualizarSimulador() {
 }
 actualizarSimulador();
 </script>
-
+   
     
-    
-
-     <div class="w3-container w3-margin-top">
-    <div class="w3-responsive w3-card-4">
-        <table class="w3-table-all w3-small">
-            <thead>
-                <tr class="w3-red">
-                    <th>Estado de la Sección</th>
-                    <th>Condición de Deformación</th>
-                    <th>Clasificación</th>
-                    <th>Factor $\phi$ </th>
-                </tr>
-            </thead>
-            <tr>
-                <td><b>Controlado por Tensión</b></td>
-                <td>$\epsilon_t \geq 0.005$</td>
-                <td class="w3-text-green"><b>Dúctil</b></td>
-                <td>0.90</td>
-            </tr>
-            <tr>
-                <td><b>Transición</b></td>
-                <td>$0.002 < \epsilon_t < 0.005$</td>
-                <td class="w3-text-orange"><b>Transición</b></td>
-                <td>$0.65 + 0.25 \frac{(\epsilon_t - \epsilon_{ty})}{(0.005 - \epsilon_{ty})}$</td>
-            </tr>
-            <tr>
-                <td><b>Controlado por Compresión</b></td>
-                <td>$\epsilon_t \leq \epsilon_{ty}$ ($\approx 0.0021$)</td>
-                <td class="w3-text-red"><b>Frágil</b></td>
-                <td>0.65 (Estribos)</td>
-            </tr>
-        </table>
-    </div>
-    
-    <div class="w3-panel w3-light-grey w3-leftbar w3-border-red w3-padding-small w3-margin-top">
-            <p class="w3-small">
-                <i><b>* ACI-318 21.2.2 : NSR-10 C.10.3.3.</b></i>
-            </p>
-        <p class="w3-small">
-            <i>* Nota: Para un acero de $f_y = 420$ MPa, la deformación de fluencia es $\epsilon_{ty} = f_y / E_s = 0.0021$. Una sección dúctil garantiza aviso previo antes de la falla mediante grandes deflexiones y fisuración.</i>
-        </p>
-    </div>
-</div>       
-
-
-
 
 
         <h3 class="w3-border-red">7. Clasificación de la Sección y Ductilidad</h3>
@@ -574,7 +528,7 @@ actualizarSimulador();
 
                         <div class="w3-panel w3-leftbar w3-light-grey w3-margin-top">
                             <p class="w3-small">
-                                <i>* Nota: Una sección <b>Dúctil</b> asegura que el acero fluya considerablemente antes del aplastamiento del concreto, permitiendo la redistribución de momentos y aviso previo a la falla.</i>
+                                <i>Nota: Para un acero de $f_y = 420$ MPa, la deformación de fluencia es $\epsilon_{ty} = f_y / E_s = 0.0021$. Una sección <b>Dúctil</b> asegura que el acero fluya considerablemente antes del aplastamiento del concreto, permitiendo la redistribución de momentos y aviso previo a la falla.</i>
                             </p>
                         </div>
                     </div>
@@ -589,7 +543,7 @@ actualizarSimulador();
 
         <hr class="w3-margin-top-64">
         <footer class="w3-container w3-padding-32 w3-center w3-text-grey w3-light-grey w3-margin-top">
-    <div class="w3-border-top w3-border-grey w3-padding-24" style="max-width: 600px; margin: auto;">
+    <div class="w3-border-top w3-border-grey w3-padding-24" style="max-width: 500px; margin: auto;">
         <p class="w3-medium"><b>Publicado por:</b></p>
         <h4 class="w3-text-dark-grey" style="margin: 0;"><b>Rafael Antonio Correa Melano</b></h4>
         <p class="w3-small" style="margin-top: 5px;">
