@@ -305,9 +305,9 @@
                 <line id="vecF2" x1="110" y1="0" x2="140" y2="0" stroke="blue" stroke-width="2" marker-end="url(#arrowBlue)" />
                 <line id="vecF3" x1="110" y1="0" x2="160" y2="0" stroke="blue" stroke-width="2" marker-end="url(#arrowBlue)" />
                 <defs>
-                    <marker id="arrowRed" markerWidth="6" markerHeight="6" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#c0392b"/></marker>
-                    <marker id="arrowBlack" markerWidth="6" markerHeight="6" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="black"/></marker>
-                    <marker id="arrowBlue" markerWidth="6" markerHeight="6" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="blue"/></marker>
+                    <marker id="arrowRed" markerWidth="6" markerHeight="6" refX="0" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#c0392b"/></marker>
+                    <marker id="arrowBlack" markerWidth="6" markerHeight="6" refX="0" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="black"/></marker>
+                    <marker id="arrowBlue" markerWidth="6" markerHeight="6" refX="0" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="blue"/></marker>
                 </defs>
             </svg>
         </div>
@@ -384,7 +384,7 @@ function actualizarSimulador() {
         vecCc.setAttribute("y2", yCc);
         vecCc.setAttribute("x1", 110); 
         // El vector Cc siempre va hacia la izquierda (compresión)
-        vecCc.setAttribute("x2", 110 - Lc);
+        vecCc.setAttribute("x2", 110 - Lc+5);
     }
     
     let labelEt = document.getElementById('txtEtReal');
