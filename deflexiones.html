@@ -66,6 +66,40 @@
 
     <div class="contenido-body">
 
+        <div class="w3-container w3-white w3-leftbar w3-border-red w3-margin-top w3-padding-16 w3-card-2">
+            <h3 style="margin-top: 0; border: none;"><i class="fa fa-cogs"></i> Interpretación Física del Fenómeno</h3>
+            <p>El análisis de deflexiones no es solo un requisito normativo; es la comprensión de la <b>degradación de la rigidez</b> en una estructura de concreto reforzado:</p>
+            
+            <div class="w3-row-padding">
+                <div class="w3-col m6">
+                    <ul class="w3-ul w3-small">
+                        <li><i class="fa fa-check w3-text-red"></i> <b>Fase 1 (No agrietada):</b> El concreto y el acero trabajan juntos. La rigidez es máxima ($I_g$).</li>
+                        <li><i class="fa fa-check w3-text-red"></i> <b>Fase 2 (Agrietamiento):</b> Al superar el momento de fisuración ($M_{cr}$), aparecen grietas en la zona de tensión.</li>
+                    </ul>
+                </div>
+                <div class="w3-col m6">
+                    <ul class="w3-ul w3-small">
+                        <li><i class="fa fa-check w3-text-red"></i> <b>Fase 3 (Pérdida de Rigidez):</b> El concreto bajo el eje neutro deja de aportar. El acero "toma el control" de la tracción.</li>
+                        <li><i class="fa fa-check w3-text-red"></i> <b>Fase 4 (Servicio):</b> La inercia efectiva ($I_e$) es el promedio real de esa viga parcialmente agrietada.</li>
+                    </ul>
+                </div>
+            </div>
+
+            
+
+            <h4 class="w3-text-dark-grey"><b>¿Por qué controlamos la deflexión? (NSR-10)</b></h4>
+            <p class="w3-small">
+                A diferencia del diseño por resistencia (donde evitamos el colapso), el control de deflexiones busca garantizar la <b>habitabilidad y durabilidad</b>:
+                <br><br>
+                <i class="fa fa-caret-right"></i> <b>Integridad de Elementos No Estructurales:</b> Evitar fisuras en muros de mampostería, pañetes y acabados.
+                <br>
+                <i class="fa fa-caret-right"></i> <b>Funcionamiento:</b> Impedir que puertas o ventanas se atasquen por la curvatura de la viga.
+                <br>
+                <i class="fa fa-caret-right"></i> <b>Confort:</b> Minimizar la percepción visual de "viga colgada" que genera inseguridad en los usuarios.
+            </p>
+        </div>
+        
+        
         <div class="w3-panel dato-box w3-padding-16 w3-card-2">
             <p>En este ejercicio calcularemos la deflexión de una viga simplemente apoyada para entender cómo la rigidez disminuye a medida que progresa el agrietamiento.</p>
             <strong>Datos del Problema:</strong><br>
@@ -225,17 +259,7 @@
         </div>
 
         
-        <h3>Paso 5: Efectos de Largo Plazo ($\lambda_\Delta$)</h3>
-        <p>Con $\rho' = 0.0037$ y $\xi = 2.0$ (5 años), el factor de tiempo es:</p>
-        <div class="math-box" style="text-align: center;">
-            \[ \lambda_\Delta = \frac{\xi}{1 + 50\rho'} = \mathbf{1.69} \]
-        </div>
-        
-        <div class="w3-container w3-white w3-border w3-border-red w3-round w3-padding">
-            1. <b>Carga Viva ($\Delta_L$):</b> \( \Delta_{D+L} - \Delta_D = \mathbf{2.26 \, mm} \)<br>
-            2. <b>Deflexión Total Diferencial:</b> \( \Delta_L + (\lambda_\Delta \cdot \Delta_{D+0.25L}) = \mathbf{14.26 \, mm} \)
-        </div>
-
+      
         <h3>Paso 6: Veredicto ACI 318 Tabla 24.2.2 : NSR-10 Tabla C.9.5(b)</h3>
         <div class="w3-row-padding">
             <div class="w3-half">
