@@ -49,8 +49,9 @@
         <div class="w3-panel dato-box w3-padding-16 w3-card-2">
             <p>En este ejercicio calcularemos la deflexión de una viga simplemente apoyada para entender cómo la rigidez disminuye a medida que progresa el agrietamiento.</p>
             <strong>Datos del Problema:</strong><br>
-            Sección 200x400 mm | L = 4.0 m | f'c = 28 MPa | d = 342.5 mm <br>
-            As = 597 mm² (3#5) | A's = 258 mm² (2#4) | Ec = 24,870 MPa
+            Sección 200x400 mm | Luz = 4.0 m | f'c = 28 MPa | d = 342.5 mm <br>
+            As = 597 mm² (3#5) | A's = 258 mm² (2#4) | Ec = 24,870 MPa <br>
+            Cargas \[ w \]: Muerta D = 20 kN/m | Viva L = 5 kN/m
         </div>
 
         <h3>Paso 1: Propiedades Mecánicas e Inercia Bruta ($I_g$)</h3>
@@ -69,7 +70,7 @@
             \[ \frac{b \cdot (kd)^2}{2} + (n-1)A'_s(kd - d') = nA_s(d - kd) \]
             <b>kd = 103.1 mm</b>
         </div>
-        <p>Inercia de la sección transformada:</p>
+        <p>Inercia de la sección transformada (Aplicando el teorema de ejes paralelos para el concreto comprimido y el acero transformado):</p>
         <div class="math-box" style="text-align: center;">
             \[ I_{cr} = \frac{b(kd)^3}{3} + (n-1)A'_s(kd-d')^2 + nA_s(d-kd)^2 \]
             <b>Icr = 350.54 × 10⁶ mm⁴</b>
@@ -98,7 +99,7 @@
         </div>
 
         <h3>Paso 4: Deflexiones Inmediatas</h3>
-        <p>Cálculo elástico: \[ \Delta = \frac{5 \cdot w \cdot L^4}{384 \cdot E_c \cdot I_e} \]</p>
+        <p>Cálculo elástico: \[ \Delta = \frac{5 \cdot w \cdot Luz^4}{384 \cdot E_c \cdot I_e} \]</p>
         <div class="w3-row-padding w3-center">
             <div class="w3-third"><div class="w3-panel w3-light-grey w3-padding w3-round"><b>ΔD:</b> 6.55 mm</div></div>
             <div class="w3-third"><div class="w3-panel w3-light-grey w3-padding w3-round"><b>ΔD+0.25L:</b> 7.85 mm</div></div>
@@ -120,14 +121,14 @@
         <div class="w3-row-padding">
             <div class="w3-half">
                 <div class="veredicto cumple w3-card">
-                    <strong>Carga Viva (L/360):</strong><br>
+                    <strong>Carga Viva (Luz/360):</strong><br>
                     2.98 mm < 11.11 mm<br>
                     <b>CUMPLE ✅</b>
                 </div>
             </div>
             <div class="w3-half">
                 <div class="veredicto cumple w3-card" style="border-left: 6px solid #ff9800;">
-                    <strong>Largo Plazo (L/240):</strong><br>
+                    <strong>Largo Plazo (Luz/240):</strong><br>
                     16.25 mm < 16.67 mm<br>
                     <b>CUMPLE (Ajustado) ⚠️</b>
                 </div>
