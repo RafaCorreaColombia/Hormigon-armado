@@ -193,6 +193,38 @@
             <div class="w3-third"><div class="w3-panel w3-light-grey w3-padding w3-round"><b>\( \Delta_{D+L} \):</b> \( 8.79 \, mm \)</div></div>
         </div>
 
+
+        <h3>Paso 5: Efectos de Largo Plazo ($\lambda_\Delta$)</h3>
+        <p>Determinamos el factor de amplificación por flujo plástico (creep) y retracción:</p>
+        
+        <div class="math-box" style="text-align: center;">
+            \[ \lambda_\Delta = \frac{\xi}{1 + 50\rho'} = \mathbf{1.69} \]
+            <p class="w3-small">Donde $\xi = 2.0$ (para 5 años o más) y $\rho' = 0.0037$</p>
+        </div>
+
+        <div class="w3-panel w3-leftbar w3-border-indigo w3-pale-blue w3-small" style="padding: 12px 16px; margin: 20px 0;">
+            <h5 class="w3-text-indigo" style="margin-bottom: 5px;"><b><i class="fa fa-clock-o"></i> Concepto de Carga Sostenida</b></h5>
+            <p style="margin-top: 0;">
+                Para el cálculo de deflexiones diferidas, debemos separar la carga en dos componentes:
+                <br><br>
+                1. <b>Carga Sostenida ($w_{sus}$):</b> Es la que permanece en el tiempo (Carga Muerta + una fracción de la Viva, usualmente el 25% en edificaciones). Esta es la que genera <i>Creep</i>.
+                <br>
+                2. <b>Carga Transitoria:</b> Es el resto de la carga viva que entra y sale de la estructura y solo genera deflexión inmediata.
+            </p>
+        </div>
+
+        <div class="w3-container w3-white w3-border w3-border-indigo w3-round w3-padding w3-card-2">
+            <h5 class="w3-center"><b>Cómputo de Deflexión Total Diferencial</b></h5>
+            <hr style="margin: 10px 0;">
+            1. <b>Carga Viva Inmediata ($\Delta_L$):</b> \( \Delta_{D+L} - \Delta_D = \mathbf{2.26 \, mm} \)<br>
+            2. <b>Deflexión Diferida (Largo Plazo):</b> \( \lambda_\Delta \cdot \Delta_{sus} = 1.69 \cdot 7.11 = \mathbf{12.00 \, mm} \)<br>
+            <hr style="margin: 10px 0;">
+            <div class="w3-center w3-large">
+                <b>$\Delta_{Total}$ = $\Delta_L$ + $\Delta_{Diferida}$ = <span class="w3-text-indigo">14.26 mm</span></b>
+            </div>
+        </div>
+
+        
         <h3>Paso 5: Efectos de Largo Plazo ($\lambda_\Delta$)</h3>
         <p>Con $\rho' = 0.0037$ y $\xi = 2.0$ (5 años), el factor de tiempo es:</p>
         <div class="math-box" style="text-align: center;">
