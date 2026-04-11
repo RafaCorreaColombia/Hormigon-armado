@@ -102,12 +102,27 @@
 
         <h3>Paso 3: Inercia Efectiva ($I_e$) - Branson</h3>
         <p>Según <b>ACI 318 24.2.3.9 : NSR-10 C.9.5.2.3</b>, la inercia efectiva varía según el nivel de carga ($M_a$):</p>
+        
         <div class="math-box" style="text-align: center;">
             <div style="overflow-x: auto; white-space: nowrap; padding: 10px 0;">
             \[ I_e = \left( \frac{M_{cr}}{M_a} \right)^3 I_g + \left[ 1 - \left( \frac{M_{cr}}{M_a} \right)^3 \right] I_{cr} \]
-            Para una viga simplemente apoyada \( M_a = \frac{w \cdot Luz^2}{8} \)
             </div>    
         </div>
+
+        <div class="w3-panel w3-pale-red w3-leftbar w3-border-red w3-padding-small w3-margin-bottom">
+            <h5 class="w3-text-red" style="margin-bottom: 5px;"><b><i class="fa fa-warning"></i> Restricción Normativa Crítica:</b></h5>
+            <p class="w3-small" style="margin-top: 0;">
+                La ecuación de Branson es una interpolación. Sin embargo, por equilibrio y física de materiales, debe cumplirse estrictamente:
+                <br><br>
+                1. <b>Límite Superior:</b> \( I_e \leq I_g \). La rigidez nunca puede superar a la de la sección sin fisurar.
+                <br>
+                2. <b>Estado No Fisurado:</b> Si \( M_a \leq M_{cr} \), entonces la sección no se ha agrietado y \( I_e = I_g \).
+                <br><br>
+                <i>Omitir esta validación en hojas de cálculo puede generar errores conceptuales graves cuando las cargas son pequeñas.</i>
+            </p>
+        </div>
+
+        <p>Para una viga simplemente apoyada \( M_a = \frac{w \cdot Luz^2}{8} \):</p>
 
         <div class="w3-responsive">
             <table class="w3-table-all w3-hoverable w3-centered w3-card-2">
