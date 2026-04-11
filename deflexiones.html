@@ -67,24 +67,30 @@
         <h3>Paso 2: Análisis de la Sección Fisurada ($I_{cr}$)</h3>
         <p>Buscamos el <b>Eje Neutro Elástico ($kd$)</b>. El concreto bajo este eje se ignora por estar agrietado:</p>
         <div class="math-box" style="text-align: center;">
+            <div style="overflow-x: auto; white-space: nowrap; padding: 10px 0;">
             \[ \frac{b \cdot (kd)^2}{2} + (n-1)A'_s(kd - d') = nA_s(d - kd) \]
             \[ kd = 103.1 \, mm \]
+            </div>    
         </div>
         <p>Inercia de la sección transformada (aplicando el teorema de ejes paralelos para el concreto comprimido y el acero transformado):</p>
         <div class="math-box" style="text-align: center;">
+            <div style="overflow-x: auto; white-space: nowrap; padding: 10px 0;">
             \[ I_{cr} = \frac{b(kd)^3}{3} + (n-1)A'_s(kd-d')^2 + nA_s(d-kd)^2 \]
             \[ I_{cr} = 350.54 \times 10^6 \, mm^4 \]
+            </div>
         </div>
 
         <h3>Paso 3: Inercia Efectiva ($I_e$) - Branson</h3>
         <p>Según <b>ACI 318 24.2.3.9 : NSR-10 C.9.5.2.3</b>, la inercia efectiva varía según el nivel de carga ($M_a$):</p>
         <div class="math-box" style="text-align: center;">
+            <div style="overflow-x: auto; white-space: nowrap; padding: 10px 0;">
             \[ I_e = \left( \frac{M_{cr}}{M_a} \right)^3 I_g + \left[ 1 - \left( \frac{M_{cr}}{M_a} \right)^3 \right] I_{cr} \]
             Para una viga simplemente apoyada \( M_a = \frac{w \cdot Luz^2}{8} \)
+            </div>    
         </div>
 
         <div class="w3-responsive">
-            <table class="w3-table-all w3-centered w3-card-2">
+            <table class="w3-table-all w3-hoverable w3-centered w3-card-2">
                 <thead>
                     <tr>
                         <th>Estado de Carga</th>
