@@ -93,18 +93,18 @@
                         <th>Ie (mm⁴ × 10⁶)</th>
                     </tr>
                 </thead>
-                <tr><td>Muerta \( (D) \)</td><td>40.0</td><td>38%</td><td>409</td></tr>
-                <tr><td>Sostenida \( (D + 0.25L) \)</td><td>42.5</td><td>34%</td><td>363</td></tr>
-                <tr><td>Total \( (D + L) \)</td><td>50.0</td><td>33%</td><td>352</td></tr>
+                <tr><td>Muerta \( (D) \)</td><td>40.0</td><td>38.5%</td><td>410.48</td></tr>
+                <tr><td>Sostenida \( (D + 0.25L) \)</td><td>42.5</td><td>37.5%</td><td>400.51</td></tr>
+                <tr><td>Total \( (D + L) \)</td><td>50.0</td><td>35.7%</td><td>381.23</td></tr>
             </table>
         </div>
 
         <h3>Paso 4: Deflexiones Inmediatas</h3>
         <p>Cálculo elástico: \[ \Delta = \frac{5 \cdot w \cdot Luz^4}{384 \cdot E_c \cdot I_e} \]</p>
         <div class="w3-row-padding w3-center">
-            <div class="w3-third"><div class="w3-panel w3-light-grey w3-padding w3-round"><b>\( \Delta_D \):</b> \( 6.55 \, mm \)</div></div>
-            <div class="w3-third"><div class="w3-panel w3-light-grey w3-padding w3-round"><b>\( \Delta_{D+0.25L} \):</b> \( 7.85 \, mm \)</div></div>
-            <div class="w3-third"><div class="w3-panel w3-light-grey w3-padding w3-round"><b>\( \Delta_{D+L} \):</b> \( 9.53 \, mm \)</div></div>
+            <div class="w3-third"><div class="w3-panel w3-light-grey w3-padding w3-round"><b>\( \Delta_D \):</b> \( 6.53 \, mm \)</div></div>
+            <div class="w3-third"><div class="w3-panel w3-light-grey w3-padding w3-round"><b>\( \Delta_{D+0.25L} \):</b> \( 7.11 \, mm \)</div></div>
+            <div class="w3-third"><div class="w3-panel w3-light-grey w3-padding w3-round"><b>\( \Delta_{D+L} \):</b> \( 8.79 \, mm \)</div></div>
         </div>
 
         <h3>Paso 5: Efectos de Largo Plazo ($\lambda_\Delta$)</h3>
@@ -114,8 +114,8 @@
         </div>
         
         <div class="w3-container w3-white w3-border w3-border-red w3-round w3-padding">
-            1. <b>Carga Viva ($\Delta_L$):</b> \( \Delta_{D+L} - \Delta_D = \mathbf{2.98 \, mm} \)<br>
-            2. <b>Deflexión Total Diferencial:</b> \( \Delta_L + (\lambda_\Delta \cdot \Delta_{D+0.25L}) = \mathbf{16.25 \, mm} \)
+            1. <b>Carga Viva ($\Delta_L$):</b> \( \Delta_{D+L} - \Delta_D = \mathbf{2.26 \, mm} \)<br>
+            2. <b>Deflexión Total Diferencial:</b> \( \Delta_L + (\lambda_\Delta \cdot \Delta_{D+0.25L}) = \mathbf{14.26 \, mm} \)
         </div>
 
         <h3>Paso 6: Veredicto NSR-10 (Tabla C.9.5-2)</h3>
@@ -123,14 +123,14 @@
             <div class="w3-half">
                 <div class="veredicto cumple w3-card">
                     <strong>Carga Viva (Luz/360):</strong><br>
-                    2.98 mm < 11.11 mm<br>
+                    2.26 mm < 11.11 mm<br>
                     <b>CUMPLE ✅</b>
                 </div>
             </div>
             <div class="w3-half">
                 <div class="veredicto cumple w3-card" style="border-left: 6px solid #ff9800;">
                     <strong>Largo Plazo (Luz/240):</strong><br>
-                    16.25 mm < 16.67 mm<br>
+                    14.26 mm < 16.67 mm<br>
                     <b>CUMPLE (Ajustado) ⚠️</b>
                 </div>
             </div>
