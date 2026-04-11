@@ -81,11 +81,17 @@
             
             <div class="w3-panel w3-leftbar w3-light-grey w3-small" style="padding: 8px 16px; margin: 10px 0;">
                 <i class="fa fa-info-circle w3-text-blue"></i> <b>Nota sobre $E_c$:</b> 
-                Esta expresión simplificada de <b>NSR-10 C.8.5.1</b> es válida exclusivamente para <b>concreto de peso normal</b> ($\gamma_c \approx 23$ a $24 \, kN/m^3$). 
+                Esta expresión simplificada de <b>ACI 318 19.2.2 : NSR-10 C.8.5.1</b> es válida exclusivamente para <b>concreto de peso normal</b> ($\gamma_c \approx 23$ a $24 \, kN/m^3$). 
                 Para densidades distintas, debe usarse la ecuación general: $E_c = w_c^{1.5} 0.043 \sqrt{f'_c}$ (en MPa).
             </div>
             <li><b>Inercia Bruta ($I_g$):</b> \[ I_g = \frac{b \cdot h^3}{12} = \mathbf{1,066.7 \times 10^6 \, mm^4} \]</li>
-            <li><b>Momento de Fisuración ($M_{cr}$):</b> Con $f_r = 0.62\sqrt{28} \approx 3.28$ MPa.
+            <li><b>Momento de Fisuración ($M_{cr}$):</b>
+                <div class="w3-panel w3-leftbar w3-border-blue w3-light-grey w3-small" style="padding: 8px 16px;">
+                    <i class="fa fa-info-circle w3-text-blue"></i> <b>Nota sobre $f_r$:</b> 
+                    Según <b>ACI 318 19.2.4.1 : NSR-10 C.19.2.4</b>, el módulo de rotura es \( f_r = 0.62 \lambda \sqrt{f'_c} \). 
+                    Para este ejercicio, se asume <b>\(\lambda = 1.0\)</b> (concreto de peso normal).
+                </div>
+                Con \( f_r = 0.62(1.0)\sqrt{28} \approx 3.28 \) MPa:
                 \[ M_{cr} = \frac{f_r \cdot I_g}{y_t} = \mathbf{17.5 \, kN \cdot m} \]
             </li>
         </ul>
