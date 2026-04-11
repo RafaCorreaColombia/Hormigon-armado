@@ -17,79 +17,72 @@
 </head>
 <body>
 
-<div class="container-master">
-    <h2 class="w3-border-bottom w3-border-red w3-text-dark-grey">Guía Paso a Paso: Análisis de Deflexiones</h2>
-    
-    <div class="w3-panel w3-pale-blue w3-leftbar w3-border-blue w3-padding-16">
-    <strong>Datos Técnicos:</strong> Sección 200x400 mm | L = 4.0 m | f'c = 28 MPa | d = 342.5 mm <br>
-    As = 597 mm² | A's = 258 mm² | Ec = 24,870 MPa
-    </div>
-    
-    <h3 class="w3-text-red">Paso 4: Cálculo de Deflexiones Inmediatas ($\Delta_i$)</h3>
-    <p>Aplicando la fórmula elástica para carga uniformemente distribuida: $$\Delta = \frac{5 \cdot w \cdot L^4}{384 \cdot E_c \cdot I_e}$$</p>
-    
-    <div class="w3-responsive">
-        <table class="w3-table-all w3-centered">
-            <thead>
-                <tr class="w3-red">
-                    <th>Estado</th>
-                    <th>$w$ (kN/m)</th>
-                    <th>$I_e$ ($mm^4 \times 10^6$)</th>
-                    <th>$\Delta_{inmediata}$ (mm)</th>
-                </tr>
-            </thead>
-            <tr>
-                <td>Muerta ($D$)</td>
-                <td>20.0</td>
-                <td>409</td>
-                <td><b>6.55 mm</b></td>
+<div class="w3-responsive">
+    <table class="w3-table-all w3-centered">
+        <thead>
+            <tr class="w3-red">
+                <th>Estado</th>
+                <th>w (kN/m)</th>
+                <th>Ie (mm⁴ × 10⁶)</th>
+                <th>Δ inmediata (mm)</th>
             </tr>
-            <tr>
-                <td>Sostenida ($D+0.25L$)</td>
-                <td>21.25</td>
-                <td>363</td>
-                <td><b>7.85 mm</b></td>
-            </tr>
-            <tr>
-                <td>Total ($D+L$)</td>
-                <td>25.0</td>
-                <td>352</td>
-                <td><b>9.53 mm</b></td>
-            </tr>
-        </table>
-    </div>
+        </thead>
+        <tr>
+            <td>Muerta (D)</td>
+            <td>20.0</td>
+            <td>409</td>
+            <td><b>6.55 mm</b></td>
+        </tr>
+        <tr>
+            <td>Sostenida (D + 0.25L)</td>
+            <td>21.25</td>
+            <td>363</td>
+            <td><b>7.85 mm</b></td>
+        </tr>
+        <tr>
+            <td>Total (D + L)</td>
+            <td>25.0</td>
+            <td>352</td>
+            <td><b>9.53 mm</b></td>
+        </tr>
+    </table>
+</div>
 
     <h3 class="w3-text-red w3-margin-top">Paso 5: Deflexiones a Largo Plazo y Diferenciales</h3>
-    <p>Utilizamos el factor $\lambda_\Delta = 1.69$ calculado previamente para cuantificar el flujo plástico y la retracción.</p>
+<p>Utilizamos el factor λΔ = 1.69 calculado previamente para cuantificar el flujo plástico y la retracción.</p>
 
-    <div class="math-box">
-        1. <b>Deflexión por Carga Viva ($\Delta_L$):</b> Es la diferencia inmediata entre el estado total y el muerto.<br>
-        $$\Delta_L = \Delta_{D+L} - \Delta_D = 9.53 - 6.55 = \mathbf{2.98 \, mm}$$
-        <br>
-        2. <b>Deflexión Diferencial (Tiempo Infinito):</b> Es la suma de la viva inmediata más la parte diferida de la carga sostenida.<br>
-        $$\Delta_{total} = \Delta_L + (\lambda_\Delta \cdot \Delta_{D+0.25L})$$
-        $$\Delta_{total} = 2.98 + (1.69 \cdot 7.85) = \mathbf{16.25 \, mm}$$
+<div class="math-box">
+    1. <b>Deflexión por Carga Viva (ΔL):</b> Es la diferencia inmediata entre el estado total y el muerto.<br>
+    <div style="text-align:center; padding:10px;">
+        \[ \Delta_L = \Delta_{D+L} - \Delta_D = 9.53 - 6.55 = \mathbf{2.98 \, mm} \]
     </div>
+    <br>
+    2. <b>Deflexión Diferencial (Tiempo Infinito):</b><br>
+    <div style="text-align:center; padding:10px;">
+        \[ \Delta_{total} = \Delta_L + (\lambda_\Delta \cdot \Delta_{D+0.25L}) \]
+        \[ \Delta_{total} = 2.98 + (1.69 \cdot 7.85) = \mathbf{16.25 \, mm} \]
+    </div>
+</div>
 
-    <h3 class="w3-text-red">Paso 6: Veredicto Final (NSR-10 Tabla C.9.5-2)</h3>
-    
-    <div class="w3-row-padding">
-        <div class="w3-half">
-            <div class="veredicto cumple">
-                <strong>Control de Carga Viva:</strong><br>
-                Calculado: 2.98 mm <br>
-                Límite ($L/360$): 11.11 mm <br>
-                <strong>ESTADO: CUMPLE ✅</strong>
-            </div>
+<h3 class="w3-text-red">Paso 6: Veredicto Final (NSR-10 Tabla C.9.5-2)</h3>
+
+<div class="w3-row-padding">
+    <div class="w3-half">
+        <div class="veredicto cumple">
+            <strong>Control de Carga Viva:</strong><br>
+            Calculado: 2.98 mm <br>
+            Límite (L/360): 11.11 mm <br>
+            <strong>ESTADO: CUMPLE ✅</strong>
         </div>
-        <div class="w3-half">
-            <div class="veredicto cumple">
-                <strong>Control Largo Plazo:</strong><br>
-                Calculado: 16.25 mm <br>
-                Límite ($L/240$): 16.67 mm <br>
-                <strong>ESTADO: CUMPLE (Ajustado) ⚠️</strong>
-            </div>
+    </div>
+    <div class="w3-half">
+        <div class="veredicto cumple">
+            <strong>Control Largo Plazo:</strong><br>
+            Calculado: 16.25 mm <br>
+            Límite (L/240): 16.67 mm <br>
+            <strong>ESTADO: CUMPLE (Ajustado) ⚠️</strong>
         </div>
+    </div>
     </div>
 
     <div class="w3-panel w3-leftbar w3-light-grey w3-padding-16 w3-margin-top">
