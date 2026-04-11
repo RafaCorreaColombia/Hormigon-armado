@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Análisis de Deflexiones | Ing. Rafael Correa</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script>
+      window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] } };
+    </script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
         body { background-color: #f4f7f6; font-family: 'Segoe UI', sans-serif; }
@@ -31,29 +34,29 @@
     <h3 class="step-header">Paso 1: Propiedades Mecánicas e Inercia Bruta (Ig)</h3>
     <p>Calculamos la rigidez inicial antes de que aparezcan las primeras fisuras por tensión:</p>
     <ul>
-        <li><b>Módulo de Elasticidad ($E_c$):</b> $4700\sqrt{28} \approx 24,870$ MPa.</li>
-        <li><b>Relación Modular ($n$):</b> $E_s / E_c \approx 8.04$.</li>
-        <li><b>Inercia Bruta ($I_g$):</b> $$\frac{b \cdot h^3}{12} = \frac{200 \cdot 400^3}{12} = \mathbf{1,066.7 \times 10^6 \, mm^4}$$</li>
-        <li><b>Momento de Fisuración ($M_{cr}$):</b> Con un módulo de rotura $f_r = 0.62\sqrt{28} \approx 3.28$ MPa.
-            $$M_{cr} = \frac{f_r \cdot I_g}{y_t} = \mathbf{17.5 \, kN \cdot m}$$
+        <li><b>Módulo de Elasticidad (Ec):</b> \( 4700\sqrt{28} \approx 24,870 \) MPa.</li>
+        <li><b>Relación Modular (n):</b> \( E_s / E_c \approx 8.04 \).</li>
+        <li><b>Inercia Bruta (Ig):</b> \[ \frac{b \cdot h^3}{12} = \frac{200 \cdot 400^3}{12} = \mathbf{1,066.7 \times 10^6 \, mm^4} \]</li>
+        <li><b>Momento de Fisuración (Mcr):</b> Con un módulo de rotura \( f_r = 0.62\sqrt{28} \approx 3.28 \) MPa.
+            \[ M_{cr} = \frac{f_r \cdot I_g}{y_t} = \mathbf{17.5 \, kN \cdot m} \]
         </li>
     </ul>
 
     <h3 class="step-header">Paso 2: Análisis de la Sección Fisurada (Icr)</h3>
-    <p>Buscamos el <b>Eje Neutro Elástico ($kd$)</b>. El concreto bajo este eje se ignora por estar agrietado:</p>
+    <p>Buscamos el <b>Eje Neutro Elástico (kd)</b>. El concreto bajo este eje se ignora por estar agrietado:</p>
     <div class="math-box" style="text-align: center;">
         \[ \frac{b \cdot (kd)^2}{2} + (n-1)A'_s(kd - d') = nA_s(d - kd) \]
-        <b>$kd = 103.1$ mm</b>
+        <b>kd = 103.1 mm</b>
     </div>
     <p>Calculamos la inercia de la sección transformada:</p>
     <div class="math-box" style="text-align: center;">
         \[ I_{cr} = \frac{b(kd)^3}{3} + (n-1)A'_s(kd-d')^2 + nA_s(d-kd)^2 \]
-        <b>$I_{cr} = 350.54 \times 10^6 \, mm^4$</b>
+        <b>Icr = 350.54 × 10⁶ mm⁴</b>
     </div>
     <p class="w3-small w3-text-red"><i>Nota: La inercia ha caído un 67% respecto a la sección bruta.</i></p>
 
     <h3 class="step-header">Paso 3: Inercia Efectiva (Ie) - Branson</h3>
-    <p>Según <b>NSR-10 C.9.5.2.3</b>, la inercia efectiva varía según el nivel de carga ($M_a$):</p>
+    <p>Según <b>NSR-10 C.9.5.2.3</b>, la inercia efectiva varía según el nivel de carga (Ma):</p>
     <div class="math-box" style="text-align: center;">
         \[ I_e = \left( \frac{M_{cr}}{M_a} \right)^3 I_g + \left[ 1 - \left( \frac{M_{cr}}{M_a} \right)^3 \right] I_{cr} \]
     </div>
@@ -63,9 +66,9 @@
             <thead>
                 <tr class="w3-red">
                     <th>Estado de Carga</th>
-                    <th>$M_a$ (kN·m)</th>
-                    <th>$I_e / I_g$</th>
-                    <th>$I_e$ ($mm^4 \times 10^6$)</th>
+                    <th>Ma (kN·m)</th>
+                    <th>Ie / Ig</th>
+                    <th>Ie (mm⁴ × 10⁶)</th>
                 </tr>
             </thead>
             <tr>
@@ -90,22 +93,22 @@
     </div>
 
     <h3 class="step-header">Paso 4: Deflexiones Inmediatas</h3>
-    <p>Calculamos la deflexión elástica inicial: $$\Delta = \frac{5 \cdot w \cdot L^4}{384 \cdot E_c \cdot I_e}$$</p>
+    <p>Calculamos la deflexión elástica inicial: \[ \Delta = \frac{5 \cdot w \cdot L^4}{384 \cdot E_c \cdot I_e} \]</p>
     <ul>
-        <li><b>$\Delta_D$ (Carga Muerta):</b> 6.55 mm</li>
-        <li><b>$\Delta_{D+0.25L}$ (Sostenida):</b> 7.85 mm</li>
-        <li><b>$\Delta_{D+L}$ (Total Inmediata):</b> 9.53 mm</li>
+        <li><b>ΔD (Carga Muerta):</b> 6.55 mm</li>
+        <li><b>ΔD+0.25L (Sostenida):</b> 7.85 mm</li>
+        <li><b>ΔD+L (Total Inmediata):</b> 9.53 mm</li>
     </ul>
 
     <h3 class="step-header">Paso 5: Efectos de Largo Plazo (λΔ)</h3>
-    <p>El concreto fluye con el tiempo. Con $\rho' = 0.0037$ y un factor de tiempo $\xi = 2.0$ (5 años):</p>
+    <p>El concreto fluye con el tiempo. Con ρ' = 0.0037 y un factor de tiempo ξ = 2.0 (5 años):</p>
     <div class="math-box" style="text-align: center;">
-        $\lambda_\Delta = \frac{\xi}{1 + 50\rho'} = \mathbf{1.69}$
+        \[ \lambda_\Delta = \frac{\xi}{1 + 50\rho'} = \mathbf{1.69} \]
     </div>
     
     <div class="math-box">
-        1. <b>Deflexión por Carga Viva ($\Delta_L$):</b> $\Delta_{D+L} - \Delta_D = \mathbf{2.98 \, mm}$<br>
-        2. <b>Deflexión Total Diferencial:</b> $\Delta_L + (\lambda_\Delta \cdot \Delta_{D+0.25L}) = \mathbf{16.25 \, mm}$
+        1. <b>Deflexión por Carga Viva (ΔL):</b> \( \Delta_{D+L} - \Delta_D = \mathbf{2.98 \, mm} \)<br>
+        2. <b>Deflexión Total Diferencial:</b> \( \Delta_L + (\lambda_\Delta \cdot \Delta_{D+0.25L}) = \mathbf{16.25 \, mm} \)
     </div>
 
     <h3 class="step-header">Paso 6: Veredicto NSR-10 (Tabla C.9.5-2)</h3>
