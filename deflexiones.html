@@ -3,145 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Análisis de Deflexiones | Ing. Rafael Correa</title>
+    <title>Análisis de Deflexiones - ACI-318 : NSR-10</title>
+    
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    
     <script>
-      window.MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] } };
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            }
+        };
     </script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
     <style>
-        body { background-color: #f4f7f6; font-family: 'Segoe UI', sans-serif; }
-        .container-master { max-width: 1000px; margin: 40px auto; background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        body { background-color: #f1f3f6; font-family: 'Segoe UI', sans-serif; }
+        .contenedor-principal {
+            max-width: 1000px; margin: 30px auto; border-radius: 12px;
+            background: white; padding: 0; overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        .header-rc { background: #c0392b; color: white; padding: 40px 20px; text-align: center; }
+        .contenido-body { padding: 40px; }
+        h3 { color: #2c3e50; border-bottom: 2px solid #eee; padding-bottom: 8px; margin-top: 35px; font-weight: bold; }
+        .dato-box { border-left: 6px solid #c0392b; background: #fdf2f2; }
         .math-box { background: #f9f9f9; padding: 20px; border-left: 5px solid #c0392b; margin: 20px 0; font-size: 1.1em; }
         .veredicto { padding: 20px; border-radius: 8px; margin-top: 20px; text-align: center; }
         .cumple { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-        .no-cumple { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-        .step-header { color: #d35400; border-bottom: 1px solid #eee; padding-bottom: 5px; margin-top: 30px; }
+        th { background-color: #2c3e50 !important; color: white !important; }
     </style>
 </head>
 <body>
 
-<div class="container-master">
-    <h2 class="w3-border-bottom w3-border-red w3-text-dark-grey">Guía Paso a Paso: Análisis de Deflexiones en Concreto</h2>
+<div class="contenedor-principal w3-animate-opacity">
     
-    <div class="w3-panel w3-pale-blue w3-leftbar w3-border-blue w3-padding-16">
-        <p>En este ejercicio calcularemos la deflexión de una viga simplemente apoyada para entender cómo la rigidez disminuye a medida que progresa el agrietamiento.</p>
-        <strong>Datos del Problema:</strong><br>
-        Sección 200x400 mm | L = 4.0 m | f'c = 28 MPa | d = 342.5 mm <br>
-        As = 597 mm² (3#5) | A's = 258 mm² (2#4) | Ec = 24,870 MPa
+    <div class="header-rc">
+        <h1 class="w3-xxlarge">Análisis de Deflexiones en Concreto Reforzado</h1>
+        <p class="w3-large"><em>"Control de servicio: Rigidez efectiva y efectos de largo plazo"</em></p>
+        <span class="w3-tag w3-white w3-text-red w3-round">ACI-318 / NSR-10</span>
     </div>
 
-    <h3 class="step-header">Paso 1: Propiedades Mecánicas e Inercia Bruta (Ig)</h3>
-    <p>Calculamos la rigidez inicial antes de que aparezcan las primeras fisuras por tensión:</p>
-    <ul>
-        <li><b>Módulo de Elasticidad (Ec):</b> \( 4700\sqrt{28} \approx 24,870 \) MPa.</li>
-        <li><b>Relación Modular (n):</b> \( E_s / E_c \approx 8.04 \).</li>
-        <li><b>Inercia Bruta (Ig):</b> \[ \frac{b \cdot h^3}{12} = \frac{200 \cdot 400^3}{12} = \mathbf{1,066.7 \times 10^6 \, mm^4} \]</li>
-        <li><b>Momento de Fisuración (Mcr):</b> Con un módulo de rotura \( f_r = 0.62\sqrt{28} \approx 3.28 \) MPa.
-            \[ M_{cr} = \frac{f_r \cdot I_g}{y_t} = \mathbf{17.5 \, kN \cdot m} \]
-        </li>
-    </ul>
+    <div class="contenido-body">
 
-    <h3 class="step-header">Paso 2: Análisis de la Sección Fisurada (Icr)</h3>
-    <p>Buscamos el <b>Eje Neutro Elástico (kd)</b>. El concreto bajo este eje se ignora por estar agrietado:</p>
-    <div class="math-box" style="text-align: center;">
-        \[ \frac{b \cdot (kd)^2}{2} + (n-1)A'_s(kd - d') = nA_s(d - kd) \]
-        <b>kd = 103.1 mm</b>
-    </div>
-    <p>Calculamos la inercia de la sección transformada:</p>
-    <div class="math-box" style="text-align: center;">
-        \[ I_{cr} = \frac{b(kd)^3}{3} + (n-1)A'_s(kd-d')^2 + nA_s(d-kd)^2 \]
-        <b>Icr = 350.54 × 10⁶ mm⁴</b>
-    </div>
-    <p class="w3-small w3-text-red"><i>Nota: La inercia ha caído un 67% respecto a la sección bruta.</i></p>
+        <div class="w3-panel dato-box w3-padding-16 w3-card-2">
+            <p>En este ejercicio calcularemos la deflexión de una viga simplemente apoyada para entender cómo la rigidez disminuye a medida que progresa el agrietamiento.</p>
+            <strong>Datos del Problema:</strong><br>
+            Sección 200x400 mm | L = 4.0 m | f'c = 28 MPa | d = 342.5 mm <br>
+            As = 597 mm² (3#5) | A's = 258 mm² (2#4) | Ec = 24,870 MPa
+        </div>
 
-    <h3 class="step-header">Paso 3: Inercia Efectiva (Ie) - Branson</h3>
-    <p>Según <b>NSR-10 C.9.5.2.3</b>, la inercia efectiva varía según el nivel de carga (Ma):</p>
-    <div class="math-box" style="text-align: center;">
-        \[ I_e = \left( \frac{M_{cr}}{M_a} \right)^3 I_g + \left[ 1 - \left( \frac{M_{cr}}{M_a} \right)^3 \right] I_{cr} \]
-    </div>
+        <h3>Paso 1: Propiedades Mecánicas e Inercia Bruta ($I_g$)</h3>
+        <p>Calculamos la rigidez inicial antes de que aparezcan las primeras fisuras por tensión:</p>
+        <ul class="w3-ul">
+            <li><b>Módulo de Elasticidad ($E_c$):</b> $4700\sqrt{28} \approx 24,870$ MPa.</li>
+            <li><b>Inercia Bruta ($I_g$):</b> \[ I_g = \frac{b \cdot h^3}{12} = \mathbf{1,066.7 \times 10^6 \, mm^4} \]</li>
+            <li><b>Momento de Fisuración ($M_{cr}$):</b> Con $f_r = 0.62\sqrt{28} \approx 3.28$ MPa.
+                \[ M_{cr} = \frac{f_r \cdot I_g}{y_t} = \mathbf{17.5 \, kN \cdot m} \]
+            </li>
+        </ul>
 
-    <div class="w3-responsive">
-        <table class="w3-table-all w3-centered">
-            <thead>
-                <tr class="w3-red">
-                    <th>Estado de Carga</th>
-                    <th>Ma (kN·m)</th>
-                    <th>Ie / Ig</th>
-                    <th>Ie (mm⁴ × 10⁶)</th>
-                </tr>
-            </thead>
-            <tr>
-                <td>Muerta (D)</td>
-                <td>40.0</td>
-                <td>38%</td>
-                <td>409</td>
-            </tr>
-            <tr>
-                <td>Sostenida (D + 0.25L)</td>
-                <td>42.5</td>
-                <td>34%</td>
-                <td>363</td>
-            </tr>
-            <tr>
-                <td>Total (D + L)</td>
-                <td>50.0</td>
-                <td>33%</td>
-                <td>352</td>
-            </tr>
-        </table>
-    </div>
+        <h3>Paso 2: Análisis de la Sección Fisurada ($I_{cr}$)</h3>
+        <p>Buscamos el <b>Eje Neutro Elástico ($kd$)</b>. El concreto bajo este eje se ignora por estar agrietado:</p>
+        <div class="math-box" style="text-align: center;">
+            \[ \frac{b \cdot (kd)^2}{2} + (n-1)A'_s(kd - d') = nA_s(d - kd) \]
+            <b>kd = 103.1 mm</b>
+        </div>
+        <p>Inercia de la sección transformada:</p>
+        <div class="math-box" style="text-align: center;">
+            \[ I_{cr} = \frac{b(kd)^3}{3} + (n-1)A'_s(kd-d')^2 + nA_s(d-kd)^2 \]
+            <b>Icr = 350.54 × 10⁶ mm⁴</b>
+        </div>
 
-    <h3 class="step-header">Paso 4: Deflexiones Inmediatas</h3>
-    <p>Calculamos la deflexión elástica inicial: \[ \Delta = \frac{5 \cdot w \cdot L^4}{384 \cdot E_c \cdot I_e} \]</p>
-    <ul>
-        <li><b>ΔD (Carga Muerta):</b> 6.55 mm</li>
-        <li><b>ΔD+0.25L (Sostenida):</b> 7.85 mm</li>
-        <li><b>ΔD+L (Total Inmediata):</b> 9.53 mm</li>
-    </ul>
+        <h3>Paso 3: Inercia Efectiva ($I_e$) - Branson</h3>
+        <p>Según <b>NSR-10 C.9.5.2.3</b>, la inercia efectiva varía según el nivel de carga ($M_a$):</p>
+        <div class="math-box" style="text-align: center;">
+            \[ I_e = \left( \frac{M_{cr}}{M_a} \right)^3 I_g + \left[ 1 - \left( \frac{M_{cr}}{M_a} \right)^3 \right] I_{cr} \]
+        </div>
 
-    <h3 class="step-header">Paso 5: Efectos de Largo Plazo (λΔ)</h3>
-    <p>El concreto fluye con el tiempo. Con ρ' = 0.0037 y un factor de tiempo ξ = 2.0 (5 años):</p>
-    <div class="math-box" style="text-align: center;">
-        \[ \lambda_\Delta = \frac{\xi}{1 + 50\rho'} = \mathbf{1.69} \]
-    </div>
-    
-    <div class="math-box">
-        1. <b>Deflexión por Carga Viva (ΔL):</b> \( \Delta_{D+L} - \Delta_D = \mathbf{2.98 \, mm} \)<br>
-        2. <b>Deflexión Total Diferencial:</b> \( \Delta_L + (\lambda_\Delta \cdot \Delta_{D+0.25L}) = \mathbf{16.25 \, mm} \)
-    </div>
+        <div class="w3-responsive">
+            <table class="w3-table-all w3-centered w3-card-2">
+                <thead>
+                    <tr>
+                        <th>Estado de Carga</th>
+                        <th>Ma (kN·m)</th>
+                        <th>Ie / Ig</th>
+                        <th>Ie (mm⁴ × 10⁶)</th>
+                    </tr>
+                </thead>
+                <tr><td>Muerta (D)</td><td>40.0</td><td>38%</td><td>409</td></tr>
+                <tr><td>Sostenida (D + 0.25L)</td><td>42.5</td><td>34%</td><td>363</td></tr>
+                <tr><td>Total (D + L)</td><td>50.0</td><td>33%</td><td>352</td></tr>
+            </table>
+        </div>
 
-    <h3 class="step-header">Paso 6: Veredicto NSR-10 (Tabla C.9.5-2)</h3>
-    <div class="w3-row-padding">
-        <div class="w3-half">
-            <div class="veredicto cumple">
-                <strong>Carga Viva (L/360):</strong><br>
-                2.98 mm < 11.11 mm<br>
-                <b>CUMPLE ✅</b>
+        <h3>Paso 4: Deflexiones Inmediatas</h3>
+        <p>Cálculo elástico: \[ \Delta = \frac{5 \cdot w \cdot L^4}{384 \cdot E_c \cdot I_e} \]</p>
+        <div class="w3-row-padding w3-center">
+            <div class="w3-third"><div class="w3-panel w3-light-grey w3-padding w3-round"><b>ΔD:</b> 6.55 mm</div></div>
+            <div class="w3-third"><div class="w3-panel w3-light-grey w3-padding w3-round"><b>ΔD+0.25L:</b> 7.85 mm</div></div>
+            <div class="w3-third"><div class="w3-panel w3-light-grey w3-padding w3-round"><b>ΔD+L:</b> 9.53 mm</div></div>
+        </div>
+
+        <h3>Paso 5: Efectos de Largo Plazo ($\lambda_\Delta$)</h3>
+        <p>Con $\rho' = 0.0037$ y $\xi = 2.0$ (5 años), el factor de tiempo es:</p>
+        <div class="math-box" style="text-align: center;">
+            \[ \lambda_\Delta = \frac{\xi}{1 + 50\rho'} = \mathbf{1.69} \]
+        </div>
+        
+        <div class="w3-container w3-white w3-border w3-border-red w3-round w3-padding">
+            1. <b>Carga Viva ($\Delta_L$):</b> \( \Delta_{D+L} - \Delta_D = \mathbf{2.98 \, mm} \)<br>
+            2. <b>Deflexión Total Diferencial:</b> \( \Delta_L + (\lambda_\Delta \cdot \Delta_{D+0.25L}) = \mathbf{16.25 \, mm} \)
+        </div>
+
+        <h3>Paso 6: Veredicto NSR-10 (Tabla C.9.5-2)</h3>
+        <div class="w3-row-padding">
+            <div class="w3-half">
+                <div class="veredicto cumple w3-card">
+                    <strong>Carga Viva (L/360):</strong><br>
+                    2.98 mm < 11.11 mm<br>
+                    <b>CUMPLE ✅</b>
+                </div>
+            </div>
+            <div class="w3-half">
+                <div class="veredicto cumple w3-card" style="border-left: 6px solid #ff9800;">
+                    <strong>Largo Plazo (L/240):</strong><br>
+                    16.25 mm < 16.67 mm<br>
+                    <b>CUMPLE (Ajustado) ⚠️</b>
+                </div>
             </div>
         </div>
-        <div class="w3-half">
-            <div class="veredicto cumple">
-                <strong>Largo Plazo (L/240):</strong><br>
-                16.25 mm < 16.67 mm<br>
-                <b>CUMPLE (Ajustado) ⚠️</b>
-            </div>
+
+        <div class="w3-center w3-padding-32">
+            <a href="index.html" class="w3-button w3-light-grey w3-round-large w3-border">Inicio</a>
+            <a href="simulador.html" class="w3-button w3-red w3-round-large">Ir al Simulador de Flexión</a>
         </div>
-    </div>
 
-    <div class="w3-panel w3-leftbar w3-light-grey w3-padding-16 w3-margin-top">
-        <p class="w3-small"><i><b>Nota del Profesor:</b> Un diseño que cumple por solo 0.4 mm es una advertencia de que cualquier variación en obra podría causar problemas de acabados.</i></p>
-    </div>
+        <hr class="w3-margin-top-64">
+        <footer class="w3-center w3-text-grey w3-padding-24">
+            <p><b>Rafael Antonio Correa Melano</b><br>
+            Ingeniero Civil • M.IE.<br>
+            Universidad Industrial de Santander<br>
+            <span class="w3-tag w3-white w3-border w3-border-red w3-text-red w3-tiny w3-round w3-margin-top">BGA, 2026</span></p>
+        </footer>
 
-    <div class="w3-center w3-padding-32">
-        <a href="index.html" class="w3-button w3-light-grey w3-round">Inicio</a>
-        <a href="simulador.html" class="w3-button w3-red w3-round">Simulador de Flexión</a>
     </div>
 </div>
-
-<footer class="w3-center w3-padding-16 w3-text-grey">
-    <small>Ing. Rafael Correa Melano • M.IE. • UIS 2026</small>
-</footer>
 
 </body>
 </html>
