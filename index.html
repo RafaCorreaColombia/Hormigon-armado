@@ -1,186 +1,211 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rafael Correa | Ingeniería Estructural</title>
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rafael Correa | Ingeniería Estructural</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-<style>
-body {
-    background-color: #f4f7f6;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin:0;
-}
+    <style>
+        body {
+            background-color: #f4f7f6;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin:0;
+            color: #333;
+        }
 
-.hero {
-    background: url('Gemini_Generated_RafaC.png') no-repeat center center;
-    background-size: cover;
-    color: white;
-    padding: 120px 20px;
-    display: flex;
-    align-items: center;
-    min-height: 480px;
-}
+        /* HERO SECTION */
+        .hero {
+            background: url('Gemini_Generated_RafaC.png') no-repeat center center;
+            background-size: cover;
+            color: white;
+            padding: 80px 20px;
+            display: flex;
+            align-items: center;
+            min-height: 550px;
+        }
 
-.hero-content {
-    max-width: 1100px;
-    margin: auto;
-}
+        .hero-content {
+            max-width: 1100px;
+            margin: auto;
+            width: 100%;
+            display: flex;
+            justify-content: flex-start; /* Mantiene el texto a la izquierda */
+        }
 
-.card-hover {
-    transition: all 0.25s ease;
-}
+        .hero-box {
+            background: rgba(0, 0, 0, 0.5); 
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(8px); /* Efecto moderno de desenfoque */
+            max-width: 600px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
 
-.card-hover:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
-}
+        /* TARJETAS Y CONTENEDORES */
+        .section {
+            max-width: 1100px;
+            margin: auto;
+            padding: 40px 15px;
+        }
 
-.section {
-    max-width: 1100px;
-    margin: auto;
-}
+        .card-hover {
+            transition: all 0.3s ease;
+            height: 100%;
+            border: none !important;
+        }
 
-.footer {
-    margin-top:40px;
-}
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1) !important;
+        }
 
-@media (max-width: 800px) {
-    .hero { text-align: center; }
-}
-</style>
+        .btn-red {
+            background-color: #c0392b !important;
+            color: white !important;
+            transition: 0.3s;
+        }
+
+        .btn-red:hover {
+            background-color: #a93226 !important;
+        }
+
+        /* AJUSTES PARA MÓVILES */
+        @media (max-width: 800px) {
+            .hero { 
+                background-position: 75% center; /* Ajusta para que se vea tu rostro */
+                min-height: 450px;
+                padding: 40px 10px;
+            }
+            .hero-content {
+                justify-content: center;
+            }
+            .hero-box { 
+                text-align: center; 
+                padding: 25px;
+            }
+            .w3-col {
+                margin-bottom: 20px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-<!-- HERO -->
 <header class="hero w3-card-4">
     <div class="hero-content">
-        <h1 class="w3-xxxlarge"><b>Herramientas para Ingeniería Estructural</b></h1>
-        <p class="w3-xlarge">Simuladores y recursos para estudiantes e ingenieros</p>
+        <div class="hero-box animate-opacity">
+            <h1 class="w3-xxlarge"><b>Herramientas para Ingeniería Estructural</b></h1>
+            <p class="w3-xlarge w3-opacity">Recursos interactivos y simuladores para ingeniería civil.</p>
 
-        <div class="w3-margin-top">
-            <a href="simulador.html" class="w3-button w3-red w3-large w3-round-large">
-                Probar Simulador <i class="fa fa-play"></i>
-            </a>
+            <div class="w3-margin-top">
+                <a href="simulador.html" class="w3-button btn-red w3-large w3-round-large">
+                    Probar Simulador <i class="fa fa-play w3-margin-left"></i>
+                </a>
+            </div>
+
+            <p class="w3-margin-top w3-small">
+                <b>Rafael Antonio Correa Melano</b><br>
+                Ingeniero Civil • M.Sc. Ingeniería Estructural • Docente UIS
+            </p>
         </div>
-
-        <p class="w3-margin-top w3-opacity">
-            Rafael Correa • Ing. Civil • M.Sc. Ingeniería Estructural
-        </p>
     </div>
 </header>
 
-<!-- HERRAMIENTAS -->
-<div class="section w3-padding-32">
+<div class="section">
+    <h2 class="w3-border-bottom w3-border-light-grey w3-padding-16">
+        <i class="fa fa-wrench w3-text-red"></i> Recursos Académicos
+    </h2>
 
-<h2 class="w3-text-grey">
-<i class="fa fa-cubes w3-text-red"></i> Herramientas
-</h2>
+    <div class="w3-row-padding w3-margin-top">
+        <div class="w3-col l6 m6 s12">
+            <div class="w3-card w3-white w3-padding-24 w3-center w3-round-large card-hover">
+                <i class="fa fa-line-chart w3-xxlarge w3-text-red"></i>
+                <h3>Simulador de Flexión</h3>
+                <p class="w3-padding">Análisis no lineal, cuantías de acero y dominios de falla según NSR-10.</p>
+                <a href="simulador.html" class="w3-button btn-red w3-round-large">Acceder</a>
+            </div>
+        </div>
 
-<div class="w3-row-padding w3-margin-top">
-
-    <div class="w3-col m6">
-        <div class="w3-card w3-white w3-padding w3-round-large card-hover">
-            <h3>Simulador de Flexión</h3>
-            <p class="w3-small">Explora cuantías, dominio de falla y comportamiento no lineal.</p>
-            <a href="simulador.html" class="w3-button w3-red w3-round">Abrir</a>
+        <div class="w3-col l6 m6 s12">
+            <div class="w3-card w3-white w3-padding-24 w3-center w3-round-large card-hover">
+                <i class="fa fa-vcard-o w3-xxlarge w3-text-red"></i>
+                <h3>Análisis de Deflexiones</h3>
+                <p class="w3-padding">Cálculo de rigidez efectiva (Branson) y efectos de largo plazo (Creep).</p>
+                <a href="deflexiones.html" class="w3-button btn-red w3-round-large">Acceder</a>
+            </div>
         </div>
     </div>
+</div>
 
-    <div class="w3-col m6">
-        <div class="w3-card w3-white w3-padding w3-round-large card-hover">
-            <h3>Deflexiones</h3>
-            <p class="w3-small">Compara métodos de cálculo y rigideces efectivas.</p>
-            <a href="deflexiones.html" class="w3-button w3-red w3-round">Abrir</a>
+<div class="w3-light-grey">
+    <div class="section">
+        <div class="w3-row-padding">
+            <div class="w3-col l7 m12">
+                <h3><i class="fa fa-book w3-text-red"></i> Enfoque en Docencia</h3>
+                <p>Material interactivo diseñado para fortalecer conceptos en:</p>
+                <div class="w3-row">
+                    <div class="w3-col s6">
+                        <ul class="w3-ul w3-border-0">
+                            <li><i class="fa fa-caret-right"></i> Concreto Reforzado</li>
+                            <li><i class="fa fa-caret-right"></i> Análisis Estructural</li>
+                        </ul>
+                    </div>
+                    <div class="w3-col s6">
+                        <ul class="w3-ul w3-border-0">
+                            <li><i class="fa fa-caret-right"></i> Dinámica de Estructuras</li>
+                            <li><i class="fa fa-caret-right"></i> Diseño Sísmico</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="w3-col l5 m12">
+                <h3><i class="fa fa-user w3-text-red"></i> Perfil Profesional</h3>
+                <p class="w3-small">
+                    Especialista en el diseño y patología de estructuras. Mi objetivo es cerrar la brecha entre la teoría compleja y la aplicación práctica mediante herramientas digitales que faciliten la comprensión del comportamiento real del concreto.
+                </p>
+            </div>
         </div>
     </div>
-
 </div>
 
-</div>
-
-<!-- DOCENCIA -->
-<div class="section w3-padding-16">
-
-<h2 class="w3-text-grey">
-<i class="fa fa-book w3-text-red"></i> Docencia
-</h2>
-
-<p>
-Material interactivo orientado a:
-</p>
-
-<ul class="w3-small">
-<li>Análisis estructural</li>
-<li>Concreto reforzado</li>
-<li>Dinámica estructural</li>
-</ul>
-
-</div>
-
-<!-- EXPERIENCIA -->
-<div class="section w3-padding-16">
-
-<h2 class="w3-text-grey">
-<i class="fa fa-building w3-text-red"></i> Proyectos
-</h2>
-
-<div class="w3-row-padding">
-
-<div class="w3-col m4">
-    <div class="w3-card w3-white w3-padding w3-round-large">
-        <h4>Educación</h4>
-        <p class="w3-small">Campus UIS San Gil<br>Biblioteca UIS</p>
+<div class="section">
+    <h3 class="w3-padding-16"><i class="fa fa-building w3-text-red"></i> Experiencia en Consultoría</h3>
+    <div class="w3-row-padding">
+        <div class="w3-col l4 m4 s12">
+            <div class="w3-panel w3-leftbar w3-border-red w3-white w3-padding-16 w3-card">
+                <b>Educación</b><br>
+                <span class="w3-small">Campus UIS San Gil, Biblioteca Central UIS.</span>
+            </div>
+        </div>
+        <div class="w3-col l4 m4 s12">
+            <div class="w3-panel w3-leftbar w3-border-red w3-white w3-padding-16 w3-card">
+                <b>Salud</b><br>
+                <span class="w3-small">Fundación Cardiovascular de Colombia.</span>
+            </div>
+        </div>
+        <div class="w3-col l4 m4 s12">
+            <div class="w3-panel w3-leftbar w3-border-red w3-white w3-padding-16 w3-card">
+                <b>Vivienda</b><br>
+                <span class="w3-small">Proyectos Ciudad Verde, Mediterrane & Royal.</span>
+            </div>
+        </div>
     </div>
 </div>
 
-<div class="w3-col m4">
-    <div class="w3-card w3-white w3-padding w3-round-large">
-        <h4>Salud</h4>
-        <p class="w3-small">Fundación Cardiovascular</p>
+<footer class="w3-container w3-padding-48 w3-center w3-white">
+    <p class="w3-large"><b>Rafael Antonio Correa Melano</b></p>
+    <div class="w3-xlarge w3-padding-16">
+        <a href="#" class="w3-hover-text-red w3-margin-right"><i class="fa fa-linkedin"></i></a>
+        <a href="#" class="w3-hover-text-green w3-margin-right"><i class="fa fa-whatsapp"></i></a>
+        <a href="mailto:tuemail@uis.edu.co" class="w3-hover-text-red"><i class="fa fa-envelope-o"></i></a>
     </div>
-</div>
-
-<div class="w3-col m4">
-    <div class="w3-card w3-white w3-padding w3-round-large">
-        <h4>Vivienda</h4>
-        <p class="w3-small">Ciudad Verde<br>Mediterrane & Royal</p>
-    </div>
-</div>
-
-</div>
-
-</div>
-
-<!-- ABOUT -->
-<div class="section w3-padding-16">
-
-<h2 class="w3-text-grey">
-<i class="fa fa-user w3-text-red"></i> Sobre mí
-</h2>
-
-<p class="w3-small">
-Ingeniero civil con enfoque en diseño estructural, análisis sísmico y docencia universitaria. Interesado en transformar conceptos complejos en herramientas claras y visuales.
-</p>
-
-</div>
-
-<!-- FOOTER -->
-<footer class="w3-container w3-red w3-center w3-padding-32 footer">
-
-<p><b>Rafael Correa</b> - 2026</p>
-
-<div class="w3-xlarge">
-<a href="#" class="w3-text-white"><i class="fa fa-whatsapp"></i></a>
-</div>
-
-<p class="w3-small">
-Hecho para estudiantes de ingeniería estructural en Colombia 🇨🇴
-</p>
-
+    <p class="w3-small w3-text-grey">
+        © 2026 - Ingeniería Estructural & Docencia Universitaria<br>
+        Hecho en Bucaramanga, Colombia 🇨🇴
+    </p>
 </footer>
 
 </body>
