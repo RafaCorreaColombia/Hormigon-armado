@@ -111,7 +111,7 @@
 
 <div class="w3-container w3-white w3-padding w3-round w3-card">
     <h4 class="w3-center"><b>Modelo Estructural</b></h4>
-    <p class="w3-center w3-small">Viga simplemente apoyada con carga distribuida \( w = D + L \)</p>
+    <p class="w3-center w3-small">Viga simplemente apoyada con carga distribuida \( w \)</p>
 
     <div class="w3-center">
         <svg viewBox="0 0 600 220" width="100%" style="max-width:700px; background:#fafafa; border:1px solid #ddd" id="svg-viga">
@@ -126,7 +126,7 @@
             <g id="grupo-flechas"></g>
 
             <line x1="100" y1="40" x2="500" y2="40" stroke="#c0392b" stroke-width="3"/>
-            <text x="260" y="30" font-size="14" fill="#c0392b" font-weight="bold">w = D + L</text>
+            <text x="260" y="30" font-size="14" fill="#c0392b" font-weight="bold">w</text>
 
             <g fill="#2980b9" stroke="#2980b9" stroke-width="2">
                 <line x1="100" y1="160" x2="100" y2="190"/> <polygon points="96,160 104,160 100,150" stroke="none"/>
@@ -145,7 +145,7 @@
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const grupo = document.getElementById('grupo-flechas');
-        const yInicio = 40;  // <-- MODIFICA ESTO: Punto donde empieza la flecha arriba
+        const yInicio = 30;  // <-- MODIFICA ESTO: Punto donde empieza la flecha arriba
         const yFinal = 100;  // <-- Punto donde toca la viga
         
         let contenido = "";
