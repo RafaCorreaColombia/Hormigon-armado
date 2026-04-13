@@ -110,73 +110,55 @@
 
 
 <div class="w3-container w3-white w3-padding w3-round w3-card">
-
     <h4 class="w3-center"><b>Modelo Estructural</b></h4>
-    <p class="w3-center w3-small">
-        Viga simplemente apoyada con carga distribuida \( w = D + L \)
-    </p>
+    <p class="w3-center w3-small">Viga simplemente apoyada con carga distribuida \( w = D + L \)</p>
 
     <div class="w3-center">
-        <svg viewBox="0 0 600 220" width="100%" style="max-width:700px; background:#fafafa; border:1px solid #ddd">
-
-            <!-- VIGA -->
+        <svg viewBox="0 0 600 220" width="100%" style="max-width:700px; background:#fafafa; border:1px solid #ddd" id="svg-viga">
             <rect x="100" y="100" width="400" height="10" fill="#2c3e50"/>
 
-            <!-- APOYO IZQUIERDO (PIN) -->
             <polygon points="100,110 85,140 115,140" fill="#555"/>
             <line x1="80" y1="140" x2="120" y2="140" stroke="#555" stroke-width="2"/>
-
-            <!-- APOYO DERECHO (RODILLO) -->
             <polygon points="500,110 485,140 515,140" fill="#555"/>
-            <circle cx="485" cy="145" r="4" fill="#555"/>
-            <circle cx="500" cy="145" r="4" fill="#555"/>
-            <circle cx="515" cy="145" r="4" fill="#555"/>
+            <circle cx="485" cy="145" r="4" fill="#555"/><circle cx="500" cy="145" r="4" fill="#555"/><circle cx="515" cy="145" r="4" fill="#555"/>
             <line x1="470" y1="150" x2="530" y2="150" stroke="#555" stroke-width="2"/>
 
-            <!-- CARGA DISTRIBUIDA -->
-            <g id="cargas">
-                <!-- flechas -->
-                <script type="application/ecmascript"><![CDATA[
-                    for(let i=110; i<=490; i+=30){
-                        document.write(`
-                            <line x1="${i}" y1="40" x2="${i}" y2="100" stroke="#c0392b" stroke-width="2"/>
-                            <polygon points="${i-4},60 ${i+4},60 ${i},100" fill="#c0392b"/>
-                        `);
-                    }
-                ]]></script>
-            </g>
+            <g id="grupo-flechas"></g>
 
-            <!-- línea superior de carga -->
             <line x1="100" y1="40" x2="500" y2="40" stroke="#c0392b" stroke-width="3"/>
+            <text x="260" y="30" font-size="14" fill="#c0392b" font-weight="bold">w = D + L</text>
 
-            <!-- TEXTO CARGA -->
-            <text x="260" y="30" font-size="14" fill="#c0392b">
-                w = D + L
-            </text>
+            <g fill="#2980b9" stroke="#2980b9" stroke-width="2">
+                <line x1="100" y1="160" x2="100" y2="190"/> <polygon points="96,160 104,160 100,150" stroke="none"/>
+                <line x1="500" y1="160" x2="500" y2="190"/>
+                <polygon points="496,160 504,160 500,150" stroke="none"/>
+            </g>
+            <text x="85" y="205" font-size="12" fill="#2980b9">R₁</text>
+            <text x="485" y="205" font-size="12" fill="#2980b9">R₂</text>
 
-            <!-- REACCIONES -->
-            <line x1="100" y1="100" x2="100" y2="60" stroke="#2980b9" stroke-width="2"/>
-            <polygon points="96,60 104,60 100,50" fill="#2980b9"/>
-
-            <line x1="500" y1="100" x2="500" y2="60" stroke="#2980b9" stroke-width="2"/>
-            <polygon points="496,60 504,60 500,50" fill="#2980b9"/>
-
-            <text x="85" y="45" font-size="12" fill="#2980b9">R₁</text>
-            <text x="485" y="45" font-size="12" fill="#2980b9">R₂</text>
-
-            <!-- COTA LUZ -->
             <line x1="100" y1="180" x2="500" y2="180" stroke="#000"/>
-            <line x1="100" y1="175" x2="100" y2="185" stroke="#000"/>
-            <line x1="500" y1="175" x2="500" y2="185" stroke="#000"/>
-
-            <text x="280" y="195" font-size="13">
-                L = 4.0 m
-            </text>
-
+            <text x="280" y="195" font-size="13">Luz = 4.0 m</text>
         </svg>
     </div>
-
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const grupo = document.getElementById('grupo-flechas');
+        const yInicio = 40;  // <-- MODIFICA ESTO: Punto donde empieza la flecha arriba
+        const yFinal = 100;  // <-- Punto donde toca la viga
+        
+        let contenido = "";
+        for(let i=100; i<=500; i+=25) { // i=posición x
+            // Dibujamos la línea de la flecha
+            contenido += `<line x1="${i}" y1="${yInicio}" x2="${i}" y2="${yFinal}" stroke="#c0392b" stroke-width="2"/>`;
+            // Dibujamos la punta de la flecha (triángulo)
+            contenido += `<polygon points="${i-4},${yFinal-8} ${i+4},${yFinal-8} ${i},${yFinal}" fill="#c0392b"/>`;
+        }
+        grupo.innerHTML = contenido;
+    });
+</script>
+
 
 
 
