@@ -126,7 +126,7 @@
             <g id="grupo-flechas"></g>
 
             <line x1="100" y1="40" x2="500" y2="40" stroke="#c0392b" stroke-width="3"/>
-            <text x="260" y="30" font-size="14" fill="#c0392b" font-weight="bold">w</text>
+            <text x="280" y="30" font-size="14" fill="#c0392b" font-weight="bold">w</text>
 
             <g fill="#2980b9" stroke="#2980b9" stroke-width="2">
                 <line x1="100" y1="160" x2="100" y2="190"/> <polygon points="96,160 104,160 100,150" stroke="none"/>
@@ -145,7 +145,7 @@
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const grupo = document.getElementById('grupo-flechas');
-        const yInicio = 30;  // <-- MODIFICA ESTO: Punto donde empieza la flecha arriba
+        const yInicio = 40;  // <-- MODIFICA ESTO: Punto donde empieza la flecha arriba
         const yFinal = 100;  // <-- Punto donde toca la viga
         
         let contenido = "";
@@ -153,7 +153,7 @@
             // Dibujamos la línea de la flecha
             contenido += `<line x1="${i}" y1="${yInicio}" x2="${i}" y2="${yFinal}" stroke="#c0392b" stroke-width="2"/>`;
             // Dibujamos la punta de la flecha (triángulo)
-            contenido += `<polygon points="${i-4},${yFinal-8} ${i+4},${yFinal-8} ${i},${yFinal}" fill="#c0392b"/>`;
+            contenido += `<polygon points="${i-6},${yFinal-12} ${i+6},${yFinal-12} ${i},${yFinal}" fill="#c0392b"/>`;
         }
         grupo.innerHTML = contenido;
     });
