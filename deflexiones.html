@@ -184,7 +184,7 @@
             <line x1="50" y1="50" x2="50" y2="250" stroke="#333"/>
 
             <!-- Etiquetas -->
-            <text x="200" y="290" font-size="12">Mₐ / Mcr</text>
+            <text x="250" y="290" font-size="12">Mₐ / Mcr</text>
             <text x="5" y="60" font-size="12" transform="rotate(-90 15,150)">Ie</text>
 
             <!-- Línea Ig -->
@@ -221,8 +221,8 @@
     </div>
 
     <p class="w3-small w3-center">
-        \( M_a = (\text{slider}) \cdot M_{cr} \)
-    </p>
+    \( M_a = \) <span id="factor-dinamico" class="w3-text-red">1.0</span> \( \cdot M_{cr} \)
+</p>
 
 </div>
 
@@ -279,6 +279,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const ieVal = calcularIe(ratio);
 
         sliderValDisplay.textContent = ratio.toFixed(2);
+        // AÑADE ESTA LÍNEA AQUÍ:
+document.getElementById('factor-dinamico').textContent = ratio.toFixed(2);
 
         const cx = scaleX(ratio);
         const cy = scaleY(ieVal);
@@ -298,7 +300,7 @@ document.addEventListener('DOMContentLoaded', function() {
         guideY.setAttribute('y2', cy);
 
         // texto dinámico
-        ieDisplay.textContent = `Ie = ${ieVal.toFixed(0)}`;
+        ieDisplay.textContent = `Ie = ${ieVal.toFixed(0)} mm⁴ × 10⁶`;
         ieDisplay.setAttribute('x', cx + 10);
         ieDisplay.setAttribute('y', cy - 10);
 
