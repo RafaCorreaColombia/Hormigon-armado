@@ -387,6 +387,130 @@ document.getElementById('factor-dinamico').textContent = ratio.toFixed(2);
             </div>
         </div>
 
+<div class="w3-container w3-white w3-padding w3-round w3-card w3-margin-top">
+
+    <h4 class="w3-center"><b>Estado de Esfuerzos: Diagrama de Momentos</b></h4>
+    <p class="w3-center w3-small">
+        \( M_{max} = \frac{wL^2}{8} \) • Comparación con el límite de fisuración \( M_{cr} \)
+    </p>
+
+    <div class="w3-center">
+        <svg viewBox="0 0 600 260" width="100%" style="max-width:700px; background:#fafafa; border:1px solid #ddd; border-radius: 8px;">
+
+            <line x1="100" y1="180" x2="500" y2="180" stroke="#333" stroke-width="1"/>
+
+            <circle cx="100" cy="180" r="4" fill="#333"/>
+            <circle cx="500" cy="180" r="4" fill="#333"/>
+
+            <path id="curva-momento" fill="rgba(192,57,43,0.2)" stroke="#c0392b" stroke-width="2.5"/>
+
+            <line id="linea-mcr" x1="100" x2="500" stroke="#2980b9" stroke-width="2" stroke-dasharray="6,4"/>
+            <text x="510" id="txt-mcr" font-size="12" fill="#2980b9" font-weight="bold">Mcr</text>
+
+            <circle id="punto-max" r="5" fill="#000" stroke="white" stroke-width="2"/>
+            <text id="txt-max" font-size="13" font-weight="bold"></text>
+
+            <text x="90" y="200" font-size="10" fill="#777">Apoyo A</text>
+            <text x="480" y="200" font-size="10" fill="#777">Apoyo B</text>
+
+        </svg>
+    </div>
+
+    <div class="w3-padding-16">
+        <label class="w3-text-dark-grey"><b>Carga distribuida aplicada \( w \):</b> 
+            <span id="val-w" class="w3-tag w3-round w3-red">20</span> <b>kN/m</b>
+        </label>
+        <input type="range" id="slider-w-diff" min="5" max="45" step="0.5" value="20" class="w3-input w3-margin-top">
+    </div>
+
+    <div id="status-msg" class="w3-panel w3-round w3-small w3-center w3-padding-small">
+        </div>
+
+</div>
+
+<script id="script-momento-diff">
+document.addEventListener('DOMContentLoaded', function() {
+
+    // Configuración estructural fija para el ejercicio
+    const L_diff = 4.0;       
+    const Mcr_diff = 17.5;    
+
+    const sliderW = document.getElementById('slider-w-diff');
+    const valW = document.getElementById('val-w');
+    const curva = document.getElementById('curva-momento');
+    const lineaMcr = document.getElementById('linea-mcr');
+    const puntoMax = document.getElementById('punto-max');
+    const txtMax = document.getElementById('txt-max');
+    const txtMcr = document.getElementById('txt-mcr');
+    const statusMsg = document.getElementById('status-msg');
+
+    // Escalamiento visual del SVG
+    function scaleX(x) {
+        return 100 + (x / L_diff) * 400;
+    }
+
+    function scaleY(M) {
+        // Escala: 150 unidades de momento equivalen a 100px en el SVG
+        const M_escala = 80; 
+        return 180 - (M / M_escala) * 150;
+    }
+
+    function actualizarDiagramaDiff() {
+        const w = parseFloat(sliderW.value);
+        valW.textContent = w.toFixed(1);
+
+        const Mmax = (w * L_diff * L_diff) / 8;
+
+        // Dibujo de la parábola: M(x) = w*x*(L-x)/2
+        let d = "M 100 180 ";
+        for (let x = 0; x <= L_diff; x += 0.05) {
+            let M_x = (w * x * (L_diff - x)) / 2;
+            d += `L ${scaleX(x)} ${scaleY(M_x)} `;
+        }
+        d += "L 500 180 Z";
+        curva.setAttribute("d", d);
+
+        // Posicionamiento del punto máximo (Centro de la viga)
+        const xMid = scaleX(L_diff/2);
+        const yMid = scaleY(Mmax);
+
+        puntoMax.setAttribute("cx", xMid);
+        puntoMax.setAttribute("cy", yMid);
+
+        txtMax.textContent = `Mmax = ${Mmax.toFixed(1)} kN·m`;
+        txtMax.setAttribute("x", xMid - 55);
+        txtMax.setAttribute("y", yMid - 15);
+
+        // Posicionamiento de la línea crítica Mcr
+        const yMcr = scaleY(Mcr_diff);
+        lineaMcr.setAttribute("y1", yMcr);
+        lineaMcr.setAttribute("y2", yMcr);
+        txtMcr.setAttribute("y", yMcr - 8);
+
+        // Lógica de Veredicto Visual (Fisuración)
+        if (Mmax > Mcr_diff) {
+            // ESTADO FISURADO - ROJO UIS
+            curva.setAttribute("fill", "rgba(192, 57, 43, 0.3)");
+            curva.setAttribute("stroke", "#c0392b");
+            txtMax.setAttribute("fill", "#c0392b");
+            statusMsg.className = "w3-panel w3-pale-red w3-border-red w3-leftbar w3-padding-small w3-center";
+            statusMsg.innerHTML = "<b>ESTADO FISURADO:</b> El momento actuante supera la resistencia del concreto a tracción. <b>Usar Ie (Branson).</b>";
+        } else {
+            // ESTADO NO FISURADO - VERDE
+            curva.setAttribute("fill", "rgba(39, 174, 96, 0.2)");
+            curva.setAttribute("stroke", "#27ae60");
+            txtMax.setAttribute("fill", "#27ae60");
+            statusMsg.className = "w3-panel w3-pale-green w3-border-green w3-leftbar w3-padding-small w3-center";
+            statusMsg.innerHTML = "<b>ESTADO BRUTO:</b> La viga no se ha agrietado. <b>Sección íntegra (Ig).</b>";
+        }
+    }
+
+    actualizarDiagramaDiff();
+    sliderW.addEventListener("input", actualizarDiagramaDiff);
+
+});
+</script>
+        
         <h3>Paso 3: Inercia Efectiva ($I_e$) - Branson</h3>
         <p>Según <b>ACI 318 24.2.3.9 : NSR-10 C.9.5.2.3</b>, la inercia efectiva varía según el nivel de carga ($M_a$):</p>
         
