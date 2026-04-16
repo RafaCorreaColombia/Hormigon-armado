@@ -391,6 +391,7 @@ document.getElementById('factor-dinamico').textContent = ratio.toFixed(2);
 
 
 
+        
 
 
 
@@ -411,7 +412,7 @@ document.getElementById('factor-dinamico').textContent = ratio.toFixed(2);
                 Momentos (kN·m)
             </text>
 
-            <!-- Viga (Momento = 0) -->
+            <!-- Viga -->
             <line x1="100" y1="50" x2="500" y2="50" stroke="#333" stroke-width="2"/>
 
             <!-- Apoyos -->
@@ -425,7 +426,14 @@ document.getElementById('factor-dinamico').textContent = ratio.toFixed(2);
 
             <!-- Línea Mcr -->
             <line id="linea-mcr" stroke="#2980b9" stroke-width="2" stroke-dasharray="6,4"/>
-            <text id="txt-mcr" font-size="12" fill="#2980b9" font-weight="bold">Mcr</text>
+
+            <!-- Marcador lateral Mcr -->
+            <circle id="marker-mcr" r="4" fill="#2980b9"/>
+
+            <!-- Texto fijo -->
+            <text id="txt-mcr" x="505" y="70" font-size="12" fill="#2980b9" font-weight="bold">
+                Mcr (fisuración)
+            </text>
 
             <!-- Punto máximo -->
             <circle id="punto-max" r="5" fill="#000" stroke="white" stroke-width="2"/>
@@ -456,6 +464,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const valW = document.getElementById('val-w');
     const curva = document.getElementById('curva-momento');
     const lineaMcr = document.getElementById('linea-mcr');
+    const markerMcr = document.getElementById('marker-mcr');
     const puntoMax = document.getElementById('punto-max');
     const txtMax = document.getElementById('txt-max');
     const txtMcr = document.getElementById('txt-mcr');
@@ -477,10 +486,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const Mmax = (w * L * L) / 8;
 
-        // escala dinámica (clave)
-        const Mref = Math.max(Mmax, Mcr) * 1.2;
+        // Escala robusta
+        const Mref = Math.max(Mmax, Mcr, 5) * 1.2;
 
-        // curva
+        // Curva
         let d = `M 100 ${Y_EJE} `;
         for (let x = 0; x <= L; x += 0.05) {
             let Mx = (w * x * (L - x)) / 2;
@@ -489,7 +498,7 @@ document.addEventListener('DOMContentLoaded', function() {
         d += `L 500 ${Y_EJE} Z`;
         curva.setAttribute("d", d);
 
-        // punto máximo
+        // Punto máximo
         const xMid = scaleX(L / 2);
         const yMid = scaleY(Mmax, Mref);
 
@@ -500,18 +509,20 @@ document.addEventListener('DOMContentLoaded', function() {
         txtMax.setAttribute("x", xMid - 60);
         txtMax.setAttribute("y", yMid + 20);
 
-        // línea Mcr
+        // Línea Mcr (SIEMPRE visible)
         const yMcr = scaleY(Mcr, Mref);
 
         lineaMcr.setAttribute("x1", 100);
         lineaMcr.setAttribute("x2", 500);
         lineaMcr.setAttribute("y1", yMcr);
         lineaMcr.setAttribute("y2", yMcr);
+        lineaMcr.style.display = "block";
 
-        txtMcr.setAttribute("x", 505);
-        txtMcr.setAttribute("y", yMcr + 5);
+        // Marcador lateral
+        markerMcr.setAttribute("cx", 95);
+        markerMcr.setAttribute("cy", yMcr);
 
-        // estado
+        // Estado
         const ratio = Mmax / Mcr;
 
         if (Mmax > Mcr) {
