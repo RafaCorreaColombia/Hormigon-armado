@@ -397,10 +397,21 @@ document.getElementById('factor-dinamico').textContent = ratio.toFixed(2);
 
 
 
+
+
+        
+
+
+
+
+
+
+
+
 <div class="w3-container w3-white w3-padding w3-round w3-card w3-margin-top">
-    <h4 class="w3-center"><b>Análisis de Momentos en Rango de Servicio</b></h4>
+    <h4 class="w3-center"><b>Diagrama de Momentos Flectores (Estado de Servicio)</b></h4>
     <p class="w3-center w3-small">
-        \( M_{cr} = 17.5 \) kN·m • \( M_n = 78.7 \) kN·m
+        Zonas donde el momento supera \( M_{cr} \) desarrollan grietas por flexión. • \( M_{cr} = 17.5 \) kN·m
     </p>
 
     <div class="w3-center">
@@ -416,24 +427,24 @@ document.getElementById('factor-dinamico').textContent = ratio.toFixed(2);
             <text x="70" y="38" font-size="10" fill="#555">Apoyo 1</text>
             <text x="470" y="38" font-size="10" fill="#555">Apoyo 2</text>
 
-            <path id="curva-momento" fill="rgba(192,57,43,0.2)" stroke="#c0392b" stroke-width="2.5"/>
+            <path id="curva-momento-final" fill="rgba(192,57,43,0.2)" stroke="#c0392b" stroke-width="2.5"/>
 
-            <line id="linea-mcr" x1="100" x2="500" stroke="#2980b9" stroke-width="1" stroke-dasharray="4,2"/>
-            <text id="txt-mcr" x="505" font-size="11" fill="#2980b9" font-weight="bold">Mcr</text>
+            <line id="linea-mcr-final" x1="100" x2="500" stroke="#2980b9" stroke-width="0.8" stroke-dasharray="4,2"/>
+            <text id="txt-mcr-final" x="505" font-size="12" fill="#2980b9" font-weight="bold">Mcr (17.5)</text>
 
-            <circle id="punto-max" r="5" fill="#000" stroke="white" stroke-width="2"/>
-            <text id="txt-max" font-size="13" font-weight="bold"></text>
+            <circle id="punto-max-final" r="5" fill="#000" stroke="white" stroke-width="2"/>
+            <text id="txt-max-final" font-size="13" font-weight="bold"></text>
         </svg>
     </div>
 
     <div class="w3-padding-16">
-        <label><b>Carga de servicio \( w \):</b> 
-            <span id="val-w" class="w3-tag w3-red w3-round">20</span> kN/m
+        <label><b>Carga distribuida aplicada \( w \):</b> 
+            <span id="val-w-final" class="w3-tag w3-red w3-round">20</span> <b>kN/m</b>
         </label>
-        <input type="range" id="slider-w-diff" min="0" max="40" step="0.5" value="20" class="w3-input w3-margin-top">
+        <input type="range" id="slider-w-final" min="0" max="45" step="0.5" value="20" class="w3-input w3-margin-top">
     </div>
 
-    <div id="status-msg" class="w3-panel w3-round w3-small w3-center w3-padding-small"></div>
+    <div id="status-msg-final" class="w3-panel w3-round w3-small w3-center w3-padding-small"></div>
 </div>
 
 <script>
@@ -442,16 +453,16 @@ document.addEventListener('DOMContentLoaded', function() {
     const Mcr = 17.5;
     const Mn = 78.7;
     const Y_EJE = 50;
-    const M_MAX_ESCALA = 90; // Escala fija un poco por encima del Mn
+    const M_MAX_ESCALA = 90; // Mantenemos escala fija para ver magnitud real
 
-    const slider = document.getElementById('slider-w-diff');
-    const valW = document.getElementById('val-w');
-    const curva = document.getElementById('curva-momento');
-    const lineaMcr = document.getElementById('linea-mcr');
-    const txtMcr = document.getElementById('txt-mcr');
-    const puntoMax = document.getElementById('punto-max');
-    const txtMax = document.getElementById('txt-max');
-    const statusMsg = document.getElementById('status-msg');
+    const slider = document.getElementById('slider-w-final');
+    const valW = document.getElementById('val-w-final');
+    const curva = document.getElementById('curva-momento-final');
+    const lineaMcr = document.getElementById('linea-mcr-final');
+    const txtMcr = document.getElementById('txt-mcr-final');
+    const puntoMax = document.getElementById('punto-max-final');
+    const txtMax = document.getElementById('txt-max-final');
+    const statusMsg = document.getElementById('status-msg-final');
 
     function scaleX(x) { return 100 + (x / L) * 400; }
     function scaleY(M) { return Y_EJE + (M / M_MAX_ESCALA) * 200; }
@@ -461,16 +472,16 @@ document.addEventListener('DOMContentLoaded', function() {
         valW.textContent = w.toFixed(1);
         const Mmax = (w * L * L) / 8;
 
-        // Dibujar Curva
+        // 1. Dibujar Curva
         let d = `M 100 ${Y_EJE} `;
-        for (let x = 0; x <= L; x += 0.1) {
+        for (let x = 0; x <= L; x += 0.05) {
             let Mx = (w * x * (L - x)) / 2;
             d += `L ${scaleX(x)} ${scaleY(Mx)} `;
         }
         d += `L 500 ${Y_EJE} Z`;
         curva.setAttribute("d", d);
 
-        // Posiciones
+        // 2. Punto Máximo
         const xMid = scaleX(L / 2);
         const yMid = scaleY(Mmax);
         puntoMax.setAttribute("cx", xMid);
@@ -479,52 +490,36 @@ document.addEventListener('DOMContentLoaded', function() {
         txtMax.setAttribute("x", xMid - 60);
         txtMax.setAttribute("y", yMid + 25);
 
+        // 3. Posicionar Mcr
         const yMcr = scaleY(Mcr);
         lineaMcr.setAttribute("y1", yMcr);
         lineaMcr.setAttribute("y2", yMcr);
-        txtMcr.setAttribute("y", yMcr + 4);
+        txtMcr.setAttribute("y", yMcr + 5);
 
-        // Lógica de Mensajes Dinámicos
-        let mensaje = "";
-        let colorClase = "";
-
+        // 4. Lógica de Mensajes y Alertas
         if (Mmax > Mn) {
-            mensaje = "❌ <b>FALLA:</b> Se ha superado el Momento Nominal ($M_n$). La sección colapsa.";
-            colorClase = "w3-pale-red w3-border-red";
-            curva.setAttribute("fill", "rgba(0,0,0,0.6)"); // Oscurecer por falla
+            statusMsg.className = "w3-panel w3-black w3-text-white w3-center w3-padding-small";
+            statusMsg.innerHTML = `⚠️ <b>FALLA ESTRUCTURAL:</b> Se superó el Momento Nominal ($M_n = 78.7$).`;
+            curva.setAttribute("fill", "rgba(0,0,0,0.7)");
         } else if (Mmax > 3 * Mcr) {
-            mensaje = "⚠️ <b>RANGO CRÍTICO:</b> Fuera del rango típico de servicio ($M_{max} > 3M_{cr}$). La fisuración es excesiva.";
-            colorClase = "w3-orange w3-text-white";
+            statusMsg.className = "w3-panel w3-orange w3-text-white w3-center w3-padding-small";
+            statusMsg.innerHTML = `⚠️ <b>AVISO:</b> Momento fuera del rango típico de servicio ($> 3M_{cr}$).`;
             curva.setAttribute("fill", "rgba(192,57,43,0.5)");
         } else if (Mmax > Mcr) {
-            mensaje = "✅ <b>ESTADO FISURADO:</b> Comportamiento elástico agrietado. Usar $I_e$.";
-            colorClase = "w3-pale-blue w3-border-blue";
+            statusMsg.className = "w3-panel w3-pale-red w3-border-red w3-leftbar w3-center w3-padding-small";
+            statusMsg.innerHTML = `<b>ESTADO FISURADO:</b> Calcular deflexiones usando $I_e$ (Branson).`;
             curva.setAttribute("fill", "rgba(192,57,43,0.3)");
         } else {
-            mensaje = "✅ <b>ESTADO BRUTO:</b> Sección sin agrietamiento visible.";
-            colorClase = "w3-pale-green w3-border-green";
+            statusMsg.className = "w3-panel w3-pale-green w3-border-green w3-leftbar w3-center w3-padding-small";
+            statusMsg.innerHTML = `<b>ESTADO BRUTO:</b> Sección íntegra sin fisuración.`;
             curva.setAttribute("fill", "rgba(39,174,96,0.2)");
         }
-
-        statusMsg.className = "w3-panel w3-round w3-leftbar w3-padding-small w3-center " + colorClase;
-        statusMsg.innerHTML = mensaje;
     }
 
     actualizar();
     slider.addEventListener("input", actualizar);
 });
 </script>
-
-        
-
-
-
-
-
-
-
-
-
 
 
 
