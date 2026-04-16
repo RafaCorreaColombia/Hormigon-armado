@@ -392,7 +392,9 @@ document.getElementById('factor-dinamico').textContent = ratio.toFixed(2);
 
 
 
-<div class="w3-container w3-white w3-padding w3-round w3-card w3-margin-top">
+
+
+        <div class="w3-container w3-white w3-padding w3-round w3-card w3-margin-top">
 
     <h4 class="w3-center"><b>Diagrama de Momentos Flectores (Tensiones)</b></h4>
     <p class="w3-center w3-small">
@@ -402,22 +404,30 @@ document.getElementById('factor-dinamico').textContent = ratio.toFixed(2);
     <div class="w3-center">
         <svg viewBox="0 0 600 280" width="100%" style="max-width:700px; background:#fafafa; border:1px solid #ddd; border-radius: 8px;">
 
+            <!-- Eje vertical -->
             <line x1="60" y1="50" x2="60" y2="250" stroke="#333" stroke-width="1.5"/>
             <polygon points="55,250 65,250 60,260" fill="#333"/>
-            <text x="15" y="150" transform="rotate(-90 15,150)" font-size="11" font-weight="bold" fill="#333">Momentos (kN·m)</text>
+            <text x="15" y="150" transform="rotate(-90 15,150)" font-size="11" font-weight="bold" fill="#333">
+                Momentos (kN·m)
+            </text>
 
+            <!-- Viga (Momento = 0) -->
             <line x1="100" y1="50" x2="500" y2="50" stroke="#333" stroke-width="2"/>
 
+            <!-- Apoyos -->
             <circle cx="100" cy="50" r="5" fill="#333"/>
             <circle cx="500" cy="50" r="5" fill="#333"/>
-            <text x="75" y="40" font-size="10" fill="#777">Apoyo 1</text>
-            <text x="475" y="40" font-size="10" fill="#777">Apoyo 2</text>
+            <text x="70" y="38" font-size="10" fill="#555">Apoyo 1</text>
+            <text x="470" y="38" font-size="10" fill="#555">Apoyo 2</text>
 
+            <!-- Diagrama -->
             <path id="curva-momento" fill="rgba(192,57,43,0.2)" stroke="#c0392b" stroke-width="2.5"/>
 
-            <line id="linea-mcr" x1="100" x2="500" stroke="#2980b9" stroke-width="2" stroke-dasharray="6,4"/>
-            <text x="510" id="txt-mcr" font-size="12" fill="#2980b9" font-weight="bold">Mcr</text>
+            <!-- Línea Mcr -->
+            <line id="linea-mcr" stroke="#2980b9" stroke-width="2" stroke-dasharray="6,4"/>
+            <text id="txt-mcr" font-size="12" fill="#2980b9" font-weight="bold">Mcr</text>
 
+            <!-- Punto máximo -->
             <circle id="punto-max" r="5" fill="#000" stroke="white" stroke-width="2"/>
             <text id="txt-max" font-size="13" font-weight="bold"></text>
 
@@ -425,8 +435,8 @@ document.getElementById('factor-dinamico').textContent = ratio.toFixed(2);
     </div>
 
     <div class="w3-padding-16">
-        <label class="w3-text-dark-grey"><b>Carga distribuida aplicada \( w \):</b> 
-            <span id="val-w" class="w3-tag w3-round w3-red">20</span> <b>kN/m</b>
+        <label><b>Carga distribuida \( w \):</b> 
+            <span id="val-w" class="w3-tag w3-red w3-round">20</span> kN/m
         </label>
         <input type="range" id="slider-w-diff" min="0" max="50" step="0.5" value="20" class="w3-input w3-margin-top">
     </div>
@@ -435,14 +445,14 @@ document.getElementById('factor-dinamico').textContent = ratio.toFixed(2);
 
 </div>
 
-<script id="script-momento-diff">
+<script>
 document.addEventListener('DOMContentLoaded', function() {
 
-    const L_diff = 4.0;       
-    const Mcr_diff = 17.5;    
-    const Y_CERO = 50; // El nuevo "piso" o eje de la viga
+    const L = 4.0;
+    const Mcr = 17.5;
+    const Y_EJE = 50;
 
-    const sliderW = document.getElementById('slider-w-diff');
+    const slider = document.getElementById('slider-w-diff');
     const valW = document.getElementById('val-w');
     const curva = document.getElementById('curva-momento');
     const lineaMcr = document.getElementById('linea-mcr');
@@ -452,65 +462,83 @@ document.addEventListener('DOMContentLoaded', function() {
     const statusMsg = document.getElementById('status-msg');
 
     function scaleX(x) {
-        return 100 + (x / L_diff) * 400;
+        return 100 + (x / L) * 400;
     }
 
-    function scaleY(M) {
-        // Escala: 60 kN-m cubren 200px de altura en el SVG
-        const M_max_visual = 60; 
-        return Y_CERO + (M / M_max_visual) * 200; 
+    function scaleY(M, Mref) {
+        const altura = 180;
+        return Y_EJE + (M / Mref) * altura;
     }
 
-    function actualizarDiagramaDiff() {
-        const w = parseFloat(sliderW.value);
+    function actualizar() {
+
+        const w = parseFloat(slider.value);
         valW.textContent = w.toFixed(1);
 
-        const Mmax = (w * L_diff * L_diff) / 8;
+        const Mmax = (w * L * L) / 8;
 
-        // Parábola iniciando y terminando en Y_CERO (50)
-        let d = `M 100 ${Y_CERO} `;
-        for (let x = 0; x <= L_diff; x += 0.05) {
-            let M_x = (w * x * (L_diff - x)) / 2;
-            d += `L ${scaleX(x)} ${scaleY(M_x)} `;
+        // escala dinámica (clave)
+        const Mref = Math.max(Mmax, Mcr) * 1.2;
+
+        // curva
+        let d = `M 100 ${Y_EJE} `;
+        for (let x = 0; x <= L; x += 0.05) {
+            let Mx = (w * x * (L - x)) / 2;
+            d += `L ${scaleX(x)} ${scaleY(Mx, Mref)} `;
         }
-        d += `L 500 ${Y_CERO} Z`;
+        d += `L 500 ${Y_EJE} Z`;
         curva.setAttribute("d", d);
 
-        const xMid = scaleX(L_diff/2);
-        const yMid = scaleY(Mmax);
+        // punto máximo
+        const xMid = scaleX(L / 2);
+        const yMid = scaleY(Mmax, Mref);
 
         puntoMax.setAttribute("cx", xMid);
         puntoMax.setAttribute("cy", yMid);
 
         txtMax.textContent = `Mmax = ${Mmax.toFixed(1)} kN·m`;
-        txtMax.setAttribute("x", xMid - 55);
-        txtMax.setAttribute("y", yMid + 25);
+        txtMax.setAttribute("x", xMid - 60);
+        txtMax.setAttribute("y", yMid + 20);
 
-        // Línea Mcr alineada con la nueva escala
-        const yMcr = scaleY(Mcr_diff);
+        // línea Mcr
+        const yMcr = scaleY(Mcr, Mref);
+
+        lineaMcr.setAttribute("x1", 100);
+        lineaMcr.setAttribute("x2", 500);
         lineaMcr.setAttribute("y1", yMcr);
         lineaMcr.setAttribute("y2", yMcr);
+
+        txtMcr.setAttribute("x", 505);
         txtMcr.setAttribute("y", yMcr + 5);
 
-        if (Mmax > Mcr_diff) {
-            curva.setAttribute("fill", "rgba(192, 57, 43, 0.3)");
+        // estado
+        const ratio = Mmax / Mcr;
+
+        if (Mmax > Mcr) {
+            curva.setAttribute("fill", "rgba(192,57,43,0.3)");
             curva.setAttribute("stroke", "#c0392b");
             txtMax.setAttribute("fill", "#c0392b");
+
             statusMsg.className = "w3-panel w3-pale-red w3-border-red w3-leftbar w3-padding-small w3-center";
-            statusMsg.innerHTML = "<b>ESTADO FISURADO:</b> El momento máximo supera la capacidad del concreto a tensión.";
+            statusMsg.innerHTML = `<b>ESTADO FISURADO:</b> Mmax supera Mcr<br><small>Mmax/Mcr = ${ratio.toFixed(2)}</small>`;
         } else {
-            curva.setAttribute("fill", "rgba(39, 174, 96, 0.2)");
+            curva.setAttribute("fill", "rgba(39,174,96,0.2)");
             curva.setAttribute("stroke", "#27ae60");
             txtMax.setAttribute("fill", "#27ae60");
+
             statusMsg.className = "w3-panel w3-pale-green w3-border-green w3-leftbar w3-padding-small w3-center";
-            statusMsg.innerHTML = "<b>ESTADO BRUTO:</b> La viga resiste las cargas sin agrietarse.";
+            statusMsg.innerHTML = `<b>SECCIÓN NO FISURADA:</b> Mmax ≤ Mcr<br><small>Mmax/Mcr = ${ratio.toFixed(2)}</small>`;
         }
     }
 
-    actualizarDiagramaDiff();
-    sliderW.addEventListener("input", actualizarDiagramaDiff);
+    actualizar();
+    slider.addEventListener("input", actualizar);
 });
 </script>
+        
+
+
+        
 
 
 
