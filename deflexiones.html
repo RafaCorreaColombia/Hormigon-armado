@@ -499,15 +499,15 @@ document.addEventListener('DOMContentLoaded', function() {
         // 4. Lógica de Mensajes y Alertas
         if (Mmax > Mn) {
             statusMsg.className = "w3-panel w3-black w3-text-white w3-center w3-padding-small";
-            statusMsg.innerHTML = `⚠️ <b>FALLA ESTRUCTURAL:</b> Se superó el Momento Nominal \( (M_n = 78.7$) \). El modelo de Branson describe la transición de rigidez en servicio, no el comportamiento hasta la falla.`;
+            statusMsg.innerHTML = `⚠️ <b>FALLA ESTRUCTURAL:</b> Se superó el Momento Nominal Mn = 78.7 kNm. El modelo de Branson describe la transición de rigidez en servicio, no el comportamiento hasta la falla.`;
             curva.setAttribute("fill", "rgba(0,0,0,0.7)");
         } else if (Mmax > 3 * Mcr) {
             statusMsg.className = "w3-panel w3-orange w3-text-white w3-center w3-padding-small";
-            statusMsg.innerHTML = `⚠️ <b>AVISO:</b> Momento fuera del rango típico de servicio \( (> 3M_{cr}) \). El análisis mostrado corresponde a servicio. Para este nivel de carga, se requiere análisis no lineal.`;
+            statusMsg.innerHTML = `⚠️ <b>AVISO:</b> Momento fuera del rango típico de servicio > 3 Mcr. El análisis mostrado corresponde a servicio. Para este nivel de carga, se requiere análisis no lineal.`;
             curva.setAttribute("fill", "rgba(192,57,43,0.5)");
         } else if (Mmax > Mcr) {
             statusMsg.className = "w3-panel w3-pale-red w3-border-red w3-leftbar w3-center w3-padding-small";
-            statusMsg.innerHTML = `<b>ESTADO FISURADO:</b> Calcular deflexiones usando \( I_e \) (Branson).`;
+            statusMsg.innerHTML = `<b>ESTADO FISURADO:</b> Calcular deflexiones usando Ie (Branson).`;
             curva.setAttribute("fill", "rgba(192,57,43,0.3)");
         } else {
             statusMsg.className = "w3-panel w3-pale-green w3-border-green w3-leftbar w3-center w3-padding-small";
