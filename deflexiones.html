@@ -610,7 +610,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // 4. Lógica de Mensajes y Alertas
         if (Mmax > Mn) {
             statusMsg.className = "w3-panel w3-black w3-text-white w3-center w3-padding-small";
-            statusMsg.innerHTML = `⚠️ <b>FALLA ESTRUCTURAL:</b> Se superó el Momento Nominal Mn = 78.7 kNm. El modelo de Branson describe la transición de rigidez en servicio, no el comportamiento hasta la falla.`;
+            statusMsg.innerHTML = `⚠️ <b>FALLA ESTRUCTURAL:</b> Se superó el Momento Nominal Mn = 78 kNm (valor estimado). El modelo de Branson describe la transición de rigidez en servicio, no el comportamiento hasta la falla.`;
             curva.setAttribute("fill", "rgba(0,0,0,0.7)");
         } else if (Mmax > 3 * Mcr) {
             statusMsg.className = "w3-panel w3-orange w3-text-white w3-center w3-padding-small";
