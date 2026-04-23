@@ -1,19 +1,46 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zapatas - Estabilidad y Presiones</title>
+    <title>Zapatas - Análisis Geotécnico y Estructural</title>
+    
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            }
+        };
+    </script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
     <style>
-        body { background:#f1f5f9; font-family:'Segoe UI', sans-serif; }
+        body { background-color: #f1f3f6; font-family: 'Segoe UI', sans-serif; }
+        
+        .contenedor-principal {
+            max-width: 1200px; margin: 30px auto; border-radius: 12px;
+            background: white; padding: 0; overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        /* Encabezado Estilo UIS */
+        .header-rc { background: #2c3e50; color: white; padding: 50px 20px; text-align: center; }
+        .contenido-body { padding: 30px; }
+        
         .dashboard-card { border-radius:12px; background:white; border: 1px solid #e2e8f0; margin-bottom: 20px; }
-        .slider { width:100%; accent-color: #0f172a; cursor: pointer; }
+        .slider { width:100%; accent-color: #c0392b; cursor: pointer; }
         .label-tech { font-size: 0.85em; font-weight: 600; color: #64748b; }
-        .legend-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 5px; }
         .table-res td { padding: 8px !important; font-size: 0.85em; }
+        
+        /* Scrollbars Rojo UIS */
+        ::-webkit-scrollbar { height: 6px; width: 6px; }
+        ::-webkit-scrollbar-thumb { background: #c0392b; border-radius: 10px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+
+        th { background-color: #2c3e50 !important; color: white !important; }
         .res-cumple { color:#059669; font-weight:bold; }
         .res-falla { color:#dc2626; font-weight:bold; }
         .res-alerta { color:#d97706; font-weight:bold; }
@@ -21,81 +48,114 @@
 </head>
 <body>
 
-<div class="w3-content" style="max-width:1300px">
-    <header class="w3-container w3-blue-grey w3-padding-24 w3-margin-bottom w3-card-4">
-        <h2 class="w3-margin-0"><b>Zapata: Estabilidad y Presiones</b></h2>
-        <span class="w3-small">Análisis de Estabilidad y Presiones Últimas de Diseño</span>
-    </header>
-
-    <div class="w3-row-padding">
-        <div class="w3-col l4 m5">
-            <div class="w3-container w3-white w3-padding dashboard-card w3-card">
-                <h5 class="w3-border-bottom w3-padding-small"><b>Entrada de Datos</b></h5>
-                <label class="label-tech">Lado Zapata L [m]: <span id="dispL" class="w3-text-blue">2.50</span></label>
-                <input type="range" id="valL" min="1" max="6" step="0.05" value="2.5" class="slider w3-margin-bottom">
-                
-                <div class="w3-row-padding">
-                    <div class="w3-half"><label class="label-tech">\(q_{adm}\) [kPa]</label><input type="number" id="qadm_in" value="188" class="w3-input w3-border w3-round"></div>
-                    <div class="w3-half"><label class="label-tech">\(q_{p}\) [kPa]</label><input type="number" id="qp_in" value="280" class="w3-input w3-border w3-round"></div>
-                </div>
-
-                <hr>
-                <h6 class="w3-small"><b>Cargas Axiales (P) [kN]</b></h6>
-                <div class="w3-row-padding">
-                    <div class="w3-third"><label class="w3-tiny">P Muerta</label><input type="number" id="PD_in" value="290" class="w3-input w3-border"></div>
-                    <div class="w3-third"><label class="w3-tiny">P Viva</label><input type="number" id="PL_in" value="70" class="w3-input w3-border"></div>
-                    <div class="w3-third"><label class="w3-tiny">P Sismo</label><input type="number" id="PE_in" value="45" class="w3-input w3-border"></div>
-                </div>
-                
-                <h6 class="w3-small w3-margin-top"><b>Momentos Flectores (M) [kN·m]</b></h6>
-                <div class="w3-row-padding">
-                    <div class="w3-third"><label class="w3-tiny">M Muerta</label><input type="number" id="MD_in" value="10" class="w3-input w3-border"></div>
-                    <div class="w3-third"><label class="w3-tiny">M Viva</label><input type="number" id="ML_in" value="10" class="w3-input w3-border"></div>
-                    <div class="w3-third"><label class="w3-tiny">M Sismo</label><input type="number" id="ME_in" value="85" class="w3-input w3-border"></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="w3-col l8 m7">
-            <div class="w3-container w3-white w3-padding dashboard-card w3-card">
-                <h5 class="w3-border-bottom w3-padding-small"><b>1. Análisis Geotécnico (Presiones de Servicio y Estabilidad)</b></h5>
-                <svg viewBox="0 0 500 380" width="100%" style="background:#fafafa; border-radius:8px;">
-                    <defs>
-                        <pattern id="hatchFalla" patternUnits="userSpaceOnUse" width="4" height="4" patternTransform="rotate(45)">
-                            <line x1="0" y1="0" x2="0" y2="4" stroke="rgba(220, 38, 38, 0.4)" stroke-width="1" />
-                        </pattern>
-                    </defs>
-                    <rect x="150" y="20" width="200" height="40" fill="#94a3b8" stroke="#1e293b" stroke-width="2"/>
-                    <rect x="235" y="-10" width="30" height="30" fill="#64748b"/>
-                    <line x1="250" y1="60" x2="250" y2="380" stroke="#e2e8f0" stroke-dasharray="4"/>
-
-                    <path id="pathC1" fill="rgba(37, 99, 235, 0.1)" stroke="#2563eb" stroke-width="2"/>
-                    <path id="pathC2" fill="rgba(234, 88, 12, 0.15)" stroke="#ea580c" stroke-width="2"/>
-                    <path id="pathC3" fill="rgba(124, 58, 237, 0.2)" stroke="#7c3aed" stroke-width="2.5"/>
-
-                    <line id="lineQadm" x1="120" y1="0" x2="380" y2="0" stroke="#64748b" stroke-width="1.5" stroke-dasharray="5,3"/>
-                    <text x="385" id="txtQadm" font-size="10" fill="#64748b">q_adm</text>
-                    <line id="lineQp" x1="120" y1="0" x2="380" y2="0" stroke="#dc2626" stroke-width="2" stroke-dasharray="5,3"/>
-                    <text x="385" id="txtQp" font-size="10" font-weight="bold" fill="#dc2626">q_p</text>
-                </svg>
-                <div id="resultsArea" class="w3-margin-top w3-responsive"></div>
-            </div>
-
-            <div class="w3-container w3-white w3-padding dashboard-card w3-card">
-                <h5 class="w3-border-bottom w3-padding-small"><b>2. Diseño Estructural (Presiones Últimas Mayoradas)</b></h5>
-                <svg viewBox="0 0 500 380" width="100%" style="background:#fafafa; border-radius:8px;">
-                    <rect x="150" y="20" width="200" height="40" fill="#94a3b8" stroke="#1e293b" stroke-width="2"/>
-                    <rect x="235" y="-10" width="30" height="30" fill="#64748b"/>
-                    <line x1="250" y1="60" x2="250" y2="380" stroke="#e2e8f0" stroke-dasharray="4"/>
-
-                    <path id="pathU1" fill="rgba(46, 204, 113, 0.1)" stroke="#27ae60" stroke-width="2"/>
-                    <path id="pathU2" fill="rgba(22, 160, 133, 0.15)" stroke="#16a085" stroke-width="2.5"/>
-                </svg>
-                <div id="resultsAreaUlt" class="w3-margin-top w3-responsive"></div>
-            </div>
+<div class="contenedor-principal w3-animate-opacity">
+    
+    <div class="header-rc">
+        <h1 class="w3-xxlarge">Análisis de Estabilidad y Presiones en Zapatas</h1>
+        <p class="w3-large"><em>"Interacción Suelo-Estructura: Modelos Elásticos y Redistribución FEMA"</em></p>
+        <div class="w3-margin-top">
+            <span class="w3-tag w3-white w3-text-dark-grey w3-round">Geotecnia UIS</span>
+            <span class="w3-tag w3-red w3-round">FEMA 7.1-3</span>
         </div>
     </div>
+
+    <div class="contenido-body">
+        <div class="w3-row-padding">
+            <div class="w3-col l4 m5">
+                <div class="w3-container w3-white w3-padding dashboard-card w3-card">
+                    <h5 class="w3-border-bottom w3-padding-small"><b>Entrada de Datos</b></h5>
+                    <label class="label-tech">Lado Zapata L [m]: <span id="dispL" class="w3-text-red">2.50</span></label>
+                    <input type="range" id="valL" min="1" max="6" step="0.05" value="2.5" class="slider w3-margin-bottom">
+                    
+                    <div class="w3-row-padding">
+                        <div class="w3-half"><label class="label-tech">\(q_{adm}\) [kPa]</label><input type="number" id="qadm_in" value="200" class="w3-input w3-border w3-round"></div>
+                        <div class="w3-half"><label class="label-tech">\(q_{p}\) [kPa]</label><input type="number" id="qp_in" value="280" class="w3-input w3-border w3-round"></div>
+                    </div>
+
+                    <hr>
+                    <h6 class="w3-small"><b>Cargas (P) [kN] y Momentos (M) [kN·m]</b></h6>
+                    <div class="w3-row-padding w3-margin-bottom">
+                        <div class="w3-third"><label class="w3-tiny">P Muerta</label><input type="number" id="PD_in" value="290" class="w3-input w3-border"></div>
+                        <div class="w3-third"><label class="w3-tiny">P Viva</label><input type="number" id="PL_in" value="70" class="w3-input w3-border"></div>
+                        <div class="w3-third"><label class="w3-tiny">P Sismo</label><input type="number" id="PE_in" value="45" class="w3-input w3-border"></div>
+                    </div>
+                    <div class="w3-row-padding">
+                        <div class="w3-third"><label class="w3-tiny">M Muerta</label><input type="number" id="MD_in" value="10" class="w3-input w3-border"></div>
+                        <div class="w3-third"><label class="w3-tiny">M Viva</label><input type="number" id="ML_in" value="10" class="w3-input w3-border"></div>
+                        <div class="w3-third"><label class="w3-tiny">M Sismo</label><input type="number" id="ME_in" value="85" class="w3-input w3-border"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="w3-col l8 m7">
+                <div class="w3-container w3-white w3-padding dashboard-card w3-card">
+                    <h5 class="w3-border-bottom w3-padding-small"><b>1. Análisis Geotécnico y Estabilidad</b></h5>
+                    <svg viewBox="0 0 500 380" width="100%" style="background:#fafafa; border-radius:8px;">
+                        <defs>
+                            <pattern id="hatchFalla" patternUnits="userSpaceOnUse" width="4" height="4" patternTransform="rotate(45)">
+                                <line x1="0" y1="0" x2="0" y2="4" stroke="rgba(220, 38, 38, 0.4)" stroke-width="1" />
+                            </pattern>
+                        </defs>
+                        <rect x="150" y="20" width="200" height="40" fill="#94a3b8" stroke="#1e293b" stroke-width="2"/>
+                        <rect x="235" y="-10" width="30" height="30" fill="#64748b"/>
+                        <line x1="250" y1="60" x2="250" y2="380" stroke="#e2e8f0" stroke-dasharray="4"/>
+                        <path id="pathC1" fill="rgba(37, 99, 235, 0.1)" stroke="#2563eb" stroke-width="2"/>
+                        <path id="pathC2" fill="rgba(234, 88, 12, 0.15)" stroke="#ea580c" stroke-width="2"/>
+                        <path id="pathC3" fill="rgba(124, 58, 237, 0.2)" stroke="#7c3aed" stroke-width="2.5"/>
+                        <line id="lineQadm" x1="120" y1="0" x2="380" y2="0" stroke="#64748b" stroke-width="1.5" stroke-dasharray="5,3"/>
+                        <text x="385" id="txtQadm" font-size="10" fill="#64748b">q_adm</text>
+                        <line id="lineQp" x1="120" y1="0" x2="380" y2="0" stroke="#dc2626" stroke-width="2"/>
+                        <text x="385" id="txtQp" font-size="10" font-weight="bold" fill="#dc2626">q_p</text>
+                    </svg>
+                    <div id="resultsArea" class="w3-margin-top w3-responsive"></div>
+                </div>
+
+                <div class="w3-container w3-white w3-padding dashboard-card w3-card">
+                    <h5 class="w3-border-bottom w3-padding-small"><b>2. Diseño Estructural (Combinaciones Últimas)</b></h5>
+                    <div id="resultsAreaUlt" class="w3-responsive"></div>
+                </div>
+            </div>
+        </div>
+
+       <div class="w3-panel w3-sand w3-leftbar w3-border-amber w3-padding-16 w3-margin-top" style="max-width: 800px; margin: auto; font-style: italic;">
+    <h5 class="w3-text-dark-grey" style="margin-top: 0;"><b>⚠️ Nota de Uso Académico</b></h5>
+    <p class="w3-small">
+        Esta herramienta interactiva ha sido desarrollada con fines exclusivamente académicos y de visualización conceptual del comportamiento zapata–suelo. 
+        Aunque se basa en formulaciones técnicas reconocidas, puede contener simplificaciones, supuestos o errores inherentes a su implementación.
+        <br><br>
+        <b>No está destinada para uso en diseño profesional ni para la toma de decisiones constructivas.</b> 
+        Cada ingeniero es responsable de realizar un análisis completo, verificar resultados y aplicar la normativa vigente correspondiente a su proyecto.
+        <br><br>
+        El autor no asume ninguna responsabilidad por el uso indebido de esta herramienta ni por las decisiones derivadas de su aplicación.
+    </p>
 </div>
+
+        <div class="w3-container w3-margin-top w3-padding-32 w3-center">
+            <h3 class="w3-border-bottom w3-padding-small">Consultas y Discusión Técnica</h3>
+            <script src="https://utteranc.es/client.js"
+                    repo="rafacorreacolombia/Hormigon-armado"
+                    issue-term="pathname"
+                    theme="github-light"
+                    crossorigin="anonymous"
+                    async>
+            </script>
+        </div>
+
+        <footer class="w3-container w3-padding-32 w3-center w3-text-grey w3-light-grey">
+            <div class="w3-border-top w3-border-grey w3-padding-24" style="max-width: 500px; margin: auto;">
+                <p class="w3-medium"><b>Publicado por:</b></p>
+                <h4 class="w3-text-dark-grey" style="margin: 0;"><b>Rafael Antonio Correa Melano</b></h4>
+                <p class="w3-small">Ingeniero Civil • M.IE. • Universidad Industrial de Santander</p>
+                <div class="w3-margin-top">
+                    <span class="w3-tag w3-round w3-white w3-border w3-border-red w3-text-red w3-small">BGA, 2026</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+</div>
+
+
+
 
 <script>
 // --- MOTOR FEMA (MANTENIDO IGUAL) ---
@@ -225,49 +285,7 @@ update();
 
 
 
-<div class="w3-panel w3-sand w3-leftbar w3-border-amber w3-padding-16 w3-margin-top" style="max-width: 800px; margin: auto; font-style: italic;">
-    <h5 class="w3-text-dark-grey" style="margin-top: 0;"><b>⚠️ Nota de Uso Académico</b></h5>
-    <p class="w3-small">
-        Esta es una herramienta interactiva de visualización diseñada para facilitar la comprensión de los modelos de comportamiento zapata-suelo. 
-        Aunque se basa en formulaciones técnicas rigurosas (como el modelo FEMA), <b>cada ingeniero es responsable del análisis detallado de su caso particular</b>. 
-        No me hago responsable por errores, incoherencias o decisiones de diseño derivadas del uso de este simulador. 
-        Úsalo como apoyo didáctico, pero mantén siempre tu criterio profesional.
-    </p>
-</div>
 
-
-
-<div class="w3-content" style="max-width:1300px">
-    
-    <div class="w3-container w3-margin-top w3-padding-32 w3-center">
-    <h3 class="w3-border-red">Consultas y Discusión Académica</h3>
-    <p class="w3-small w3-text-grey">Inicia sesión con tu cuenta de GitHub para dejar una pregunta o comentario técnico.</p>
-    
-    <script src="https://utteranc.es/client.js"
-        repo="rafacorreacolombia/Hormigon-armado"
-        issue-term="pathname"
-        theme="github-light"
-        crossorigin="anonymous"
-        async>
-    </script>                                        
-</div>
-
-
-        <hr class="w3-margin-top-64">
-        <footer class="w3-container w3-padding-32 w3-center w3-text-grey w3-light-grey w3-margin-top">
-    <div class="w3-border-top w3-border-grey w3-padding-24" style="max-width: 500px; margin: auto;">
-        <p class="w3-medium"><b>Publicado por:</b></p>
-        <h4 class="w3-text-dark-grey" style="margin: 0;"><b>Rafael Antonio Correa Melano</b></h4>
-        <p class="w3-small" style="margin-top: 5px;">
-            Ingeniero Civil • M.IE.<br>
-            Universidad Industrial de Santander
-        </p>
-        <div class="w3-margin-top">
-            <span class="w3-tag w3-round w3-white w3-border w3-border-red w3-text-red w3-small">BGA, 2026</span>
-        </div>
-    </div>
-    </footer>
-</div>
     
 </body>
 </html>
