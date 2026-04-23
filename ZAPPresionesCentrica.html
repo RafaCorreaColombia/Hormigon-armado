@@ -3,44 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zapatas - Análisis de Equilibrio y Presiones</title>
-    
+    <title>Zapatas - Estabilidad y Presiones</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    
-    <script>
-        window.MathJax = {
-            tex: {
-                inlineMath: [['$', '$'], ['\\(', '\\)']],
-                displayMath: [['$$', '$$'], ['\\[', '\\]']]
-            }
-        };
-    </script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-
     <style>
-        body { background-color: #f1f3f6; font-family: 'Segoe UI', sans-serif; }
-        
-        .contenedor-principal {
-            max-width: 1200px; margin: 30px auto; border-radius: 12px;
-            background: white; padding: 0; overflow: hidden;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-        }
-        
-        /* Encabezado Estilo UIS */
-        .header-rc { background: #2c3e50; color: white; padding: 50px 20px; text-align: center; }
-        .contenido-body { padding: 30px; }
-        
+        body { background:#f1f5f9; font-family:'Segoe UI', sans-serif; }
         .dashboard-card { border-radius:12px; background:white; border: 1px solid #e2e8f0; margin-bottom: 20px; }
-        .slider { width:100%; accent-color: #c0392b; cursor: pointer; }
+        .slider { width:100%; accent-color: #0f172a; cursor: pointer; }
         .label-tech { font-size: 0.85em; font-weight: 600; color: #64748b; }
+        .legend-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 5px; }
         .table-res td { padding: 8px !important; font-size: 0.85em; }
-        
-        /* Scrollbars Rojo UIS */
-        ::-webkit-scrollbar { height: 6px; width: 6px; }
-        ::-webkit-scrollbar-thumb { background: #c0392b; border-radius: 10px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; }
-
-        th { background-color: #2c3e50 !important; color: white !important; }
         .res-cumple { color:#059669; font-weight:bold; }
         .res-falla { color:#dc2626; font-weight:bold; }
         .res-alerta { color:#d97706; font-weight:bold; }
@@ -48,18 +21,13 @@
 </head>
 <body>
 
-<div class="contenedor-principal w3-animate-opacity">
-    
-    <div class="header-rc">
-        <h1 class="w3-xxlarge">Análisis de Estabilidad y Presiones en Zapatas</h1>
-        <p class="w3-large"><em>"Modelos Elásticos y Redistribución"</em></p>
-        <div class="w3-margin-top">
-            <span class="w3-tag w3-white w3-text-dark-grey w3-round">Diseño de Hormigón Armado</span>
-            <span class="w3-tag w3-red w3-round">FEMA P-1051 Sección 7.1-3</span>
-        </div>
-    </div>
+<div class="w3-content" style="max-width:1300px">
+    <header class="w3-container w3-blue-grey w3-padding-24 w3-margin-bottom w3-card-4">
+        <h2 class="w3-margin-0"><b>Zapata: Estabilidad y Presiones</b></h2>
+        <span class="w3-small">Análisis de Estabilidad y Presiones Últimas de Diseño</span>
+    </header>
 
-     <div class="w3-row-padding">
+    <div class="w3-row-padding">
         <div class="w3-col l4 m5">
             <div class="w3-container w3-white w3-padding dashboard-card w3-card">
                 <h5 class="w3-border-bottom w3-padding-small"><b>Entrada de Datos</b></h5>
@@ -127,8 +95,137 @@
             </div>
         </div>
     </div>
+</div>
 
-       <div class="w3-panel w3-sand w3-leftbar w3-border-amber w3-padding-16 w3-margin-top" style="max-width: 800px; margin: auto; font-style: italic;">
+<script>
+// --- MOTOR FEMA (MANTENIDO IGUAL) ---
+function motorFema(P, M, L, qp) {
+    let res = { d: "", qmax: 0, estado: "", isFalla: false };
+    if (P <= 0) { res.estado = "Sin Axial"; res.isFalla = true; return res; }
+    const B = L, e = M / P, absE = Math.abs(e), sentido = Math.sign(e) || 1;
+    const xStart = 150, xEnd = 350, yBase = 60, scale = 250 / Math.max(qp * 1.5, 100);
+    if (absE >= L / 2) { res.qmax = Infinity; res.estado = "Vuelco"; res.isFalla = true; return res; }
+
+    if (absE <= L / 6) {
+        res.qmax = (P / (L * B)) * (1 + 6 * absE / L);
+        const qmin = (P / (L * B)) * (1 - 6 * absE / L);
+        res.estado = "Elástico";
+        res.d = (sentido > 0) ? `M ${xStart} ${yBase} L ${xEnd} ${yBase} L ${xEnd} ${yBase + res.qmax * scale} L ${xStart} ${yBase + qmin * scale} Z` : `M ${xStart} ${yBase} L ${xEnd} ${yBase} L ${xEnd} ${yBase + qmin * scale} L ${xStart} ${yBase + res.qmax * scale} Z`;
+    } else {
+        const q_triangular = (2 * P) / (3 * B * (L / 2 - absE));
+        const lapo_px = (3 * (L / 2 - absE) / L) * 200;
+        const xp = (sentido > 0) ? xEnd - lapo_px : xStart + lapo_px;
+        if (q_triangular > qp) {
+            const K = (2 * P) / (B * qp);
+            const disc = 12 * K * (L / 2 - absE) - 3 * K * K;
+            if (disc >= 0) {
+                const a = (K - Math.sqrt(Math.max(0, disc))) / 2;
+                const Lp = K - a;
+                res.estado = "Híbrido"; res.qmax = qp;
+                const a_px = (a / L) * 200, Lp_px = (Lp / L) * 200;
+                res.d = (sentido > 0) ? `M ${xEnd} ${yBase} L ${xEnd - Lp_px} ${yBase} L ${xEnd - a_px} ${yBase + qp * scale} L ${xEnd} ${yBase + qp * scale} Z` : `M ${xStart} ${yBase} L ${xStart + Lp_px} ${yBase} L ${xStart + a_px} ${yBase + qp * scale} L ${xStart} ${yBase + qp * scale} Z`;
+            } else {
+                const xb = P / (B * qp);
+                if (absE <= (L / 2 - xb / 2)) {
+                    res.estado = "Bloque Plástico"; res.qmax = qp;
+                    const b_px = (xb / L) * 200, xc = 250 + (e / L) * 200;
+                    res.d = `M ${xc - b_px / 2} ${yBase} L ${xc + b_px / 2} ${yBase} L ${xc + b_px / 2} ${yBase + qp * scale} L ${xc - b_px / 2} ${yBase + qp * scale} Z`;
+                } else {
+                    res.estado = "NO FACTIBLE"; res.isFalla = true; res.qmax = q_triangular;
+                    res.d = `M ${xp} ${yBase} L ${sentido > 0 ? xEnd : xStart} ${yBase} L ${sentido > 0 ? xEnd : xStart} ${yBase + q_triangular * scale} Z`;
+                }
+            }
+        } else {
+            res.estado = "Despegue"; res.qmax = q_triangular;
+            res.d = `M ${xp} ${yBase} L ${sentido > 0 ? xEnd : xStart} ${yBase} L ${sentido > 0 ? xEnd : xStart} ${yBase + q_triangular * scale} Z`;
+        }
+    }
+    return res;
+}
+
+// --- MOTOR PARA PRESIONES ULTIMAS (SIN LIMITES PLASTICOS) ---
+function motorUltimo(P, M, L) {
+    let res = { d: "", qmax: 0, qmin: 0, estado: "" };
+    if (P <= 0) return res;
+    const B = L, e = M / P, absE = Math.abs(e), sentido = Math.sign(e) || 1;
+    const xStart = 150, xEnd = 350, yBase = 60, scale = 0.5; // Escala fija para diseño
+
+    if (absE <= L / 6) {
+        res.qmax = (P / (L * B)) * (1 + 6 * absE / L);
+        res.qmin = (P / (L * B)) * (1 - 6 * absE / L);
+        res.estado = "Elástico";
+        res.d = (sentido > 0) ? `M ${xStart} ${yBase} L ${xEnd} ${yBase} L ${xEnd} ${yBase + res.qmax * scale} L ${xStart} ${yBase + res.qmin * scale} Z` : `M ${xStart} ${yBase} L ${xEnd} ${yBase} L ${xEnd} ${yBase + res.qmin * scale} L ${xStart} ${yBase + res.qmax * scale} Z`;
+    } else if (absE < L / 2) {
+        res.qmax = (2 * P) / (3 * B * (L / 2 - absE));
+        res.qmin = 0;
+        res.estado = "Despegue";
+        const lapo_px = (3 * (L / 2 - absE) / L) * 200;
+        const xp = (sentido > 0) ? xEnd - lapo_px : xStart + lapo_px;
+        res.d = `M ${xp} ${yBase} L ${sentido > 0 ? xEnd : xStart} ${yBase} L ${sentido > 0 ? xEnd : xStart} ${yBase + res.qmax * scale} Z`;
+    } else {
+        res.estado = "Inestable";
+    }
+    return res;
+}
+
+function update() {
+    const L = parseFloat(document.getElementById("valL").value), qp = parseFloat(document.getElementById("qp_in").value), qadm = parseFloat(document.getElementById("qadm_in").value);
+    const PD = parseFloat(document.getElementById("PD_in").value) || 0, PL = parseFloat(document.getElementById("PL_in").value) || 0, PE = parseFloat(document.getElementById("PE_in").value) || 0;
+    const MD = parseFloat(document.getElementById("MD_in").value) || 0, ML = parseFloat(document.getElementById("ML_in").value) || 0, ME = parseFloat(document.getElementById("ME_in").value) || 0;
+
+    // 1. ACTUALIZACIÓN MODULO GEOTÉCNICO (MANTIENE TU LÓGICA)
+    const combos = [
+        { name: "C1: D+L", P: PD + PL, M: MD + ML, id: "pathC1", color: "#2563eb" },
+        { name: "C2: D+0.75L+0.525E", P: PD + 0.75 * PL + 0.525 * PE, M: MD + 0.75 * ML + 0.525 * ME, id: "pathC2", color: "#ea580c" },
+        { name: "C3: 0.6D-0.7E", P: 0.6 * PD - 0.7 * PE, M: 0.6 * MD - 0.7 * ME, id: "pathC3", color: "#7c3aed" }
+    ];
+
+    let table = `<table class="w3-table w3-bordered table-res"><tr class="w3-light-grey"><th>Combo</th><th>q_max [kPa]</th><th>Modelo</th><th>Verificación</th><th>\(L_{req}\) [m]</th></tr>`;
+    combos.forEach(c => {
+        const res = motorFema(c.P, c.M, L, qp);
+        const pathEl = document.getElementById(c.id);
+        pathEl.setAttribute("d", res.d);
+        if (res.isFalla || res.qmax > qp) { pathEl.setAttribute("fill", "url(#hatchFalla)"); pathEl.setAttribute("stroke-dasharray", "5,3"); }
+        else { pathEl.setAttribute("stroke-dasharray", "none"); pathEl.setAttribute("fill", c.id === "pathC1" ? "rgba(37, 99, 235, 0.1)" : (c.id === "pathC2" ? "rgba(234, 88, 12, 0.15)" : "rgba(124, 58, 237, 0.2)")); }
+        let vTxt = (res.isFalla || res.qmax > qp) ? "<span class='res-falla'>FALLA</span>" : (res.qmax > qadm ? "<span class='res-alerta'>ALERTA</span>" : "<span class='res-cumple'>CUMPLE</span>");
+        let L_req = c.P > 0 ? (Math.abs(c.M / c.P) + Math.sqrt(Math.pow(c.M / c.P, 2) + c.P / qp)).toFixed(2) : "---";
+        table += `<tr><td style="color:${c.color}"><b>${c.name}</b></td><td>${res.qmax === Infinity ? 'Vuelco' : res.qmax.toFixed(1)}</td><td>${res.estado}</td><td>${vTxt}</td><td><b>${L_req}</b></td></tr>`;
+    });
+    document.getElementById("resultsArea").innerHTML = table + "</table>";
+
+    // 2. ACTUALIZACIÓN MODULO DISEÑO (COMBINACIONES ÚLTIMAS)
+    const combosUlt = [
+        { name: "Ultima 1: 1.2D + 1.6L", P: 1.2*PD + 1.6*PL, M: 1.2*MD + 1.6*ML, id: "pathU1", color: "#27ae60" },
+        { name: "Ultima 2: 1.2D + 1.0E + 1.0L", P: 1.2*PD + 1.0*PE + 1.0*PL, M: 1.2*MD + 1.0*ME + 1.0*ML, id: "pathU2", color: "#16a085" }
+    ];
+
+    let tableUlt = `<table class="w3-table w3-bordered table-res"><tr class="w3-light-grey"><th>Combo Último</th><th>q_u max [kPa]</th><th>q_u min [kPa]</th><th>Modelo</th></tr>`;
+    combosUlt.forEach(c => {
+        const res = motorUltimo(c.P, c.M, L);
+        document.getElementById(c.id).setAttribute("d", res.d);
+        tableUlt += `<tr><td style="color:${c.color}"><b>${c.name}</b></td><td>${res.qmax.toFixed(1)}</td><td>${res.qmin.toFixed(1)}</td><td>${res.estado}</td></tr>`;
+    });
+    document.getElementById("resultsAreaUlt").innerHTML = tableUlt + "</table>";
+
+    // ACTUALIZACIÓN LÍNEAS GUÍA (G)
+    const scaleG = 250 / Math.max(qp * 1.5, 100), yBase = 60;
+    const yAdm = yBase + qadm * scaleG;
+    document.getElementById("lineQadm").setAttribute("y1", yAdm); document.getElementById("lineQadm").setAttribute("y2", yAdm);
+    document.getElementById("txtQadm").setAttribute("y", yAdm + 3);
+    const yP = yBase + qp * scaleG;
+    document.getElementById("lineQp").setAttribute("y1", yP); document.getElementById("lineQp").setAttribute("y2", yP);
+    document.getElementById("txtQp").setAttribute("y", yP + 3);
+
+    document.getElementById("dispL").textContent = L.toFixed(2);
+}
+
+document.querySelectorAll('input').forEach(el => el.addEventListener("input", update));
+update();
+</script>
+
+
+
+<div class="w3-panel w3-sand w3-leftbar w3-border-amber w3-padding-16 w3-margin-top" style="max-width: 800px; margin: auto; font-style: italic;">
     <h5 class="w3-text-dark-grey" style="margin-top: 0;"><b>⚠️ Nota de Uso Académico</b></h5>
     <p class="w3-small">
         Esta herramienta interactiva ha sido desarrollada con fines exclusivamente académicos y de visualización conceptual del comportamiento zapata–suelo. 
@@ -141,29 +238,39 @@
     </p>
 </div>
 
-        <div class="w3-container w3-margin-top w3-padding-32 w3-center">
-            <h3 class="w3-border-bottom w3-padding-small">Consultas y Discusión Técnica</h3>
-            <script src="https://utteranc.es/client.js"
-                    repo="rafacorreacolombia/Hormigon-armado"
-                    issue-term="pathname"
-                    theme="github-light"
-                    crossorigin="anonymous"
-                    async>
-            </script>
-        </div>
 
-        <footer class="w3-container w3-padding-32 w3-center w3-text-grey w3-light-grey">
-            <div class="w3-border-top w3-border-grey w3-padding-24" style="max-width: 500px; margin: auto;">
-                <p class="w3-medium"><b>Publicado por:</b></p>
-                <h4 class="w3-text-dark-grey" style="margin: 0;"><b>Rafael Antonio Correa Melano</b></h4>
-                <p class="w3-small">Ingeniero Civil • M.IE. • Universidad Industrial de Santander</p>
-                <div class="w3-margin-top">
-                    <span class="w3-tag w3-round w3-white w3-border w3-border-red w3-text-red w3-small">BGA, 2026</span>
-                </div>
-            </div>
-        </footer>
-    </div>
+
+<div class="w3-content" style="max-width:1300px">
+    
+    <div class="w3-container w3-margin-top w3-padding-32 w3-center">
+    <h3 class="w3-border-red">Consultas y Discusión Académica</h3>
+    <p class="w3-small w3-text-grey">Inicia sesión con tu cuenta de GitHub para dejar una pregunta o comentario técnico.</p>
+    
+    <script src="https://utteranc.es/client.js"
+        repo="rafacorreacolombia/Hormigon-armado"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+    </script>                                        
 </div>
 
 
-
+        <hr class="w3-margin-top-64">
+        <footer class="w3-container w3-padding-32 w3-center w3-text-grey w3-light-grey w3-margin-top">
+    <div class="w3-border-top w3-border-grey w3-padding-24" style="max-width: 500px; margin: auto;">
+        <p class="w3-medium"><b>Publicado por:</b></p>
+        <h4 class="w3-text-dark-grey" style="margin: 0;"><b>Rafael Antonio Correa Melano</b></h4>
+        <p class="w3-small" style="margin-top: 5px;">
+            Ingeniero Civil • M.IE.<br>
+            Universidad Industrial de Santander
+        </p>
+        <div class="w3-margin-top">
+            <span class="w3-tag w3-round w3-white w3-border w3-border-red w3-text-red w3-small">BGA, 2026</span>
+        </div>
+    </div>
+    </footer>
+</div>
+    
+</body>
+</html>
