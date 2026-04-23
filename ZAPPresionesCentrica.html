@@ -59,63 +59,74 @@
         </div>
     </div>
 
-    <div class="contenido-body">
-        <div class="w3-row-padding">
-            <div class="w3-col l4 m5">
-                <div class="w3-container w3-white w3-padding dashboard-card w3-card">
-                    <h5 class="w3-border-bottom w3-padding-small"><b>Entrada de Datos</b></h5>
-                    <label class="label-tech">Lado Zapata L [m]: <span id="dispL" class="w3-text-red">2.50</span></label>
-                    <input type="range" id="valL" min="1" max="6" step="0.05" value="2.5" class="slider w3-margin-bottom">
-                    
-                    <div class="w3-row-padding">
-                        <div class="w3-half"><label class="label-tech">\(q_{adm}\) [kPa]</label><input type="number" id="qadm_in" value="188" class="w3-input w3-border w3-round"></div>
-                        <div class="w3-half"><label class="label-tech">\(q_{p}\) [kPa]</label><input type="number" id="qp_in" value="280" class="w3-input w3-border w3-round"></div>
-                    </div>
-
-                    <hr>
-                    <h6 class="w3-small"><b>Cargas (P) [kN] y Momentos (M) [kN·m]</b></h6>
-                    <div class="w3-row-padding w3-margin-bottom">
-                        <div class="w3-third"><label class="w3-tiny">P Muerta</label><input type="number" id="PD_in" value="290" class="w3-input w3-border"></div>
-                        <div class="w3-third"><label class="w3-tiny">P Viva</label><input type="number" id="PL_in" value="70" class="w3-input w3-border"></div>
-                        <div class="w3-third"><label class="w3-tiny">P Sismo</label><input type="number" id="PE_in" value="45" class="w3-input w3-border"></div>
-                    </div>
-                    <div class="w3-row-padding">
-                        <div class="w3-third"><label class="w3-tiny">M Muerta</label><input type="number" id="MD_in" value="10" class="w3-input w3-border"></div>
-                        <div class="w3-third"><label class="w3-tiny">M Viva</label><input type="number" id="ML_in" value="10" class="w3-input w3-border"></div>
-                        <div class="w3-third"><label class="w3-tiny">M Sismo</label><input type="number" id="ME_in" value="85" class="w3-input w3-border"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="w3-col l8 m7">
-                <div class="w3-container w3-white w3-padding dashboard-card w3-card">
-                    <h5 class="w3-border-bottom w3-padding-small"><b>1. Análisis Geotécnico y Estabilidad</b></h5>
-                    <svg viewBox="0 0 500 380" width="100%" style="background:#fafafa; border-radius:8px;">
-                        <defs>
-                            <pattern id="hatchFalla" patternUnits="userSpaceOnUse" width="4" height="4" patternTransform="rotate(45)">
-                                <line x1="0" y1="0" x2="0" y2="4" stroke="rgba(220, 38, 38, 0.4)" stroke-width="1" />
-                            </pattern>
-                        </defs>
-                        <rect x="150" y="20" width="200" height="40" fill="#94a3b8" stroke="#1e293b" stroke-width="2"/>
-                        <rect x="235" y="-10" width="30" height="30" fill="#64748b"/>
-                        <line x1="250" y1="60" x2="250" y2="380" stroke="#e2e8f0" stroke-dasharray="4"/>
-                        <path id="pathC1" fill="rgba(37, 99, 235, 0.1)" stroke="#2563eb" stroke-width="2"/>
-                        <path id="pathC2" fill="rgba(234, 88, 12, 0.15)" stroke="#ea580c" stroke-width="2"/>
-                        <path id="pathC3" fill="rgba(124, 58, 237, 0.2)" stroke="#7c3aed" stroke-width="2.5"/>
-                        <line id="lineQadm" x1="120" y1="0" x2="380" y2="0" stroke="#64748b" stroke-width="1.5" stroke-dasharray="5,3"/>
-                        <text x="385" id="txtQadm" font-size="10" fill="#64748b">q_adm</text>
-                        <line id="lineQp" x1="120" y1="0" x2="380" y2="0" stroke="#dc2626" stroke-width="2"/>
-                        <text x="385" id="txtQp" font-size="10" font-weight="bold" fill="#dc2626">q_p</text>
-                    </svg>
-                    <div id="resultsArea" class="w3-margin-top w3-responsive"></div>
+     <div class="w3-row-padding">
+        <div class="w3-col l4 m5">
+            <div class="w3-container w3-white w3-padding dashboard-card w3-card">
+                <h5 class="w3-border-bottom w3-padding-small"><b>Entrada de Datos</b></h5>
+                <label class="label-tech">Lado Zapata L [m]: <span id="dispL" class="w3-text-blue">2.50</span></label>
+                <input type="range" id="valL" min="1" max="6" step="0.05" value="2.5" class="slider w3-margin-bottom">
+                
+                <div class="w3-row-padding">
+                    <div class="w3-half"><label class="label-tech">\(q_{adm}\) [kPa]</label><input type="number" id="qadm_in" value="188" class="w3-input w3-border w3-round"></div>
+                    <div class="w3-half"><label class="label-tech">\(q_{p}\) [kPa]</label><input type="number" id="qp_in" value="280" class="w3-input w3-border w3-round"></div>
                 </div>
 
-                <div class="w3-container w3-white w3-padding dashboard-card w3-card">
-                    <h5 class="w3-border-bottom w3-padding-small"><b>2. Diseño Estructural (Combinaciones Últimas)</b></h5>
-                    <div id="resultsAreaUlt" class="w3-responsive"></div>
+                <hr>
+                <h6 class="w3-small"><b>Cargas Axiales (P) [kN]</b></h6>
+                <div class="w3-row-padding">
+                    <div class="w3-third"><label class="w3-tiny">P Muerta</label><input type="number" id="PD_in" value="290" class="w3-input w3-border"></div>
+                    <div class="w3-third"><label class="w3-tiny">P Viva</label><input type="number" id="PL_in" value="70" class="w3-input w3-border"></div>
+                    <div class="w3-third"><label class="w3-tiny">P Sismo</label><input type="number" id="PE_in" value="45" class="w3-input w3-border"></div>
+                </div>
+                
+                <h6 class="w3-small w3-margin-top"><b>Momentos Flectores (M) [kN·m]</b></h6>
+                <div class="w3-row-padding">
+                    <div class="w3-third"><label class="w3-tiny">M Muerta</label><input type="number" id="MD_in" value="10" class="w3-input w3-border"></div>
+                    <div class="w3-third"><label class="w3-tiny">M Viva</label><input type="number" id="ML_in" value="10" class="w3-input w3-border"></div>
+                    <div class="w3-third"><label class="w3-tiny">M Sismo</label><input type="number" id="ME_in" value="85" class="w3-input w3-border"></div>
                 </div>
             </div>
         </div>
+
+        <div class="w3-col l8 m7">
+            <div class="w3-container w3-white w3-padding dashboard-card w3-card">
+                <h5 class="w3-border-bottom w3-padding-small"><b>1. Análisis Geotécnico (Presiones de Servicio y Estabilidad)</b></h5>
+                <svg viewBox="0 0 500 380" width="100%" style="background:#fafafa; border-radius:8px;">
+                    <defs>
+                        <pattern id="hatchFalla" patternUnits="userSpaceOnUse" width="4" height="4" patternTransform="rotate(45)">
+                            <line x1="0" y1="0" x2="0" y2="4" stroke="rgba(220, 38, 38, 0.4)" stroke-width="1" />
+                        </pattern>
+                    </defs>
+                    <rect x="150" y="20" width="200" height="40" fill="#94a3b8" stroke="#1e293b" stroke-width="2"/>
+                    <rect x="235" y="-10" width="30" height="30" fill="#64748b"/>
+                    <line x1="250" y1="60" x2="250" y2="380" stroke="#e2e8f0" stroke-dasharray="4"/>
+
+                    <path id="pathC1" fill="rgba(37, 99, 235, 0.1)" stroke="#2563eb" stroke-width="2"/>
+                    <path id="pathC2" fill="rgba(234, 88, 12, 0.15)" stroke="#ea580c" stroke-width="2"/>
+                    <path id="pathC3" fill="rgba(124, 58, 237, 0.2)" stroke="#7c3aed" stroke-width="2.5"/>
+
+                    <line id="lineQadm" x1="120" y1="0" x2="380" y2="0" stroke="#64748b" stroke-width="1.5" stroke-dasharray="5,3"/>
+                    <text x="385" id="txtQadm" font-size="10" fill="#64748b">q_adm</text>
+                    <line id="lineQp" x1="120" y1="0" x2="380" y2="0" stroke="#dc2626" stroke-width="2" stroke-dasharray="5,3"/>
+                    <text x="385" id="txtQp" font-size="10" font-weight="bold" fill="#dc2626">q_p</text>
+                </svg>
+                <div id="resultsArea" class="w3-margin-top w3-responsive"></div>
+            </div>
+
+            <div class="w3-container w3-white w3-padding dashboard-card w3-card">
+                <h5 class="w3-border-bottom w3-padding-small"><b>2. Diseño Estructural (Presiones Últimas Mayoradas)</b></h5>
+                <svg viewBox="0 0 500 380" width="100%" style="background:#fafafa; border-radius:8px;">
+                    <rect x="150" y="20" width="200" height="40" fill="#94a3b8" stroke="#1e293b" stroke-width="2"/>
+                    <rect x="235" y="-10" width="30" height="30" fill="#64748b"/>
+                    <line x1="250" y1="60" x2="250" y2="380" stroke="#e2e8f0" stroke-dasharray="4"/>
+
+                    <path id="pathU1" fill="rgba(46, 204, 113, 0.1)" stroke="#27ae60" stroke-width="2"/>
+                    <path id="pathU2" fill="rgba(22, 160, 133, 0.15)" stroke="#16a085" stroke-width="2.5"/>
+                </svg>
+                <div id="resultsAreaUlt" class="w3-margin-top w3-responsive"></div>
+            </div>
+        </div>
+    </div>
 
        <div class="w3-panel w3-sand w3-leftbar w3-border-amber w3-padding-16 w3-margin-top" style="max-width: 800px; margin: auto; font-style: italic;">
     <h5 class="w3-text-dark-grey" style="margin-top: 0;"><b>⚠️ Nota de Uso Académico</b></h5>
@@ -156,136 +167,3 @@
 
 
 
-
-<script>
-// --- MOTOR FEMA (MANTENIDO IGUAL) ---
-function motorFema(P, M, L, qp) {
-    let res = { d: "", qmax: 0, estado: "", isFalla: false };
-    if (P <= 0) { res.estado = "Sin Axial"; res.isFalla = true; return res; }
-    const B = L, e = M / P, absE = Math.abs(e), sentido = Math.sign(e) || 1;
-    const xStart = 150, xEnd = 350, yBase = 60, scale = 250 / Math.max(qp * 1.5, 100);
-    if (absE >= L / 2) { res.qmax = Infinity; res.estado = "Vuelco"; res.isFalla = true; return res; }
-
-    if (absE <= L / 6) {
-        res.qmax = (P / (L * B)) * (1 + 6 * absE / L);
-        const qmin = (P / (L * B)) * (1 - 6 * absE / L);
-        res.estado = "Elástico";
-        res.d = (sentido > 0) ? `M ${xStart} ${yBase} L ${xEnd} ${yBase} L ${xEnd} ${yBase + res.qmax * scale} L ${xStart} ${yBase + qmin * scale} Z` : `M ${xStart} ${yBase} L ${xEnd} ${yBase} L ${xEnd} ${yBase + qmin * scale} L ${xStart} ${yBase + res.qmax * scale} Z`;
-    } else {
-        const q_triangular = (2 * P) / (3 * B * (L / 2 - absE));
-        const lapo_px = (3 * (L / 2 - absE) / L) * 200;
-        const xp = (sentido > 0) ? xEnd - lapo_px : xStart + lapo_px;
-        if (q_triangular > qp) {
-            const K = (2 * P) / (B * qp);
-            const disc = 12 * K * (L / 2 - absE) - 3 * K * K;
-            if (disc >= 0) {
-                const a = (K - Math.sqrt(Math.max(0, disc))) / 2;
-                const Lp = K - a;
-                res.estado = "Híbrido"; res.qmax = qp;
-                const a_px = (a / L) * 200, Lp_px = (Lp / L) * 200;
-                res.d = (sentido > 0) ? `M ${xEnd} ${yBase} L ${xEnd - Lp_px} ${yBase} L ${xEnd - a_px} ${yBase + qp * scale} L ${xEnd} ${yBase + qp * scale} Z` : `M ${xStart} ${yBase} L ${xStart + Lp_px} ${yBase} L ${xStart + a_px} ${yBase + qp * scale} L ${xStart} ${yBase + qp * scale} Z`;
-            } else {
-                const xb = P / (B * qp);
-                if (absE <= (L / 2 - xb / 2)) {
-                    res.estado = "Bloque Plástico"; res.qmax = qp;
-                    const b_px = (xb / L) * 200, xc = 250 + (e / L) * 200;
-                    res.d = `M ${xc - b_px / 2} ${yBase} L ${xc + b_px / 2} ${yBase} L ${xc + b_px / 2} ${yBase + qp * scale} L ${xc - b_px / 2} ${yBase + qp * scale} Z`;
-                } else {
-                    res.estado = "NO FACTIBLE"; res.isFalla = true; res.qmax = q_triangular;
-                    res.d = `M ${xp} ${yBase} L ${sentido > 0 ? xEnd : xStart} ${yBase} L ${sentido > 0 ? xEnd : xStart} ${yBase + q_triangular * scale} Z`;
-                }
-            }
-        } else {
-            res.estado = "Despegue"; res.qmax = q_triangular;
-            res.d = `M ${xp} ${yBase} L ${sentido > 0 ? xEnd : xStart} ${yBase} L ${sentido > 0 ? xEnd : xStart} ${yBase + q_triangular * scale} Z`;
-        }
-    }
-    return res;
-}
-
-// --- MOTOR PARA PRESIONES ULTIMAS (SIN LIMITES PLASTICOS) ---
-function motorUltimo(P, M, L) {
-    let res = { d: "", qmax: 0, qmin: 0, estado: "" };
-    if (P <= 0) return res;
-    const B = L, e = M / P, absE = Math.abs(e), sentido = Math.sign(e) || 1;
-    const xStart = 150, xEnd = 350, yBase = 60, scale = 0.5; // Escala fija para diseño
-
-    if (absE <= L / 6) {
-        res.qmax = (P / (L * B)) * (1 + 6 * absE / L);
-        res.qmin = (P / (L * B)) * (1 - 6 * absE / L);
-        res.estado = "Elástico";
-        res.d = (sentido > 0) ? `M ${xStart} ${yBase} L ${xEnd} ${yBase} L ${xEnd} ${yBase + res.qmax * scale} L ${xStart} ${yBase + res.qmin * scale} Z` : `M ${xStart} ${yBase} L ${xEnd} ${yBase} L ${xEnd} ${yBase + res.qmin * scale} L ${xStart} ${yBase + res.qmax * scale} Z`;
-    } else if (absE < L / 2) {
-        res.qmax = (2 * P) / (3 * B * (L / 2 - absE));
-        res.qmin = 0;
-        res.estado = "Despegue";
-        const lapo_px = (3 * (L / 2 - absE) / L) * 200;
-        const xp = (sentido > 0) ? xEnd - lapo_px : xStart + lapo_px;
-        res.d = `M ${xp} ${yBase} L ${sentido > 0 ? xEnd : xStart} ${yBase} L ${sentido > 0 ? xEnd : xStart} ${yBase + res.qmax * scale} Z`;
-    } else {
-        res.estado = "Inestable";
-    }
-    return res;
-}
-
-function update() {
-    const L = parseFloat(document.getElementById("valL").value), qp = parseFloat(document.getElementById("qp_in").value), qadm = parseFloat(document.getElementById("qadm_in").value);
-    const PD = parseFloat(document.getElementById("PD_in").value) || 0, PL = parseFloat(document.getElementById("PL_in").value) || 0, PE = parseFloat(document.getElementById("PE_in").value) || 0;
-    const MD = parseFloat(document.getElementById("MD_in").value) || 0, ML = parseFloat(document.getElementById("ML_in").value) || 0, ME = parseFloat(document.getElementById("ME_in").value) || 0;
-
-    // 1. ACTUALIZACIÓN MODULO GEOTÉCNICO (MANTIENE TU LÓGICA)
-    const combos = [
-        { name: "C1: D+L", P: PD + PL, M: MD + ML, id: "pathC1", color: "#2563eb" },
-        { name: "C2: D+0.75L+0.525E", P: PD + 0.75 * PL + 0.525 * PE, M: MD + 0.75 * ML + 0.525 * ME, id: "pathC2", color: "#ea580c" },
-        { name: "C3: 0.6D-0.7E", P: 0.6 * PD - 0.7 * PE, M: 0.6 * MD - 0.7 * ME, id: "pathC3", color: "#7c3aed" }
-    ];
-
-    let table = `<table class="w3-table w3-bordered table-res"><tr class="w3-light-grey"><th>Combo</th><th>q_max [kPa]</th><th>Modelo</th><th>Verificación</th><th>\(L_{req}\) [m]</th></tr>`;
-    combos.forEach(c => {
-        const res = motorFema(c.P, c.M, L, qp);
-        const pathEl = document.getElementById(c.id);
-        pathEl.setAttribute("d", res.d);
-        if (res.isFalla || res.qmax > qp) { pathEl.setAttribute("fill", "url(#hatchFalla)"); pathEl.setAttribute("stroke-dasharray", "5,3"); }
-        else { pathEl.setAttribute("stroke-dasharray", "none"); pathEl.setAttribute("fill", c.id === "pathC1" ? "rgba(37, 99, 235, 0.1)" : (c.id === "pathC2" ? "rgba(234, 88, 12, 0.15)" : "rgba(124, 58, 237, 0.2)")); }
-        let vTxt = (res.isFalla || res.qmax > qp) ? "<span class='res-falla'>FALLA</span>" : (res.qmax > qadm ? "<span class='res-alerta'>ALERTA</span>" : "<span class='res-cumple'>CUMPLE</span>");
-        let L_req = c.P > 0 ? (Math.abs(c.M / c.P) + Math.sqrt(Math.pow(c.M / c.P, 2) + c.P / qp)).toFixed(2) : "---";
-        table += `<tr><td style="color:${c.color}"><b>${c.name}</b></td><td>${res.qmax === Infinity ? 'Vuelco' : res.qmax.toFixed(1)}</td><td>${res.estado}</td><td>${vTxt}</td><td><b>${L_req}</b></td></tr>`;
-    });
-    document.getElementById("resultsArea").innerHTML = table + "</table>";
-
-    // 2. ACTUALIZACIÓN MODULO DISEÑO (COMBINACIONES ÚLTIMAS)
-    const combosUlt = [
-        { name: "Ultima 1: 1.2D + 1.6L", P: 1.2*PD + 1.6*PL, M: 1.2*MD + 1.6*ML, id: "pathU1", color: "#27ae60" },
-        { name: "Ultima 2: 1.2D + 1.0E + 1.0L", P: 1.2*PD + 1.0*PE + 1.0*PL, M: 1.2*MD + 1.0*ME + 1.0*ML, id: "pathU2", color: "#16a085" }
-    ];
-
-    let tableUlt = `<table class="w3-table w3-bordered table-res"><tr class="w3-light-grey"><th>Combo Último</th><th>q_u max [kPa]</th><th>q_u min [kPa]</th><th>Modelo</th></tr>`;
-    combosUlt.forEach(c => {
-        const res = motorUltimo(c.P, c.M, L);
-        document.getElementById(c.id).setAttribute("d", res.d);
-        tableUlt += `<tr><td style="color:${c.color}"><b>${c.name}</b></td><td>${res.qmax.toFixed(1)}</td><td>${res.qmin.toFixed(1)}</td><td>${res.estado}</td></tr>`;
-    });
-    document.getElementById("resultsAreaUlt").innerHTML = tableUlt + "</table>";
-
-    // ACTUALIZACIÓN LÍNEAS GUÍA (G)
-    const scaleG = 250 / Math.max(qp * 1.5, 100), yBase = 60;
-    const yAdm = yBase + qadm * scaleG;
-    document.getElementById("lineQadm").setAttribute("y1", yAdm); document.getElementById("lineQadm").setAttribute("y2", yAdm);
-    document.getElementById("txtQadm").setAttribute("y", yAdm + 3);
-    const yP = yBase + qp * scaleG;
-    document.getElementById("lineQp").setAttribute("y1", yP); document.getElementById("lineQp").setAttribute("y2", yP);
-    document.getElementById("txtQp").setAttribute("y", yP + 3);
-
-    document.getElementById("dispL").textContent = L.toFixed(2);
-}
-
-document.querySelectorAll('input').forEach(el => el.addEventListener("input", update));
-update();
-</script>
-
-
-
-
-    
-</body>
-</html>
