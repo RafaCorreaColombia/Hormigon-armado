@@ -18,20 +18,45 @@
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
     <style>
-        body { background-color: #f1f3f6; font-family: 'Segoe UI', sans-serif; }
+        /* PALETA DE COLORES DE LA MARCA */
+        :root {
+            --azul-profundo: #1A2530;
+            --naranja-estructural: #E67E22;
+            --gris-claro: #F4F5F7;
+        }
+
+        body { background-color: var(--gris-claro); font-family: 'Segoe UI', sans-serif; color: var(--azul-profundo); }
         .contenedor-principal {
             max-width: 1000px; margin: 30px auto; border-radius: 12px;
             background: white; padding: 0; overflow: hidden;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            box-shadow: 0 8px 25px rgba(26,37,48,0.15); /* Sombra ajustada a la marca */
         }
-        .header-rc { background: #c0392b; color: white; padding: 40px 20px; text-align: center; }
+        
+        /* HEADER ACTUALIZADO */
+        .header-rc { background: var(--azul-profundo); color: white; padding: 40px 20px; text-align: center; }
+        .brand-logo-header { max-width: 110px; height: auto; margin-bottom: 20px; display: inline-block; }
+        
         .contenido-body { padding: 40px; }
-        h3 { color: #2c3e50; border-bottom: 2px solid #eee; padding-bottom: 8px; margin-top: 35px; font-weight: bold; }
-        .dato-box { border-left: 6px solid #c0392b; background: #fdf2f2; }
-        .iteracion-box { border: 1px solid #ddd; border-top: 4px solid #c0392b; border-radius: 8px; }
-        .highlight { color: #c0392b; font-weight: bold; font-size: 1.1em; }
-        th { background-color: #2c3e50 !important; color: white !important; }
+        h3 { color: var(--azul-profundo); border-bottom: 2px solid #eee; padding-bottom: 8px; margin-top: 35px; font-weight: bold; }
+        
+        /* CAJAS Y RESALTADOS */
+        .dato-box { border-left: 6px solid var(--naranja-estructural); background: #fdf6f0; } /* Fondo naranja muy sutil */
+        .iteracion-box { border: 1px solid #ddd; border-top: 4px solid var(--naranja-estructural); border-radius: 8px; }
+        .highlight { color: var(--naranja-estructural); font-weight: bold; font-size: 1.1em; }
+        th { background-color: var(--azul-profundo) !important; color: white !important; }
         .progress-container { margin: 20px 0; }
+
+        /* LOGO FOOTER */
+        .brand-logo-footer { max-width: 80px; height: auto; margin-bottom: 15px; display: inline-block; }
+
+        /* OVERRIDES W3.CSS PARA FORZAR LA IDENTIDAD DE MARCA */
+        .w3-text-red { color: var(--naranja-estructural) !important; }
+        .w3-border-red { border-color: var(--naranja-estructural) !important; }
+        .w3-red { background-color: var(--naranja-estructural) !important; color: white !important; }
+        .w3-pale-red { background-color: #fdf6f0 !important; }
+        .w3-blue { background-color: var(--azul-profundo) !important; color: white !important; }
+        .w3-text-blue { color: var(--azul-profundo) !important; }
+        .w3-dark-grey { background-color: var(--azul-profundo) !important; color: white !important; }
     </style>
 </head>
 <body>
@@ -46,13 +71,16 @@
     
     
     <div class="header-rc">
+        <!-- ISOTIPO FONDO OSCURO -->
+        <img src="IsotipoFOscuro.png" alt="Criterio Estructural" class="brand-logo-header">
+        
         <h1 class="w3-xxlarge">Análisis de Sección de Concreto Reforzado</h1>
         <p class="w3-large"><em>"Equilibrio: Eje neutro y compatibilidad de deformaciones"</em></p>
         <span class="w3-tag w3-white w3-text-red w3-round">ACI-318 / NSR-10</span>        
     </div>
 
   <div style="text-align: right; padding: 10px 30px 0 0;">
-    <span style="font-size: 10px; color: #c0392b; border: 1px solid #c0392b; padding: 4px 10px; border-radius: 4px; font-family: 'Courier New', monospace; background: #fff;">
+    <span style="font-size: 10px; color: #1A2530; border: 1px solid #1A2530; padding: 4px 10px; border-radius: 4px; font-family: 'Courier New', monospace; background: #F4F5F7;">
         <b><i class="fa fa-shield"></i> SECURITY:</b> ASSESSMENT_ENFORCED // AI_RESTRICTED_ACCESS
     </span>
 </div>
@@ -176,7 +204,7 @@
         </div>
 
         
-   
+    
 
         <h3>4. Sumatoria de Fuerzas y Momentos</h3>
         <p>Calculamos las fuerzas internas y sus momentos respecto al centro ($h/2 = 275$ mm):</p>
@@ -205,13 +233,13 @@
                 </tr>
                 <tr>
                     <td>Fila 2 (Tens)</td>
-                    <td class="w3-text-green">+239.4</td>
+                    <td class="w3-text-blue">+239.4</td>
                     <td>$d_2 - 0.275 = \mathbf{0.1659}$</td>
                     <td>39.7</td>
                 </tr>
                 <tr>
                     <td>Fila 3 (Tens)</td>
-                    <td class="w3-text-green">+359.1</td>
+                    <td class="w3-text-blue">+359.1</td>
                     <td>$d_3 - 0.275 = \mathbf{0.2159}$</td>
                     <td>77.5</td>
                 </tr>
@@ -260,6 +288,7 @@
                     <b class="w3-text-red">Numérico</b><br>Newton-Raphson o Bisección.
                 </div>
             </div>
+        </div>
 
 
 
@@ -313,34 +342,34 @@
 
         <div class="w3-third w3-center">
             <b>Deformaciones ($\epsilon$)</b>
-            <svg id="svgDef" width="220" height="350" style="background:#f9f9f9; border-radius:8px;">
+            <svg id="svgDef" width="220" height="350" style="background:#F4F5F7; border-radius:8px;">
                 <line x1="110" y1="20" x2="110" y2="320" stroke="#999" stroke-width="1" />
-                <polygon id="polyDef" points="" fill="rgba(192, 57, 43, 0.15)" stroke="#c0392b" stroke-width="2" />
-                <text x="110" y="15" font-size="11" fill="#c0392b" font-weight="bold">εcu=0.003</text>
-                <text id="txtEtReal" x="20" y="305" font-size="11" fill="blue" font-weight="bold">εt=</text>
+                <polygon id="polyDef" points="" fill="rgba(230, 126, 34, 0.15)" stroke="#E67E22" stroke-width="2" />
+                <text x="110" y="15" font-size="11" fill="#E67E22" font-weight="bold">εcu=0.003</text>
+                <text id="txtEtReal" x="20" y="305" font-size="11" fill="#1A2530" font-weight="bold">εt=</text>
                 <line id="lineEN" x1="20" y1="0" x2="200" y2="0" stroke="black" stroke-dasharray="4" stroke-width="1" />
             </svg>
         </div>
 
         <div class="w3-third w3-center">
             <b>Fuerzas Internas</b>
-            <svg id="svgFzas" width="220" height="350" style="background:#f9f9f9; border-radius:8px;">
-                <rect id="rectWhitney" x="110" y="20" width="40" height="85" fill="#c0392b" opacity="0.4" />
-                <line id="vecCc" x1="110" y1="0" x2="60" y2="0" stroke="#c0392b" stroke-width="4" marker-end="url(#arrowRed)" />
+            <svg id="svgFzas" width="220" height="350" style="background:#F4F5F7; border-radius:8px;">
+                <rect id="rectWhitney" x="110" y="20" width="40" height="85" fill="#E67E22" opacity="0.4" />
+                <line id="vecCc" x1="110" y1="0" x2="60" y2="0" stroke="#E67E22" stroke-width="4" marker-end="url(#arrowRed)" />
                 <line id="vecF1" x1="110" y1="0" x2="80" y2="0" stroke="black" stroke-width="2" marker-end="url(#arrowBlack)" />
-                <line id="vecF2" x1="110" y1="0" x2="140" y2="0" stroke="blue" stroke-width="2" marker-end="url(#arrowBlue)" />
-                <line id="vecF3" x1="110" y1="0" x2="160" y2="0" stroke="blue" stroke-width="2" marker-end="url(#arrowBlue)" />
+                <line id="vecF2" x1="110" y1="0" x2="140" y2="0" stroke="#1A2530" stroke-width="2" marker-end="url(#arrowBlue)" />
+                <line id="vecF3" x1="110" y1="0" x2="160" y2="0" stroke="#1A2530" stroke-width="2" marker-end="url(#arrowBlue)" />
                 <defs>
-                    <marker id="arrowRed" markerWidth="6" markerHeight="6" refX="0" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#c0392b"/></marker>
+                    <marker id="arrowRed" markerWidth="6" markerHeight="6" refX="0" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#E67E22"/></marker>
                     <marker id="arrowBlack" markerWidth="6" markerHeight="6" refX="0" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="black"/></marker>
-                    <marker id="arrowBlue" markerWidth="6" markerHeight="6" refX="0" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="blue"/></marker>
+                    <marker id="arrowBlue" markerWidth="6" markerHeight="6" refX="0" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#1A2530"/></marker>
                 </defs>
             </svg>
         </div>
 
         <div class="w3-row-padding w3-margin-top">
         <div class="w3-col l12 m12 s12">
-            <div class="w3-card-4 w3-white w3-round-large w3-display-container" style="border-top: 6px solid #2c3e50;">
+            <div class="w3-card-4 w3-white w3-round-large w3-display-container" style="border-top: 6px solid #1A2530;">
                 <div class="w3-row w3-center w3-padding-16">
                     <div class="w3-half w3-border-right">
                         <span class="w3-text-grey w3-small">ESTADO DE DUCTILIDAD (NSR-10)</span><br>
@@ -546,7 +575,7 @@ actualizarSimulador();
             </div>
 
                                         
-<hr style="border: 0; height: 1px; background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(192, 57, 43, 0.75), rgba(0, 0, 0, 0)); margin-top: 50px; clear: both;">
+<hr style="border: 0; height: 1px; background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(230, 126, 34, 0.75), rgba(0, 0, 0, 0)); margin-top: 50px; clear: both;">
                                         
 <div class="w3-center w3-padding-32" style="margin-top: 50px; clear: both;">
     <a href="index.html" class="w3-button w3-light-grey w3-round-large w3-border">Inicio</a>
@@ -593,6 +622,10 @@ actualizarSimulador();
         <hr class="w3-margin-top-64">
         <footer class="w3-container w3-padding-32 w3-center w3-text-grey w3-light-grey w3-margin-top">
     <div class="w3-border-top w3-border-grey w3-padding-24" style="max-width: 500px; margin: auto;">
+        
+        <!-- ISOTIPO FONDO CLARO -->
+        <img src="IsotipoFClaro.png" alt="Criterio Estructural" class="brand-logo-footer">
+
         <p class="w3-medium"><b>Publicado por:</b></p>
         <h4 class="w3-text-dark-grey" style="margin: 0;"><b>Rafael Antonio Correa Melano</b></h4>
         <p class="w3-small" style="margin-top: 5px;">
