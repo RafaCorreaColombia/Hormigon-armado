@@ -8,18 +8,30 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <style>
+        /* PALETA DE COLORES DE IDENTIDAD VISUAL */
+        :root {
+            --azul-profundo: #1A2530;
+            --naranja-estructural: #E67E22;
+            --gris-claro: #F4F5F7;
+        }
+
         body {
-            background-color: #f4f7f6;
+            background-color: var(--gris-claro);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin:0;
-            color: #333;
+            color: var(--azul-profundo); /* Todo el texto base ahora es Azul Profundo */
         }
+
+        /* SOBREESCRITURA DE W3.CSS PARA APLICAR LA MARCA SIN TOCAR EL HTML */
+        .w3-text-red { color: var(--naranja-estructural) !important; }
+        .w3-border-red { border-color: var(--naranja-estructural) !important; }
+        .w3-light-grey { background-color: var(--gris-claro) !important; }
 
         /* HERO SECTION */
         .hero {
             background: url('Gemini_Generated_RafaC.png') no-repeat center center;
             background-size: cover;
-            color: white;
+            color: white; /* Se mantiene blanco por legibilidad sobre la foto */
             padding: 80px 20px;
             display: flex;
             align-items: center;
@@ -31,16 +43,28 @@
             margin: auto;
             width: 100%;
             display: flex;
-            justify-content: flex-start; /* Mantiene el texto a la izquierda */
+            justify-content: flex-start;
         }
 
         .hero-box {
-            background: rgba(0, 0, 0, 0.5); 
+            background: rgba(26, 37, 48, 0.7); /* Azul profundo con transparencia */
             padding: 40px;
             border-radius: 20px;
-            backdrop-filter: blur(8px); /* Efecto moderno de desenfoque */
+            backdrop-filter: blur(8px);
             max-width: 600px;
             border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* ESTILOS DEL ISOTIPO */
+        .brand-logo-hero {
+            max-width: 80px;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .brand-logo-footer {
+            max-width: 60px;
+            margin-bottom: 15px;
         }
 
         /* TARJETAS Y CONTENEDORES */
@@ -54,27 +78,29 @@
             transition: all 0.3s ease;
             height: 100%;
             border: none !important;
+            background-color: #ffffff !important;
         }
 
         .card-hover:hover {
             transform: translateY(-8px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.1) !important;
+            box-shadow: 0 15px 30px rgba(26, 37, 48, 0.15) !important; /* Sombra teñida de azul profundo */
         }
 
         .btn-red {
-            background-color: #c0392b !important;
+            background-color: var(--naranja-estructural) !important;
             color: white !important;
             transition: 0.3s;
         }
 
         .btn-red:hover {
-            background-color: #a93226 !important;
+            background-color: var(--azul-profundo) !important;
+            color: var(--gris-claro) !important;
         }
 
         /* AJUSTES PARA MÓVILES */
         @media (max-width: 800px) {
             .hero { 
-                background-position: 75% center; /* Ajusta para que se vea tu rostro */
+                background-position: 75% center;
                 min-height: 450px;
                 padding: 40px 10px;
             }
@@ -84,6 +110,9 @@
             .hero-box { 
                 text-align: center; 
                 padding: 25px;
+            }
+            .brand-logo-hero {
+                margin: 0 auto 20px auto; /* Centrar logo en móviles */
             }
             .w3-col {
                 margin-bottom: 20px;
@@ -97,6 +126,9 @@
 <header class="hero w3-card-4">
     <div class="hero-content">
         <div class="hero-box animate-opacity">
+            <!-- ISOTIPO EN EL HERO -->
+            <img src="ruta-a-tu-isotipo-blanco.png" alt="Criterio Estructural" class="brand-logo-hero">
+            
             <h1 class="w3-xxlarge"><b>Herramientas para Ingeniería Estructural</b></h1>
             <p class="w3-xlarge w3-opacity">Recursos interactivos y simuladores para ingeniería civil.</p>
 
@@ -196,6 +228,9 @@
 </div>
 
 <footer class="w3-container w3-padding-48 w3-center w3-white">
+    <!-- ISOTIPO EN EL FOOTER -->
+    <img src="ruta-a-tu-isotipo-azul.png" alt="Criterio Estructural" class="brand-logo-footer">
+    
     <p class="w3-large"><b>Rafael Antonio Correa Melano</b></p>
     <div class="w3-xlarge w3-padding-16">
         <a href="https://www.instagram.com/rafacestructural" class="w3-hover-text-red w3-margin-right"><i class="fa fa-instagram"></i></a>
