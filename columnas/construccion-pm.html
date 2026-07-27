@@ -140,7 +140,7 @@
             <div class="w3-row w3-small">
                 <div class="w3-col m3 s6"><b>Geometría:</b> Rectangular<br>$b = 300$ mm<br>$h = 350$ mm</div>
                 <div class="w3-col m3 s6"><b>Materiales:</b><br>$f'_c = 28$ MPa ($\beta_1=0.85$)<br>$f_y = 420$ MPa</div>
-                <div class="w3-col m3 s6"><b>Refuerzo:</b> Simétrico<br>Recubrimiento $d' = 60$ mm<br>$A_{s,sup} = 852$ mm² (3 No.6)<br>$A_{s,inf} = 852$ mm² (3 No.6)</div>
+                <div class="w3-col m3 s6"><b>Refuerzo:</b> 3 Capas<br>Recubrimiento $d' = 60$ mm<br>$A_{s,sup} = 852$ mm² (3 No.6)<br>$A_{s,inf} = 852$ mm² (3 No.6)</div>
                 <div class="w3-col m3 s6 leyenda-acero"><b>Estado del Acero:</b><br>
                     <span style="background:var(--acero-elastico);"></span> Elástico ($f_s < 0.8f_y$)<br>
                     <span style="background:var(--acero-cerca);"></span> Cerca de fluencia<br>
@@ -201,20 +201,26 @@
                             <line id="secEjeNeutro" class="anim-suave" x1="30" y1="20" x2="170" y2="20" stroke="#dc2626" stroke-width="2" stroke-dasharray="4,2"/>
                             <text id="txtC_vis" class="anim-suave" x="175" y="25" font-size="10" fill="#dc2626" font-weight="bold">c</text>
                             
-                            <!-- Aceros con trazo blanco -->
-                            <circle id="b1a" cx="65" cy="50" r="4.5" stroke="#fff" stroke-width="1.5" class="anim-suave"/> 
-                            <circle id="b1b" cx="100" cy="50" r="4.5" stroke="#fff" stroke-width="1.5" class="anim-suave"/> 
-                            <circle id="b1c" cx="135" cy="50" r="4.5" stroke="#fff" stroke-width="1.5" class="anim-suave"/>
+                            <!-- Capa Superior (y=51) -->
+                            <circle id="b1a" cx="65" cy="51" r="4.5" stroke="#fff" stroke-width="1.5" class="anim-suave"/> 
+                            <circle id="b1b" cx="100" cy="51" r="4.5" stroke="#fff" stroke-width="1.5" class="anim-suave"/> 
+                            <circle id="b1c" cx="135" cy="51" r="4.5" stroke="#fff" stroke-width="1.5" class="anim-suave"/>
                             
-                            <circle id="b3a" cx="65" cy="170" r="4.5" stroke="#fff" stroke-width="1.5" class="anim-suave"/> 
-                            <circle id="b3b" cx="100" cy="170" r="4.5" stroke="#fff" stroke-width="1.5" class="anim-suave"/> 
-                            <circle id="b3c" cx="135" cy="170" r="4.5" stroke="#fff" stroke-width="1.5" class="anim-suave"/>
+                            <!-- Capa Media (y=110) -->
+                            <circle id="b2a" cx="65" cy="110" r="4.5" stroke="#fff" stroke-width="1.5" class="anim-suave"/> 
+                            <circle id="b2b" cx="100" cy="110" r="4.5" stroke="#fff" stroke-width="1.5" class="anim-suave"/> 
+                            <circle id="b2c" cx="135" cy="110" r="4.5" stroke="#fff" stroke-width="1.5" class="anim-suave"/>
+
+                            <!-- Capa Inferior (y=169) -->
+                            <circle id="b3a" cx="65" cy="169" r="4.5" stroke="#fff" stroke-width="1.5" class="anim-suave"/> 
+                            <circle id="b3b" cx="100" cy="169" r="4.5" stroke="#fff" stroke-width="1.5" class="anim-suave"/> 
+                            <circle id="b3c" cx="135" cy="169" r="4.5" stroke="#fff" stroke-width="1.5" class="anim-suave"/>
                         </svg>
                     </div>
                 </div>
             </div>
 
-            <!-- 2. DEFORMACIONES -->
+            <!-- 2. DEFORMACIONES ENRIQUECIDO -->
             <div class="w3-col l3 m6 s12 w3-margin-bottom" style="display:flex;">
                 <div class="panel-cuadrante" id="cuadrante2" style="width:100%; border: 1px solid #ddd;">
                     <div class="w3-center w3-margin-bottom">
@@ -226,19 +232,32 @@
                             <polygon id="polyDef" class="anim-suave" points="" fill="rgba(230,126,34,0.15)" stroke="#E67E22" stroke-width="2"/>
                             <text x="105" y="15" font-size="9" fill="#E67E22" font-weight="bold">εcu=0.003</text>
                             
-                            <line x1="30" y1="50" x2="170" y2="50" stroke="#ccc" stroke-dasharray="2,2"/>
-                            <text id="lblEs1" class="anim-suave" x="10" y="47" font-size="8" fill="#1A2530">εs' = --</text>
+                            <!-- Líneas y Textos de Deformaciones -->
+                            <!-- Capa Superior -->
+                            <line x1="30" y1="51" x2="170" y2="51" stroke="#ccc" stroke-dasharray="2,2"/>
+                            <text id="lblEs1" class="anim-suave" x="10" y="48" font-size="8" fill="#1A2530" font-weight="bold">εs' = --</text>
                             
-                            <line x1="30" y1="170" x2="170" y2="170" stroke="#ccc" stroke-dasharray="2,2"/>
-                            <text id="lblEs3" class="anim-suave" x="10" y="180" font-size="8" fill="#1A2530">εt = --</text>
+                            <!-- Capa Media -->
+                            <line x1="30" y1="110" x2="170" y2="110" stroke="#ccc" stroke-dasharray="2,2"/>
+                            <text id="lblEs2" class="anim-suave" x="10" y="107" font-size="8" fill="#1A2530" font-weight="bold">εs2 = --</text>
+                            
+                            <!-- Capa Inferior -->
+                            <line x1="30" y1="169" x2="170" y2="169" stroke="#ccc" stroke-dasharray="2,2"/>
+                            <text id="lblEs3" class="anim-suave" x="10" y="179" font-size="8" fill="#1A2530" font-weight="bold">εt = --</text>
 
+                            <!-- Puntos dinámicos sobre la curva -->
+                            <circle id="dotDef1" cx="100" cy="51" r="3.5" class="anim-suave" stroke="#fff" stroke-width="1"/>
+                            <circle id="dotDef2" cx="100" cy="110" r="3.5" class="anim-suave" stroke="#fff" stroke-width="1"/>
+                            <circle id="dotDef3" cx="100" cy="169" r="3.5" class="anim-suave" stroke="#fff" stroke-width="1"/>
+
+                            <!-- Eje Neutro -->
                             <line id="lineEN_def" class="anim-suave" x1="30" y1="20" x2="170" y2="20" stroke="black" stroke-dasharray="3" stroke-width="1"/>
                         </svg>
                     </div>
                 </div>
             </div>
 
-            <!-- 3. EQUILIBRIO (Mejorado con Flechas ASCII) -->
+            <!-- 3. EQUILIBRIO -->
             <div class="w3-col l3 m6 s12 w3-margin-bottom" style="display:flex;">
                 <div class="panel-cuadrante dato-revelable" id="cuadrante3" style="width:100%; border: 1px solid #ddd;">
                     <div class="w3-center w3-margin-bottom">
@@ -446,10 +465,11 @@ function iniciarEscalas() {
 
 function calcularFisica(et) {
     const ecu = 0.003; let beta1 = 0.85;
-    let d3 = h - dp; let d1 = dp;
+    let d3 = h - dp; let d1 = dp; let d2 = h / 2;
     
+    // Permitimos que c baje casi a 0 (0.5 mm) para ver tracción pura
     let c = (Math.abs(et + ecu) < 0.0001) ? 15000 : (ecu * d3) / (ecu + et);
-    if (c < 5) c = 5;
+    if (c < 0.5) c = 0.5;
 
     let a = Math.min(beta1 * c, h);
 
@@ -459,6 +479,9 @@ function calcularFisica(et) {
     let et1 = ecu * (c - d1) / c;
     let fs1 = Math.max(-fy, Math.min(fy, Es * et1));
     let Fs1 = (As * fs1) / 1000;
+
+    // Fila intermedia (Preparamos datos visuales, fuerza nula por ahora)
+    let et2 = ecu * (c - d2) / c;
 
     let et3 = ecu * (c - d3) / c;
     let fs3 = Math.max(-fy, Math.min(fy, Es * et3));
@@ -471,7 +494,7 @@ function calcularFisica(et) {
     if (et >= 0.005) { phi = 0.90; txtEst = "Tracción"; tg = "w3-tag w3-green w3-round w3-small"; } 
     else if (et > 0.0021) { phi = 0.65 + 0.25 * (et - 0.002) / 0.003; txtEst = "Transición"; tg = "w3-tag w3-orange w3-text-white w3-round w3-small"; }
 
-    return { et, c, a, Cc, Fs1, Fs3, Pn, Mn, phi, et1, et3, txtEst, tg };
+    return { et, c, a, Cc, Fs1, Fs3, Pn, Mn, phi, et1, et2, et3, txtEst, tg };
 }
 
 function colorAcero(eps) {
@@ -490,24 +513,32 @@ function sincronizarSimulador() {
     if (p_slider < 0) p_slider = 0; if (p_slider > 100) p_slider = 100;
     document.getElementById('marcadorEt').style.left = `${p_slider}%`;
 
-    // Q1
+    // Q1: Sección con 3 capas
     document.getElementById('secWhitney').setAttribute('height', (pt.a / h) * 180);
     let yEje = 20 + (pt.c / h) * 180; if(yEje > 200) yEje = 200;
     document.getElementById('secEjeNeutro').setAttribute('y1', yEje);
     document.getElementById('secEjeNeutro').setAttribute('y2', yEje);
     document.getElementById('txtC_vis').setAttribute('y', yEje + 4);
     
-    let colSup = colorAcero(pt.et1); let colInf = colorAcero(pt.et3);
+    let colSup = colorAcero(pt.et1); let colMid = colorAcero(pt.et2); let colInf = colorAcero(pt.et3);
     ['b1a','b1b','b1c'].forEach(id => document.getElementById(id).style.fill = colSup);
+    ['b2a','b2b','b2c'].forEach(id => document.getElementById(id).style.fill = colMid);
     ['b3a','b3b','b3c'].forEach(id => document.getElementById(id).style.fill = colInf);
 
-    // Q2
+    // Q2: Compatibilidad enriquecida con puntos
     let xTop = 100 + (0.003 * 3000);
     let xBot = 100 - (Math.min(Math.max(pt.et, -0.015), 0.015) * 3000);
     document.getElementById('polyDef').setAttribute('points', `${xTop},20 100,20 100,200 ${xBot},200`);
     document.getElementById('lineEN_def').setAttribute('y1', yEje); document.getElementById('lineEN_def').setAttribute('y2', yEje);
+    
     document.getElementById('lblEs1').textContent = `εs' = ${pt.et1.toFixed(4)}`;
+    document.getElementById('lblEs2').textContent = `εs2 = ${pt.et2.toFixed(4)}`;
     document.getElementById('lblEs3').textContent = `εt = ${pt.et3.toFixed(4)}`;
+
+    // Puntos sobre la curva de compatibilidad
+    document.getElementById('dotDef1').setAttribute('cx', 100 - pt.et1 * 3000); document.getElementById('dotDef1').style.fill = colSup;
+    document.getElementById('dotDef2').setAttribute('cx', 100 - pt.et2 * 3000); document.getElementById('dotDef2').style.fill = colMid;
+    document.getElementById('dotDef3').setAttribute('cx', 100 - pt.et3 * 3000); document.getElementById('dotDef3').style.fill = colInf;
 
     // Q3 ASCII & Ecuación
     let F1v = Math.abs(pt.Fs1).toFixed(0); let F3v = Math.abs(pt.Fs3).toFixed(0);
@@ -527,32 +558,40 @@ function sincronizarSimulador() {
     document.getElementById('valPnSuma').innerText = `${pt.Pn.toFixed(1)}`;
     document.getElementById('valMnSuma').innerText = `${pt.Mn.toFixed(1)}`;
 
-    // Q4
+    // Q4: Fantasma
     let px = mar + pt.Mn * scaleX;
     let py = yCero - pt.Pn * scaleY;
     document.getElementById('puntoFantasma').setAttribute('cx', px);
     document.getElementById('puntoFantasma').setAttribute('cy', py);
 
-    // Profesor
+    // Profesor y Advertencia de a < d'
     let panel = document.getElementById('panelComentario');
     let txt = document.getElementById('txtComentario');
+    let baseText = "";
     
     if (Math.abs(pt.Pn) < 30) {
         panel.className = "w3-panel w3-border w3-border-green w3-pale-green w3-round-large w3-padding-16 anim-suave";
-        txt.innerHTML = "<b>¡Comportamiento de Viga!</b><br>El esfuerzo axial es casi nulo ($P_n \\approx 0$). Observa en el panel de fuerzas cómo la tracción en el acero contrarresta exactamente la compresión del concreto.";
+        baseText = "<b>¡Comportamiento de Viga!</b><br>El esfuerzo axial es casi nulo ($P_n \\approx 0$). Observa en el panel de fuerzas cómo la tracción en el acero contrarresta exactamente la compresión del concreto.";
     } else if (et >= 0.0020 && et <= 0.0022) {
         panel.className = "w3-panel w3-border w3-border-amber w3-sand w3-round-large w3-padding-16 anim-suave";
-        txt.innerHTML = "🌟 <b>¡Acabas de descubrir el Punto Balanceado!</b> 🌟<br>El concreto se aplasta justo en el instante en que el acero inferior alcanza la fluencia ($\\epsilon_t = \\epsilon_y = 0.0021$). <b>A partir de este punto la falla deja de estar controlada por el concreto y comienza a ser gobernada por la capacidad del acero para deformarse.</b>";
+        baseText = "🌟 <b>¡Acabas de descubrir el Punto Balanceado!</b> 🌟<br>El concreto se aplasta justo en el instante en que el acero inferior alcanza la fluencia ($\\epsilon_t = \\epsilon_y = 0.0021$). <b>A partir de este punto la falla deja de estar controlada por el concreto y comienza a ser gobernada por la capacidad del acero para deformarse.</b>";
     } else if (et >= 0.005) {
         panel.className = "w3-panel w3-border w3-border-green w3-pale-green w3-round-large w3-padding-16 anim-suave";
-        txt.innerHTML = "<b>Zona Controlada por Tracción.</b><br>El acero posee suficiente capacidad de deformación para desarrollar un comportamiento extremadamente dúctil antes de la falla. Se premia con $\\phi = 0.90$.";
+        baseText = "<b>Zona Controlada por Tracción.</b><br>El acero posee suficiente capacidad de deformación para desarrollar un comportamiento extremadamente dúctil antes de la falla. Se premia con $\\phi = 0.90$.";
     } else if (et <= 0.001) {
         panel.className = "w3-panel w3-border w3-border-red w3-pale-red w3-round-large w3-padding-16 anim-suave";
-        txt.innerHTML = "<b>Zona Controlada por Compresión.</b><br>El eje neutro está muy profundo. Toda (o casi toda) la sección trabaja a compresión y el momento es bajo. La falla sería frágil.";
+        baseText = "<b>Zona Controlada por Compresión.</b><br>El eje neutro está muy profundo. Toda (o casi toda) la sección trabaja a compresión y el momento es bajo. La falla sería frágil.";
     } else {
         panel.className = "w3-panel w3-border w3-round-large w3-padding-16 anim-suave";
-        txt.innerHTML = "<b>Zona de Transición.</b><br>El acero fluye, pero no lo suficiente para garantizar máxima ductilidad. En esta zona la norma incrementa gradualmente el factor de reducción $\\phi$ a medida que aumenta la ductilidad.";
+        baseText = "<b>Zona de Transición.</b><br>El acero fluye, pero no lo suficiente para garantizar máxima ductilidad. En esta zona la norma incrementa gradualmente el factor de reducción $\\phi$ a medida que aumenta la ductilidad.";
     }
+
+    // Agregar alerta visual si el bloque ya no cubre el acero superior
+    if (pt.a < dp && pt.a >= 0.5 && et < 0.02) {
+        baseText += "<br><br><span class='w3-text-orange'><i class='fa fa-lightbulb-o'></i> <b>Observa:</b> El bloque de compresión ($a = " + pt.a.toFixed(1) + "$ mm) ya no alcanza el acero superior ($d' = 60$ mm). A partir de este punto toda la compresión proviene exclusivamente del concreto.</span>";
+    }
+
+    txt.innerHTML = baseText;
 }
 
 function animarYGuardarPunto() {
