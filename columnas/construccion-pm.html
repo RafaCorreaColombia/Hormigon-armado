@@ -1,1 +1,521 @@
 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratorio: Construcción del Diagrama P-M</title>
+    
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        :root {
+            --azul-profundo: #1A2530;
+            --naranja-estructural: #E67E22;
+            --gris-claro: #F4F5F7;
+        }
+
+        body { background-color: var(--gris-claro); font-family: 'Segoe UI', sans-serif; color: var(--azul-profundo); }
+        .contenedor-principal {
+            max-width: 1250px; margin: 30px auto; border-radius: 12px;
+            background: white; padding: 0; overflow: hidden;
+            box-shadow: 0 8px 25px rgba(26,37,48,0.15);
+        }
+        
+        .header-rc { background: var(--azul-profundo); color: white; padding: 40px 20px; text-align: center; }
+        .brand-logo-header { max-width: 360px; height: auto; margin-bottom: 20px; display: inline-block; }
+        
+        .contenido-body { padding: 30px; }
+        h3 { color: var(--azul-profundo); border-bottom: 2px solid var(--naranja-estructural) !important; padding-bottom: 8px; margin-top: 35px; font-weight: bold; }
+        
+        .panel-cuadrante {
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 15px;
+            height: 100%;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+        }
+
+        .highlight { color: var(--naranja-estructural); font-weight: bold; }
+        th { background-color: var(--azul-profundo) !important; color: white !important; font-size: 12px; }
+        td { font-size: 12px; }
+
+        .btn-accion {
+            background-color: var(--naranja-estructural) !important;
+            color: white !important;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .btn-accion:hover {
+            background-color: var(--azul-profundo) !important;
+        }
+
+        .brand-logo-footer { max-width: 240px; height: auto; margin-bottom: 15px; display: inline-block; }
+        footer { background-color: var(--gris-claro) !important; }
+
+        ::-webkit-scrollbar { height: 6px; width: 6px; }
+        ::-webkit-scrollbar-thumb { background: var(--naranja-estructural); border-radius: 10px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+
+        @media (max-width: 1150px) {
+            .contenedor-principal { margin-left: 10px !important; margin-right: 10px !important; width: auto !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="contenedor-principal w3-animate-opacity">
+
+    <div class="header-rc">
+        <img src="../assets/IsotipoFOscuroT.png" alt="Criterio Estructural" class="brand-logo-header">
+        <h1 class="w3-xxlarge">Construcción Punto a Punto del Diagrama P-M</h1>
+        <p class="w3-large"><em>"Laboratorio de Descubrimiento de Flexocompresión"</em></p>
+        <span class="w3-tag w3-white w3-text-red w3-round">ACI-318 / NSR-10</span>        
+    </div>
+
+    <div class="contenido-body">
+
+        <!-- PANEL DE CONTROL GENERAL Y CONFIGURACIÓN -->
+        <div class="w3-panel w3-light-grey w3-padding-16 w3-round-large w3-card-2">
+            <h4 class="w3-text-dark-grey" style="margin-top:0;"><b><i class="fa fa-sliders w3-text-red"></i> Control Principal de Deformación ($\epsilon_t$)</b></h4>
+            <div class="w3-row-padding">
+                <div class="w3-col l8 m12">
+                    <label><b>Deformación en la fibra extrema a tracción ($\epsilon_t$):</b> <span id="valEt" class="highlight" style="font-size:1.2em;">0.0050</span></label>
+                    <input type="range" id="inputEt" min="-0.003" max="0.020" step="0.0005" value="0.005" class="w3-select w3-margin-top" oninput="sincronizarSimulador()">
+                    <div class="w3-row w3-tiny w3-text-grey w3-margin-top">
+                        <div class="w3-col s3">Compresión Pura (-0.003)</div>
+                        <div class="w3-col s3">Balanceado (~0.002)</div>
+                        <div class="w3-col s3">Límite Dúctil (0.005)</div>
+                        <div class="w3-col s3" style="text-align:right;">Tracción Máxima (0.020)</div>
+                    </div>
+                </div>
+                <div class="w3-col l4 m12 w3-center" style="padding-top: 10px;">
+                    <button onclick="agregarPunto()" class="w3-button btn-red w3-round-large w3-medium w3-block">
+                        <i class="fa fa-plus-circle"></i> Agregar Punto al Diagrama
+                    </button>
+                    <div class="w3-row w3-margin-top">
+                        <div class="w3-half" style="padding-right:4px;">
+                            <button onclick="toggleAnimacion()" id="btnAnimar" class="w3-button w3-blue w3-round w3-small w3-block">
+                                <i class="fa fa-play"></i> Autoconstruir
+                            </button>
+                        </div>
+                        <div class="w3-half" style="padding-left:4px;">
+                            <button onclick="reiniciarTabla()" class="w3-button w3-light-grey w3-border w3-round w3-small w3-block">
+                                <i class="fa fa-trash"></i> Limpiar Puntos
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DASHBOARD DE 4 CUADRANTES (CSS GRID / W3-ROW) -->
+        <div class="w3-row-padding w3-margin-top">
+            
+            <!-- CUADRANTE 1: SECCIÓN TRANSVERSAL -->
+            <div class="w3-col l6 m6 s12 w3-margin-bottom">
+                <div class="panel-cuadrante">
+                    <h5 class="w3-text-dark-grey"><b>1. Sección y Eje Neutro ($c$)</b></h5>
+                    <div class="w3-center">
+                        <svg id="svgSeccion" viewBox="0 0 250 280" width="100%" height="220" style="background:#F4F5F7; border-radius:6px;">
+                            <!-- Concreto bruto -->
+                            <rect id="secConcreto" x="75" y="40" width="100" height="200" fill="#fff" stroke="#1A2530" stroke-width="2"/>
+                            <!-- Bloque de Whitney (a) -->
+                            <rect id="secWhitney" x="75" y="40" width="100" height="0" fill="#E67E22" opacity="0.3"/>
+                            <!-- Eje neutro -->
+                            <line id="secEjeNeutro" x1="50" y1="40" x2="200" y2="40" stroke="#dc2626" stroke-width="2" stroke-dasharray="4,2"/>
+                            <text id="txtC_vis" x="205" y="45" font-size="11" fill="#dc2626" font-weight="bold">c</text>
+                            <!-- Barras de acero -->
+                            <circle cx="95" cy="60" r="5" fill="#1A2530"/>
+                            <circle cx="155" cy="60" r="5" fill="#1A2530"/>
+                            <circle cx="95" cy="140" r="4" fill="#1A2530"/>
+                            <circle cx="155" cy="140" r="4" fill="#1A2530"/>
+                            <circle cx="95" cy="220" r="5" fill="#1A2530"/>
+                            <circle cx="155" cy="220" r="5" fill="#1A2530"/>
+                            <!-- Cotas básicas -->
+                            <text x="125" y="260" font-size="11" text-anchor="middle" fill="#555">b = <span id="lblB">400</span> mm, h = <span id="lblH">500</span> mm</text>
+                        </svg>
+                    </div>
+                    <p class="w3-tiny w3-text-grey w3-center" style="margin:5px 0 0 0;">El bloque naranja representa la profundidad efectiva de compresión $a = \beta_1 c$.</p>
+                </div>
+            </div>
+
+            <!-- CUADRANTE 2: PERFIL DE DEFORMACIONES -->
+            <div class="w3-col l6 m6 s12 w3-margin-bottom">
+                <div class="panel-cuadrante">
+                    <h5 class="w3-text-dark-grey"><b>2. Deformaciones Unitarias ($\epsilon$)</b></h5>
+                    <div class="w3-center">
+                        <svg id="svgDeformacion" viewBox="0 0 250 280" width="100%" height="220" style="background:#F4F5F7; border-radius:6px;">
+                            <line x1="125" y1="20" x2="125" y2="240" stroke="#999" stroke-width="1"/>
+                            <polygon id="polyDef" points="" fill="rgba(230, 126, 34, 0.15)" stroke="#E67E22" stroke-width="2"/>
+                            <text x="130" y="35" font-size="10" fill="#E67E22" font-weight="bold">εcu = 0.003 (Compresión)</text>
+                            <text id="lblEtVal" x="30" y="235" font-size="10" fill="#1A2530" font-weight="bold">εt = --</text>
+                            <line id="lineEN_def" x1="50" y1="40" x2="200" y2="40" stroke="black" stroke-dasharray="3" stroke-width="1"/>
+                        </svg>
+                    </div>
+                    <p class="w3-tiny w3-text-grey w3-center" style="margin:5px 0 0 0;">Hipótesis de Bernoulli: Las secciones planas permanecen planas.</p>
+                </div>
+            </div>
+
+            <!-- CUADRANTE 3: FUERZAS INTERNAS Y SEMÁFORO -->
+            <div class="w3-col l6 m6 s12 w3-margin-bottom">
+                <div class="panel-cuadrante">
+                    <h5 class="w3-text-dark-grey"><b>3. Equilibrio Interno y Ductilidad</b></h5>
+                    <div class="w3-row w3-center w3-margin-top">
+                        <div class="w3-half" style="padding-right:5px;">
+                            <div class="w3-light-grey w3-padding w3-round">
+                                <span class="w3-tiny w3-text-grey">FUERZA AXIAL NOMINAL ($P_n$)</span><br>
+                                <strong id="resPn" class="w3-large w3-text-blue">--</strong> <small>kN</small>
+                            </div>
+                        </div>
+                        <div class="w3-half" style="padding-left:5px;">
+                            <div class="w3-light-grey w3-padding w3-round">
+                                <span class="w3-tiny w3-text-grey">MOMENTO NOMINAL ($M_n$)</span><br>
+                                <strong id="resMn" class="w3-large w3-text-blue">--</strong> <small>kNm</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w3-row w3-margin-top w3-center">
+                        <div class="w3-third">
+                            <span class="w3-tiny w3-text-grey">Factor $\phi$</span><br>
+                            <b id="resPhi" class="w3-medium">--</b>
+                        </div>
+                        <div class="w3-third">
+                            <span class="w3-tiny w3-text-grey">Estado Normativo</span><br>
+                            <span id="resEstado" class="w3-tag w3-round w3-small">--</span>
+                        </div>
+                        <div class="w3-third">
+                            <span class="w3-tiny w3-text-grey">Comportamiento</span><br>
+                            <b id="resTipoViga" class="w3-small w3-text-grey">Columna</b>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CUADRANTE 4: EL DIAGRAMA P-M EN CONSTRUCCIÓN -->
+            <div class="w3-col l6 m6 s12 w3-margin-bottom">
+                <div class="panel-cuadrante">
+                    <h5 class="w3-text-dark-grey"><b>4. Diagrama P-M (Puntos Descubiertos)</b></h5>
+                    <div class="w3-center">
+                        <svg id="svgCanvasPM" viewBox="0 0 300 240" width="100%" height="220" style="background:#fff; border:1px solid #ddd; border-radius:6px;">
+                            <!-- Ejes -->
+                            <line id="pmEjeX" x1="30" y1="120" x2="280" y2="120" stroke="#ccc" stroke-width="1.5"/>
+                            <line id="pmEjeY" x1="50" y1="10" x2="50" y2="230" stroke="#ccc" stroke-width="1.5"/>
+                            <text x="270" y="112" font-size="10" fill="#888">Mn</text>
+                            <text x="55" y="20" font-size="10" fill="#888">Pn</text>
+                            <text x="15" y="125" font-size="9" fill="#dc2626">Pn=0 (Viga)</text>
+                            <line x1="30" y1="120" x2="280" y2="120" stroke="#dc2626" stroke-width="1" stroke-dasharray="2,2"/>
+
+                            <!-- Grupo donde se inyectan los puntos creados -->
+                            <g id="grupoPuntos"></g>
+
+                            <!-- Punto actual en tiempo real (fantasma) -->
+                            <circle id="puntoFantasma" r="5" fill="#E67E22" stroke="#fff" stroke-width="1.5"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- TABLA DE HISTORIAL DE PUNTOS (Idea 8) -->
+        <div class="w3-container w3-white w3-card-4 w3-round-large w3-margin-top w3-padding-24">
+            <h4 class="w3-text-red"><b><i class="fa fa-table"></i> Registro de Puntos Descubiertos por el Estudiante</b></h4>
+            <p class="w3-small">A medida que agregas puntos, esta tabla crece imitando el procedimiento de cálculo manual.</p>
+            <div class="w3-responsive" style="max-height: 200px;">
+                <table class="w3-table-all w3-hoverable w3-card-1" id="tablaPuntos">
+                    <thead>
+                        <tr>
+                            <th>Punto #</th>
+                            <th>$\epsilon_t$</th>
+                            <th>$c$ (mm)</th>
+                            <th>$P_n$ (kN)</th>
+                            <th>$M_n$ (kNm)</th>
+                            <th>$\phi$</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cuerpoTabla">
+                        <tr>
+                            <td colspan="7" class="w3-center w3-text-grey">Aún no hay puntos agregados. ¡Mueve el slider y pulsa "Agregar Punto"!</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+// Variables globales del laboratorio
+let listaPuntos = [];
+let animando = false;
+let intervaloAnimacion = null;
+
+// Parámetros Fijos de la Columna por Defecto
+const b = 400;
+const h = 500;
+const fc = 28;
+const fy = 420;
+const Es = 200000;
+const dp = 60; // recubrimiento mecánico
+const As1 = 1520;
+const As2 = 0;
+const As3 = 1520; // Simétrica
+
+function calcularEstado(et) {
+    const ecu = 0.003;
+    let beta1 = fc <= 28 ? 0.85 : Math.max(0.65, 0.85 - 0.05 * (fc - 28) / 7);
+    
+    // Calcular c a partir de et mediante relación de triángulos
+    // et = ecu * (d3 - c) / c  --> c = (ecu * d3) / (ecu + et)
+    let d3 = h - dp;
+    let d1 = dp;
+    let d2 = h / 2;
+
+    let c;
+    if (Math.abs(et + ecu) < 0.0001) {
+        c = 1500; // Compresión pura
+    } else {
+        c = (ecu * d3) / (ecu + et);
+    }
+    if (c < 5) c = 5;
+
+    let a = Math.min(beta1 * c, h);
+
+    // Acero en compresión dentro del bloque a
+    let areaAceroEnCompresion = 0;
+    if (d1 < a) areaAceroEnCompresion += As1;
+    if (d2 < a) areaAceroEnCompresion += As2;
+    if (d3 < a) areaAceroEnCompresion += As3;
+
+    let Cc = 0.85 * fc * (a * b - areaAceroEnCompresion) / 1000;
+
+    let et1 = ecu * (c - d1) / c;
+    let fs1 = Math.max(-fy, Math.min(fy, Es * et1));
+    let Fs1 = (As1 * fs1) / 1000;
+
+    let et2 = ecu * (c - d2) / c;
+    let fs2 = Math.max(-fy, Math.min(fy, Es * et2));
+    let Fs2 = (As2 * fs2) / 1000;
+
+    let et3 = ecu * (c - d3) / c;
+    let fs3 = Math.max(-fy, Math.min(fy, Es * et3));
+    let Fs3 = (As3 * fs3) / 1000;
+
+    let Pn = Cc + Fs1 + Fs2 + Fs3;
+    let Mn = Math.abs((Cc * (h/2 - a/2) + Fs1 * (h/2 - d1) + Fs2 * (h/2 - d2) + Fs3 * (h/2 - d3)) / 1000);
+
+    // Factor phi
+    let phi = 0.65;
+    let estadoTxt = "Compresión";
+    let claseTag = "w3-tag w3-red w3-round w3-small";
+
+    if (et >= 0.005) {
+        phi = 0.90;
+        estadoTxt = "Tracción";
+        claseTag = "w3-tag w3-green w3-round w3-small";
+    } else if (et > 0.002) {
+        phi = 0.65 + 0.25 * (et - 0.002) / 0.003;
+        estadoTxt = "Transición";
+        claseTag = "w3-tag w3-orange w3-text-white w3-round w3-small";
+    }
+
+    return { et, c, a, Pn, Mn, phi, estadoTxt, claseTag };
+}
+
+function sincronizarSimulador() {
+    let et = parseFloat(document.getElementById('inputEt').value);
+    document.getElementById('valEt').innerText = et.toFixed(4);
+
+    let res = calcularEstado(et);
+
+    // Actualizar Cuadrante 1: Sección
+    document.getElementById('secWhitney').setAttribute('height', (res.a / h) * 200);
+    let yEje = 40 + (res.c / h) * 200;
+    if(yEje > 240) yEje = 240;
+    document.getElementById('secEjeNeutro').setAttribute('y1', yEje);
+    document.getElementById('secEjeNeutro').setAttribute('y2', yEje);
+    document.getElementById('txtC_vis').setAttribute('y', yEje + 4);
+    document.getElementById('txtC_vis').textContent = `c=${res.c.toFixed(0)}mm`;
+
+    // Actualizar Cuadrante 2: Deformaciones
+    let xTop = 125 + (0.003 * 15000);
+    let etVis = 0.003 * (h - res.c) / res.c;
+    let xBot = 125 - (etVis * 15000);
+    document.getElementById('polyDef').setAttribute('points', `${xTop},40 125,40 125,240 ${xBot},240`);
+    document.getElementById('lineEN_def').setAttribute('y1', yEje);
+    document.getElementById('lineEN_def').setAttribute('y2', yEje);
+    document.getElementById('lblEtVal').textContent = `εt = ${et.toFixed(4)}`;
+    document.getElementById('lblEtVal').setAttribute('y', yEje > 220 ? 220 : yEje + 15);
+
+    // Actualizar Cuadrante 3: Fuerzas
+    document.getElementById('resPn').innerText = res.Pn.toFixed(1);
+    document.getElementById('resMn').innerText = res.Mn.toFixed(1);
+    document.getElementById('resPhi').innerText = res.phi.toFixed(2);
+    
+    let estEl = document.getElementById('resEstado');
+    estEl.innerText = res.estadoTxt;
+    estEl.className = res.claseTag;
+
+    let vigaEl = document.getElementById('resTipoViga');
+    if (Math.abs(res.Pn) < 30) {
+        vigaEl.innerHTML = "<b class='w3-text-green'>¡Comportamiento de Viga! (Pn ≈ 0)</b>";
+    } else {
+        vigaEl.innerHTML = "Columna General";
+    }
+
+    // Actualizar Cuadrante 4: Punto fantasma en el diagrama
+    // Escalas fijas del canvas PM (Ancho 300, Alto 240, Cero Y en 120, Cero X en 50)
+    let px = 50 + res.Mn * 0.6;
+    let py = 120 - res.Pn * 0.08;
+    let fantasma = document.getElementById('puntoFantasma');
+    fantasma.setAttribute('cx', px);
+    fantasma.setAttribute('cy', py);
+}
+
+function agregarPunto() {
+    let et = parseFloat(document.getElementById('inputEt').value);
+    let res = calcularEstado(et);
+
+    listaPuntos.push(res);
+    renderizarTablaYPuntos();
+}
+
+function renderizarTablaYPuntos() {
+    let tbody = document.getElementById('cuerpoTabla');
+    let svgGrupo = document.getElementById('grupoPuntos');
+    
+    tbody.innerHTML = "";
+    svgGrupo.innerHTML = "";
+
+    if (listaPuntos.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="w3-center w3-text-grey">Aún no hay puntos agregados. ¡Mueve el slider y pulsa "Agregar Punto"!</td></tr>`;
+        return;
+    }
+
+    listaPuntos.forEach((pt, index) => {
+        // Llenar tabla
+        let tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td><b>#${index + 1}</b></td>
+            <td>${pt.et.toFixed(4)}</td>
+            <td>${pt.c.toFixed(1)}</td>
+            <td>${pt.Pn.toFixed(1)}</td>
+            <td>${pt.Mn.toFixed(1)}</td>
+            <td>${pt.phi.toFixed(2)}</td>
+            <td><span class="${pt.claseTag}">${pt.estadoTxt}</span></td>
+        `;
+        tbody.appendChild(tr);
+
+        // Dibujar punto en SVG
+        let px = 50 + pt.Mn * 0.6;
+        let py = 120 - pt.Pn * 0.08;
+        
+        let colorPunto = pt.et >= 0.005 ? "#22c55e" : (pt.et > 0.002 ? "#f97316" : "#dc2626");
+
+        let circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        circle.setAttribute("cx", px);
+        circle.setAttribute("cy", py);
+        circle.setAttribute("r", "4.5");
+        circle.setAttribute("fill", colorPunto);
+        circle.setAttribute("stroke", "#fff");
+        circle.setAttribute("stroke-width", "1");
+        svgGrupo.appendChild(circle);
+    });
+}
+
+function reiniciarTabla() {
+    listaPuntos = [];
+    renderizarTablaYPuntos();
+    if(animando) detenerAnimacion();
+}
+
+function toggleAnimacion() {
+    let btn = document.getElementById('btnAnimar');
+    if (!animando) {
+        animando = true;
+        btn.innerHTML = `<i class="fa fa-pause"></i> Pausar`;
+        btn.className = "w3-button w3-red w3-round w3-small w3-block";
+        reiniciarTabla();
+        
+        let valoresEt = [-0.003, -0.002, -0.001, 0, 0.001, 0.0015, 0.002, 0.0025, 0.003, 0.004, 0.005, 0.007, 0.010, 0.015, 0.020];
+        let idx = 0;
+
+        intervaloAnimacion = setInterval(() => {
+            if (idx < valoresEt.length) {
+                document.getElementById('inputEt').value = valoresEt[idx];
+                sincronizarSimulador();
+                agregarPunto();
+                idx++;
+            } else {
+                detenerAnimacion();
+            }
+        }, 350);
+
+    } else {
+        detenerAnimacion();
+    }
+}
+
+function detenerAnimacion() {
+    animando = false;
+    clearInterval(intervaloAnimacion);
+    let btn = document.getElementById('btnAnimar');
+    btn.innerHTML = `<i class="fa fa-play"></i> Autoconstruir`;
+    btn.className = "w3-button w3-blue w3-round w3-small w3-block";
+}
+
+// Inicializar al cargar
+window.onload = () => {
+    sincronizarSimulador();
+};
+</script>
+
+<div class="w3-container w3-margin-top w3-padding-32">
+    <h3 class="w3-border-red">Consultas y Discusión Académica</h3>
+    <p class="w3-small w3-text-grey">Inicia sesión con tu cuenta de GitHub para dejar una pregunta o comentario técnico.</p>
+    
+    <script src="https://utteranc.es/client.js"
+        repo="rafacorreacolombia/Hormigon-armado"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+    </script>                                        
+</div>
+
+<div style="max-width: 800px; margin: auto; padding: 0 15px;">
+    <hr style="border: 0; height: 1px; background-color: #ddd; margin: 40px 0;">
+</div>
+
+<footer class="w3-container w3-padding-32 w3-center w3-text-grey w3-light-grey w3-margin-top">
+    <div class="w3-border-top w3-border-grey w3-padding-24" style="max-width: 500px; margin: auto;">
+        <img src="../assets/IsotipoFClaroT.png" alt="Criterio Estructural" class="brand-logo-footer">
+        <p class="w3-medium"><b>Publicado por:</b></p>
+        <h4 class="w3-text-dark-grey" style="margin: 0;"><b>Rafael Antonio Correa Melano</b></h4>
+        <p class="w3-small" style="margin-top: 5px;">
+            Ingeniero Civil • M.IE.<br>
+            Universidad Industrial de Santander
+        </p>
+        <div class="w3-margin-top">
+            <span class="w3-tag w3-round w3-white w3-border w3-border-red w3-text-red w3-small">BGA, 2026</span>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>
