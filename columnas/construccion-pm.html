@@ -728,7 +728,7 @@ function toggleRecorridoAuto() {
     if (!animando_auto) {
         animando_auto = true; btn.innerHTML = `<i class="fa fa-pause"></i> Pausar`; btn.className = "w3-button w3-red w3-round w3-small w3-block";
         reiniciarTabla();
-        let arr_C = [800, 400, 250, 190, 175, 170.6, 160, 130, 108, 80, 50, 20, 5, 0.1]; let idx = 0;
+        let arr_C = [1000, 400, 340, 290, 250, 220, 200, 170.6, 150, 130, 110, 80, 40, 1]; let idx = 0;
         intervaloAnimacion = setInterval(() => {
             if (idx < arr_C.length) { document.getElementById('inputC').value = arr_C[idx]; sincronizarSimulador(); animarYGuardarPunto(); idx++; } 
             else { animando_auto = false; clearInterval(intervaloAnimacion); btn.innerHTML = `<i class="fa fa-play"></i> Barrido Auto`; btn.className = "w3-button w3-blue w3-round w3-small w3-block"; }
