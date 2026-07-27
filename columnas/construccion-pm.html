@@ -168,7 +168,7 @@
                             <text id="txtC_vis" class="anim-suave" x="205" y="25" font-size="10" fill="#dc2626" font-weight="bold">c</text>
                             
                             <circle id="b1a" cx="95" cy="51" r="4.5" stroke="#fff" stroke-width="1.5" class="anim-suave"/> <circle id="b1b" cx="130" cy="51" r="4.5" stroke="#fff" stroke-width="1.5" class="anim-suave"/> <circle id="b1c" cx="165" cy="51" r="4.5" stroke="#fff" stroke-width="1.5" class="anim-suave"/>
-                            <circle id="b2a" cx="95" cy="110" r="4.5" stroke="#fff" stroke-width="1.5" class="anim-suave"/> <circle id="b2b" cx="130" cy="110" r="4.5" stroke="#fff" stroke-width="1.5" class="anim-suave"/> <circle id="b2c" cx="165" cy="110" r="4.5" stroke="#fff" stroke-width="1.5" class="anim-suave"/>
+                            <circle id="b2a" cx="95" cy="110" r="4.5" stroke="#fff" stroke-width="1.5" class="anim-suave"/> <circle id="b2b" cx="165" cy="110" r="4.5" stroke="#fff" stroke-width="1.5" class="anim-suave"/>
                             <circle id="b3a" cx="95" cy="169" r="4.5" stroke="#fff" stroke-width="1.5" class="anim-suave"/> <circle id="b3b" cx="130" cy="169" r="4.5" stroke="#fff" stroke-width="1.5" class="anim-suave"/> <circle id="b3c" cx="165" cy="169" r="4.5" stroke="#fff" stroke-width="1.5" class="anim-suave"/>
 
                             <line id="vecCc" class="anim-suave" x1="20" y1="20" x2="70" y2="20" stroke="#dc2626" stroke-width="2" marker-end="url(#arrComp)" opacity="0"/>
@@ -527,7 +527,7 @@ function sincronizarSimulador() {
     
     let colSup = colorAcero(pt.et1); let colMid = colorAcero(pt.et2); let colInf = colorAcero(pt.et3);
     ['b1a','b1b','b1c'].forEach(id => document.getElementById(id).style.fill = colSup);
-    ['b2a','b2b','b2c'].forEach(id => document.getElementById(id).style.fill = colMid);
+    ['b2a','b2b'].forEach(id => document.getElementById(id).style.fill = colMid);
     ['b3a','b3b','b3c'].forEach(id => document.getElementById(id).style.fill = colInf);
 
     function drawVec(id, force, y_real) {
