@@ -657,7 +657,13 @@ function sincronizarSimulador() {
     if (pt.a_eff < d1 && pt.c > 0.5 && pt.c < 80) {
         baseText += "<br><br><span class='w3-text-orange'><i class='fa fa-lightbulb-o'></i> <b>Observa:</b> El bloque de compresión ($a = " + pt.a_eff.toFixed(1) + "$ mm) ya no alcanza a la Fila 1 ($d_1 = 60$ mm). ¡Toda la armadura está en tracción!</span>";
     }
+    // 1. Inyectamos el texto dinámico
     txt.innerHTML = baseText;
+
+    // 2. FORZAMOS A MATHJAX A RENDERIZAR EL NUEVO CONTENIDO
+    if (window.MathJax && window.MathJax.typesetPromise) {
+        window.MathJax.typesetPromise([txt]).catch((err) => console.log('Error MathJax:', err));
+    }
 }
 
 function animarYGuardarPunto() {
