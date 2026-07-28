@@ -690,6 +690,7 @@ function iniciarVueloPunto() {
 
 function agregarPuntoInmediato() {
     let c_val = parseFloat(document.getElementById('inputC').value);
+    console.log(document.getElementById('inputC').value);
     let pt = calcularFisica(c_val);
     if(!listaPuntos.find(p => p.c === c_val)) {
         listaPuntos.push(pt); listaPuntos.sort((a,b) => b.c - a.c); 
@@ -745,7 +746,7 @@ function toggleRecorridoAuto() {
     if (!animando_auto) {
         animando_auto = true; btn.innerHTML = `<i class="fa fa-pause"></i> Pausar`; btn.className = "w3-button w3-red w3-round w3-small w3-block";
         reiniciarTabla();
-        let arr_C = [999.9, 399.9, 249.9, 189.9, 174.9, 170.6, 159.9, 129.9, 107.9, 79.9, 49.9, 19.9, 4.9, 0.9]; let idx = 0;
+        let arr_C = [1200, 800, 500, 400, 300, 250, 200, 185, 170.6, 160, 130, 90, 40, 1]; let idx = 0;
         intervaloAnimacion = setInterval(() => {
             if (idx < arr_C.length) { document.getElementById('inputC').value = arr_C[idx]; sincronizarSimulador(); animarYGuardarPunto(); idx++; } 
             else { animando_auto = false; clearInterval(intervaloAnimacion); btn.innerHTML = `<i class="fa fa-play"></i> Barrido Auto`; btn.className = "w3-button w3-blue w3-round w3-small w3-block"; }
