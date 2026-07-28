@@ -56,16 +56,12 @@
             background: #f1f1f1;
         }
 
-        /* Respiro lateral automático para bloques de ancho máximo en móviles */
-    @media (max-width: 1150px) {
-        .contenedor-principal,
-        .w3-panel[style*="max-width"],
-        .w3-container[style*="max-width"] {
-            margin-left: 30px !important;
-            margin-right: 30px !important;
-            width: auto !important;
+        /* Ajuste responsivo para pantallas pequeñas */
+        @media (max-width: 1200px) {
+            .contenedor-principal {
+                margin: 10px !important;
+            }
         }
-    }
 
         /* OVERRIDES W3.CSS PARA FORZAR LA IDENTIDAD DE MARCA */
         .w3-text-red { color: var(--naranja-estructural) !important; }
