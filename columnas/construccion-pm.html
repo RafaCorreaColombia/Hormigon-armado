@@ -52,6 +52,10 @@
         .estado-wow { animation: glow-gold 1s infinite; background: #fefce8 !important; }
 
         #puntoVolador { position: fixed; width: 14px; height: 14px; background-color: var(--naranja-estructural); border: 2px solid white; border-radius: 50%; z-index: 9999; pointer-events: none; opacity: 0; box-shadow: 0 0 15px rgba(230,126,34,0.8); transition: top 0.6s cubic-bezier(0.25, 1, 0.5, 1), left 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.2s; }
+
+        /* Estilos para el manifiesto de ideas */
+        .manifiesto-box { background: #f8fafc; border-left: 4px solid var(--naranja-estructural); padding: 15px 20px; margin-top: 20px; border-radius: 0 8px 8px 0; }
+        .lema-destacado { background: rgba(230, 126, 34, 0.1); border: 1px dashed var(--naranja-estructural); padding: 12px 15px; border-radius: 8px; text-align: center; font-weight: bold; color: var(--azul-profundo); margin-top: 15px; }
         
         ::-webkit-scrollbar { height: 6px; width: 6px; }
         ::-webkit-scrollbar-thumb { background: var(--naranja-estructural); border-radius: 10px; }
@@ -80,10 +84,15 @@
 
     <div class="w3-padding-24" style="padding-left:30px; padding-right:30px;">
 
-        <!-- OBJETIVO -->
+        <!-- OBJETIVO NARRATIVO MEJORADO -->
         <div class="w3-panel w3-leftbar w3-border-red w3-pale-red w3-padding-16 w3-round">
             <h5 class="w3-text-dark-grey w3-margin-0"><b><i class="fa fa-bullseye w3-text-red"></i> Objetivo del laboratorio</b></h5>
-            <p class="w3-small" style="margin-top: 8px;">En los laboratorios anteriores aprendimos que una posición del eje neutro ($c$) produce un único estado de deformaciones y un único equilibrio de fuerzas interno. <b>En este laboratorio repetiremos ese proceso para infinitas posiciones del eje neutro.</b> Cada equilibrio encontrado será un punto del diagrama P-M.</p>
+            <p class="w3-small" style="margin-top: 8px;">En el laboratorio anterior (Flexión) descubrimos un solo punto de la curva: una posición del eje neutro produce un único estado de deformaciones, un único equilibrio interno y un único par resistente $(P_n, M_n)$. <br><br><b>Hoy construiremos toda la curva.</b> En este laboratorio haremos exactamente lo mismo... pero repetido para todas las posiciones posibles del eje neutro.</p>
+            
+            <!-- Lema central destacado -->
+            <div class="lema-destacado w3-small">
+                <i class="fa fa-quote-left w3-text-orange"></i> El diagrama P–M no se calcula con una fórmula; se construye resolviendo el equilibrio para muchas posiciones del eje neutro. <i class="fa fa-quote-right w3-text-orange"></i>
+            </div>
         </div>
 
         <!-- SECCIÓN DE ESTUDIO -->
@@ -311,13 +320,21 @@
 
         </div>
 
+        <!-- MANIFIESTO Y PROGRESIÓN PEDAGÓGICA (NUEVO) -->
+        <div class="manifiesto-box w3-small w3-margin-top">
+            <b><i class="fa fa-graduation-cap w3-text-orange"></i> La evolución conceptual de Criterio Estructural:</b>
+            <p style="margin: 6px 0 0 0; line-height: 1.5; color: #4a5568;">
+                En los laboratorios anteriores descubriste cómo operan la compatibilidad y el equilibrio estático de forma aislada. Aquí integramos ese conocimiento: <em>el diagrama P–M no se calcula con una fórmula mágica; se construye resolviendo el equilibrio para infinitas posiciones del eje neutro.</em>
+            </p>
+        </div>
+
         <!-- EL PROFESOR NARRADOR -->
         <div id="panelComentario" class="w3-panel w3-border w3-round-large w3-padding-16 anim-suave" style="background-color: #fff; display:flex; align-items:center; transition: background 0.3s;">
             <div style="font-size: 2.5em; padding-right: 20px; color: var(--naranja-estructural);">
                 <i class="fa fa-commenting-o"></i>
             </div>
             <div>
-                <h5 class="w3-margin-0" style="font-weight: bold; color: var(--azul-profundo);">Profesor Estructural:</h5>
+                <h5 class="w3-margin-0" style="font-weight: bold; color: var(--azul-profundo);">Comentario del Profe:</h5>
                 <p id="txtComentario" class="w3-small w3-margin-0" style="margin-top:5px !important;">Mueve el control de Profundidad del Eje Neutro ($c$) para comenzar a explorar la sección.</p>
             </div>
         </div>
@@ -728,7 +745,7 @@ function toggleRecorridoAuto() {
     if (!animando_auto) {
         animando_auto = true; btn.innerHTML = `<i class="fa fa-pause"></i> Pausar`; btn.className = "w3-button w3-red w3-round w3-small w3-block";
         reiniciarTabla();
-        let arr_C = [800, 400, 250, 190, 175, 170.6, 160, 130, 108, 80, 50, 20, 5, 0.1]; let idx = 0;
+        let arr_C = [999.9, 399.9, 249.9, 189.9, 174.9, 170.6, 159.9, 129.9, 107.9, 79.9, 49.9, 19.9, 4.9, 0.9]; let idx = 0;
         intervaloAnimacion = setInterval(() => {
             if (idx < arr_C.length) { document.getElementById('inputC').value = arr_C[idx]; sincronizarSimulador(); animarYGuardarPunto(); idx++; } 
             else { animando_auto = false; clearInterval(intervaloAnimacion); btn.innerHTML = `<i class="fa fa-play"></i> Barrido Auto`; btn.className = "w3-button w3-blue w3-round w3-small w3-block"; }
