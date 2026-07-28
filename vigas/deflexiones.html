@@ -80,7 +80,17 @@
         .w3-text-blue { color: var(--azul-profundo) !important; }
         .w3-dark-grey { background-color: var(--azul-profundo) !important; color: white !important; }
         .w3-light-grey { background-color: var(--gris-claro) !important; color: var(--azul-profundo) !important; }
-        
+
+        /* Ajuste responsivo para pantallas móviles con respiro lateral simétrico */
+        @media (max-width: 1250px) {
+            .contenedor-principal {
+                width: 100% !important;
+                margin: 0 !important;
+                border-radius: 0 !important;
+                box-shadow: none;
+                padding: 0 !important;
+                }
+            }
     </style>
 </head>
 <body>
