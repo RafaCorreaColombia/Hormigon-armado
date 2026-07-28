@@ -56,10 +56,13 @@
             background: #f1f1f1;
         }
 
-        /* Ajuste responsivo para pantallas pequeñas */
+        /* Respiro lateral automático para bloques de ancho máximo en móviles */
         @media (max-width: 1200px) {
             .contenedor-principal {
-                margin: 10px !important;
+            width: 100% !important;
+            margin: 0 !important;
+            border-radius: 0 !important; /* Opcional: quita esquinas redondeadas en móvil para máxima área útil */
+            box-shadow: none;
             }
         }
 
