@@ -1,1 +1,231 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratorio 4: Diagrama P-M (Próximamente) - Criterio Estructural</title>
+    
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
+    <style>
+        :root {
+            --azul-profundo: #1A2530; 
+            --naranja-estructural: #E67E22; 
+            --gris-claro: #F4F5F7;
+        }
+
+        body { 
+            background-color: var(--gris-claro); 
+            font-family: 'Segoe UI', sans-serif; 
+            color: var(--azul-profundo); 
+        }
+
+        .contenedor-principal { 
+            max-width: 1250px; 
+            margin: 30px auto; 
+            border-radius: 12px; 
+            background: white; 
+            box-shadow: 0 8px 25px rgba(26,37,48,0.15); 
+            overflow: hidden; 
+        }
+
+        .header-rc { 
+            background: var(--azul-profundo); 
+            color: white; 
+            padding: 30px 20px; 
+            text-align: center; 
+            position: relative; 
+        }
+
+        .brand-logo-header { max-width: 250px; height: auto; margin-bottom: 10px; }
+
+        /* RUTA DE APRENDIZAJE */
+        .ruta-aprendizaje { 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            flex-wrap: wrap; 
+            gap: 8px; 
+            margin-top: 15px; 
+            font-size: 0.85em; 
+            color: #a0aec0; 
+        }
+        .ruta-item { padding: 4px 12px; border-radius: 20px; border: 1px solid #4a5568; background: rgba(255,255,255,0.05); }
+        .ruta-activa { border-color: var(--naranja-estructural); color: white; background: rgba(230, 126, 34, 0.2); font-weight: bold; }
+        .ruta-flecha { color: #4a5568; font-size: 0.8em; }
+
+        /* ZONA DE PRÓXIMAMENTE Y EFECTO BLUR */
+        .zona-teaser {
+            position: relative;
+            padding: 40px 20px;
+            min-height: 480px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Maqueta fantasma del laboratorio de fondo */
+        .maqueta-fondo {
+            filter: blur(5px) opacity(0.35);
+            pointer-events: none;
+            user-select: none;
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Tarjeta flotante en primer plano */
+        .tarjeta-anuncio {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            border: 2px solid var(--naranja-estructural);
+            border-radius: 12px;
+            padding: 35px 25px;
+            max-width: 550px;
+            width: 90%;
+            box-shadow: 0 12px 35px rgba(26, 37, 48, 0.2);
+            text-align: center;
+            z-index: 10;
+        }
+
+        .badge-lanzamiento {
+            background: rgba(230, 126, 34, 0.15);
+            color: var(--naranja-estructural);
+            border: 1px dashed var(--naranja-estructural);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .redes-box {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            border: 1px solid #e2e8f0;
+        }
+
+        /* RESPONSIVO MÓVIL */
+        @media (max-width: 1250px) {
+            .contenedor-principal {
+                width: 100% !important;
+                margin: 0 !important;
+                border-radius: 0 !important;
+                box-shadow: none;
+                padding: 0 !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="contenedor-principal w3-animate-opacity">
+
+    <!-- HEADER DE MARCA -->
+    <div class="header-rc">
+        <img src="../assets/IsotipoFOscuroT.png" alt="Criterio Estructural" class="brand-logo-header"><br>
+        <h1 class="w3-xlarge" style="margin: 0; font-weight: bold;">Laboratorio 4 – Construcción del Diagrama P–M</h1>
+        
+        <div class="ruta-aprendizaje">
+            <span class="ruta-item">1. Compatibilidad</span> <i class="fa fa-chevron-right ruta-flecha"></i>
+            <span class="ruta-item">2. Equilibrio</span> <i class="fa fa-chevron-right ruta-flecha"></i>
+            <span class="ruta-item">3. Flexión</span> <i class="fa fa-chevron-right ruta-flecha"></i>
+            <span class="ruta-item ruta-activa">⭐ 4. Construcción P-M</span> <i class="fa fa-chevron-right ruta-flecha"></i>
+            <span class="ruta-item">5. Diseño Columnas</span>
+        </div>
+    </div>
+
+    <!-- ZONA PRINCIPAL INTERACTIVA CON TEASER -->
+    <div class="zona-teaser">
+
+        <!-- CARTA FLOTANTE DE ANUNCIO EN PRIMER PLANO -->
+        <div class="tarjeta-anuncio w3-animate-zoom">
+            <div class="badge-lanzamiento">
+                <i class="fa fa-clock-o"></i> PRÓXIMO LANZAMIENTO
+            </div>
+            
+            <h2 class="w3-large w3-text-dark-grey" style="font-weight: bold; margin-top: 0;">
+                ¡El Diagrama P–M está en camino!
+            </h2>
+            
+            <p class="w3-small w3-text-grey" style="line-height: 1.6;">
+                Actualmente estamos consolidando los <b>Laboratorios 1, 2 y 3</b>. 
+                Asegúrate de dominar la interacción entre compatibilidad, equilibrio y flexión antes de dar el salto al análisis iterativo de flexocompresión.
+            </p>
+
+            <div class="w3-panel w3-leftbar w3-border-orange w3-pale-red w3-padding-small w3-round w3-small" style="text-align: left;">
+                <i class="fa fa-lightbulb-o w3-text-orange"></i> <b>Lema del Lab 4:</b> 
+                <em>"El diagrama P–M no se calcula con una fórmula; se construye resolviendo el equilibrio para muchas posiciones del eje neutro."</em>
+            </div>
+
+            <div class="redes-box">
+                <p class="w3-tiny w3-text-dark-grey w3-margin-0" style="font-weight: bold;">
+                    📢 Publicación de acceso en redes sociales
+                </p>
+                <p class="w3-tiny w3-text-grey" style="margin: 4px 0 0 0;">
+                    Mantente atento a <b>Criterio Estructural</b>. Anunciaremos la apertura de este laboratorio la próxima semana.
+                </p>
+            </div>
+
+            <div style="margin-top: 25px;">
+                <a href="../flexion/laboratorios-1-3.html" class="w3-button w3-light-grey w3-border w3-round-large w3-small">
+                    <i class="fa fa-arrow-left"></i> Repasar Labs 1, 2 y 3
+                </a>
+            </div>
+        </div>
+
+        <!-- MAQUETA FANTASMA (DIFUMINADA DE FONDO) -->
+        <div class="maqueta-fondo">
+            <div class="w3-row-padding">
+                <div class="w3-col m6">
+                    <div class="w3-card w3-padding w3-white w3-round-large" style="height: 180px;">
+                        <b class="w3-small">Sección y Esfuerzos</b>
+                        <div style="background: #e2e8f0; height: 110px; margin-top: 10px; border-radius: 6px;"></div>
+                    </div>
+                </div>
+                <div class="w3-col m6">
+                    <div class="w3-card w3-padding w3-white w3-round-large" style="height: 180px;">
+                        <b class="w3-small">Diagrama P-M</b>
+                        <div style="background: #e2e8f0; height: 110px; margin-top: 10px; border-radius: 6px;"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="w3-card w3-padding w3-white w3-round-large w3-margin-top" style="height: 120px;">
+                <b class="w3-small">Historial de Puntos Descubiertos</b>
+                <div style="background: #f1f5f9; height: 60px; margin-top: 10px; border-radius: 6px;"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- LÍNEA DIVISORIA ELEGANTE -->
+    <div style="max-width: 800px; margin: auto; padding: 0 15px;">
+        <hr style="border: 0; height: 1px; background-color: #ddd; margin: 20px 0;">
+    </div>
+
+    <!-- FOOTER DE MARCA -->
+    <footer class="w3-container w3-padding-32 w3-center w3-text-grey" style="background-color: var(--gris-claro); margin-top: 0;">
+        <div class="w3-border-top w3-border-grey w3-padding-24" style="max-width: 500px; margin: auto;">
+            <img src="../assets/IsotipoFClaroT.png" alt="Criterio Estructural" class="brand-logo-footer" style="max-width: 200px;">
+            <p class="w3-medium"><b>Publicado por:</b></p>
+            <h4 class="w3-text-dark-grey" style="margin: 0;"><b>Rafael Antonio Correa Melano</b></h4>
+            <p class="w3-small" style="margin-top: 5px;">
+                Ingeniero Civil • M.IE.<br>
+                Universidad Industrial de Santander
+            </p>
+            <div class="w3-margin-top">
+                <span class="w3-tag w3-round w3-white w3-border w3-border-red w3-text-red w3-small">BGA, 2026</span>
+            </div>
+        </div>
+    </footer>
+
+</div> <!-- Cierra .contenedor-principal -->
+
+</body>
+</html>
