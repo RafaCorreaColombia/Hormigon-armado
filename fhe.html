@@ -6,7 +6,19 @@
     <title>Del peso a la fuerza | Criterio Estructural</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <!-- Configuración robusta de MathJax para soportar $...$ inline -->
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true
+            }
+        });
+    </script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    
     <style>
         :root {
             --ce-fondo-concreto: #F4F6F7;
@@ -22,15 +34,15 @@
         .grafico-container { width: 100%; background: #e9ecef; border-radius: 8px; overflow: hidden; position: relative; border-bottom: 4px solid var(--ce-texto-antracita); }
         table th { background-color: var(--ce-texto-antracita); color: white; }
         
-        /* Diagrama de Flujo / Bifurcación */
-        .flujo-caja { background: white; border: 2px solid var(--ce-texto-antracita); padding: 6px; text-align: center; border-radius: 4px; font-weight: bold; font-size: 11px; margin: 0 auto; width: 180px;}
-        .flujo-flecha { text-align: center; font-size: 14px; color: var(--ce-texto-antracita); margin: 2px 0; }
-        .flujo-ingenieria { border: 2px solid var(--ce-acento-naranja); background: #fff3e0; color: var(--ce-acento-naranja); padding: 6px; font-weight: bold; font-size: 11px; border-radius: 4px; width: 180px; margin: 0 auto; text-align: center; }
-        .flujo-bifurcacion { border: 2px dashed var(--ce-texto-antracita); background: #e9ecef; color: var(--ce-texto-antracita); padding: 6px; font-weight: bold; font-size: 11px; border-radius: 4px; width: 220px; margin: 0 auto; text-align: center; }
-        
-        /* Boton Ecosistema */
-        .btn-ecosistema { background: var(--ce-texto-antracita); color: white; transition: 0.3s; width: 100%; text-align: left; padding: 12px; font-weight: bold; }
-        .btn-ecosistema:hover, .btn-ecosistema.activo { background: var(--ce-acento-naranja); color: white; }
+        /* Botones de Ruta Normativa */
+        .btn-ruta { border: 2px solid var(--ce-texto-antracita); background: white; color: var(--ce-texto-antracita); transition: 0.3s; width: 100%; padding: 20px 10px; font-weight: bold; border-radius: 8px; cursor: pointer; }
+        .btn-ruta:hover { background: #f0f0f0; }
+        .btn-ruta.activa { background: var(--ce-texto-antracita); color: white; border-color: var(--ce-texto-antracita); }
+        .btn-ruta.activa .subtitle { color: #ccc; }
+        .btn-ruta .subtitle { display: block; font-size: 11px; font-weight: normal; color: #666; margin-top: 5px; }
+
+        /* Panel de Decisión de Ingenieria */
+        .panel-ingenieria { background: #fff3e0; border-left: 4px solid var(--ce-acento-naranja); padding: 15px; border-radius: 0 4px 4px 0; margin-top: 15px;}
     </style>
 </head>
 <body>
@@ -39,8 +51,8 @@
     <div class="ce-header w3-row">
         <div class="w3-col s12 m8">
             <h2 style="margin:0;"><b>Criterio Estructural</b></h2>
-            <p style="margin:0; opacity: 0.9;"><b>Laboratorio 2A:</b> Del peso a la fuerza sísmica: cómo la física se convierte en reglamento</p>
-            <p class="w3-small" style="margin:0; opacity: 0.7;"><i>La física común detrás de NSR-10 y ASCE 7</i></p>
+            <p style="margin:0; opacity: 0.9;"><b>Laboratorio 2A:</b> Del peso a la fuerza sísmica</p>
+            <p class="w3-small" style="margin:0; opacity: 0.7;"><i>Primero la física, luego el reglamento, finalmente el ingeniero.</i></p>
         </div>
         <div class="w3-col s12 m4 w3-hide-small" style="text-align: right; padding-top: 10px;">
             <span style="font-size: 10px; color: var(--ce-texto-antracita); border: 1px solid white; padding: 4px 8px; border-radius: 4px; font-family: 'Courier New', monospace; background: white; white-space: nowrap; display: inline-block;">
@@ -51,19 +63,19 @@
 
     <div class="w3-container w3-padding-24">
         
-        <!-- Fase 1: La Física Universal -->
+        <!-- FASE I, II y III: La Física Pura -->
         <div class="ce-card" style="border-left: 6px solid var(--ce-texto-antracita);">
-            <h4><b>Fase I: La Física Estructural (Universal)</b></h4>
+            <h4><b>Fase I a III: Dinámica e Inercia Pura</b></h4>
             <p class="w3-small w3-justify">
-                Antes de abrir una norma o un software, la física debe estar clara. La arquitectura y los materiales definen el <i>peso</i>. El peso se convierte en <i>masa dinámica</i>. Esa masa, interactuando con la rigidez, define el <i>periodo ($T$)</i> y las <i>formas modales</i> de vibración. <b>El fenómeno físico es único; el modelo es solo una representación de esa realidad.</b>
+                Antes de aplicar normas, la estructura es un ente físico. La arquitectura define el <i>peso</i>, el cual se concentra como <i>masa dinámica</i> por nivel. Esa masa, junto a la rigidez lateral, define los periodos y modos reales. Cuando la base se mueve, las masas oponen resistencia al cambio de movimiento ($F_i = m_i \cdot a_i$). <b>La resultante inercial genera la reacción basal $R_B$.</b>
             </p>
 
             <div class="w3-row-padding" style="margin-top: 20px;">
-                <!-- Metrado -->
+                <!-- Control y Metrado -->
                 <div class="w3-col l6 m12">
                     <div class="w3-panel w3-light-grey w3-round w3-padding">
                         <label class="w3-small"><b>Número de Pisos ($n$): <span id="val-pisos" class="w3-text-orange w3-large">4</span></b></label>
-                        <input type="range" id="numPisos" min="1" max="8" value="4" class="w3-input" oninput="generarNuevoEdificio()">
+                        <input type="range" id="numPisos" min="1" max="8" value="4" class="w3-input" oninput="calcularModeloBase()">
                         
                         <div class="w3-row w3-margin-top w3-tiny">
                             <div class="w3-col s6">
@@ -77,186 +89,134 @@
                         </div>
                         <hr style="border-color:#ccc; margin:10px 0;">
                         <ul class="w3-ul w3-tiny" style="font-family: monospace;">
-                            <li>Losa + Vigas + Cols <span class="w3-right">1052 kN</span></li>
-                            <li>Acabados + Particiones <span class="w3-right">1080 kN</span></li>
-                            <li class="w3-light-grey"><b>PESO TOTAL PISO ($W_x$)</b> <span class="w3-right"><b id="peso-total-piso">2132 kN</b></span></li>
+                            <li>Estructura (Losa+Vigas+Cols) <span class="w3-right">1052 kN</span></li>
+                            <li>No Estructural (Acabados+Muros) <span class="w3-right">1080 kN</span></li>
+                            <li class="w3-light-grey"><b>PESO TOTAL TÍPICO ($W_x$)</b> <span class="w3-right"><b id="peso-total-piso">2132 kN</b></span></li>
                         </ul>
                     </div>
                 </div>
 
-                <!-- Dinámica SVG -->
+                <!-- Dinámica SVG (Modelo de Cortante) -->
                 <div class="w3-col l6 m12">
                     <div class="w3-row w3-tiny w3-margin-bottom">
-                        <div class="w3-col s5"><b>$m_x$:</b> <span id="lbl-m"></span> Ton <span class="w3-text-grey">(Inercia)</span></div>
-                        <div class="w3-col s7 w3-right-align">
+                        <div class="w3-col s6">
+                            <b>Masa piso 1:</b> <span id="lbl-m"></span> Ton <span class="w3-text-grey">($W_1/g$)</span><br>
+                            <b>Peso Total ($W$):</b> <span id="lbl-Wtot" class="w3-text-orange w3-bold"></span> kN
+                        </div>
+                        <div class="w3-col s6 w3-right-align">
                             <b>$T_{aprox}$:</b> <span id="lbl-T"></span> s<br>
-                            <span class="w3-text-grey" style="font-size: 8px;"><i>*Estimación didáctica $T \sim \sqrt{M/K}$</i></span>
+                            <span class="w3-text-grey" style="font-size: 8px;"><i>*Estimación visual $T \sim \sqrt{M/K}$</i></span>
                         </div>
                     </div>
-                    <div class="grafico-container" style="height: 180px; border-bottom: 2px solid var(--ce-texto-antracita);">
+                    
+                    <!-- Animacion -->
+                    <div class="grafico-container" style="height: 250px; background: white; border: 1px solid #ccc; border-bottom: 4px solid var(--ce-texto-antracita);">
                         <svg id="svg-edificio" width="100%" height="100%"></svg>
                     </div>
                     
                     <div class="w3-panel w3-sand w3-leftbar w3-border-orange w3-padding-small w3-tiny w3-margin-top">
-                        <h6 style="margin-top:0; margin-bottom: 4px;"><b><i class="fa fa-bolt"></i> Ley de Inercia</b></h6>
-                        <p style="margin:0;">El edificio no siente fuerzas, <b>siente aceleraciones</b>. La fuerza lateral aparece cuando la masa intenta conservar su estado de reposo frente al movimiento de la base ($F = m \cdot a$).</p>
+                        <h6 style="margin-top:0; margin-bottom: 4px;"><b><i class="fa fa-balance-scale"></i> Equilibrio Dinámico</b></h6>
+                        <p style="margin:0;">Las fuerzas inerciales (flechas naranjas) van en dirección opuesta a la aceleración de la masa. La reacción en la base equilibra el sistema: <b>$R_B = - \sum F_i$</b>.</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Fase 2: La Bifurcación Normativa -->
+        <!-- FASE V y VI: Decision Normativa -->
         <div class="ce-card" style="border-left: 6px solid var(--ce-acento-naranja);">
             <div class="w3-row">
-                <div class="w3-col m7">
-                    <h4><b>Fase II: El Plot Twist Normativo</b></h4>
+                <div class="w3-col m12">
+                    <h4><b>Fase IV y V: La Bifurcación Normativa</b></h4>
                     <p class="w3-small w3-justify">
-                        El software resuelve un problema matricial de dinámica estructural. No sabe de NSR-10 ni de ASCE 7. Resuelve periodos y modos reales basados en $[K]$ y $[M]$. <b>Aquí entra el Ingeniero.</b><br><br>
-                        Cuando decidimos usar esos modos para buscar fuerzas de diseño, ocurre una <b>bifurcación</b>. Al cambiar de idioma normativo no solamente cambiamos un espectro; cambiamos el modelo de seguridad completo (amenaza, reducción, detallado y evaluación).
+                        El software calcula periodos, modos y desplazamientos elásticos, pero <b>no sabe qué edificio estás representando.</b> No sabe si tus conexiones son dúctiles o qué nivel de desempeño esperas.<br>
+                        Aquí interviene el reglamento (para definir la amenaza) y <b>tú, el ingeniero</b> (para definir la reducción $R$ aplicable a tu sistema estructural).
                     </p>
-                    
-                    <!-- El punto crítico del error humano -->
-                    <div class="w3-panel w3-sand w3-leftbar w3-border-red w3-padding-small w3-tiny w3-margin-top">
-                        <h6 style="margin-top:0; margin-bottom: 4px; color: #c0392b;"><b>⚠️ EL SOFTWARE NO SABE QUÉ EDIFICIO ESTÁS REPRESENTANDO</b></h6>
-                        <p style="margin:0;">El software calcula $T$, modos y desplazamientos elásticos. Pero <b>no puede decidir</b>:<br>
-                        - Si el muro de tu CAD realmente existe en obra.<br>
-                        - Si tu diafragma trabaja rígidamente como asumiste.<br>
-                        - Si las conexiones son lo suficientemente dúctiles.<br>
-                        - Si el sistema corresponde al $R$ asignado.<br>
-                        - Si la estructura cumple la filosofía de desempeño.<br>
-                        <i>Resuelve ecuaciones. La ingeniería ocurre antes y después.</i></p>
+                </div>
+            </div>
+
+            <!-- Botones de Ruta -->
+            <div class="w3-row-padding w3-margin-top">
+                <div class="w3-col m6 w3-margin-bottom">
+                    <div class="btn-ruta activa" id="btn-nsr" onclick="setRuta('nsr10')">
+                        🇨🇴 RUTA NSR-10
+                        <span class="subtitle">Reglamento Colombiano (Amenaza Regional)</span>
                     </div>
                 </div>
-                
-                <div class="w3-col m5 w3-padding">
-                    <!-- Diagrama CSS Avanzado -->
-                    <div class="flujo-caja" style="background:#e9ecef;">Arquitectura 🏢</div>
-                    <div class="flujo-flecha">↓</div>
-                    <div class="flujo-caja" style="background:#e9ecef;">Modelo (Matriz $[M]$ y $[K]$)</div>
-                    <div class="flujo-flecha">↓</div>
-                    <div class="flujo-caja" style="background:#e9ecef;">$[K]\phi = \omega^2[M]\phi$</div>
-                    <div class="flujo-flecha">↓</div>
-                    <div class="flujo-caja" style="background:#e9ecef;">Periodos y Modos Reales</div>
-                    <div class="flujo-flecha">↓</div>
-                    <div class="flujo-ingenieria">Decisión de Ingeniería 🧠</div>
-                    <div class="flujo-flecha">↓</div>
-                    <div class="flujo-bifurcacion">⚠️ BIFURCACIÓN NORMATIVA</div>
-                    <div class="w3-row w3-margin-top">
-                        <div class="w3-col s6 w3-center w3-tiny"><b>🇨🇴 NSR-10</b></div>
-                        <div class="w3-col s6 w3-center w3-tiny w3-text-grey"><b>🌍 ASCE 7</b></div>
+                <div class="w3-col m6 w3-margin-bottom">
+                    <div class="btn-ruta" id="btn-asce" onclick="setRuta('asce7')">
+                        🌎 RUTA ASCE 7
+                        <span class="subtitle">Referencia Internacional (Mapeo Probabilístico)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fase VI: Decisión del Ingeniero -->
+            <div class="panel-ingenieria">
+                <div class="w3-row">
+                    <div class="w3-col m6">
+                        <h6 style="margin-top:0;"><b>Fase VI: Decisión de Ingeniería 🧠</b></h6>
+                        <p class="w3-tiny w3-margin-0"><i>El software no decide el factor de reducción $R$. Tú debes definirlo según el sistema estructural y los requisitos de detallado normativo.</i></p>
+                    </div>
+                    <div class="w3-col m3 w3-padding">
+                        <label class="w3-tiny"><b>Factor de Reducción ($R$):</b></label>
+                        <input type="number" id="input-R" class="w3-input w3-border w3-round" value="1.0" min="1" step="0.5" onchange="calcularDemandas()">
+                    </div>
+                    <div class="w3-col m3 w3-padding" id="panel-cd" style="display:none;">
+                        <label class="w3-tiny"><b>Factor de Deflexión ($C_d$):</b></label>
+                        <input type="number" id="input-Cd" class="w3-input w3-border w3-round" value="1.0" min="1" step="0.5">
                     </div>
                 </div>
             </div>
 
             <hr>
 
-            <!-- Calculadora Normativa -->
-            <div class="w3-row-padding">
+            <!-- FASE VII: Comparación Elástica vs Diseño -->
+            <div class="w3-row-padding w3-margin-top">
                 <div class="w3-col m4">
-                    <button class="w3-button w3-round btn-ecosistema activo" id="btn-nsr" onclick="setNorma('nsr10')">
-                        🇨🇴 Idioma Principal: NSR-10
-                    </button>
-                    <button class="w3-button w3-round btn-ecosistema w3-margin-top" id="btn-asce" onclick="setNorma('asce7')" style="background-color: #e9ecef; color:var(--ce-texto-antracita);">
-                        🌍 ¿Cómo habla el mundo? (ASCE 7)
-                    </button>
-                    
-                    <!-- Panel Info Variables -->
-                    <div class="w3-panel w3-border w3-round w3-padding-small w3-tiny w3-margin-top" id="panel-vars" style="background: #fafafa;">
-                        <!-- JS Inyecta el texto aqui -->
+                    <span class="w3-tiny"><b>Espectro Normativo Referencial $S_a(T)$</b></span>
+                    <canvas id="canvas-espectro" width="250" height="150" style="width:100%; border:1px solid #ccc; background:white;"></canvas>
+                    <p class="w3-tiny w3-text-grey w3-margin-0 w3-justify w3-margin-top" id="info-ruta"></p>
+                </div>
+                
+                <div class="w3-col m8">
+                    <span class="w3-tiny"><b>Aproximación FHE (Fuerza Horizontal Equivalente)</b></span>
+                    <div class="w3-responsive">
+                        <table class="w3-table w3-bordered w3-small w3-centered w3-border" id="tabla-fhe">
+                            <thead>
+                                <tr>
+                                    <th rowspan="2" style="vertical-align: middle;">Piso</th>
+                                    <th rowspan="2" style="vertical-align: middle;">$W_x$<br><span class="w3-tiny">(kN)</span></th>
+                                    <th rowspan="2" style="background-color:#e9ecef; color:#333; vertical-align: middle;">$W_x h_x^k$<br><span class="w3-tiny">(Participación)</span></th>
+                                    <th colspan="2" style="background-color:#34495e;">Demanda Elástica ($R=1$)</th>
+                                    <th colspan="2" style="background-color:var(--ce-acento-naranja);">Fuerzas de Diseño ($R$)</th>
+                                </tr>
+                                <tr>
+                                    <th style="background-color:#34495e;">$C_{vx}$</th>
+                                    <th style="background-color:#34495e;">$F_{elástico}$</th>
+                                    <th style="background-color:var(--ce-acento-naranja); border-left: 1px solid #e0e0e0;">$C_{vx}$</th>
+                                    <th style="background-color:var(--ce-acento-naranja);"><b>$F_{diseño}$</b></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- JS inyecta -->
+                            </tbody>
+                            <tfoot>
+                                <tr style="background:#f1f1f1; font-weight:bold;">
+                                    <td colspan="3" class="w3-right-align">Cortante Basal ($V_s$):</td>
+                                    <td colspan="2" id="res-v-el" style="color:#34495e;"></td>
+                                    <td colspan="2" id="res-v-dis" class="w3-text-orange" style="border-left: 1px solid #ccc;"></td>
+                                </tr>
+                            </tfoot>
+                        </table>
                     </div>
-                    <p class="w3-tiny w3-text-grey w3-margin-0 w3-margin-top w3-justify">
-                        <i>*Dos espectros diferentes pueden representar niveles de amenaza equivalentes solamente después de comparar periodo de retorno, probabilidad de excedencia y filosofía de diseño. No son conversiones directas.</i>
+                    <p class="w3-tiny w3-text-grey w3-justify w3-margin-top">
+                        <b>¿Por qué el último piso recibe generalmente mayor fuerza?</b><br>
+                        No necesariamente porque pese más, sino porque en la distribución FHE interviene su altura. La aproximación normativa $W_x h_x^k$ asigna mayor participación a los niveles superiores para capturar simplificadamente el efecto de la respuesta dinámica del modo fundamental.
                     </p>
                 </div>
-
-                <div class="w3-col m8">
-                    <div class="w3-row">
-                        <div class="w3-col s6 w3-center">
-                            <span class="w3-tiny"><b>Espectro Didáctico $S_a(T)$</b></span>
-                            <canvas id="canvas-espectro" width="250" height="150" style="width:100%; border:1px solid #ccc; background:white;"></canvas>
-                        </div>
-                        <div class="w3-col s6 w3-padding">
-                            <ul class="w3-ul w3-border w3-tiny w3-round">
-                                <li style="background:#e9ecef;"><b>DEMANDA ELÁSTICA (FHE)</b></li>
-                                <li>$V_s = C_s \cdot W$</li>
-                                <li>$C_s = \frac{S_a(T)}{R}$</li>
-                                <li class="w3-padding-small" style="background-color: #fff3e0; border-left: 4px solid var(--ce-acento-naranja);">
-                                    <b class="w3-text-orange">⚠️ MODO FÍSICO: $R = 1$</b><br>
-                                    <i class="w3-tiny w3-text-dark-grey">No representa diseño final. Solo demanda elástica $\rightarrow C_s = S_a(T)$.</i>
-                                </li>
-                                <li class="w3-light-grey"><b>CORTANTE BASAL $V_s$:</b> <b id="res-vs" class="w3-right w3-large w3-text-orange"></b></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Transición a Tabla Final -->
-            <div class="w3-margin-top">
-                <p class="w3-small w3-padding w3-light-grey w3-border-left w3-border-dark-grey">
-                    <b>¿Por qué el último piso recibe más fuerza?</b><br>
-                    No porque pese más, sino porque está más lejos del centro de masa dinámico de la base (mayor participación modal descrita por el brazo $h_x^k$). La tabla FHE cuantifica físicamente este efecto.
-                </p>
-                <div class="w3-responsive">
-                    <table class="w3-table w3-bordered w3-small w3-centered w3-border" id="tabla-fhe">
-                        <thead>
-                            <tr>
-                                <th>Piso</th>
-                                <th>$h_x$ (m)</th>
-                                <th>$W_x$ (kN)</th>
-                                <th style="background-color:#e9ecef; color:#333;">$W_x h_x^k$ (Participación)</th>
-                                <th>$C_{vx}$</th>
-                                <th style="background-color:var(--ce-acento-naranja);"><b>$F_x$ (kN)</b></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- JS inyecta -->
-                        </tbody>
-                    </table>
-                </div>
-                <p class="w3-tiny w3-text-grey w3-center"><i>*Nota didáctica: El exponente $k$ no es una propiedad física de la estructura, sino una aproximación matemática normativa para capturar el efecto de los modos superiores en la distribución de fuerzas.</i></p>
             </div>
         </div>
-
-        <!-- Fase 3: El Manifiesto y Mapa de Ruta -->
-        <div class="w3-panel w3-border w3-border-dark-grey w3-round-large w3-padding-16" style="background-color: #2C3E50; color: white;">
-            <h5 class="w3-margin-0"><b><i class="fa fa-map-signs w3-text-orange"></i> No cambias de norma, cambias de pregunta</b></h5>
-            <p class="w3-small w3-justify" style="opacity: 0.9;">
-                Durante la formación profesional aparecerá una realidad: muchos procedimientos avanzados (evaluación sísmica, diseño por desempeño, rótulas plásticas) se fundamentan en el ecosistema de investigación internacional. Un ingeniero estructural integral debe dominar su reglamento local (NSR-10), pero también aprender a leer los idiomas internacionales.
-            </p>
-            
-            <div class="w3-row-padding w3-tiny w3-margin-top">
-                <div class="w3-col l3 m6 w3-margin-bottom">
-                    <div class="w3-round w3-padding" style="border:1px solid #7f8c8d; height: 100%;">
-                        <b class="w3-text-grey">Módulo 1</b><br>
-                        <b>La física del edificio</b><br>
-                        Masa, rigidez y modos reales.
-                    </div>
-                </div>
-                <div class="w3-col l3 m6 w3-margin-bottom">
-                    <div class="w3-round w3-padding" style="border:1px solid var(--ce-acento-naranja); background:rgba(211, 84, 0, 0.1); height: 100%;">
-                        <b class="w3-text-orange">Módulo 2A (Actual)</b><br>
-                        <b>FHE</b><br>
-                        NSR-10 como lenguaje local.
-                    </div>
-                </div>
-                <div class="w3-col l3 m6 w3-margin-bottom">
-                    <div class="w3-round w3-padding" style="border:1px solid #7f8c8d; opacity:0.6; height: 100%;">
-                        <b class="w3-text-grey">Módulo 2B / 3</b><br>
-                        <b>Modal Espectral / Capacidad</b><br>
-                        ETABS, ACI 318 y ASCE 7.
-                    </div>
-                </div>
-                <div class="w3-col l3 m6 w3-margin-bottom">
-                    <div class="w3-round w3-padding" style="border:1px solid #7f8c8d; opacity:0.6; height: 100%;">
-                        <b class="w3-text-grey">Módulo 4</b><br>
-                        <b>Desempeño</b><br>
-                        ASCE 41, FEMA y NIST.
-                    </div>
-                </div>
-            </div>
-        </div>
-
+        
         <!-- Cierre Magistral -->
         <div class="w3-center w3-padding-32">
             <h4 style="color: var(--ce-texto-antracita); font-weight: bold; margin:0;">
@@ -269,140 +229,133 @@
 
     <!-- SCRIPT LOGIC -->
     <script>
+        // Variables Base
         let n_pisos = 4;
         let T_fisico = 0.5;
-        let k_normativo = 1.0;
-        let pisos_fisicos = [];
+        let k_normativo = 1.0; 
+        let pisos_data = [];
         let W_total = 0;
-        
-        let normaActiva = 'nsr10';
+        let rutaActiva = 'nsr10';
 
+        // Variables SVG Animacion
         let nodosAnimacion = [];
         let reqAnim = null;
 
-        function generarNuevoEdificio() {
+        // Fase I: Generar Física Determinística
+        function calcularModeloBase() {
             n_pisos = parseInt(document.getElementById('numPisos').value);
             document.getElementById('val-pisos').innerText = n_pisos;
 
             const W_tipico = 2132; 
             const W_cubierta = 1592; 
 
-            // Periodo sintético para visualización dinámica.
-            // No corresponde a una ecuación absoluta ni al Ta de NSR-10.
-            let T_aprox = 0.08 * Math.pow(n_pisos, 0.75);
-            let variacion = 0.9 + (Math.random() * 0.2); 
-            T_fisico = T_aprox * variacion;
+            // Periodo determinístico (para que el estudiante pueda replicarlo a mano)
+            T_fisico = 0.08 * Math.pow(n_pisos, 0.75);
 
-            // El exponente k de la distribución FHE
+            // Aproximación normativa de distribución FHE
             if (T_fisico > 0.5 && T_fisico < 2.5) k_normativo = 0.75 + 0.5 * T_fisico;
             else if (T_fisico >= 2.5) k_normativo = 2.0;
             else k_normativo = 1.0;
 
-            pisos_fisicos = [];
+            pisos_data = [];
             W_total = 0;
             for (let i = 1; i <= n_pisos; i++) {
                 let peso = (i === n_pisos) ? W_cubierta : W_tipico;
-                peso = peso * (0.98 + Math.random() * 0.04); 
-                
-                pisos_fisicos.push({ nivel: i, hx: i * 2.9, Wx: peso, mx: peso/9.81, Fx: 0 });
+                pisos_data.push({ 
+                    nivel: i, 
+                    hx: i * 2.9, 
+                    Wx: peso, 
+                    mx: peso/9.81, 
+                    F_elas: 0,
+                    F_dis: 0
+                });
                 W_total += peso;
             }
 
-            document.getElementById('lbl-m').innerText = (pisos_fisicos[0].mx).toFixed(1);
+            document.getElementById('lbl-m').innerText = (pisos_data[0].mx).toFixed(1);
+            document.getElementById('lbl-Wtot').innerText = W_total.toFixed(0);
             document.getElementById('lbl-T').innerText = T_fisico.toFixed(3);
-            document.getElementById('peso-total-piso').innerText = pisos_fisicos[0].Wx.toFixed(0) + " kN";
+            document.getElementById('peso-total-piso').innerText = pisos_data[0].Wx.toFixed(0) + " kN";
 
-            calcularFuerzasNormativas();
+            calcularDemandas();
         }
 
-        function setNormaUI(norma) {
-            normaActiva = norma;
-            
+        // Selector de Ruta Normativa
+        function setRuta(ruta) {
+            rutaActiva = ruta;
             let btnNSR = document.getElementById('btn-nsr');
             let btnASCE = document.getElementById('btn-asce');
+            let panelCd = document.getElementById('panel-cd');
             
-            if(norma === 'nsr10'){
-                btnNSR.className = "w3-button w3-round btn-ecosistema activo";
-                btnNSR.style.backgroundColor = ""; btnNSR.style.color = "";
-                btnASCE.className = "w3-button w3-round btn-ecosistema";
-                btnASCE.style.backgroundColor = "#e9ecef"; btnASCE.style.color = "var(--ce-texto-antracita)";
-                
-                document.getElementById('panel-vars').innerHTML = `
-                    <b>Ruta de Calibración (NSR-10):</b><br>
-                    Amenaza Regional $\\rightarrow A_a, A_v, F_a, F_v \\rightarrow$ Espectro $S_a(T)$<br>
-                    <i class="w3-text-dark-grey">Enfoque en sismicidad colombiana y microzonificación.</i>`;
+            if(ruta === 'nsr10') {
+                btnNSR.classList.add('activa'); btnASCE.classList.remove('activa');
+                panelCd.style.display = 'none';
+                document.getElementById('info-ruta').innerHTML = `<b>NSR-10:</b> Amenaza $\\rightarrow A_a, A_v \\rightarrow S_a(T)$. Enfoque regional colombiano.<br>Estado Elástico (Derivas): $R=1$. Diseño: $E = E_{elástico} / R$.`;
             } else {
-                btnASCE.className = "w3-button w3-round btn-ecosistema activo w3-margin-top";
-                btnASCE.style.backgroundColor = ""; btnASCE.style.color = "";
-                btnNSR.className = "w3-button w3-round btn-ecosistema";
-                btnNSR.style.backgroundColor = "#e9ecef"; btnNSR.style.color = "var(--ce-texto-antracita)";
-                
-                document.getElementById('panel-vars').innerHTML = `
-                    <b>Ruta de Calibración (ASCE 7):</b><br>
-                    Amenaza MCE_R $\\rightarrow S_S, S_1 \\rightarrow S_{DS}, S_{D1} \\rightarrow$ Espectro $S_a(T)$<br>
-                    <i class="w3-text-dark-grey">Enfoque en mapeo probabilístico y riesgo uniforme.</i>`;
+                btnASCE.classList.add('activa'); btnNSR.classList.remove('activa');
+                panelCd.style.display = 'block';
+                document.getElementById('info-ruta').innerHTML = `<b>ASCE 7:</b> Amenaza $MCE_R \\rightarrow S_{DS}, S_{D1} \\rightarrow S_a(T)$. Mapeo probabilístico internacional.<br>El factor $C_d$ se usa posteriormente para estimar derivas inelásticas.`;
             }
-            if(window.MathJax) { MathJax.Hub.Queue(["Typeset", MathJax.Hub, document.getElementById('panel-vars')]); }
+            if(window.MathJax) { MathJax.Hub.Queue(["Typeset", MathJax.Hub, document.getElementById('info-ruta')]); }
+            calcularDemandas();
         }
 
-        function setNorma(norma) {
-            setNormaUI(norma);
-            if(pisos_fisicos.length > 0) {
-                calcularFuerzasNormativas();
-            }
-        }
+        // Fases V a VII: Calculo de Espectro y Distribución FHE
+        function calcularDemandas() {
+            if(pisos_data.length === 0) return;
 
-        function calcularFuerzasNormativas() {
+            let R_val = parseFloat(document.getElementById('input-R').value);
+            if (isNaN(R_val) || R_val < 1) { R_val = 1; document.getElementById('input-R').value = 1; }
+
             let Sa_ref, Tc, Sa;
-            
-            if (normaActiva === 'nsr10') {
-                Sa_ref = 0.75; Tc = 0.48;
-                Sa = T_fisico <= Tc ? Sa_ref : (Sa_ref * Tc) / T_fisico;
+            if (rutaActiva === 'nsr10') {
+                Sa_ref = 0.75; Tc = 0.48; // Aa=0.3, Av=0.3, Fa=1, Fv=1 (aprox)
             } else {
-                Sa_ref = 0.85; Tc = 0.50; 
-                Sa = T_fisico <= Tc ? Sa_ref : (Sa_ref * Tc) / T_fisico;
+                Sa_ref = 0.85; Tc = 0.50; // Calibración ilustrativa diferente
             }
+            
+            Sa = T_fisico <= Tc ? Sa_ref : (Sa_ref * Tc) / T_fisico;
             if (Sa < 0.1) Sa = 0.1;
 
-            let Vs = Sa * W_total;
+            // Cortantes Basales
+            let V_el = Sa * W_total;           // R = 1
+            let V_dis = (Sa / R_val) * W_total; // Diseño
+
             let sum_W_hk = 0;
-            
-            pisos_fisicos.forEach(p => {
+            pisos_data.forEach(p => {
                 p.W_hk = p.Wx * Math.pow(p.hx, k_normativo);
                 sum_W_hk += p.W_hk;
             });
 
-            pisos_fisicos.forEach(p => {
+            pisos_data.forEach(p => {
                 p.Cvx = p.W_hk / sum_W_hk;
-                p.Fx = p.Cvx * Vs;
+                p.F_elas = p.Cvx * V_el;
+                p.F_dis = p.Cvx * V_dis;
             });
 
-            document.getElementById('res-vs').innerText = Vs.toFixed(0) + " kN";
-            if (document.getElementById('res-sa')) {
-                document.getElementById('res-sa').innerText = Sa.toFixed(3) + " g";
-            }
+            document.getElementById('res-v-el').innerText = V_el.toFixed(0) + " kN";
+            document.getElementById('res-v-dis').innerText = V_dis.toFixed(0) + " kN";
 
             dibujarEspectro(Sa, Tc, Sa_ref);
             renderTabla();
-            
-            // Actualizar SVG para que las flechas reaccionen al nuevo calculo
             prepararAnimacionSVG();
         }
 
         function renderTabla() {
             let tbody = document.querySelector('#tabla-fhe tbody');
             tbody.innerHTML = '';
-            let pisosInvertidos = [...pisos_fisicos].reverse(); 
+            let pisosInvertidos = [...pisos_data].reverse(); 
 
             pisosInvertidos.forEach(p => {
                 let tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td>Piso ${p.nivel}</td>
-                    <td>${p.hx.toFixed(2)}</td>
+                    <td>${p.nivel}</td>
                     <td>${p.Wx.toFixed(0)}</td>
-                    <td style="background:#f8f9fa;"><b>${p.W_hk.toFixed(0)}</b></td>
+                    <td style="background:#f8f9fa; font-weight:bold;">${p.W_hk.toFixed(0)}</td>
                     <td>${p.Cvx.toFixed(3)}</td>
-                    <td class="w3-text-orange" style="font-weight:bold;">${p.Fx.toFixed(0)}</td>
+                    <td><b>${p.F_elas.toFixed(0)}</b></td>
+                    <td style="border-left: 1px solid #e0e0e0;">${p.Cvx.toFixed(3)}</td>
+                    <td class="w3-text-orange" style="font-weight:bold;">${p.F_dis.toFixed(0)}</td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -414,7 +367,7 @@
             let w = canvas.width, h = canvas.height;
             ctx.clearRect(0, 0, w, h);
             
-            let mX = 30, mY = 20, maxT = 2.0; 
+            let mX = 35, mY = 25, maxT = 2.0; 
             let mapX = (t) => mX + (t / maxT) * (w - mX - 10);
             let mapY = (sa) => (h - mY) - (sa / 1.0) * (h - mY - 10); 
 
@@ -422,141 +375,193 @@
             ctx.beginPath(); ctx.moveTo(mX, 5); ctx.lineTo(mX, h - mY); ctx.lineTo(w - 5, h - mY);
             ctx.strokeStyle = "#2C3E50"; ctx.lineWidth = 2; ctx.stroke();
             
+            ctx.fillStyle = "#2C3E50"; ctx.font = "10px Arial";
+            ctx.fillText("T(s)", w - 25, h - 10);
+            ctx.fillText("Sa(g)", 5, 15);
+
             // Curva 
-            let colorCurva = normaActiva === 'nsr10' ? "#2C3E50" : "#7f8c8d";
+            let colorCurva = rutaActiva === 'nsr10' ? "#2C3E50" : "#7f8c8d";
             ctx.beginPath();
             ctx.moveTo(mapX(0), mapY(Sa_ref * 0.4)); 
             ctx.lineTo(mapX(0.1), mapY(Sa_ref)); 
             ctx.lineTo(mapX(Tc), mapY(Sa_ref)); 
-            
-            for(let t = Tc; t <= maxT; t+=0.05) {
-                ctx.lineTo(mapX(t), mapY((Sa_ref * Tc) / t));
-            }
+            for(let t = Tc; t <= maxT; t+=0.05) { ctx.lineTo(mapX(t), mapY((Sa_ref * Tc) / t)); }
             ctx.strokeStyle = colorCurva; ctx.lineWidth = 2; ctx.stroke();
 
-            // Punto
-            let bldgX = mapX(T_fisico);
-            let bldgY = mapY(Sa_bldg);
-            
-            ctx.beginPath();
-            ctx.setLineDash([4, 4]);
+            // Punto edificio
+            let bldgX = mapX(T_fisico); let bldgY = mapY(Sa_bldg);
+            ctx.beginPath(); ctx.setLineDash([3, 3]);
             ctx.moveTo(bldgX, h - mY); ctx.lineTo(bldgX, bldgY); ctx.lineTo(mX, bldgY);
             ctx.strokeStyle = "#D35400"; ctx.lineWidth = 1; ctx.stroke();
             ctx.setLineDash([]);
+            
             ctx.beginPath(); ctx.arc(bldgX, bldgY, 4, 0, 2*Math.PI);
             ctx.fillStyle = "#D35400"; ctx.fill();
         }
 
+        // Modelo de Cortante de 1 Columna (Dinámica Pura)
         function prepararAnimacionSVG() {
             let svg = document.getElementById('svg-edificio');
             svg.innerHTML = '';
             
-            let svgW = svg.clientWidth || 300, svgH = svg.clientHeight || 180;
-            let baseY = svgH - 10, topY = 20;
-            let deltaY = (baseY - topY) / pisos_fisicos.length;
-            let centerX = svgW / 2 - 30; 
+            let svgW = svg.clientWidth || 300, svgH = svg.clientHeight || 250;
+            let baseY = svgH - 40, topY = 30; // Más espacio abajo para Rb
+            let deltaY = (baseY - topY) / pisos_data.length;
+            let centerX = svgW / 2; 
 
             nodosAnimacion = [];
-            let maxAmplitud = 30, anchoEdificio = 40;
             
-            // Hallar el max Fx para escalar las flechas dinámicamente
-            let maxFx = Math.max(...pisos_fisicos.map(p => p.Fx));
-            if (maxFx === 0) maxFx = 1;
+            // Parametros visuales
+            let maxAmplitud = 45;
+            let maxFx = Math.max(...pisos_data.map(p => p.F_elas)); if (maxFx === 0) maxFx = 1;
             
-            pisos_fisicos.forEach((p, idx) => {
+            // Normalización del radio según sqrt(Wx)
+            let minW = Math.min(...pisos_data.map(p => p.Wx));
+            let maxW = Math.max(...pisos_data.map(p => p.Wx));
+            if (minW === maxW) maxW = minW + 1; // evitar div/0
+            
+            // Dibujar Eje Estático Central
+            let lineaCentro = document.createElementNS("http://www.w3.org/2000/svg", "line");
+            lineaCentro.setAttribute("x1", centerX); lineaCentro.setAttribute("y1", baseY);
+            lineaCentro.setAttribute("x2", centerX); lineaCentro.setAttribute("y2", topY);
+            lineaCentro.setAttribute("stroke", "#bdc3c7"); lineaCentro.setAttribute("stroke-width", "1");
+            lineaCentro.setAttribute("stroke-dasharray", "4,4");
+            svg.appendChild(lineaCentro);
+
+            // Dibujar Base Empotrada
+            let baseRec = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+            baseRec.setAttribute("x", centerX - 25); baseRec.setAttribute("y", baseY);
+            baseRec.setAttribute("width", "50"); baseRec.setAttribute("height", "8");
+            baseRec.setAttribute("fill", "#2C3E50");
+            svg.appendChild(baseRec);
+            
+            // Vector de Reacción en la Base (Rb)
+            let gRb = document.createElementNS("http://www.w3.org/2000/svg", "g");
+            let rbLinea = document.createElementNS("http://www.w3.org/2000/svg", "line");
+            rbLinea.setAttribute("stroke", "#34495e"); rbLinea.setAttribute("stroke-width", "3");
+            let rbPunta = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+            rbPunta.setAttribute("fill", "#34495e");
+            let txtRb = document.createElementNS("http://www.w3.org/2000/svg", "text");
+            txtRb.setAttribute("fill", "#34495e"); txtRb.setAttribute("font-size", "12px"); txtRb.setAttribute("font-weight", "bold");
+            txtRb.textContent = "Rb";
+            gRb.appendChild(rbLinea); gRb.appendChild(rbPunta); gRb.appendChild(txtRb);
+            svg.appendChild(gRb);
+
+            pisos_data.forEach((p, idx) => {
                 let cy = baseY - (idx + 1) * deltaY;
-                // Usamos el k_normativo para la deformada visual como aproximación didáctica
-                let forma = Math.pow(p.hx / (pisos_fisicos.length * 2.9), k_normativo);
-                let amp = maxAmplitud * forma;
+                
+                // Amplitud modal aprox
+                let forma_visual = Math.pow(p.hx / (pisos_data.length * 2.9), k_normativo);
+                let amp = maxAmplitud * forma_visual;
 
-                let losa = document.createElementNS("http://www.w3.org/2000/svg", "line");
-                losa.setAttribute("stroke", "#34495e"); losa.setAttribute("stroke-width", "3");
-                svg.appendChild(losa);
+                // Radio de masa proporcional
+                let minRad = 6, maxRad = 10;
+                let radio = minRad + (Math.sqrt(p.Wx) - Math.sqrt(minW)) / (Math.sqrt(maxW) - Math.sqrt(minW)) * (maxRad - minRad);
 
-                let colIzq = document.createElementNS("http://www.w3.org/2000/svg", "line");
-                let colDer = document.createElementNS("http://www.w3.org/2000/svg", "line");
-                colIzq.setAttribute("stroke", "#7f8c8d"); colIzq.setAttribute("stroke-width", "2");
-                colDer.setAttribute("stroke", "#7f8c8d"); colDer.setAttribute("stroke-width", "2");
-                svg.appendChild(colIzq); svg.appendChild(colDer);
+                // Columna flexible (segmento hacia el piso de abajo)
+                let colFlex = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                colFlex.setAttribute("stroke", "#2C3E50"); colFlex.setAttribute("stroke-width", "3");
+                svg.appendChild(colFlex);
 
+                // Masa concentrada
                 let circulo = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-                let radio = Math.sqrt(p.Wx) * 0.25;
                 circulo.setAttribute("cy", cy); circulo.setAttribute("r", radio);
-                circulo.setAttribute("fill", "#bdc3c7"); 
+                circulo.setAttribute("fill", "#2C3E50"); 
                 svg.appendChild(circulo);
 
-                // Flecha proporcional y texto escalado
-                let longitudFlecha = 15 + (p.Fx / maxFx) * 35; 
-                let textSize = 8 + (p.Fx / maxFx) * 6; // Crece de 8px a 14px
+                // Flecha de Inercia (F = ma) - Oponiéndose al movimiento
+                let longitudFlecha = 15 + (p.F_elas / maxFx) * 35; 
                 
                 let gFlecha = document.createElementNS("http://www.w3.org/2000/svg", "g");
                 let flechaLinea = document.createElementNS("http://www.w3.org/2000/svg", "line");
-                flechaLinea.setAttribute("x1", "0"); flechaLinea.setAttribute("y1", "0");
-                flechaLinea.setAttribute("x2", longitudFlecha); flechaLinea.setAttribute("y2", "0");
                 flechaLinea.setAttribute("stroke", "#D35400"); flechaLinea.setAttribute("stroke-width", "2");
-                
                 let flechaPunta = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-                flechaPunta.setAttribute("points", `${longitudFlecha-5},-3 ${longitudFlecha+2},0 ${longitudFlecha-5},3`);
                 flechaPunta.setAttribute("fill", "#D35400");
-
                 let txtInercia = document.createElementNS("http://www.w3.org/2000/svg", "text");
-                // Centrar texto según longitud de flecha
-                txtInercia.setAttribute("x", (longitudFlecha / 2) - (textSize * 1.2)); 
-                txtInercia.setAttribute("y", "-5");
-                txtInercia.setAttribute("fill", "#D35400"); 
-                txtInercia.setAttribute("font-size", textSize + "px");
-                txtInercia.setAttribute("font-weight", "bold");
-                txtInercia.textContent = "F=m·a";
+                txtInercia.setAttribute("fill", "#D35400"); txtInercia.setAttribute("font-size", "10px"); txtInercia.setAttribute("font-weight", "bold");
+                txtInercia.textContent = "Fi";
                 
-                gFlecha.appendChild(flechaLinea); 
-                gFlecha.appendChild(flechaPunta);
-                gFlecha.appendChild(txtInercia);
+                gFlecha.appendChild(flechaLinea); gFlecha.appendChild(flechaPunta); gFlecha.appendChild(txtInercia);
                 svg.appendChild(gFlecha);
 
-                nodosAnimacion.push({ cy, amp, losa, colIzq, colDer, circulo, radio, flecha: gFlecha, ancho: anchoEdificio, longitudF: longitudFlecha });
+                nodosAnimacion.push({ cy, amp, colFlex, circulo, radio, flecha: gFlecha, longitudF: longitudFlecha });
             });
 
             if(reqAnim) cancelAnimationFrame(reqAnim);
             function renderFrame() {
-                let t = Date.now() * 0.003; 
-                let dir = Math.sin(t);
-
+                let t = Date.now() * 0.004; // Velocidad oscilacion
+                let u_t = Math.sin(t); // Desplazamiento
+                let v_t = Math.cos(t); // Velocidad (fase adelante)
+                // Aceleracion es -u_t, por ende la fuerza de inercia es prop. a -(-u_t) = u_t en dirección? 
+                // Fisicamente, si el edificio se mueve a la derecha (u>0), la aceleracion maxima restauradora es hacia la izq, por tanto inercia apunta a derecha. 
+                // Para simplificar visualmente: La fuerza empuja la masa alejándola del centro.
+                
                 nodosAnimacion.forEach((nodo, idx) => {
-                    let desp = dir * nodo.amp;
+                    let desp = u_t * nodo.amp;
                     let cx = centerX + desp;
                     
                     let prevCx = centerX, prevCy = baseY;
                     if (idx > 0) {
-                        prevCx = centerX + dir * nodosAnimacion[idx-1].amp;
+                        prevCx = centerX + u_t * nodosAnimacion[idx-1].amp;
                         prevCy = nodosAnimacion[idx-1].cy;
                     }
-
-                    nodo.losa.setAttribute("x1", cx - nodo.ancho/2); nodo.losa.setAttribute("x2", cx + nodo.ancho/2);
-                    nodo.losa.setAttribute("y1", nodo.cy); nodo.losa.setAttribute("y2", nodo.cy);
                     
-                    nodo.colIzq.setAttribute("x1", prevCx - nodo.ancho/2 + 5); nodo.colIzq.setAttribute("y1", prevCy);
-                    nodo.colIzq.setAttribute("x2", cx - nodo.ancho/2 + 5); nodo.colIzq.setAttribute("y2", nodo.cy);
+                    // Columna
+                    nodo.colFlex.setAttribute("x1", prevCx); nodo.colFlex.setAttribute("y1", prevCy);
+                    nodo.colFlex.setAttribute("x2", cx); nodo.colFlex.setAttribute("y2", nodo.cy);
                     
-                    nodo.colDer.setAttribute("x1", prevCx + nodo.ancho/2 - 5); nodo.colDer.setAttribute("y1", prevCy);
-                    nodo.colDer.setAttribute("x2", cx + nodo.ancho/2 - 5); nodo.colDer.setAttribute("y2", nodo.cy);
-                    
+                    // Masa
                     nodo.circulo.setAttribute("cx", cx);
                     
-                    // La flecha empuja (o hala)
-                    let offsetFlecha = cx + nodo.radio + 5;
-                    if (dir < 0) offsetFlecha = cx - nodo.radio - nodo.longitudF - 5;
-                    nodo.flecha.setAttribute("transform", `translate(${offsetFlecha}, ${nodo.cy})`);
-                    nodo.flecha.style.opacity = Math.abs(dir) > 0.1 ? 1 : 0.3; 
+                    // Flecha Inercia
+                    let line = nodo.flecha.childNodes[0];
+                    let poly = nodo.flecha.childNodes[1];
+                    let txt = nodo.flecha.childNodes[2];
+                    
+                    // Si el edificio va hacia la derecha, inercia va hacia la izquierda.
+                    // Ajuste visual: la flecha "sale" de la masa
+                    if(u_t > 0) { // Edificio deformado a derecha -> flecha empuja a derecha (Inercia frena o empuja)
+                        line.setAttribute("x1", cx + nodo.radio); line.setAttribute("y1", nodo.cy);
+                        line.setAttribute("x2", cx + nodo.radio + nodo.longitudF); line.setAttribute("y2", nodo.cy);
+                        poly.setAttribute("points", `${cx + nodo.radio + nodo.longitudF - 5},${nodo.cy - 3} ${cx + nodo.radio + nodo.longitudF + 2},${nodo.cy} ${cx + nodo.radio + nodo.longitudF - 5},${nodo.cy + 3}`);
+                        txt.setAttribute("x", cx + nodo.radio + 5); txt.setAttribute("y", nodo.cy - 5);
+                    } else {
+                        line.setAttribute("x1", cx - nodo.radio); line.setAttribute("y1", nodo.cy);
+                        line.setAttribute("x2", cx - nodo.radio - nodo.longitudF); line.setAttribute("y2", nodo.cy);
+                        poly.setAttribute("points", `${cx - nodo.radio - nodo.longitudF + 5},${nodo.cy - 3} ${cx - nodo.radio - nodo.longitudF - 2},${nodo.cy} ${cx - nodo.radio - nodo.longitudF + 5},${nodo.cy + 3}`);
+                        txt.setAttribute("x", cx - nodo.radio - 20); txt.setAttribute("y", nodo.cy - 5);
+                    }
+                    
+                    // La inercia es maxima cuando el desplazamiento es maximo
+                    nodo.flecha.style.opacity = Math.abs(u_t) > 0.2 ? 1 : 0.2; 
                 });
+                
+                // Reaccion en la base (Rb = - Sum Fi)
+                let rLine = gRb.childNodes[0]; let rPoly = gRb.childNodes[1]; let rTxt = gRb.childNodes[2];
+                let longRb = 40 * Math.abs(u_t);
+                
+                if(u_t > 0) { // Cortante hacia la derecha, reaccion a la izquierda
+                    rLine.setAttribute("x1", centerX); rLine.setAttribute("y1", baseY + 15);
+                    rLine.setAttribute("x2", centerX - longRb); rLine.setAttribute("y2", baseY + 15);
+                    rPoly.setAttribute("points", `${centerX - longRb + 5},${baseY + 12} ${centerX - longRb - 2},${baseY + 15} ${centerX - longRb + 5},${baseY + 18}`);
+                    rTxt.setAttribute("x", centerX - longRb - 20); rTxt.setAttribute("y", baseY + 20);
+                } else {
+                    rLine.setAttribute("x1", centerX); rLine.setAttribute("y1", baseY + 15);
+                    rLine.setAttribute("x2", centerX + longRb); rLine.setAttribute("y2", baseY + 15);
+                    rPoly.setAttribute("points", `${centerX + longRb - 5},${baseY + 12} ${centerX + longRb + 2},${baseY + 15} ${centerX + longRb - 5},${baseY + 18}`);
+                    rTxt.setAttribute("x", centerX + longRb + 5); rTxt.setAttribute("y", baseY + 20);
+                }
+                gRb.style.opacity = Math.abs(u_t) > 0.2 ? 1 : 0.2;
+                
                 reqAnim = requestAnimationFrame(renderFrame);
             }
             renderFrame();
         }
 
-        // Init Limpio sin dobles cálculos
+        // Init 
         window.onload = function() {
-            setNormaUI('nsr10'); 
-            generarNuevoEdificio();
+            calcularModeloBase();
+            setRuta('nsr10'); // Carga los textos y calcula por primera vez
         }
     </script>
 </body>
