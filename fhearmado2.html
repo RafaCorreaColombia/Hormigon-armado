@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anatomía de la Fuerza Sísmica | Criterio Estructural</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <!-- Configuración robusta de MathJax -->
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true
+            }
+        });
+    </script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    
+    <style>
+        :root {
+            --ce-fondo-concreto: #F4F6F7;
+            --ce-texto-antracita: #2C3E50;
+            --ce-acento-naranja: #D35400;
+            --ce-azul-academico: #2980B9;
+        }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: var(--ce-fondo-concreto); color: var(--ce-texto-antracita); }
+        .ce-header { background-color: var(--ce-texto-antracita); color: white; padding: 20px; border-bottom: 5px solid var(--ce-acento-naranja); }
+        .ce-card { background: white; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); padding: 20px; margin-bottom: 20px; }
+        
+        .w3-text-orange { color: #D35400 !important; }
+        .w3-text-blue { color: var(--ce-azul-academico) !important; }
+        
+        .grafico-container { width: 100%; background: #e9ecef; border-radius: 8px; overflow: hidden; position: relative; border-bottom: 4px solid var(--ce-texto-antracita); }
+        table th { background-color: var(--ce-texto-antracita); color: white; }
+        
+        .caja-plastilina { background: #fff8e1; border-left: 4px solid #f1c40f; padding: 12px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        .alerta-roja { background: #fdedec; border-left: 4px solid #e74c3c; padding: 12px; margin: 15px 0; border-radius: 0 8px 8px 0; color: #c0392b;}
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <div class="ce-header w3-row">
+        <div class="w3-col s12 m8">
+            <h2 style="margin:0;"><b>Criterio Estructural</b></h2>
+            <p style="margin:0; opacity: 0.9;"><b>Laboratorio 2A:</b> Anatomía de la Masa y el Periodo (NSR-10)</p>
+            <p class="w3-small" style="margin:0; opacity: 0.7;"><i>Explicado con plastilina: de los planos a la fuerza inercial.</i></p>
+        </div>
+        <div class="w3-col s12 m4 w3-hide-small" style="text-align: right; padding-top: 10px;">
+            <span style="font-size: 10px; color: var(--ce-texto-antracita); border: 1px solid white; padding: 4px 8px; border-radius: 4px; font-family: 'Courier New', monospace; background: white; white-space: nowrap; display: inline-block;">
+                <b><i class="fa fa-cogs"></i> MODO:</b> NSR-10 PROFUNDO
+            </span>
+        </div>
+    </div>
+
+    <div class="w3-container w3-padding-24">
+        
+        <!-- PARTE 1: DE DÓNDE SALE LA MASA -->
+        <div class="ce-card" style="border-left: 6px solid var(--ce-azul-academico);">
+            <h4><b>1. ¿De dónde sale la Masa? ($W_x$)</b></h4>
+            <p class="w3-small w3-justify">
+                Antes de presionar "Run" en ETABS, necesitas entender qué está pesando el software. Un edificio no es una masa abstracta; es concreto, acero, baldosas y muros. La masa de un nivel $x$ se calcula sumando todo lo que queda dentro de un <b>"sándwich" tributario</b>: la mitad de la altura de la columna de abajo hasta la mitad de la columna de arriba.
+            </p>
+
+            <div class="caja-plastilina w3-small">
+                <b><i class="fa fa-info-circle"></i> Explicación con plastilina: ¿Y las personas?</b><br>
+                ¿Por qué en la Fuerza Sísmica (FHE) casi nunca incluimos la <i>Carga Viva</i> (personas, muebles)? Porque la probabilidad de que ocurra el sismo de diseño (que dura ~30 segundos) EXACTAMENTE cuando el edificio está a su 100% de ocupación máxima teórica, es bajísima. NSR-10 (A.4.2.2) dice: Para viviendas y oficinas usamos <b>100% Carga Muerta</b>. (Solo en bodegas sumamos un 25% de la Viva).
+            </div>
+
+            <div class="w3-row-padding" style="margin-top: 20px;">
+                <!-- Control de Pisos -->
+                <div class="w3-col l5 m12">
+                    <div class="w3-panel w3-border w3-round w3-padding">
+                        <label class="w3-small"><b>Altura del Edificio (Pisos): <span id="val-pisos" class="w3-text-blue w3-large">4</span></b></label>
+                        <input type="range" id="numPisos" min="1" max="15" value="4" class="w3-input" oninput="calcularModeloBase()">
+                        <p class="w3-tiny w3-text-grey"><i>Planta de ejemplo: 200 m² | Altura típica: 2.90 m</i></p>
+                    </div>
+                </div>
+
+                <!-- Metrado Detallado -->
+                <div class="w3-col l7 m12">
+                    <table class="w3-table w3-bordered w3-small w3-border">
+                        <thead>
+                            <tr class="w3-light-grey">
+                                <th>Elemento (Carga Muerta)</th>
+                                <th>Peso aprox.</th>
+                                <th>Total Piso (200 m²)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Losa Aligerada (0.45m)</td><td>$3.2 \text{ kN/m}^2$</td><td>640 kN</td></tr>
+                            <tr><td>Acabados de piso/techo</td><td>$1.1 \text{ kN/m}^2$</td><td>220 kN</td></tr>
+                            <tr><td>Muros divisorios / Fachada</td><td>$2.5 \text{ kN/m}^2$</td><td>500 kN</td></tr>
+                            <tr><td>Vigas y Columnas</td><td>$1.5 \text{ kN/m}^2$</td><td>300 kN</td></tr>
+                            <tr style="background-color: #f8f9fa;">
+                                <td><b>Peso Total Típico ($W_x$)</b></td>
+                                <td><b>$8.3 \text{ kN/m}^2$</b></td>
+                                <td><b class="w3-text-blue w3-large">1660 kN</b> <span class="w3-tiny w3-text-grey">($\approx 169$ Ton)</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- PARTE 2: DE DÓNDE SALE EL PERIODO -->
+        <div class="ce-card" style="border-left: 6px solid var(--ce-acento-naranja);">
+            <h4><b>2. El Periodo Fundamental ($T$): La regla del dedo gordo</b></h4>
+            
+            <div class="w3-row-padding">
+                <div class="w3-col m7">
+                    <p class="w3-small w3-justify">
+                        El periodo es el tiempo en segundos que tarda la estructura en ir y volver. Depende de la masa ($M$) y la rigidez ($K$). Pero antes de hacer modelos matemáticos complejos, la NSR-10 (A.4.2-3) nos da una ecuación empírica basada en lo que realmente importa: <b>La altura total del edificio ($h_n$) y el tipo de estructura.</b>
+                    </p>
+                    <div class="w3-panel w3-light-grey w3-border w3-round w3-padding w3-center">
+                        <span class="w3-large">Ecuación NSR-10: <b>$T_a = C_t \cdot h_n^\alpha$</b></span><br>
+                        <span class="w3-small">Para pórticos de concreto: $C_t = 0.047$ | $\alpha = 0.9$</span>
+                    </div>
+                </div>
+                
+                <div class="w3-col m5">
+                    <div class="caja-plastilina w3-small" style="margin-top:0;">
+                        <b><i class="fa fa-hand-o-right"></i> La regla de "0.1 x Piso"</b><br>
+                        Para edificios convencionales de pórticos de concreto con alturas de piso de ~3m, la ecuación normativa da casi exacto: <b>0.1 segundos por piso</b>.<br><br>
+                        Si diseñas un edificio de <b>8 pisos</b>, su periodo debe rondar los <b>$0.8$ segundos</b>.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Alerta Crítica del Ingeniero -->
+            <div class="alerta-roja w3-small">
+                <b><i class="fa fa-warning"></i> EL SOFTWARE NO PIENSA POR TI</b><br>
+                Si modelas tu edificio de 8 pisos en ETABS y te reporta un periodo de $1.5$ segundos o $4.0$ segundos... <b>¡NO DISEÑES CON ESO!</b>. Tienes un error gravísimo: o pusiste mal las unidades de la masa, o dibujaste mal las columnas, o olvidaste asignar el diafragma rígido. El edificio físico vibra a $\approx 0.8s$. El software te está dando la respuesta a la basura que le ingresaste.
+            </div>
+
+        </div>
+
+        <!-- PARTE 3: LA DINÁMICA PURA (ANIMACIÓN) -->
+        <div class="ce-card" style="border-left: 6px solid var(--ce-texto-antracita);">
+            <h4><b>3. FHE: La física convertida en Norma</b></h4>
+            <p class="w3-small">
+                Ahora que tenemos la masa y el periodo real, el sismo induce un cortante en la base ($V_s = S_a \cdot W$). La aproximación <b>Fuerza Horizontal Equivalente (FHE)</b> distribuye este cortante en altura usando la ecuación $C_{vx}$, donde entra a jugar tu periodo a través del exponente $k$.
+            </p>
+
+            <div class="w3-row-padding">
+                <!-- Animación -->
+                <div class="w3-col l5 m12">
+                    <div class="w3-row w3-tiny w3-margin-bottom">
+                        <div class="w3-col s6">
+                            <b>Altura Total ($h_n$):</b> <span id="lbl-hn" class="w3-bold"></span> m<br>
+                            <b>Peso Total ($W$):</b> <span id="lbl-Wtot" class="w3-bold"></span> kN
+                        </div>
+                        <div class="w3-col s6 w3-right-align">
+                            <span style="font-size:14px;"><b>$T_a$: <span id="lbl-T" class="w3-text-orange w3-large"></span> s</b></span><br>
+                            <span class="w3-text-grey">NSR-10 Ecuación A.4.2-3</span>
+                        </div>
+                    </div>
+                    
+                    <div class="grafico-container" style="height: 300px; background: white; border: 1px solid #ccc; border-bottom: 4px solid var(--ce-texto-antracita);">
+                        <svg id="svg-edificio" width="100%" height="100%"></svg>
+                    </div>
+                    <p class="w3-tiny w3-text-grey w3-center"><i>(Visualización: La velocidad de oscilación refleja el periodo matemático real. Cambia los pisos y observa cómo la inercia frena la estructura).</i></p>
+                </div>
+
+                <!-- Tabla FHE -->
+                <div class="w3-col l7 m12">
+                    <div class="w3-panel w3-light-grey w3-border w3-round w3-padding-small w3-tiny w3-margin-bottom">
+                        <b>Parámetros NSR-10 asumidos:</b> $A_a=0.25$, $A_v=0.25$, Suelo D. (Zona intermedia).<br>
+                        El exponente $k=$ <span id="lbl-k" class="w3-text-orange w3-bold"></span> define cómo se distribuye la fuerza.
+                    </div>
+
+                    <div class="w3-responsive">
+                        <table class="w3-table w3-bordered w3-small w3-centered w3-border" id="tabla-fhe">
+                            <thead>
+                                <tr>
+                                    <th rowspan="2" style="vertical-align: middle;">Piso</th>
+                                    <th rowspan="2" style="vertical-align: middle;">$h_x$<br><span class="w3-tiny">(m)</span></th>
+                                    <th rowspan="2" style="vertical-align: middle;">$W_x$<br><span class="w3-tiny">(kN)</span></th>
+                                    <th rowspan="2" style="background-color:#e9ecef; color:#333; vertical-align: middle;">$W_x h_x^k$<br><span class="w3-tiny">(Participación)</span></th>
+                                    <th colspan="2" style="background-color:var(--ce-acento-naranja);">Demanda Sísmica ($R=1$)</th>
+                                </tr>
+                                <tr>
+                                    <th style="background-color:var(--ce-acento-naranja); border-left: 1px solid #e0e0e0;">$C_{vx}$</th>
+                                    <th style="background-color:var(--ce-acento-naranja);"><b>$F_x$</b></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- JS inyecta -->
+                            </tbody>
+                            <tfoot>
+                                <tr style="background:#f1f1f1; font-weight:bold;">
+                                    <td colspan="4" class="w3-right-align">Cortante Basal ($V_s$):</td>
+                                    <td colspan="2" id="res-v-el" class="w3-text-orange w3-large" style="border-left: 1px solid #ccc;"></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Cierre -->
+        <div class="w3-center w3-padding-16">
+            <h5 style="color: var(--ce-texto-antracita); font-weight: bold; margin:0;">
+                "Si entiendes la masa y el periodo, el reglamento es solo carpintería."
+            </h5>
+        </div>
+
+    </div>
+
+    <!-- SCRIPT LOGIC -->
+    <script>
+        // Variables Base
+        let n_pisos = 4;
+        let h_piso = 2.90;
+        let T_Ta = 0.5;
+        let k_normativo = 1.0; 
+        let pisos_data = [];
+        let W_total = 0;
+
+        // Variables SVG Animacion
+        let nodosAnimacion = [];
+        let reqAnim = null;
+
+        function calcularModeloBase() {
+            n_pisos = parseInt(document.getElementById('numPisos').value);
+            document.getElementById('val-pisos').innerText = n_pisos;
+
+            const W_tipico = 1660; // 200m2 * 8.3 kN/m2
+            const W_cubierta = 1300; // Un poco menor en cubierta
+
+            // Altura total
+            let h_n = n_pisos * h_piso;
+            document.getElementById('lbl-hn').innerText = h_n.toFixed(1);
+
+            // Periodo Fundamental (NSR-10 Eq A.4.2-3 Pórticos concreto)
+            // Ta = Ct * hn^alpha -> Ct = 0.047, alpha = 0.9
+            T_Ta = 0.047 * Math.pow(h_n, 0.9);
+
+            // Exponente k (NSR-10 A.4.3.3)
+            if (T_Ta <= 0.5) k_normativo = 1.0;
+            else if (T_Ta > 0.5 && T_Ta < 2.5) k_normativo = 0.75 + 0.5 * T_Ta;
+            else k_normativo = 2.0;
+
+            pisos_data = [];
+            W_total = 0;
+            for (let i = 1; i <= n_pisos; i++) {
+                let peso = (i === n_pisos) ? W_cubierta : W_tipico;
+                pisos_data.push({ 
+                    nivel: i, 
+                    hx: i * h_piso, 
+                    Wx: peso, 
+                    F_elas: 0
+                });
+                W_total += peso;
+            }
+
+            document.getElementById('lbl-Wtot').innerText = W_total.toFixed(0);
+            document.getElementById('lbl-T').innerText = T_Ta.toFixed(2);
+            document.getElementById('lbl-k').innerText = k_normativo.toFixed(2);
+
+            calcularFHE();
+        }
+
+        function calcularFHE() {
+            // Espectro Simplificado para demostración (Aa=0.25, Av=0.25 Suelo D -> Fa=1.3, Fv=1.9 aprox)
+            // Sa_max = 2.5 * Aa * Fa = 2.5 * 0.25 * 1.3 = 0.81 g
+            // Tc = 0.48 * Av * Fv / (Aa * Fa) aprox = 0.7 s
+            let Sa_ref = 0.81; 
+            let Tc = 0.7; 
+            
+            let Sa = T_Ta <= Tc ? Sa_ref : (Sa_ref * Tc) / T_Ta;
+            if (Sa < 0.1) Sa = 0.1; // Límite inferior
+
+            // Cortante Basal (R=1)
+            let V_el = Sa * W_total;           
+
+            let sum_W_hk = 0;
+            pisos_data.forEach(p => {
+                p.W_hk = p.Wx * Math.pow(p.hx, k_normativo);
+                sum_W_hk += p.W_hk;
+            });
+
+            pisos_data.forEach(p => {
+                p.Cvx = p.W_hk / sum_W_hk;
+                p.F_elas = p.Cvx * V_el;
+            });
+
+            document.getElementById('res-v-el').innerText = V_el.toFixed(0) + " kN";
+
+            renderTabla();
+            prepararAnimacionSVG();
+        }
+
+        function renderTabla() {
+            let tbody = document.querySelector('#tabla-fhe tbody');
+            tbody.innerHTML = '';
+            let pisosInvertidos = [...pisos_data].reverse(); 
+
+            pisosInvertidos.forEach(p => {
+                let tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${p.nivel}</td>
+                    <td>${p.hx.toFixed(2)}</td>
+                    <td>${p.Wx.toFixed(0)}</td>
+                    <td style="background:#f8f9fa; font-weight:bold;">${p.W_hk.toFixed(0)}</td>
+                    <td>${p.Cvx.toFixed(3)}</td>
+                    <td class="w3-text-orange" style="font-weight:bold;">${p.F_elas.toFixed(0)}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Animación dinámica conectada matemáticamente a T_Ta
+        function prepararAnimacionSVG() {
+            let svg = document.getElementById('svg-edificio');
+            svg.innerHTML = '';
+            
+            let svgW = svg.clientWidth || 300, svgH = svg.clientHeight || 300;
+            let baseY = svgH - 40, topY = 30; 
+            let deltaY = (baseY - topY) / pisos_data.length;
+            let centerX = svgW / 2; 
+
+            nodosAnimacion = [];
+            
+            // Parametros visuales
+            let maxAmplitud = 45;
+            let maxFx = Math.max(...pisos_data.map(p => p.F_elas)); if (maxFx === 0) maxFx = 1;
+            
+            // Base visual
+            let lineaCentro = document.createElementNS("http://www.w3.org/2000/svg", "line");
+            lineaCentro.setAttribute("x1", centerX); lineaCentro.setAttribute("y1", baseY);
+            lineaCentro.setAttribute("x2", centerX); lineaCentro.setAttribute("y2", topY);
+            lineaCentro.setAttribute("stroke", "#bdc3c7"); lineaCentro.setAttribute("stroke-width", "1");
+            lineaCentro.setAttribute("stroke-dasharray", "4,4");
+            svg.appendChild(lineaCentro);
+
+            let baseRec = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+            baseRec.setAttribute("x", centerX - 25); baseRec.setAttribute("y", baseY);
+            baseRec.setAttribute("width", "50"); baseRec.setAttribute("height", "8");
+            baseRec.setAttribute("fill", "#2C3E50");
+            svg.appendChild(baseRec);
+            
+            let gRb = document.createElementNS("http://www.w3.org/2000/svg", "g");
+            let rbLinea = document.createElementNS("http://www.w3.org/2000/svg", "line");
+            rbLinea.setAttribute("stroke", "#34495e"); rbLinea.setAttribute("stroke-width", "3");
+            let rbPunta = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+            rbPunta.setAttribute("fill", "#34495e");
+            let txtRb = document.createElementNS("http://www.w3.org/2000/svg", "text");
+            txtRb.setAttribute("fill", "#34495e"); txtRb.setAttribute("font-size", "12px"); txtRb.setAttribute("font-weight", "bold");
+            txtRb.textContent = "Vs";
+            gRb.appendChild(rbLinea); gRb.appendChild(rbPunta); gRb.appendChild(txtRb);
+            svg.appendChild(gRb);
+
+            // Generar Masas
+            pisos_data.forEach((p, idx) => {
+                let cy = baseY - (idx + 1) * deltaY;
+                
+                // Amplitud visual aproximada usando el perfil normativo (h_x^k)
+                let forma_visual = Math.pow(p.hx / (pisos_data.length * h_piso), k_normativo);
+                let amp = maxAmplitud * forma_visual;
+
+                let radio = 8; // Constante simplificada, ya que W_x es casi igual en todos
+
+                let colFlex = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                colFlex.setAttribute("stroke", "#2C3E50"); colFlex.setAttribute("stroke-width", "3");
+                svg.appendChild(colFlex);
+
+                let circulo = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                circulo.setAttribute("cy", cy); circulo.setAttribute("r", radio);
+                circulo.setAttribute("fill", "#2980B9"); 
+                svg.appendChild(circulo);
+
+                // Flecha
+                let longitudFlecha = 15 + (p.F_elas / maxFx) * 35; 
+                
+                let gFlecha = document.createElementNS("http://www.w3.org/2000/svg", "g");
+                let flechaLinea = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                flechaLinea.setAttribute("stroke", "#D35400"); flechaLinea.setAttribute("stroke-width", "2");
+                let flechaPunta = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+                flechaPunta.setAttribute("fill", "#D35400");
+                let txtInercia = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                txtInercia.setAttribute("fill", "#D35400"); txtInercia.setAttribute("font-size", "9px"); txtInercia.setAttribute("font-weight", "bold");
+                txtInercia.textContent = "Fi";
+                
+                gFlecha.appendChild(flechaLinea); gFlecha.appendChild(flechaPunta); gFlecha.appendChild(txtInercia);
+                svg.appendChild(gFlecha);
+
+                nodosAnimacion.push({ cy, amp, colFlex, circulo, radio, flecha: gFlecha, longitudF: longitudFlecha });
+            });
+
+            if(reqAnim) cancelAnimationFrame(reqAnim);
+            
+            function renderFrame() {
+                // VELOCIDAD LIGADA AL PERIODO: Si T es mayor, el oscilador es más lento.
+                // Multiplicamos por un factor de escala para que sea cómodo al ojo.
+                // Velocidad visual ~ 1 / T_Ta
+                let omega_visual = 0.005 / T_Ta; 
+                let t = Date.now() * omega_visual; 
+                let u_t = Math.sin(t); 
+                
+                nodosAnimacion.forEach((nodo, idx) => {
+                    let desp = u_t * nodo.amp;
+                    let cx = centerX + desp;
+                    
+                    let prevCx = centerX, prevCy = baseY;
+                    if (idx > 0) {
+                        prevCx = centerX + u_t * nodosAnimacion[idx-1].amp;
+                        prevCy = nodosAnimacion[idx-1].cy;
+                    }
+                    
+                    nodo.colFlex.setAttribute("x1", prevCx); nodo.colFlex.setAttribute("y1", prevCy);
+                    nodo.colFlex.setAttribute("x2", cx); nodo.colFlex.setAttribute("y2", nodo.cy);
+                    
+                    nodo.circulo.setAttribute("cx", cx);
+                    
+                    let line = nodo.flecha.childNodes[0]; let poly = nodo.flecha.childNodes[1]; let txt = nodo.flecha.childNodes[2];
+                    
+                    if(u_t > 0) { 
+                        line.setAttribute("x1", cx + nodo.radio); line.setAttribute("y1", nodo.cy);
+                        line.setAttribute("x2", cx + nodo.radio + nodo.longitudF); line.setAttribute("y2", nodo.cy);
+                        poly.setAttribute("points", `${cx + nodo.radio + nodo.longitudF - 5},${nodo.cy - 3} ${cx + nodo.radio + nodo.longitudF + 2},${nodo.cy} ${cx + nodo.radio + nodo.longitudF - 5},${nodo.cy + 3}`);
+                        txt.setAttribute("x", cx + nodo.radio + 5); txt.setAttribute("y", nodo.cy - 5);
+                    } else {
+                        line.setAttribute("x1", cx - nodo.radio); line.setAttribute("y1", nodo.cy);
+                        line.setAttribute("x2", cx - nodo.radio - nodo.longitudF); line.setAttribute("y2", nodo.cy);
+                        poly.setAttribute("points", `${cx - nodo.radio - nodo.longitudF + 5},${nodo.cy - 3} ${cx - nodo.radio - nodo.longitudF - 2},${nodo.cy} ${cx - nodo.radio - nodo.longitudF + 5},${nodo.cy + 3}`);
+                        txt.setAttribute("x", cx - nodo.radio - 20); txt.setAttribute("y", nodo.cy - 5);
+                    }
+                    nodo.flecha.style.opacity = Math.abs(u_t) > 0.2 ? 1 : 0.2; 
+                });
+                
+                let rLine = gRb.childNodes[0]; let rPoly = gRb.childNodes[1]; let rTxt = gRb.childNodes[2];
+                let longRb = 35 * Math.abs(u_t);
+                
+                if(u_t > 0) { 
+                    rLine.setAttribute("x1", centerX); rLine.setAttribute("y1", baseY + 15);
+                    rLine.setAttribute("x2", centerX - longRb); rLine.setAttribute("y2", baseY + 15);
+                    rPoly.setAttribute("points", `${centerX - longRb + 5},${baseY + 12} ${centerX - longRb - 2},${baseY + 15} ${centerX - longRb + 5},${baseY + 18}`);
+                    rTxt.setAttribute("x", centerX - longRb - 20); rTxt.setAttribute("y", baseY + 20);
+                } else {
+                    rLine.setAttribute("x1", centerX); rLine.setAttribute("y1", baseY + 15);
+                    rLine.setAttribute("x2", centerX + longRb); rLine.setAttribute("y2", baseY + 15);
+                    rPoly.setAttribute("points", `${centerX + longRb - 5},${baseY + 12} ${centerX + longRb + 2},${baseY + 15} ${centerX + longRb - 5},${baseY + 18}`);
+                    rTxt.setAttribute("x", centerX + longRb + 5); rTxt.setAttribute("y", baseY + 20);
+                }
+                gRb.style.opacity = Math.abs(u_t) > 0.2 ? 1 : 0.2;
+                
+                reqAnim = requestAnimationFrame(renderFrame);
+            }
+            renderFrame();
+        }
+
+        window.onload = function() {
+            calcularModeloBase();
+        }
+    </script>
+</body>
+</html>
