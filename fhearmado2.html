@@ -376,7 +376,7 @@
 
                 // Flecha
                 let longitudFlecha = 15 + (p.F_elas / maxFx) * 35; 
-                
+                /*
                 let gFlecha = document.createElementNS("http://www.w3.org/2000/svg", "g");
                 let flechaLinea = document.createElementNS("http://www.w3.org/2000/svg", "line");
                 flechaLinea.setAttribute("stroke", "#D35400"); flechaLinea.setAttribute("stroke-width", "2");
@@ -390,6 +390,7 @@
                 svg.appendChild(gFlecha);
 
                 nodosAnimacion.push({ cy, amp, colFlex, circulo, radio, flecha: gFlecha, longitudF: longitudFlecha });
+                /*
             });
 
             if(reqAnim) cancelAnimationFrame(reqAnim);
