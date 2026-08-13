@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anatomía de la Fuerza Sísmica | Criterio Estructural</title>
+    <title>La Física del Sismo y la NSR-10 | Criterio Estructural</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     
@@ -25,6 +25,7 @@
             --ce-texto-antracita: #2C3E50;
             --ce-acento-naranja: #D35400;
             --ce-azul-academico: #2980B9;
+            --ce-verde-norma: #27AE60;
         }
         body { font-family: 'Segoe UI', Arial, sans-serif; background-color: var(--ce-fondo-concreto); color: var(--ce-texto-antracita); }
         .ce-header { background-color: var(--ce-texto-antracita); color: white; padding: 20px; border-bottom: 5px solid var(--ce-acento-naranja); }
@@ -36,8 +37,11 @@
         .grafico-container { width: 100%; background: #e9ecef; border-radius: 8px; overflow: hidden; position: relative; border-bottom: 4px solid var(--ce-texto-antracita); }
         table th { background-color: var(--ce-texto-antracita); color: white; }
         
-        .caja-plastilina { background: #fff8e1; border-left: 4px solid #f1c40f; padding: 12px; margin: 15px 0; border-radius: 0 8px 8px 0; }
-        .alerta-roja { background: #fdedec; border-left: 4px solid #e74c3c; padding: 12px; margin: 15px 0; border-radius: 0 8px 8px 0; color: #c0392b;}
+        .caja-formula { background: #f8f9fa; border: 1px solid #dee2e6; padding: 15px; border-radius: 8px; text-align: center; margin: 10px 0; font-size: 1.1em;}
+        .caja-narrativa { background: #e8f4f8; border-left: 4px solid var(--ce-azul-academico); padding: 12px; margin: 15px 0; border-radius: 0 8px 8px 0; }
+        
+        /* Conectores visuales */
+        .flecha-flujo { text-align: center; font-size: 24px; color: #7f8c8d; margin: -10px 0 10px 0; }
     </style>
 </head>
 <body>
@@ -46,167 +50,144 @@
     <div class="ce-header w3-row">
         <div class="w3-col s12 m8">
             <h2 style="margin:0;"><b>Criterio Estructural</b></h2>
-            <p style="margin:0; opacity: 0.9;"><b>Laboratorio 2A:</b> Anatomía de la Masa y el Periodo (NSR-10)</p>
-            <p class="w3-small" style="margin:0; opacity: 0.7;"><i>Explicado con plastilina: de los planos a la fuerza inercial.</i></p>
-        </div>
-        <div class="w3-col s12 m4 w3-hide-small" style="text-align: right; padding-top: 10px;">
-            <span style="font-size: 10px; color: var(--ce-texto-antracita); border: 1px solid white; padding: 4px 8px; border-radius: 4px; font-family: 'Courier New', monospace; background: white; white-space: nowrap; display: inline-block;">
-                <b><i class="fa fa-cogs"></i> MODO:</b> NSR-10 PROFUNDO
-            </span>
+            <p style="margin:0; opacity: 0.9;"><b>Laboratorio 2B:</b> De la Física al Reglamento (NSR-10)</p>
+            <p class="w3-small" style="margin:0; opacity: 0.7;"><i>Antes de que ETABS entregue una fuerza, entiende de dónde salió.</i></p>
         </div>
     </div>
 
     <div class="w3-container w3-padding-24">
-        
-        <!-- PARTE 1: DE DÓNDE SALE LA MASA -->
-        <div class="ce-card" style="border-left: 6px solid var(--ce-azul-academico);">
-            <h4><b>1. ¿De dónde sale la Masa? ($W_x$)</b></h4>
-            <p class="w3-small w3-justify">
-                Antes de presionar "Run" en ETABS, necesitas entender qué está pesando el software. Un edificio no es una masa abstracta; es concreto, acero, baldosas y muros. La masa de un nivel $x$ se calcula sumando todo lo que queda dentro de un <b>"sándwich" tributario</b>: la mitad de la altura de la columna de abajo hasta la mitad de la columna de arriba.
-            </p>
 
-            <div class="caja-plastilina w3-small">
-                <b><i class="fa fa-info-circle"></i> Explicación con plastilina: ¿Y las personas?</b><br>
-                ¿Por qué en la Fuerza Sísmica (FHE) casi nunca incluimos la <i>Carga Viva</i> (personas, muebles)? Porque la probabilidad de que ocurra el sismo de diseño (que dura ~30 segundos) EXACTAMENTE cuando el edificio está a su 100% de ocupación máxima teórica, es bajísima. NSR-10 (A.4.2.2) dice: Para viviendas y oficinas usamos <b>100% Carga Muerta</b>. (Solo en bodegas sumamos un 25% de la Viva).
+        <!-- PANEL MAESTRO: CONTROL DEL EDIFICIO -->
+        <div class="ce-card w3-center" style="border: 2px dashed var(--ce-texto-antracita); background: #fafafa;">
+            <h5><b>Definir el Edificio Físico</b></h5>
+            <div style="max-width: 400px; margin: auto;">
+                <label class="w3-small">Altura del Edificio (Pisos): <b id="val-pisos" class="w3-text-blue w3-large">4</b></label>
+                <input type="range" id="numPisos" min="1" max="15" value="4" class="w3-input" oninput="calcularCadenaCausal()">
+            </div>
+        </div>
+        
+        <!-- PASO 1: MASA -->
+        <div class="ce-card" style="border-left: 6px solid var(--ce-azul-academico);">
+            <h4><b>1. El Peso ($W$) y la Masa ($M$)</b></h4>
+            <p class="w3-small">El edificio pesa <b id="lbl-Wtot" class="w3-text-blue"></b> <b>kN</b>, pero la dinámica no trabaja con fuerzas gravitacionales estáticas. La dinámica trabaja con <b>Masa</b>.</p>
+            
+            <div class="caja-formula">
+                $$ M = \frac{W}{g} $$
             </div>
 
-            <div class="w3-row-padding" style="margin-top: 20px;">
-                <!-- Control de Pisos -->
-                <div class="w3-col l5 m12">
-                    <div class="w3-panel w3-border w3-round w3-padding">
-                        <label class="w3-small"><b>Altura del Edificio (Pisos): <span id="val-pisos" class="w3-text-blue w3-large">4</span></b></label>
-                        <input type="range" id="numPisos" min="1" max="15" value="4" class="w3-input" oninput="calcularModeloBase()">
-                        <p class="w3-tiny w3-text-grey"><i>Planta de ejemplo: 200 m² | Altura típica: 2.90 m</i></p>
+            <div class="caja-narrativa w3-small">
+                <b><i class="fa fa-book"></i> NSR-10 (A.4.2.2) - ¿Qué incluye esta masa?</b><br>
+                La masa sísmica no es simplemente "toda la carga muerta". Se construye sumando la masa de la estructura + muros divisorios + equipos permanentes. En edificaciones normales (vivienda/oficinas) usamos el 100% de esta carga. <i>Solo en bodegas o almacenamientos se incluye un 25% de la carga viva.</i>
+            </div>
+        </div>
+
+        <div class="flecha-flujo"><i class="fa fa-arrow-down"></i></div>
+
+        <!-- PASO 2: RIGIDEZ Y PERIODO -->
+        <div class="ce-card" style="border-left: 6px solid #F39C12;">
+            <h4><b>2. La Rigidez ($K$) y el Periodo ($T$)</b></h4>
+            <div class="w3-row">
+                <div class="w3-col m6 w3-padding">
+                    <p class="w3-small">Tenemos algo pesado ($M$). Pero no sabemos cómo vibra hasta saber qué tan difícil es deformarlo: su <b>Rigidez ($K$)</b>. Esta depende de la geometría, sección de columnas, vigas y materiales.</p>
+                    <div class="caja-formula w3-small" style="padding: 10px;">
+                        $$ T = 2\pi\sqrt{\frac{M}{K}} $$
                     </div>
                 </div>
-
-                <!-- Metrado Detallado -->
-                <div class="w3-col l7 m12">
-                    <table class="w3-table w3-bordered w3-small w3-border">
-                        <thead>
-                            <tr class="w3-light-grey">
-                                <th>Elemento (Carga Muerta)</th>
-                                <th>Peso aprox.</th>
-                                <th>Total Piso (200 m²)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr><td>Losa Aligerada (0.45m)</td><td>$3.2 \text{ kN/m}^2$</td><td>640 kN</td></tr>
-                            <tr><td>Acabados de piso/techo</td><td>$1.1 \text{ kN/m}^2$</td><td>220 kN</td></tr>
-                            <tr><td>Muros divisorios / Fachada</td><td>$2.5 \text{ kN/m}^2$</td><td>500 kN</td></tr>
-                            <tr><td>Vigas y Columnas</td><td>$1.5 \text{ kN/m}^2$</td><td>300 kN</td></tr>
-                            <tr style="background-color: #f8f9fa;">
-                                <td><b>Peso Total Típico ($W_x$)</b></td>
-                                <td><b>$8.3 \text{ kN/m}^2$</b></td>
-                                <td><b class="w3-text-blue w3-large">1660 kN</b> <span class="w3-tiny w3-text-grey">($\approx 169$ Ton)</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div class="w3-col m6 w3-padding">
+                    <div class="caja-narrativa w3-small" style="border-color: #F39C12; background: #fdf5e6;">
+                        <b><i class="fa fa-lightbulb-o"></i> ETABS no inventa el periodo</b><br>
+                        El periodo aparece naturalmente porque tú diseñaste una estructura con una masa ($M$) y una rigidez ($K$) específicas.<br><br>
+                        La NSR-10 (A.4.2.1) nos da una fórmula empírica ($T_a = C_t h_n^\alpha$) para estimarlo ($T_a \approx$ <b id="lbl-T" class="w3-text-orange"></b> <b>s</b>). <b>La norma lo estima, pero el edificio físico solo conoce su masa y su rigidez.</b>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- PARTE 2: DE DÓNDE SALE EL PERIODO -->
-        <div class="ce-card" style="border-left: 6px solid var(--ce-acento-naranja);">
-            <h4><b>2. El Periodo Fundamental ($T$): La regla del dedo gordo</b></h4>
+        <div class="flecha-flujo"><i class="fa fa-arrow-down"></i></div>
+
+        <!-- PASO 3: NEWTON Y LA INERCIA -->
+        <div class="ce-card" style="border-left: 6px solid #C0392B;">
+            <h4><b>3. El Sismo: Aceleración y Segunda Ley de Newton</b></h4>
             
             <div class="w3-row-padding">
-                <div class="w3-col m7">
-                    <p class="w3-small w3-justify">
-                        El periodo es el tiempo en segundos que tarda la estructura en ir y volver. Depende de la masa ($M$) y la rigidez ($K$). Pero antes de hacer modelos matemáticos complejos, la NSR-10 (A.4.2-3) nos da una ecuación empírica basada en lo que realmente importa: <b>La altura total del edificio ($h_n$) y el tipo de estructura.</b>
-                    </p>
-                    <div class="w3-panel w3-light-grey w3-border w3-round w3-padding w3-center">
-                        <span class="w3-large">Ecuación NSR-10: <b>$T_a = C_t \cdot h_n^\alpha$</b></span><br>
-                        <span class="w3-small">Para pórticos de concreto: $C_t = 0.047$ | $\alpha = 0.9$</span>
-                    </div>
-                </div>
-                
                 <div class="w3-col m5">
-                    <div class="caja-plastilina w3-small" style="margin-top:0;">
-                        <b><i class="fa fa-hand-o-right"></i> La regla de "0.1 x Piso"</b><br>
-                        Para edificios convencionales de pórticos de concreto con alturas de piso de ~3m, la ecuación normativa da casi exacto: <b>0.1 segundos por piso</b>.<br><br>
-                        Si diseñas un edificio de <b>8 pisos</b>, su periodo debe rondar los <b>$0.8$ segundos</b>.
-                    </div>
-                </div>
-            </div>
-
-            <!-- Alerta Crítica del Ingeniero -->
-            <div class="alerta-roja w3-small">
-                <b><i class="fa fa-warning"></i> EL SOFTWARE NO PIENSA POR TI</b><br>
-                Si modelas tu edificio de 8 pisos en ETABS y te reporta un periodo de $1.5$ segundos o $4.0$ segundos... <b>¡NO DISEÑES CON ESO!</b>. Tienes un error gravísimo: o pusiste mal las unidades de la masa, o dibujaste mal las columnas, o olvidaste asignar el diafragma rígido. El edificio físico vibra a $\approx 0.8s$. El software te está dando la respuesta a la basura que le ingresaste.
-            </div>
-
-        </div>
-
-        <!-- PARTE 3: LA DINÁMICA PURA (ANIMACIÓN) -->
-        <div class="ce-card" style="border-left: 6px solid var(--ce-texto-antracita);">
-            <h4><b>3. FHE: La física convertida en Norma</b></h4>
-            <p class="w3-small">
-                Ahora que tenemos la masa y el periodo real, el sismo induce un cortante en la base ($V_s = S_a \cdot W$). La aproximación <b>Fuerza Horizontal Equivalente (FHE)</b> distribuye este cortante en altura usando la ecuación $C_{vx}$, donde entra a jugar tu periodo a través del exponente $k$.
-            </p>
-
-            <div class="w3-row-padding">
-                <!-- Animación -->
-                <div class="w3-col l5 m12">
-                    <div class="w3-row w3-tiny w3-margin-bottom">
-                        <div class="w3-col s6">
-                            <b>Altura Total ($h_n$):</b> <span id="lbl-hn" class="w3-bold"></span> m<br>
-                            <b>Peso Total ($W$):</b> <span id="lbl-Wtot" class="w3-bold"></span> kN
-                        </div>
-                        <div class="w3-col s6 w3-right-align">
-                            <span style="font-size:14px;"><b>$T_a$: <span id="lbl-T" class="w3-text-orange w3-large"></span> s</b></span><br>
-                            <span class="w3-text-grey">NSR-10 Ecuación A.4.2-3</span>
-                        </div>
+                    <p class="w3-small">Cuando el suelo acelera, la base se mueve. Las masas de los pisos, por inercia, tienden a quedarse quietas. Aparecen fuerzas dinámicas reales:</p>
+                    
+                    <div class="caja-formula" style="background: #fdedec; border-color: #e74c3c; color: #c0392b;">
+                        $$ F_i = m_i \cdot a_i $$
                     </div>
                     
-                    <div class="grafico-container" style="height: 300px; background: white; border: 1px solid #ccc; border-bottom: 4px solid var(--ce-texto-antracita);">
+                    <p class="w3-small"><b>La estructura está vibrando.</b> Estas fuerzas existen físicamente como inercias durante el movimiento. La suma de todas ellas genera la reacción dinámica en la base: el Cortante Basal ($V_s$).</p>
+                </div>
+                
+                <div class="w3-col m7">
+                    <!-- Animación puramente dinámica -->
+                    <div class="grafico-container" style="height: 250px; background: white; border: 1px solid #ccc; border-bottom: 4px solid var(--ce-texto-antracita);">
                         <svg id="svg-edificio" width="100%" height="100%"></svg>
                     </div>
-                    <p class="w3-tiny w3-text-grey w3-center"><i>(Visualización: Modo limpio sin flechas de inercia individuales; enfocado en la deformada modal y la reacción basal $V_s$).</i></p>
+                    <p class="w3-tiny w3-text-grey w3-center" style="margin-top: 5px;"><i>(Respuesta dinámica real: Las masas $M_i$ oscilan resistiendo la aceleración, generando una reacción global $V_s$ en la base).</i></p>
                 </div>
+            </div>
+        </div>
 
-                <!-- Tabla FHE -->
-                <div class="w3-col l7 m12">
-                    <div class="w3-panel w3-light-grey w3-border w3-round w3-padding-small w3-tiny w3-margin-bottom">
-                        <b>Parámetros NSR-10 asumidos:</b> $A_a=0.25$, $A_v=0.25$, Suelo D. (Zona intermedia).<br>
-                        El exponente $k=$ <span id="lbl-k" class="w3-text-orange w3-bold"></span> define cómo se distribuye la fuerza.
-                    </div>
+        <div class="flecha-flujo"><i class="fa fa-arrow-down"></i></div>
 
-                    <div class="w3-responsive">
-                        <table class="w3-table w3-bordered w3-small w3-centered w3-border" id="tabla-fhe">
-                            <thead>
-                                <tr>
-                                    <th rowspan="2" style="vertical-align: middle;">Piso</th>
-                                    <th rowspan="2" style="vertical-align: middle;">$h_x$<br><span class="w3-tiny">(m)</span></th>
-                                    <th rowspan="2" style="vertical-align: middle;">$W_x$<br><span class="w3-tiny">(kN)</span></th>
-                                    <th rowspan="2" style="background-color:#e9ecef; color:#333; vertical-align: middle;">$W_x h_x^k$<br><span class="w3-tiny">(Participación)</span></th>
-                                    <th colspan="2" style="background-color:var(--ce-acento-naranja);">Demanda Sísmica ($R=1$)</th>
-                                </tr>
-                                <tr>
-                                    <th style="background-color:var(--ce-acento-naranja); border-left: 1px solid #e0e0e0;">$C_{vx}$</th>
-                                    <th style="background-color:var(--ce-acento-naranja);"><b>$F_x$</b></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- JS inyecta -->
-                            </tbody>
-                            <tfoot>
-                                <tr style="background:#f1f1f1; font-weight:bold;">
-                                    <td colspan="4" class="w3-right-align">Cortante Basal ($V_s$):</td>
-                                    <td colspan="2" id="res-v-el" class="w3-text-orange w3-large" style="border-left: 1px solid #ccc;"></td>
-                                </tr>
-                            </tfoot>
-                        </table>
+        <!-- PASO 4: EL PUENTE NORMATIVO -->
+        <div class="ce-card" style="border-left: 6px solid var(--ce-verde-norma);">
+            <h4><b>4. Del movimiento real al cálculo de diseño (NSR-10)</b></h4>
+            <p class="w3-small">Calcular la historia de aceleraciones $a_i(t)$ para cada masa segundo a segundo es complejo. La NSR-10 nos permite representar este efecto dinámico máximo mediante una <b>Aceleración Espectral $S_a(T)$</b> (fracción de la gravedad).</p>
+            
+            <div class="w3-row">
+                <div class="w3-col s12 m8 w3-display-container" style="margin: auto; float: none;">
+                    <div class="caja-formula" style="background: #e8f5e9; border-color: #27ae60;">
+                        Cortante Basal Normativo (A.4.3.1):<br>
+                        $$ V_s = S_a \cdot M \cdot g \quad \longrightarrow \quad \mathbf{V_s = S_a \cdot W} $$
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <div class="flecha-flujo"><i class="fa fa-arrow-down"></i></div>
+
+        <!-- PASO 5: DISTRIBUCIÓN ESTÁTICA EQUIVALENTE -->
+        <div class="ce-card" style="border-left: 6px solid var(--ce-texto-antracita);">
+            <h4><b>5. Fuerza Horizontal Equivalente (FHE)</b></h4>
+            <p class="w3-small">
+                Las flechas $F_x$ que ves en ETABS <b>no son el sismo</b>. Son solo una distribución estática equivalente ($C_{vx}$) del cortante basal $V_s$ para que podamos diseñar columnas y vigas con estática tradicional.
+            </p>
+
+            <div class="w3-responsive">
+                <table class="w3-table w3-bordered w3-small w3-centered w3-border" id="tabla-fhe">
+                    <thead>
+                        <tr>
+                            <th rowspan="2" style="vertical-align: middle;">Piso</th>
+                            <th rowspan="2" style="vertical-align: middle;">$h_x$ (m)</th>
+                            <th rowspan="2" style="vertical-align: middle;">$W_x$ (kN)</th>
+                            <th rowspan="2" style="background-color:#e9ecef; color:#333; vertical-align: middle;">Factor $C_{vx}$</th>
+                            <th style="background-color:var(--ce-texto-antracita); border-left: 1px solid #7f8c8d;">Fuerza Estática Representativa</th>
+                        </tr>
+                        <tr>
+                            <th style="background-color:#34495e;"><b>$F_x = C_{vx} V_s$</b></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- JS inyecta -->
+                    </tbody>
+                    <tfoot>
+                        <tr style="background:#f1f1f1; font-weight:bold;">
+                            <td colspan="4" class="w3-right-align">Reacción en la Base ($V_s$):</td>
+                            <td id="res-v-el" class="w3-text-orange w3-large" style="border-left: 1px solid #ccc;"></td>
+                        </tr>
+                    </tfoot>
+                </table>
             </div>
         </div>
         
-        <!-- Cierre -->
-        <div class="w3-center w3-padding-16">
-            <h5 style="color: var(--ce-texto-antracita); font-weight: bold; margin:0;">
-                "Si entiendes la masa y el periodo, el reglamento es solo carpintería."
-            </h5>
+        <!-- CIERRE ÉPICO -->
+        <div class="w3-center w3-padding-32">
+            <h4 style="color: var(--ce-texto-antracita); font-weight: bold; margin:0; font-style: italic;">
+                "El reglamento no creó la física.<br>El reglamento convirtió la física en un procedimiento de diseño."
+            </h4>
         </div>
 
     </div>
@@ -221,22 +202,24 @@
         let pisos_data = [];
         let W_total = 0;
 
-        // Variables SVG Animacion
+        // Variables SVG Animacion Dinámica
         let nodosAnimacion = [];
         let reqAnim = null;
 
-        function calcularModeloBase() {
+        function calcularCadenaCausal() {
             n_pisos = parseInt(document.getElementById('numPisos').value);
             document.getElementById('val-pisos').innerText = n_pisos;
 
             const W_tipico = 1660; // 200m2 * 8.3 kN/m2
-            const W_cubierta = 1300; // Un poco menor en cubierta
+            const W_cubierta = 1300; 
 
             let h_n = n_pisos * h_piso;
-            document.getElementById('lbl-hn').innerText = h_n.toFixed(1);
 
+            // Paso 2: Estimación Normativa Ta (NSR-10 Eq A.4.2-3)
             T_Ta = 0.047 * Math.pow(h_n, 0.9);
+            document.getElementById('lbl-T').innerText = T_Ta.toFixed(2);
 
+            // Exponente k para distribución estática posterior
             if (T_Ta <= 0.5) k_normativo = 1.0;
             else if (T_Ta > 0.5 && T_Ta < 2.5) k_normativo = 0.75 + 0.5 * T_Ta;
             else k_normativo = 2.0;
@@ -255,21 +238,22 @@
             }
 
             document.getElementById('lbl-Wtot').innerText = W_total.toFixed(0);
-            document.getElementById('lbl-T').innerText = T_Ta.toFixed(2);
-            document.getElementById('lbl-k').innerText = k_normativo.toFixed(2);
 
-            calcularFHE();
+            procesarFisicaYNorma();
         }
 
-        function calcularFHE() {
+        function procesarFisicaYNorma() {
+            // Espectro Simplificado Suelo D
             let Sa_ref = 0.81; 
             let Tc = 0.7; 
             
             let Sa = T_Ta <= Tc ? Sa_ref : (Sa_ref * Tc) / T_Ta;
             if (Sa < 0.1) Sa = 0.1;
 
+            // Cortante Basal Normativo
             let V_el = Sa * W_total;           
 
+            // Distribución Cvx (Matemática Estática)
             let sum_W_hk = 0;
             pisos_data.forEach(p => {
                 p.W_hk = p.Wx * Math.pow(p.hx, k_normativo);
@@ -283,11 +267,11 @@
 
             document.getElementById('res-v-el').innerText = V_el.toFixed(0) + " kN";
 
-            renderTabla();
-            prepararAnimacionSVG();
+            renderTablaEstatica();
+            prepararAnimacionDinamica();
         }
 
-        function renderTabla() {
+        function renderTablaEstatica() {
             let tbody = document.querySelector('#tabla-fhe tbody');
             tbody.innerHTML = '';
             let pisosInvertidos = [...pisos_data].reverse(); 
@@ -298,29 +282,27 @@
                     <td>${p.nivel}</td>
                     <td>${p.hx.toFixed(2)}</td>
                     <td>${p.Wx.toFixed(0)}</td>
-                    <td style="background:#f8f9fa; font-weight:bold;">${p.W_hk.toFixed(0)}</td>
                     <td>${p.Cvx.toFixed(3)}</td>
-                    <td class="w3-text-orange" style="font-weight:bold;">${p.F_elas.toFixed(0)}</td>
+                    <td style="color: #2C3E50; font-weight:bold; background-color: #f8f9fa;">${p.F_elas.toFixed(0)} kN &rarr;</td>
                 `;
                 tbody.appendChild(tr);
             });
         }
 
-        // Animación limpia (sin flechas individuales por piso, enfocada en deformada y Vs)
-        function prepararAnimacionSVG() {
+        // Animación dinámica pura (Sin flechas de FHE, solo M, deformada y Vs)
+        function prepararAnimacionDinamica() {
             let svg = document.getElementById('svg-edificio');
             svg.innerHTML = '';
             
-            let svgW = svg.clientWidth || 300, svgH = svg.clientHeight || 300;
+            let svgW = svg.clientWidth || 300, svgH = svg.clientHeight || 250;
             let baseY = svgH - 40, topY = 30; 
             let deltaY = (baseY - topY) / pisos_data.length;
             let centerX = svgW / 2; 
 
             nodosAnimacion = [];
-            
             let maxAmplitud = 45;
             
-            // Línea central de referencia
+            // Eje de reposo
             let lineaCentro = document.createElementNS("http://www.w3.org/2000/svg", "line");
             lineaCentro.setAttribute("x1", centerX); lineaCentro.setAttribute("y1", baseY);
             lineaCentro.setAttribute("x2", centerX); lineaCentro.setAttribute("y2", topY);
@@ -328,52 +310,52 @@
             lineaCentro.setAttribute("stroke-dasharray", "4,4");
             svg.appendChild(lineaCentro);
 
-            // Base empotrada
+            // Suelo / Base
             let baseRec = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-            baseRec.setAttribute("x", centerX - 25); baseRec.setAttribute("y", baseY);
-            baseRec.setAttribute("width", "50"); baseRec.setAttribute("height", "8");
-            baseRec.setAttribute("fill", "#2C3E50");
+            baseRec.setAttribute("x", centerX - 30); baseRec.setAttribute("y", baseY);
+            baseRec.setAttribute("width", "60"); baseRec.setAttribute("height", "8");
+            baseRec.setAttribute("fill", "#34495e");
             svg.appendChild(baseRec);
             
-            // Vector de Reacción en la Base (Vs)
+            // Reacción dinámica en la base Vs
             let gRb = document.createElementNS("http://www.w3.org/2000/svg", "g");
             let rbLinea = document.createElementNS("http://www.w3.org/2000/svg", "line");
-            rbLinea.setAttribute("stroke", "#34495e"); rbLinea.setAttribute("stroke-width", "3");
+            rbLinea.setAttribute("stroke", "#c0392b"); rbLinea.setAttribute("stroke-width", "3");
             let rbPunta = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-            rbPunta.setAttribute("fill", "#34495e");
+            rbPunta.setAttribute("fill", "#c0392b");
             let txtRb = document.createElementNS("http://www.w3.org/2000/svg", "text");
-            txtRb.setAttribute("fill", "#34495e"); txtRb.setAttribute("font-size", "12px"); txtRb.setAttribute("font-weight", "bold");
+            txtRb.setAttribute("fill", "#c0392b"); txtRb.setAttribute("font-size", "14px"); txtRb.setAttribute("font-weight", "bold");
             txtRb.textContent = "Vs";
             gRb.appendChild(rbLinea); gRb.appendChild(rbPunta); gRb.appendChild(txtRb);
             svg.appendChild(gRb);
 
-            // Generar Masas y Columnas
+            // Nodos (Masas + Rigidez)
             pisos_data.forEach((p, idx) => {
                 let cy = baseY - (idx + 1) * deltaY;
+                // Aproximación de forma modal
                 let forma_visual = Math.pow(p.hx / (pisos_data.length * h_piso), k_normativo);
                 let amp = maxAmplitud * forma_visual;
-                let radio = 8; 
 
                 let colFlex = document.createElementNS("http://www.w3.org/2000/svg", "line");
-                colFlex.setAttribute("stroke", "#2C3E50"); colFlex.setAttribute("stroke-width", "3");
+                colFlex.setAttribute("stroke", "#7f8c8d"); colFlex.setAttribute("stroke-width", "4");
                 svg.appendChild(colFlex);
 
                 let circulo = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-                circulo.setAttribute("cy", cy); circulo.setAttribute("r", radio);
-                circulo.setAttribute("fill", "#2980B9"); 
+                circulo.setAttribute("cy", cy); circulo.setAttribute("r", 9);
+                circulo.setAttribute("fill", "#2980B9"); // Masa M
                 svg.appendChild(circulo);
 
-                nodosAnimacion.push({ cy, amp, colFlex, circulo, radio });
+                nodosAnimacion.push({ cy, amp, colFlex, circulo });
             });
 
             if(reqAnim) cancelAnimationFrame(reqAnim);
             
             function renderFrame() {
-                // Velocidad acoplada matemáticamente al periodo real T_Ta
-                let omega_visual = 0.005 / T_Ta; 
+                let omega_visual = 0.006 / T_Ta; 
                 let t = Date.now() * omega_visual; 
                 let u_t = Math.sin(t); 
                 
+                // Actualizar Masas y Columnas
                 nodosAnimacion.forEach((nodo, idx) => {
                     let desp = u_t * nodo.amp;
                     let cx = centerX + desp;
@@ -390,22 +372,22 @@
                     nodo.circulo.setAttribute("cx", cx);
                 });
                 
-                // Animación de la Reacción Basal (Vs)
+                // Actualizar Reacción Basal
                 let rLine = gRb.childNodes[0]; let rPoly = gRb.childNodes[1]; let rTxt = gRb.childNodes[2];
-                let longRb = 35 * Math.abs(u_t);
+                let longRb = 40 * Math.abs(u_t);
                 
                 if(u_t > 0) { 
-                    rLine.setAttribute("x1", centerX); rLine.setAttribute("y1", baseY + 15);
-                    rLine.setAttribute("x2", centerX - longRb); rLine.setAttribute("y2", baseY + 15);
-                    rPoly.setAttribute("points", `${centerX - longRb + 5},${baseY + 12} ${centerX - longRb - 2},${baseY + 15} ${centerX - longRb + 5},${baseY + 18}`);
-                    rTxt.setAttribute("x", centerX - longRb - 20); rTxt.setAttribute("y", baseY + 20);
+                    rLine.setAttribute("x1", centerX); rLine.setAttribute("y1", baseY + 18);
+                    rLine.setAttribute("x2", centerX - longRb); rLine.setAttribute("y2", baseY + 18);
+                    rPoly.setAttribute("points", `${centerX - longRb + 6},${baseY + 14} ${centerX - longRb - 2},${baseY + 18} ${centerX - longRb + 6},${baseY + 22}`);
+                    rTxt.setAttribute("x", centerX - longRb - 25); rTxt.setAttribute("y", baseY + 23);
                 } else {
-                    rLine.setAttribute("x1", centerX); rLine.setAttribute("y1", baseY + 15);
-                    rLine.setAttribute("x2", centerX + longRb); rLine.setAttribute("y2", baseY + 15);
-                    rPoly.setAttribute("points", `${centerX + longRb - 5},${baseY + 12} ${centerX + longRb + 2},${baseY + 15} ${centerX + longRb - 5},${baseY + 18}`);
-                    rTxt.setAttribute("x", centerX + longRb + 5); rTxt.setAttribute("y", baseY + 20);
+                    rLine.setAttribute("x1", centerX); rLine.setAttribute("y1", baseY + 18);
+                    rLine.setAttribute("x2", centerX + longRb); rLine.setAttribute("y2", baseY + 18);
+                    rPoly.setAttribute("points", `${centerX + longRb - 6},${baseY + 14} ${centerX + longRb + 2},${baseY + 18} ${centerX + longRb - 6},${baseY + 22}`);
+                    rTxt.setAttribute("x", centerX + longRb + 6); rTxt.setAttribute("y", baseY + 23);
                 }
-                gRb.style.opacity = Math.abs(u_t) > 0.2 ? 1 : 0.2;
+                gRb.style.opacity = Math.abs(u_t) > 0.15 ? 1 : 0.2;
                 
                 reqAnim = requestAnimationFrame(renderFrame);
             }
@@ -413,7 +395,8 @@
         }
 
         window.onload = function() {
-            calcularModeloBase();
+            // Un pequeño retardo para asegurar que MathJax renderice primero la estructura
+            setTimeout(() => { calcularCadenaCausal(); }, 100);
         }
     </script>
 </body>
