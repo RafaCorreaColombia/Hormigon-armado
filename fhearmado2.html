@@ -7,40 +7,26 @@
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     
-    <!-- Configuración robusta de MathJax -->
+    <!-- MathJax y Chart.js -->
     <script type="text/x-mathjax-config">
-        MathJax.Hub.Config({
-            tex2jax: {
-                inlineMath: [['$', '$'], ['\\(', '\\)']],
-                displayMath: [['$$', '$$'], ['\\[', '\\]']],
-                processEscapes: true
-            }
-        });
+        MathJax.Hub.Config({ tex2jax: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$']], processEscapes: true }});
     </script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <style>
         :root {
-            --ce-fondo-concreto: #F4F6F7;
-            --ce-texto-antracita: #2C3E50;
-            --ce-acento-naranja: #D35400;
-            --ce-azul-academico: #2980B9;
-            --ce-verde-norma: #27AE60;
+            --ce-fondo-concreto: #F4F6F7; --ce-texto-antracita: #2C3E50; --ce-acento-naranja: #D35400;
+            --ce-azul-academico: #2980B9; --ce-verde-norma: #27AE60;
         }
         body { font-family: 'Segoe UI', Arial, sans-serif; background-color: var(--ce-fondo-concreto); color: var(--ce-texto-antracita); }
         .ce-header { background-color: var(--ce-texto-antracita); color: white; padding: 20px; border-bottom: 5px solid var(--ce-acento-naranja); }
         .ce-card { background: white; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); padding: 20px; margin-bottom: 20px; }
-        
-        .w3-text-orange { color: #D35400 !important; }
-        .w3-text-blue { color: var(--ce-azul-academico) !important; }
-        
+        .w3-text-orange { color: #D35400 !important; } .w3-text-blue { color: var(--ce-azul-academico) !important; }
         .grafico-container { width: 100%; background: #e9ecef; border-radius: 8px; overflow: hidden; position: relative; border-bottom: 4px solid var(--ce-texto-antracita); }
         table th { background-color: var(--ce-texto-antracita); color: white; }
-        
         .caja-formula { background: #f8f9fa; border: 1px solid #dee2e6; padding: 15px; border-radius: 8px; text-align: center; margin: 10px 0; font-size: 1.1em;}
         .caja-narrativa { background: #e8f4f8; border-left: 4px solid var(--ce-azul-academico); padding: 12px; margin: 15px 0; border-radius: 0 8px 8px 0; }
-        
-        /* Conectores visuales */
         .flecha-flujo { text-align: center; font-size: 24px; color: #7f8c8d; margin: -10px 0 10px 0; }
     </style>
 </head>
@@ -48,7 +34,7 @@
 
     <!-- Header -->
     <div class="ce-header w3-row">
-        <div class="w3-col s12 m8">
+        <div class="w3-col s12">
             <h2 style="margin:0;"><b>Criterio Estructural</b></h2>
             <p style="margin:0; opacity: 0.9;"><b>Laboratorio 2B:</b> De la Física al Reglamento (NSR-10)</p>
             <p class="w3-small" style="margin:0; opacity: 0.7;"><i>Antes de que ETABS entregue una fuerza, entiende de dónde salió.</i></p>
@@ -66,39 +52,20 @@
             </div>
         </div>
         
-        <!-- PASO 1: MASA -->
-        <div class="ce-card" style="border-left: 6px solid var(--ce-azul-academico);">
-            <h4><b>1. El Peso ($W$) y la Masa ($M$)</b></h4>
-            <p class="w3-small">El edificio pesa <b id="lbl-Wtot" class="w3-text-blue"></b> <b>kN</b>, pero la dinámica no trabaja con fuerzas gravitacionales estáticas. La dinámica trabaja con <b>Masa</b>.</p>
-            
-            <div class="caja-formula">
-                $$ M = \frac{W}{g} $$
-            </div>
-
-            <div class="caja-narrativa w3-small">
-                <b><i class="fa fa-book"></i> NSR-10 (A.4.2.2) - ¿Qué incluye esta masa?</b><br>
-                La masa sísmica no es simplemente "toda la carga muerta". Se construye sumando la masa de la estructura + muros divisorios + equipos permanentes. En edificaciones normales (vivienda/oficinas) usamos el 100% de esta carga. <i>Solo en bodegas o almacenamientos se incluye un 25% de la carga viva.</i>
-            </div>
-        </div>
-
-        <div class="flecha-flujo"><i class="fa fa-arrow-down"></i></div>
-
-        <!-- PASO 2: RIGIDEZ Y PERIODO -->
-        <div class="ce-card" style="border-left: 6px solid #F39C12;">
-            <h4><b>2. La Rigidez ($K$) y el Periodo ($T$)</b></h4>
-            <div class="w3-row">
-                <div class="w3-col m6 w3-padding">
-                    <p class="w3-small">Tenemos algo pesado ($M$). Pero no sabemos cómo vibra hasta saber qué tan difícil es deformarlo: su <b>Rigidez ($K$)</b>. Esta depende de la geometría, sección de columnas, vigas y materiales.</p>
-                    <div class="caja-formula w3-small" style="padding: 10px;">
-                        $$ T = 2\pi\sqrt{\frac{M}{K}} $$
-                    </div>
+        <!-- PASO 1 y 2: MASA Y PERIODO -->
+        <div class="w3-row-padding" style="margin: 0 -16px;">
+            <div class="w3-col m6">
+                <div class="ce-card" style="border-left: 6px solid var(--ce-azul-academico); height: 100%;">
+                    <h4><b>1. Masa ($M$)</b></h4>
+                    <p class="w3-small">El edificio pesa <b id="lbl-Wtot" class="w3-text-blue"></b> <b>kN</b> ($W$). La dinámica trabaja con Inercia.</p>
+                    <div class="caja-formula w3-small" style="padding:10px;">$$ M = W / g $$</div>
                 </div>
-                <div class="w3-col m6 w3-padding">
-                    <div class="caja-narrativa w3-small" style="border-color: #F39C12; background: #fdf5e6;">
-                        <b><i class="fa fa-lightbulb-o"></i> ETABS no inventa el periodo</b><br>
-                        El periodo aparece naturalmente porque tú diseñaste una estructura con una masa ($M$) y una rigidez ($K$) específicas.<br><br>
-                        La NSR-10 (A.4.2.1) nos da una fórmula empírica ($T_a = C_t h_n^\alpha$) para estimarlo ($T_a \approx$ <b id="lbl-T" class="w3-text-orange"></b> <b>s</b>). <b>La norma lo estima, pero el edificio físico solo conoce su masa y su rigidez.</b>
-                    </div>
+            </div>
+            <div class="w3-col m6">
+                <div class="ce-card" style="border-left: 6px solid #F39C12; height: 100%;">
+                    <h4><b>2. Rigidez ($K$) y Periodo ($T$)</b></h4>
+                    <p class="w3-small">Tu edificio tiene masa y rigidez. La norma estima su periodo dinámico en:</p>
+                    <div class="caja-formula w3-small" style="padding:10px;">$$ T_a = C_t \cdot h_n^\alpha \approx \mathbf{<span id="lbl-T" class="w3-text-orange"></span> \text{ s}} $$</div>
                 </div>
             </div>
         </div>
@@ -107,83 +74,61 @@
 
         <!-- PASO 3: NEWTON Y LA INERCIA -->
         <div class="ce-card" style="border-left: 6px solid #C0392B;">
-            <h4><b>3. El Sismo: Aceleración y Segunda Ley de Newton</b></h4>
-            
+            <h4><b>3. El Sismo: Newton y Fuerzas de Inercia</b></h4>
             <div class="w3-row-padding">
                 <div class="w3-col m5">
-                    <p class="w3-small">Cuando el suelo acelera, la base se mueve. Las masas de los pisos, por inercia, tienden a quedarse quietas. Aparecen fuerzas dinámicas reales:</p>
-                    
-                    <div class="caja-formula" style="background: #fdedec; border-color: #e74c3c; color: #c0392b;">
-                        $$ F_i = m_i \cdot a_i $$
-                    </div>
-                    
-                    <p class="w3-small"><b>La estructura está vibrando.</b> Estas fuerzas existen físicamente como inercias durante el movimiento. La suma de todas ellas genera la reacción dinámica en la base: el Cortante Basal ($V_s$).</p>
+                    <p class="w3-small">Cuando el suelo acelera, las masas tienden a quedarse quietas. Aparecen fuerzas dinámicas reales:</p>
+                    <div class="caja-formula w3-small" style="background: #fdedec; border-color: #e74c3c; color: #c0392b;">$$ F_i = m_i \cdot a_i $$</div>
+                    <p class="w3-small">La estructura oscila. La suma de las inercias de cada masa genera la reacción total en la base: el <b>Cortante Basal ($V_s$)</b>.</p>
                 </div>
-                
                 <div class="w3-col m7">
-                    <!-- Animación puramente dinámica -->
-                    <div class="grafico-container" style="height: 250px; background: white; border: 1px solid #ccc; border-bottom: 4px solid var(--ce-texto-antracita);">
+                    <div class="grafico-container" style="height: 220px; background: white;">
                         <svg id="svg-edificio" width="100%" height="100%"></svg>
                     </div>
-                    <p class="w3-tiny w3-text-grey w3-center" style="margin-top: 5px;"><i>(Respuesta dinámica real: Las masas $M_i$ oscilan resistiendo la aceleración, generando una reacción global $V_s$ en la base).</i></p>
                 </div>
             </div>
         </div>
 
         <div class="flecha-flujo"><i class="fa fa-arrow-down"></i></div>
 
-        <!-- PASO 4: EL PUENTE NORMATIVO -->
-        <div class="ce-card" style="border-left: 6px solid var(--ce-verde-norma);">
-            <h4><b>4. Del movimiento real al cálculo de diseño (NSR-10)</b></h4>
-            <p class="w3-small">Calcular la historia de aceleraciones $a_i(t)$ para cada masa segundo a segundo es complejo. La NSR-10 nos permite representar este efecto dinámico máximo mediante una <b>Aceleración Espectral $S_a(T)$</b> (fracción de la gravedad).</p>
+        <!-- PASO 4: ESPECTROS (CHART.JS) -->
+        <div class="ce-card" style="border-left: 6px solid var(--ce-texto-antracita);">
+            <h4><b>4. Lo que propone el reglamento vs. Lo que ocurrió en la realidad</b></h4>
+            <p class="w3-small">
+                ¿Qué habría "sentido" tu edificio durante el sismo del Chocó? Aquí comparamos el espectro de respuesta del evento real frente a la demanda de diseño de la NSR-10.<br>
+                <i class="w3-text-grey">Observa el punto naranja: Esa es la aceleración sísmica ($S_a$) que la norma le exige a <b>tu</b> edificio en particular.</i>
+            </p>
             
-            <div class="w3-row">
-                <div class="w3-col s12 m8 w3-display-container" style="margin: auto; float: none;">
-                    <div class="caja-formula" style="background: #e8f5e9; border-color: #27ae60;">
-                        Cortante Basal Normativo (A.4.3.1):<br>
-                        $$ V_s = S_a \cdot M \cdot g \quad \longrightarrow \quad \mathbf{V_s = S_a \cdot W} $$
-                    </div>
-                </div>
+            <div style="width: 100%; height: 350px;">
+                <canvas id="espectroChart"></canvas>
+            </div>
+            
+            <div class="caja-narrativa w3-small" style="border-color: var(--ce-verde-norma); background: #e8f5e9;">
+                <b>Cortante Basal Normativo (NSR-10 A.4.3.1)</b><br>
+                Con un periodo de <b id="lbl-T2"></b>s, la norma demanda $S_a = $ <b id="lbl-Sa" class="w3-text-orange"></b> $g$.<br>
+                Por lo tanto: $V_s = S_a \cdot W \rightarrow \mathbf{V_s = <span id="res-v-el" class="w3-text-orange"></span> \text{ kN}}$
             </div>
         </div>
 
         <div class="flecha-flujo"><i class="fa fa-arrow-down"></i></div>
 
-        <!-- PASO 5: DISTRIBUCIÓN ESTÁTICA EQUIVALENTE -->
+        <!-- PASO 5: FHE -->
         <div class="ce-card" style="border-left: 6px solid var(--ce-texto-antracita);">
             <h4><b>5. Fuerza Horizontal Equivalente (FHE)</b></h4>
-            <p class="w3-small">
-                Las flechas $F_x$ que ves en ETABS <b>no son el sismo</b>. Son solo una distribución estática equivalente ($C_{vx}$) del cortante basal $V_s$ para que podamos diseñar columnas y vigas con estática tradicional.
-            </p>
-
+            <p class="w3-small">Las flechas $F_x$ de ETABS no son el sismo real. Son una <b>distribución estática equivalente</b> ($C_{vx}$) del cortante $V_s$ para que puedas diseñar columnas y vigas con estática tradicional.</p>
+            
             <div class="w3-responsive">
                 <table class="w3-table w3-bordered w3-small w3-centered w3-border" id="tabla-fhe">
                     <thead>
-                        <tr>
-                            <th rowspan="2" style="vertical-align: middle;">Piso</th>
-                            <th rowspan="2" style="vertical-align: middle;">$h_x$ (m)</th>
-                            <th rowspan="2" style="vertical-align: middle;">$W_x$ (kN)</th>
-                            <th rowspan="2" style="background-color:#e9ecef; color:#333; vertical-align: middle;">Factor $C_{vx}$</th>
-                            <th style="background-color:var(--ce-texto-antracita); border-left: 1px solid #7f8c8d;">Fuerza Estática Representativa</th>
-                        </tr>
-                        <tr>
-                            <th style="background-color:#34495e;"><b>$F_x = C_{vx} V_s$</b></th>
+                        <tr style="background-color: var(--ce-texto-antracita); color: white;">
+                            <th>Piso</th><th>$h_x$ (m)</th><th>$W_x$ (kN)</th><th>Factor $C_{vx}$</th><th>$F_x = C_{vx} V_s$</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <!-- JS inyecta -->
-                    </tbody>
-                    <tfoot>
-                        <tr style="background:#f1f1f1; font-weight:bold;">
-                            <td colspan="4" class="w3-right-align">Reacción en la Base ($V_s$):</td>
-                            <td id="res-v-el" class="w3-text-orange w3-large" style="border-left: 1px solid #ccc;"></td>
-                        </tr>
-                    </tfoot>
+                    <tbody></tbody>
                 </table>
             </div>
         </div>
-        
-        <!-- CIERRE ÉPICO -->
+
         <div class="w3-center w3-padding-32">
             <h4 style="color: var(--ce-texto-antracita); font-weight: bold; margin:0; font-style: italic;">
                 "El reglamento no creó la física.<br>El reglamento convirtió la física en un procedimiento de diseño."
@@ -192,212 +137,182 @@
 
     </div>
 
-    <!-- SCRIPT LOGIC -->
+    <!-- SCRIPTS -->
     <script>
-        // Variables Base
-        let n_pisos = 4;
-        let h_piso = 2.90;
-        let T_Ta = 0.5;
-        let k_normativo = 1.0; 
-        let pisos_data = [];
-        let W_total = 0;
+        // --- 1. DATOS DE RESPALDO (FALLBACK) ---
+        // Extraídos matemáticamente de tus archivos CSV por si la red local falla
+        const fallbackChoco = [{"x": 0.0105, "y": 0.239541}, {"x": 0.05, "y": 0.246}, {"x": 0.1, "y": 0.360}, {"x": 0.15, "y": 0.538}, {"x": 0.2, "y": 0.518}, {"x": 0.25, "y": 0.641}, {"x": 0.288, "y": 0.922}, {"x": 0.35, "y": 0.711}, {"x": 0.4, "y": 0.647}, {"x": 0.5, "y": 0.546}, {"x": 0.6, "y": 0.285}, {"x": 0.7, "y": 0.164}, {"x": 0.8, "y": 0.138}, {"x": 1.0, "y": 0.067}, {"x": 1.2, "y": 0.030}, {"x": 1.5, "y": 0.018}, {"x": 2.0, "y": 0.012}, {"x": 2.5, "y": 0.007}, {"x": 3.0, "y": 0.006}];
+        const fallbackNSR = [{"x": 0.0, "y": 0.71875}, {"x": 0.1348, "y": 0.71875}, {"x": 0.647, "y": 0.71875}, {"x": 0.9263, "y": 0.501984}, {"x": 1.2057, "y": 0.385671}, {"x": 1.4851, "y": 0.313119}, {"x": 1.7644, "y": 0.263542}, {"x": 2.0438, "y": 0.227518}, {"x": 2.3232, "y": 0.200158}, {"x": 2.6025, "y": 0.178672}, {"x": 2.8819, "y": 0.161352}, {"x": 3.1613, "y": 0.147093}];
 
-        // Variables SVG Animacion Dinámica
-        let nodosAnimacion = [];
-        let reqAnim = null;
+        let curDataChoco = [];
+        let curDataNSR = [];
+        let espectroChart = null;
+        
+        let n_pisos = 4, h_piso = 2.90, T_Ta = 0.5, k_normativo = 1.0, W_total = 0, Sa_actual = 0;
+        let pisos_data = [], nodosAnimacion = [], reqAnim = null;
+
+        // --- 2. INICIALIZACIÓN DE DATOS Y GRÁFICA ---
+        async function iniciarSistema() {
+            try {
+                const resChoco = await fetch('assets/sismo_choco_acelerograma.csv');
+                const textChoco = await resChoco.text();
+                curDataChoco = parseCSV(textChoco);
+                
+                const resNSR = await fetch('assets/sismo_choco_espectro.csv');
+                const textNSR = await resNSR.text();
+                curDataNSR = parseCSV(textNSR);
+            } catch(e) {
+                console.warn("Usando Fallback de datos (Ejecución local detectada sin servidor).");
+                curDataChoco = fallbackChoco;
+                curDataNSR = fallbackNSR;
+            }
+            
+            crearGrafica();
+            calcularCadenaCausal();
+        }
+
+        function parseCSV(text) {
+            return text.trim().split('\n').map(l => {
+                let p = l.split(','); return {x: parseFloat(p[0]), y: parseFloat(p[1])};
+            }).filter(pt => !isNaN(pt.x) && !isNaN(pt.y));
+        }
+
+        function crearGrafica() {
+            const ctx = document.getElementById('espectroChart').getContext('2d');
+            espectroChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    datasets: [
+                        { label: 'Espectro Real (Sismo Chocó)', data: curDataChoco, borderColor: '#7f8c8d', borderWidth: 2, pointRadius: 0, fill: false, tension: 0.1 },
+                        { label: 'Demanda de Diseño (NSR-10)', data: curDataNSR, borderColor: '#27AE60', borderWidth: 3, pointRadius: 0, fill: false, tension: 0 },
+                        { label: 'Demanda de TU Edificio', data: [{x: 0, y: 0}], backgroundColor: '#D35400', borderColor: '#D35400', pointRadius: 7, pointHoverRadius: 9, showLine: false, type: 'scatter' }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    scales: {
+                        x: { type: 'linear', title: { display: true, text: 'Periodo T (s)' }, min: 0, max: 2.5 },
+                        y: { title: { display: true, text: 'Aceleración Espectral Sa (g)' }, min: 0 }
+                    },
+                    plugins: { legend: { position: 'top' } }
+                }
+            });
+        }
+
+        // --- 3. LÓGICA DEL EDIFICIO ---
+        function interpolarSa(T, curve) {
+            if(curve.length === 0) return 0;
+            if(T <= curve[0].x) return curve[0].y;
+            if(T >= curve[curve.length-1].x) return curve[curve.length-1].y;
+            for(let i=0; i<curve.length-1; i++) {
+                if(T >= curve[i].x && T <= curve[i+1].x) {
+                    return curve[i].y + (curve[i+1].y - curve[i].y) * (T - curve[i].x) / (curve[i+1].x - curve[i].x);
+                }
+            }
+            return 0;
+        }
 
         function calcularCadenaCausal() {
             n_pisos = parseInt(document.getElementById('numPisos').value);
             document.getElementById('val-pisos').innerText = n_pisos;
 
-            const W_tipico = 1660; // 200m2 * 8.3 kN/m2
-            const W_cubierta = 1300; 
-
             let h_n = n_pisos * h_piso;
-
-            // Paso 2: Estimación Normativa Ta (NSR-10 Eq A.4.2-3)
             T_Ta = 0.047 * Math.pow(h_n, 0.9);
             document.getElementById('lbl-T').innerText = T_Ta.toFixed(2);
+            document.getElementById('lbl-T2').innerText = T_Ta.toFixed(2);
 
-            // Exponente k para distribución estática posterior
-            if (T_Ta <= 0.5) k_normativo = 1.0;
-            else if (T_Ta > 0.5 && T_Ta < 2.5) k_normativo = 0.75 + 0.5 * T_Ta;
-            else k_normativo = 2.0;
+            k_normativo = (T_Ta <= 0.5) ? 1.0 : ((T_Ta < 2.5) ? 0.75 + 0.5 * T_Ta : 2.0);
 
+            W_total = (n_pisos - 1) * 1660 + 1300; // Pisos tipicos + cubierta
             pisos_data = [];
-            W_total = 0;
-            for (let i = 1; i <= n_pisos; i++) {
-                let peso = (i === n_pisos) ? W_cubierta : W_tipico;
-                pisos_data.push({ 
-                    nivel: i, 
-                    hx: i * h_piso, 
-                    Wx: peso, 
-                    F_elas: 0
-                });
-                W_total += peso;
-            }
-
+            for (let i = 1; i <= n_pisos; i++) pisos_data.push({ nivel: i, hx: i * h_piso, Wx: (i === n_pisos ? 1300 : 1660), F_elas: 0 });
+            
             document.getElementById('lbl-Wtot').innerText = W_total.toFixed(0);
 
-            procesarFisicaYNorma();
-        }
-
-        function procesarFisicaYNorma() {
-            // Espectro Simplificado Suelo D
-            let Sa_ref = 0.81; 
-            let Tc = 0.7; 
+            // Obtener Sa EXACTO interpolando la curva NSR-10 del usuario
+            Sa_actual = interpolarSa(T_Ta, curDataNSR);
+            if(Sa_actual < 0.1) Sa_actual = 0.1; // Mínimo normativo
             
-            let Sa = T_Ta <= Tc ? Sa_ref : (Sa_ref * Tc) / T_Ta;
-            if (Sa < 0.1) Sa = 0.1;
+            document.getElementById('lbl-Sa').innerText = Sa_actual.toFixed(3);
 
-            // Cortante Basal Normativo
-            let V_el = Sa * W_total;           
+            let V_el = Sa_actual * W_total;
+            document.getElementById('res-v-el').innerText = V_el.toFixed(0);
 
-            // Distribución Cvx (Matemática Estática)
             let sum_W_hk = 0;
-            pisos_data.forEach(p => {
-                p.W_hk = p.Wx * Math.pow(p.hx, k_normativo);
-                sum_W_hk += p.W_hk;
-            });
+            pisos_data.forEach(p => { p.W_hk = p.Wx * Math.pow(p.hx, k_normativo); sum_W_hk += p.W_hk; });
+            pisos_data.forEach(p => { p.Cvx = p.W_hk / sum_W_hk; p.F_elas = p.Cvx * V_el; });
 
-            pisos_data.forEach(p => {
-                p.Cvx = p.W_hk / sum_W_hk;
-                p.F_elas = p.Cvx * V_el;
-            });
-
-            document.getElementById('res-v-el').innerText = V_el.toFixed(0) + " kN";
-
-            renderTablaEstatica();
+            renderTabla();
+            actualizarPuntoGrafica();
             prepararAnimacionDinamica();
         }
 
-        function renderTablaEstatica() {
+        function actualizarPuntoGrafica() {
+            if(espectroChart) {
+                espectroChart.data.datasets[2].data = [{x: T_Ta, y: Sa_actual}];
+                espectroChart.update();
+            }
+        }
+
+        function renderTabla() {
             let tbody = document.querySelector('#tabla-fhe tbody');
             tbody.innerHTML = '';
-            let pisosInvertidos = [...pisos_data].reverse(); 
-
-            pisosInvertidos.forEach(p => {
-                let tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>${p.nivel}</td>
-                    <td>${p.hx.toFixed(2)}</td>
-                    <td>${p.Wx.toFixed(0)}</td>
-                    <td>${p.Cvx.toFixed(3)}</td>
-                    <td style="color: #2C3E50; font-weight:bold; background-color: #f8f9fa;">${p.F_elas.toFixed(0)} kN &rarr;</td>
-                `;
-                tbody.appendChild(tr);
+            [...pisos_data].reverse().forEach(p => {
+                tbody.innerHTML += `<tr><td>${p.nivel}</td><td>${p.hx.toFixed(2)}</td><td>${p.Wx.toFixed(0)}</td><td>${p.Cvx.toFixed(3)}</td><td style="font-weight:bold; background:#f8f9fa;">${p.F_elas.toFixed(0)} kN &rarr;</td></tr>`;
             });
         }
 
-        // Animación dinámica pura (Sin flechas de FHE, solo M, deformada y Vs)
+        // --- 4. ANIMACIÓN DINÁMICA PURA ---
         function prepararAnimacionDinamica() {
             let svg = document.getElementById('svg-edificio');
             svg.innerHTML = '';
-            
-            let svgW = svg.clientWidth || 300, svgH = svg.clientHeight || 250;
-            let baseY = svgH - 40, topY = 30; 
-            let deltaY = (baseY - topY) / pisos_data.length;
-            let centerX = svgW / 2; 
-
+            let sW = svg.clientWidth || 300, sH = svg.clientHeight || 220;
+            let baseY = sH - 30, topY = 20, deltaY = (baseY - topY) / pisos_data.length, cX = sW / 2;
             nodosAnimacion = [];
-            let maxAmplitud = 45;
-            
-            // Eje de reposo
-            let lineaCentro = document.createElementNS("http://www.w3.org/2000/svg", "line");
-            lineaCentro.setAttribute("x1", centerX); lineaCentro.setAttribute("y1", baseY);
-            lineaCentro.setAttribute("x2", centerX); lineaCentro.setAttribute("y2", topY);
-            lineaCentro.setAttribute("stroke", "#bdc3c7"); lineaCentro.setAttribute("stroke-width", "1");
-            lineaCentro.setAttribute("stroke-dasharray", "4,4");
-            svg.appendChild(lineaCentro);
 
-            // Suelo / Base
-            let baseRec = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-            baseRec.setAttribute("x", centerX - 30); baseRec.setAttribute("y", baseY);
-            baseRec.setAttribute("width", "60"); baseRec.setAttribute("height", "8");
-            baseRec.setAttribute("fill", "#34495e");
-            svg.appendChild(baseRec);
+            svg.innerHTML += `<line x1="${cX}" y1="${baseY}" x2="${cX}" y2="${topY}" stroke="#bdc3c7" stroke-dasharray="4,4" />`;
+            svg.innerHTML += `<rect x="${cX-30}" y="${baseY}" width="60" height="8" fill="#34495e" />`;
             
-            // Reacción dinámica en la base Vs
             let gRb = document.createElementNS("http://www.w3.org/2000/svg", "g");
-            let rbLinea = document.createElementNS("http://www.w3.org/2000/svg", "line");
-            rbLinea.setAttribute("stroke", "#c0392b"); rbLinea.setAttribute("stroke-width", "3");
-            let rbPunta = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-            rbPunta.setAttribute("fill", "#c0392b");
-            let txtRb = document.createElementNS("http://www.w3.org/2000/svg", "text");
-            txtRb.setAttribute("fill", "#c0392b"); txtRb.setAttribute("font-size", "14px"); txtRb.setAttribute("font-weight", "bold");
-            txtRb.textContent = "Vs";
-            gRb.appendChild(rbLinea); gRb.appendChild(rbPunta); gRb.appendChild(txtRb);
+            gRb.innerHTML = `<line stroke="#c0392b" stroke-width="3"/><polygon fill="#c0392b"/><text fill="#c0392b" font-weight="bold">Vs</text>`;
             svg.appendChild(gRb);
 
-            // Nodos (Masas + Rigidez)
             pisos_data.forEach((p, idx) => {
                 let cy = baseY - (idx + 1) * deltaY;
-                // Aproximación de forma modal
-                let forma_visual = Math.pow(p.hx / (pisos_data.length * h_piso), k_normativo);
-                let amp = maxAmplitud * forma_visual;
-
-                let colFlex = document.createElementNS("http://www.w3.org/2000/svg", "line");
-                colFlex.setAttribute("stroke", "#7f8c8d"); colFlex.setAttribute("stroke-width", "4");
-                svg.appendChild(colFlex);
-
-                let circulo = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-                circulo.setAttribute("cy", cy); circulo.setAttribute("r", 9);
-                circulo.setAttribute("fill", "#2980B9"); // Masa M
-                svg.appendChild(circulo);
-
-                nodosAnimacion.push({ cy, amp, colFlex, circulo });
+                let col = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                col.setAttribute("stroke", "#7f8c8d"); col.setAttribute("stroke-width", "4"); svg.appendChild(col);
+                let circ = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                circ.setAttribute("cy", cy); circ.setAttribute("r", 9); circ.setAttribute("fill", "#2980B9"); svg.appendChild(circ);
+                nodosAnimacion.push({ cy, amp: 40 * Math.pow(p.hx / (pisos_data.length*h_piso), k_normativo), col, circ });
             });
 
             if(reqAnim) cancelAnimationFrame(reqAnim);
-            
-            function renderFrame() {
-                let omega_visual = 0.006 / T_Ta; 
-                let t = Date.now() * omega_visual; 
-                let u_t = Math.sin(t); 
-                
-                // Actualizar Masas y Columnas
-                nodosAnimacion.forEach((nodo, idx) => {
-                    let desp = u_t * nodo.amp;
-                    let cx = centerX + desp;
-                    
-                    let prevCx = centerX, prevCy = baseY;
-                    if (idx > 0) {
-                        prevCx = centerX + u_t * nodosAnimacion[idx-1].amp;
-                        prevCy = nodosAnimacion[idx-1].cy;
-                    }
-                    
-                    nodo.colFlex.setAttribute("x1", prevCx); nodo.colFlex.setAttribute("y1", prevCy);
-                    nodo.colFlex.setAttribute("x2", cx); nodo.colFlex.setAttribute("y2", nodo.cy);
-                    
-                    nodo.circulo.setAttribute("cx", cx);
+            function render() {
+                let u_t = Math.sin(Date.now() * (0.006 / T_Ta));
+                nodosAnimacion.forEach((n, i) => {
+                    let cx = cX + u_t * n.amp, pX = cX, pY = baseY;
+                    if(i>0) { pX = cX + u_t * nodosAnimacion[i-1].amp; pY = nodosAnimacion[i-1].cy; }
+                    n.col.setAttribute("x1", pX); n.col.setAttribute("y1", pY); n.col.setAttribute("x2", cx); n.col.setAttribute("y2", n.cy);
+                    n.circ.setAttribute("cx", cx);
                 });
                 
-                // Actualizar Reacción Basal
-                let rLine = gRb.childNodes[0]; let rPoly = gRb.childNodes[1]; let rTxt = gRb.childNodes[2];
-                let longRb = 40 * Math.abs(u_t);
-                
-                if(u_t > 0) { 
-                    rLine.setAttribute("x1", centerX); rLine.setAttribute("y1", baseY + 18);
-                    rLine.setAttribute("x2", centerX - longRb); rLine.setAttribute("y2", baseY + 18);
-                    rPoly.setAttribute("points", `${centerX - longRb + 6},${baseY + 14} ${centerX - longRb - 2},${baseY + 18} ${centerX - longRb + 6},${baseY + 22}`);
-                    rTxt.setAttribute("x", centerX - longRb - 25); rTxt.setAttribute("y", baseY + 23);
+                let rL = gRb.childNodes[0], rP = gRb.childNodes[1], rT = gRb.childNodes[2], lRb = 40 * Math.abs(u_t);
+                if(u_t > 0) {
+                    rL.setAttribute("x1", cX); rL.setAttribute("y1", baseY+16); rL.setAttribute("x2", cX-lRb); rL.setAttribute("y2", baseY+16);
+                    rP.setAttribute("points", `${cX-lRb+6},${baseY+12} ${cX-lRb-2},${baseY+16} ${cX-lRb+6},${baseY+20}`);
+                    rT.setAttribute("x", cX-lRb-25); rT.setAttribute("y", baseY+21);
                 } else {
-                    rLine.setAttribute("x1", centerX); rLine.setAttribute("y1", baseY + 18);
-                    rLine.setAttribute("x2", centerX + longRb); rLine.setAttribute("y2", baseY + 18);
-                    rPoly.setAttribute("points", `${centerX + longRb - 6},${baseY + 14} ${centerX + longRb + 2},${baseY + 18} ${centerX + longRb - 6},${baseY + 22}`);
-                    rTxt.setAttribute("x", centerX + longRb + 6); rTxt.setAttribute("y", baseY + 23);
+                    rL.setAttribute("x1", cX); rL.setAttribute("y1", baseY+16); rL.setAttribute("x2", cX+lRb); rL.setAttribute("y2", baseY+16);
+                    rP.setAttribute("points", `${cX+lRb-6},${baseY+12} ${cX+lRb+2},${baseY+16} ${cX+lRb-6},${baseY+20}`);
+                    rT.setAttribute("x", cX+lRb+6); rT.setAttribute("y", baseY+21);
                 }
                 gRb.style.opacity = Math.abs(u_t) > 0.15 ? 1 : 0.2;
-                
-                reqAnim = requestAnimationFrame(renderFrame);
+                reqAnim = requestAnimationFrame(render);
             }
-            renderFrame();
+            render();
         }
 
-        window.onload = function() {
-            // Un pequeño retardo para asegurar que MathJax renderice primero la estructura
-            setTimeout(() => { calcularCadenaCausal(); }, 100);
-        }
+        window.onload = function() { iniciarSistema(); }
     </script>
 </body>
 </html>
