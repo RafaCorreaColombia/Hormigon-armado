@@ -162,7 +162,7 @@
                     <div class="grafico-container" style="height: 300px; background: white; border: 1px solid #ccc; border-bottom: 4px solid var(--ce-texto-antracita);">
                         <svg id="svg-edificio" width="100%" height="100%"></svg>
                     </div>
-                    <p class="w3-tiny w3-text-grey w3-center"><i>(Visualización: La velocidad de oscilación refleja el periodo matemático real. Cambia los pisos y observa cómo la inercia frena la estructura).</i></p>
+                    <p class="w3-tiny w3-text-grey w3-center"><i>(Visualización: Modo limpio sin flechas de inercia individuales; enfocado en la deformada modal y la reacción basal $V_s$).</i></p>
                 </div>
 
                 <!-- Tabla FHE -->
@@ -232,15 +232,11 @@
             const W_tipico = 1660; // 200m2 * 8.3 kN/m2
             const W_cubierta = 1300; // Un poco menor en cubierta
 
-            // Altura total
             let h_n = n_pisos * h_piso;
             document.getElementById('lbl-hn').innerText = h_n.toFixed(1);
 
-            // Periodo Fundamental (NSR-10 Eq A.4.2-3 Pórticos concreto)
-            // Ta = Ct * hn^alpha -> Ct = 0.047, alpha = 0.9
             T_Ta = 0.047 * Math.pow(h_n, 0.9);
 
-            // Exponente k (NSR-10 A.4.3.3)
             if (T_Ta <= 0.5) k_normativo = 1.0;
             else if (T_Ta > 0.5 && T_Ta < 2.5) k_normativo = 0.75 + 0.5 * T_Ta;
             else k_normativo = 2.0;
@@ -266,16 +262,12 @@
         }
 
         function calcularFHE() {
-            // Espectro Simplificado para demostración (Aa=0.25, Av=0.25 Suelo D -> Fa=1.3, Fv=1.9 aprox)
-            // Sa_max = 2.5 * Aa * Fa = 2.5 * 0.25 * 1.3 = 0.81 g
-            // Tc = 0.48 * Av * Fv / (Aa * Fa) aprox = 0.7 s
             let Sa_ref = 0.81; 
             let Tc = 0.7; 
             
             let Sa = T_Ta <= Tc ? Sa_ref : (Sa_ref * Tc) / T_Ta;
-            if (Sa < 0.1) Sa = 0.1; // Límite inferior
+            if (Sa < 0.1) Sa = 0.1;
 
-            // Cortante Basal (R=1)
             let V_el = Sa * W_total;           
 
             let sum_W_hk = 0;
@@ -314,7 +306,7 @@
             });
         }
 
-        // Animación dinámica conectada matemáticamente a T_Ta
+        // Animación limpia (sin flechas individuales por piso, enfocada en deformada y Vs)
         function prepararAnimacionSVG() {
             let svg = document.getElementById('svg-edificio');
             svg.innerHTML = '';
@@ -326,11 +318,9 @@
 
             nodosAnimacion = [];
             
-            // Parametros visuales
             let maxAmplitud = 45;
-            let maxFx = Math.max(...pisos_data.map(p => p.F_elas)); if (maxFx === 0) maxFx = 1;
             
-            // Base visual
+            // Línea central de referencia
             let lineaCentro = document.createElementNS("http://www.w3.org/2000/svg", "line");
             lineaCentro.setAttribute("x1", centerX); lineaCentro.setAttribute("y1", baseY);
             lineaCentro.setAttribute("x2", centerX); lineaCentro.setAttribute("y2", topY);
@@ -338,12 +328,14 @@
             lineaCentro.setAttribute("stroke-dasharray", "4,4");
             svg.appendChild(lineaCentro);
 
+            // Base empotrada
             let baseRec = document.createElementNS("http://www.w3.org/2000/svg", "rect");
             baseRec.setAttribute("x", centerX - 25); baseRec.setAttribute("y", baseY);
             baseRec.setAttribute("width", "50"); baseRec.setAttribute("height", "8");
             baseRec.setAttribute("fill", "#2C3E50");
             svg.appendChild(baseRec);
             
+            // Vector de Reacción en la Base (Vs)
             let gRb = document.createElementNS("http://www.w3.org/2000/svg", "g");
             let rbLinea = document.createElementNS("http://www.w3.org/2000/svg", "line");
             rbLinea.setAttribute("stroke", "#34495e"); rbLinea.setAttribute("stroke-width", "3");
@@ -355,15 +347,12 @@
             gRb.appendChild(rbLinea); gRb.appendChild(rbPunta); gRb.appendChild(txtRb);
             svg.appendChild(gRb);
 
-            // Generar Masas
+            // Generar Masas y Columnas
             pisos_data.forEach((p, idx) => {
                 let cy = baseY - (idx + 1) * deltaY;
-                
-                // Amplitud visual aproximada usando el perfil normativo (h_x^k)
                 let forma_visual = Math.pow(p.hx / (pisos_data.length * h_piso), k_normativo);
                 let amp = maxAmplitud * forma_visual;
-
-                let radio = 8; // Constante simplificada, ya que W_x es casi igual en todos
+                let radio = 8; 
 
                 let colFlex = document.createElementNS("http://www.w3.org/2000/svg", "line");
                 colFlex.setAttribute("stroke", "#2C3E50"); colFlex.setAttribute("stroke-width", "3");
@@ -374,31 +363,13 @@
                 circulo.setAttribute("fill", "#2980B9"); 
                 svg.appendChild(circulo);
 
-                // Flecha
-                /*
-                let longitudFlecha = 15 + (p.F_elas / maxFx) * 35; 
-                let gFlecha = document.createElementNS("http://www.w3.org/2000/svg", "g");
-                let flechaLinea = document.createElementNS("http://www.w3.org/2000/svg", "line");
-                flechaLinea.setAttribute("stroke", "#D35400"); flechaLinea.setAttribute("stroke-width", "2");
-                let flechaPunta = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-                flechaPunta.setAttribute("fill", "#D35400");
-                let txtInercia = document.createElementNS("http://www.w3.org/2000/svg", "text");
-                txtInercia.setAttribute("fill", "#D35400"); txtInercia.setAttribute("font-size", "9px"); txtInercia.setAttribute("font-weight", "bold");
-                txtInercia.textContent = "Fi";
-                
-                gFlecha.appendChild(flechaLinea); gFlecha.appendChild(flechaPunta); gFlecha.appendChild(txtInercia);
-                svg.appendChild(gFlecha);
-
-                nodosAnimacion.push({ cy, amp, colFlex, circulo, radio, flecha: gFlecha, longitudF: longitudFlecha });
-                /*
+                nodosAnimacion.push({ cy, amp, colFlex, circulo, radio });
             });
 
             if(reqAnim) cancelAnimationFrame(reqAnim);
             
             function renderFrame() {
-                // VELOCIDAD LIGADA AL PERIODO: Si T es mayor, el oscilador es más lento.
-                // Multiplicamos por un factor de escala para que sea cómodo al ojo.
-                // Velocidad visual ~ 1 / T_Ta
+                // Velocidad acoplada matemáticamente al periodo real T_Ta
                 let omega_visual = 0.005 / T_Ta; 
                 let t = Date.now() * omega_visual; 
                 let u_t = Math.sin(t); 
@@ -417,23 +388,9 @@
                     nodo.colFlex.setAttribute("x2", cx); nodo.colFlex.setAttribute("y2", nodo.cy);
                     
                     nodo.circulo.setAttribute("cx", cx);
-                    
-                    let line = nodo.flecha.childNodes[0]; let poly = nodo.flecha.childNodes[1]; let txt = nodo.flecha.childNodes[2];
-                    
-                    if(u_t > 0) { 
-                        line.setAttribute("x1", cx + nodo.radio); line.setAttribute("y1", nodo.cy);
-                        line.setAttribute("x2", cx + nodo.radio + nodo.longitudF); line.setAttribute("y2", nodo.cy);
-                        poly.setAttribute("points", `${cx + nodo.radio + nodo.longitudF - 5},${nodo.cy - 3} ${cx + nodo.radio + nodo.longitudF + 2},${nodo.cy} ${cx + nodo.radio + nodo.longitudF - 5},${nodo.cy + 3}`);
-                        txt.setAttribute("x", cx + nodo.radio + 5); txt.setAttribute("y", nodo.cy - 5);
-                    } else {
-                        line.setAttribute("x1", cx - nodo.radio); line.setAttribute("y1", nodo.cy);
-                        line.setAttribute("x2", cx - nodo.radio - nodo.longitudF); line.setAttribute("y2", nodo.cy);
-                        poly.setAttribute("points", `${cx - nodo.radio - nodo.longitudF + 5},${nodo.cy - 3} ${cx - nodo.radio - nodo.longitudF - 2},${nodo.cy} ${cx - nodo.radio - nodo.longitudF + 5},${nodo.cy + 3}`);
-                        txt.setAttribute("x", cx - nodo.radio - 20); txt.setAttribute("y", nodo.cy - 5);
-                    }
-                    nodo.flecha.style.opacity = Math.abs(u_t) > 0.2 ? 1 : 0.2; 
                 });
                 
+                // Animación de la Reacción Basal (Vs)
                 let rLine = gRb.childNodes[0]; let rPoly = gRb.childNodes[1]; let rTxt = gRb.childNodes[2];
                 let longRb = 35 * Math.abs(u_t);
                 
