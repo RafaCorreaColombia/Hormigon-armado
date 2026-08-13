@@ -51,7 +51,8 @@
 
         <!-- PANEL DE ENTRADA -->
         <div class="ce-card" style="border-left-color: var(--ce-texto); background: #fafafa;">
-            <h5><b>Parámetros de Entrada (Bucaramanga, Grupo I, Perfil C)</b></h5>
+            <h5><b>Parámetros del Caso de Estudio</b></h5>
+            <p class="w3-tiny w3-text-grey">Ejemplo ilustrativo — Bucaramanga — Grupo de Uso I — Perfil de Suelo C. Estos valores corresponden a este modelo particular y no deben asumirse como universales.</p>
             <div class="w3-row-padding" style="margin: 0 -16px;">
                 <!-- Edificio -->
                 <div class="w3-col m6">
@@ -63,7 +64,7 @@
                         </td></tr>
                         <tr><td class="td-left">Altura de piso</td><td>$2.90 \text{ m}$</td></tr>
                         <tr style="background:#f8f9fa;"><td class="td-left"><b>Altura Total ($h_n$)</b></td><td><b id="val-hn">11.60</b> m</td></tr>
-                        <tr><td class="td-left">Sistema</td><td>Pórticos de Concreto</td></tr>
+                        <tr><td class="td-left">Sistema estructural</td><td>Pórticos de Concreto</td></tr>
                         <tr><td class="td-left">Coef. $C_t$</td><td>$0.047$</td></tr>
                         <tr><td class="td-left">Exp. $\alpha$</td><td>$0.90$</td></tr>
                     </table>
@@ -71,7 +72,7 @@
                 <!-- Amenaza -->
                 <div class="w3-col m6">
                     <table class="w3-table w3-bordered w3-small w3-border">
-                        <tr class="w3-light-grey"><th colspan="2">Parámetros Sísmicos</th><th>Origen</th></tr>
+                        <tr class="w3-light-grey"><th colspan="2">Parámetros Sísmicos (NSR-10)</th><th>Origen</th></tr>
                         <tr><td>$A_a$</td><td>$0.25$</td><td>Amenaza sísmica</td></tr>
                         <tr><td>$A_v$</td><td>$0.25$</td><td>Amenaza sísmica</td></tr>
                         <tr><td>$F_a$</td><td>$1.15$</td><td>Efecto local (Suelo C)</td></tr>
@@ -85,14 +86,15 @@
         <!-- PASO 1: MASA -->
         <div class="ce-card" style="border-left-color: var(--ce-azul);">
             <h4><b>1. ¿De dónde salió la Masa? ($M$)</b></h4>
-            <p class="w3-small">El edificio no tiene una masa abstracta. El peso sísmico ($W$) proviene de la suma de cargas gravitacionales reales. La dinámica trabaja con Inercia.</p>
+            <p class="w3-small">La dinámica necesita la masa porque <b>la masa es la propiedad que genera la fuerza de inercia</b> cuando el sistema se acelera ($F = M \cdot a$). El peso sísmico total ($W$) proviene de la suma de cargas gravitacionales reales por nivel.</p>
             
             <div class="w3-row">
                 <div class="w3-col m7 w3-padding">
                     <table class="w3-table w3-bordered w3-small w3-border" id="tabla-masas">
-                        <tr class="w3-light-grey"><th>Nivel</th><th>CM Estructura</th><th>CM No Estruct.</th><th>CV consid.</th><th>$W_i$ (kN)</th></tr>
+                        <tr class="w3-light-grey"><th>Nivel</th><th>CM Estructura*</th><th>CM No Estruct.*</th><th>CV consid.*</th><th>$W_i$ (kN)</th></tr>
                         <!-- Inyectado por JS -->
                     </table>
+                    <p class="w3-tiny w3-text-grey" style="margin-top:4px;"><i>*Desglose ilustrativo de cargas gravitacionales (peso propio, acabados, muros y fracción de carga viva según uso).</i></p>
                 </div>
                 <div class="w3-col m5 w3-padding">
                     <div class="caja-formula">
@@ -109,29 +111,29 @@
 
         <!-- PASO 2: PERIODO -->
         <div class="ce-card" style="border-left-color: #F39C12;">
-            <h4><b>2. ¿Qué tan rápido vibra? ($T$)</b></h4>
-            <p class="w3-small">La estructura tiene masa ($M$) y rigidez ($K$). Su vibración teórica es $T \approx 2\pi\sqrt{M/K}$. La NSR-10 (A.4.2) da una estimación inicial ($T_a$) basada empíricamente en el sistema estructural.</p>
+            <h4><b>2. El Período de Vibración ($T$)</b></h4>
+            <p class="w3-small">La estructura tiene masa ($M$) y rigidez ($K$). Su vibración teórica responde a $T \approx 2\pi\sqrt{M/K}$. La NSR-10 (A.4.2) proporciona una estimación inicial ($T_a$) basada en el sistema estructural.</p>
             
             <div class="w3-row-padding">
                 <div class="w3-col m4">
                     <div class="caja-formula w3-small">
-                        Estimación Inicial (A.4.2-3)<br>
+                        Período Aproximado ($T_a$)<br>
                         $$ T_a = C_t \cdot h_n^\alpha $$
                         <b>$T_a = <span id="lbl-Ta" class="w3-text-orange"></span> \text{ s}$</b>
                     </div>
                 </div>
                 <div class="w3-col m4">
                     <div class="caja-formula w3-small">
-                        Límite Normativo $C_u$<br>
+                        Límite Normativo ($C_u T_a$)<br>
                         $$ C_u = \max(1.2, 1.75 - 1.2 A_v F_v) $$
                         <b>$C_u T_a = <span id="lbl-CuTa" class="w3-text-orange"></span> \text{ s}$</b>
                     </div>
                 </div>
                 <div class="w3-col m4">
                     <div class="caja-narrativa" style="margin: 0; height: 100%;">
-                        <b><i class="fa fa-hand-o-right"></i> MODO ETABS</b><br>
-                        ¿Tienes el periodo modal del software?<br>
-                        <input type="checkbox" id="chk-modal" onchange="toggleModal()"> <label>Sí, lo tengo</label><br>
+                        <b><i class="fa fa-hand-o-right"></i> Modelo Modal (ETABS)</b><br>
+                        El modelo tiene un período modal $T_{modal}$. La NSR-10 establece límites para el período empleado en el cálculo sísmico.<br>
+                        <input type="checkbox" id="chk-modal" onchange="toggleModal()"> <label>Ingresar $T_{modal}$</label>
                         <div id="box-modal" style="display:none; margin-top:5px;">
                             $T_{modal} = $ <input type="number" id="val-tmodal" value="0.51" step="0.01" style="width:60px;" oninput="actualizarModelo()"> s
                         </div>
@@ -140,7 +142,7 @@
             </div>
             
             <div class="caja-formula" style="border-color: #F39C12; background: #fdf5e6; margin-top: 15px;">
-                Período para Diseño (FHE):<br>
+                Período Adoptado para Diseño ($T$):<br>
                 $$ T = \min(T_{modal}, C_u T_a) \rightarrow \mathbf{T = <span id="lbl-Tdiseno" class="w3-text-orange" style="font-size:1.2em;"></span> \text{ s}} $$
             </div>
             <div id="alerta-modal" class="caja-alerta" style="display:none;"></div>
@@ -160,9 +162,9 @@
             <div class="w3-row">
                 <div class="w3-col m3 w3-padding">
                     <div class="w3-small" style="line-height:1.8;">
-                        $T_0 = 0.1 \frac{A_v F_v}{A_a F_a} = \mathbf{0.135 \text{ s}}$<br>
-                        $T_C = 0.48 \frac{A_v F_v}{A_a F_a} = \mathbf{0.648 \text{ s}}$<br>
-                        $T_L = 2.4 F_v = \mathbf{3.72 \text{ s}}$<br><br>
+                        $T_0 = 0.135 \text{ s}$<br>
+                        $T_C = 0.648 \text{ s}$<br>
+                        $T_L = 3.72 \text{ s}$<br><br>
                         <b>Demanda para TU Edificio:</b>
                         <div class="caja-formula" style="padding:5px; color: var(--ce-verde); border-color: var(--ce-verde);">
                             $S_a(T) = \mathbf{<span id="lbl-Sa"></span> g}$
@@ -171,6 +173,7 @@
                 </div>
                 <div class="w3-col m9">
                     <div style="height: 280px; width: 100%;"><canvas id="espectroChart"></canvas></div>
+                    <p class="w3-tiny w3-text-grey" style="margin-top:5px;"><i>Nota: Comparación física ilustrativa. El espectro registrado del sismo del Chocó corresponde a un movimiento particular y no constituye el espectro de diseño oficial de Bucaramanga.</i></p>
                 </div>
             </div>
         </div>
@@ -182,10 +185,10 @@
             <h4><b>4. Newton y el Cortante Basal ($V_s$)</b></h4>
             <div class="w3-row-padding">
                 <div class="w3-col m6">
-                    <p class="w3-small">La aceleración espectral equivale a $a = S_a \cdot g$. Por la Segunda Ley de Newton, las masas generan una fuerza inercial total.</p>
+                    <p class="w3-small">La aceleración espectral define una aceleración equivalente $a = S_a \cdot g$. Aplicando la Segunda Ley de Newton, obtenemos el cortante basal de diseño:</p>
                     <div class="caja-formula" style="background: #fdedec; border-color: #e74c3c;">
-                        $$ F = M \cdot a $$
-                        $$ V_s = \left(\frac{W}{g}\right)(S_a \cdot g) \rightarrow \mathbf{V_s = S_a \cdot W} $$
+                        $$ V_s = M \cdot a = \left(\frac{W}{g}\right)(S_a \cdot g) $$
+                        $$ \mathbf{V_s = S_a \cdot W} $$
                     </div>
                     <div class="caja-formula" style="color: #c0392b; border-color: #c0392b;">
                         $V_s = (<span class="val-sa-text"></span>) \cdot (<span class="val-w-text"></span>)$<br>
@@ -196,7 +199,7 @@
                     <div class="grafico-container" style="height: 200px; background: white;">
                         <svg id="svg-edificio" width="100%" height="100%"></svg>
                     </div>
-                    <p class="w3-tiny w3-text-grey w3-center"><i>Las fuerzas inerciales reales equilibran la reacción $V_s$ en la base.</i></p>
+                    <p class="w3-tiny w3-text-grey w3-center"><i>Representación conceptual de la respuesta dinámica y la reacción basal $V_s$.</i></p>
                 </div>
             </div>
         </div>
@@ -206,7 +209,7 @@
         <!-- PASO 5: FHE -->
         <div class="ce-card" style="border-left-color: var(--ce-texto);">
             <h4><b>5. Reparto Estático FHE ($C_{vx}$)</b></h4>
-            <p class="w3-small">¿Cómo repartimos $V_s$ en los pisos? La norma usa $C_{vx}$. El peso $W_x$ indica cuánta masa hay, y la altura $h_x^k$ simula la forma del modo de vibración.</p>
+            <p class="w3-small">¿Cómo repartimos $V_s$ en la altura? La norma utiliza factores $C_{vx}$. El peso $W_x$ pondera la masa y el término $h_x^k$ aproxima la forma de la respuesta dinâmica en distribución estática.</p>
             
             <div class="w3-row">
                 <div class="w3-col m4 w3-padding">
@@ -272,7 +275,6 @@
             actualizarModelo();
         }
 
-        // --- LAS 4 RAMAS EXACTAS DE LA NSR-10 ---
         function calcularSa(T) {
             let sa_plate = 2.5 * Aa * Fa * I;
             if(T < T0) {
@@ -303,7 +305,7 @@
             pisos_data = [];
             W_total = 0;
             let tbMasas = document.getElementById('tabla-masas');
-            tbMasas.innerHTML = '<tr class="w3-light-grey"><th>Nivel</th><th>CM Estructura</th><th>CM No Estruct.</th><th>CV consid.</th><th>$W_i$ (kN)</th></tr>';
+            tbMasas.innerHTML = '<tr class="w3-light-grey"><th>Nivel</th><th>CM Estructura*</th><th>CM No Estruct.*</th><th>CV consid.*</th><th>$W_i$ (kN)</th></tr>';
             
             for(let i = n_pisos; i >= 1; i--) {
                 let w = (i === n_pisos) ? W_CUBIERTA : W_PISO_TIPICO;
