@@ -7,9 +7,15 @@
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     
-    <!-- MathJax y Chart.js -->
+    <!-- Configuración robusta de MathJax y Chart.js -->
     <script type="text/x-mathjax-config">
-        MathJax.Hub.Config({ tex2jax: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$']], processEscapes: true }});
+        MathJax.Hub.Config({
+            tex2jax: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true
+            }
+        });
     </script>
     <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -31,8 +37,6 @@
         table th { background-color: var(--ce-texto); color: white; font-size: 0.85em; text-align: center;}
         table td { font-size: 0.85em; text-align: center; vertical-align: middle;}
         .td-left { text-align: left !important; }
-        
-        .btn-toggle { cursor: pointer; color: var(--ce-azul); text-decoration: underline; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -81,7 +85,7 @@
         <!-- PASO 1: MASA -->
         <div class="ce-card" style="border-left-color: var(--ce-azul);">
             <h4><b>1. ¿De dónde salió la Masa? ($M$)</b></h4>
-            <p class="w3-small">El edificio no "pesa" un número mágico. El peso sísmico ($W$) proviene de la suma de cargas gravitacionales reales. La dinámica usa la Masa ($M$).</p>
+            <p class="w3-small">El edificio no tiene una masa abstracta. El peso sísmico ($W$) proviene de la suma de cargas gravitacionales reales. La dinámica trabaja con Inercia.</p>
             
             <div class="w3-row">
                 <div class="w3-col m7 w3-padding">
@@ -97,7 +101,6 @@
                     <div class="caja-formula" style="border-color: var(--ce-azul);">
                         $$ M = \frac{W}{g} = \frac{W}{9.81} $$
                     </div>
-                    <p class="w3-tiny w3-text-grey"><i>*Nota: Para bodegas, la masa incluye un 25% de la carga viva. Para vivienda/oficinas, solo la carga muerta total (A.4.2.2).</i></p>
                 </div>
             </div>
         </div>
@@ -114,7 +117,6 @@
                     <div class="caja-formula w3-small">
                         Estimación Inicial (A.4.2-3)<br>
                         $$ T_a = C_t \cdot h_n^\alpha $$
-                        $T_a = 0.047 \cdot (<span class="val-hn-text"></span>)^{0.90}$<br>
                         <b>$T_a = <span id="lbl-Ta" class="w3-text-orange"></span> \text{ s}$</b>
                     </div>
                 </div>
@@ -122,7 +124,6 @@
                     <div class="caja-formula w3-small">
                         Límite Normativo $C_u$<br>
                         $$ C_u = \max(1.2, 1.75 - 1.2 A_v F_v) $$
-                        $C_u = \max(1.2, 1.285) = 1.285$<br>
                         <b>$C_u T_a = <span id="lbl-CuTa" class="w3-text-orange"></span> \text{ s}$</b>
                     </div>
                 </div>
@@ -132,7 +133,7 @@
                         ¿Tienes el periodo modal del software?<br>
                         <input type="checkbox" id="chk-modal" onchange="toggleModal()"> <label>Sí, lo tengo</label><br>
                         <div id="box-modal" style="display:none; margin-top:5px;">
-                            $T_{modal} = $ <input type="number" id="val-tmodal" value="0.51" step="0.01" style="width:60px;" oninput="calcularCadenaCausal()"> s
+                            $T_{modal} = $ <input type="number" id="val-tmodal" value="0.51" step="0.01" style="width:60px;" oninput="actualizarModelo()"> s
                         </div>
                     </div>
                 </div>
@@ -150,24 +151,26 @@
         <!-- PASO 3: ESPECTRO -->
         <div class="ce-card" style="border-left-color: var(--ce-verde);">
             <h4><b>3. El Espectro y la Demanda Sísmica ($S_a$)</b></h4>
-            <p class="w3-small">El suelo transforma la amenaza. Calculamos los períodos de transición (NSR-10 A.2.6) para construir la curva y encontrar qué aceleración ($S_a$) le toca al período $T$ de tu edificio.</p>
             
+            <div class="caja-narrativa">
+                <b>El sismo ocurrió. El espectro nos dice cómo podría responder un sistema con determinado período.</b><br>
+                Dos edificios sometidos al mismo movimiento pueden experimentar respuestas muy diferentes porque tienen períodos de vibración diferentes.
+            </div>
+
             <div class="w3-row">
                 <div class="w3-col m3 w3-padding">
                     <div class="w3-small" style="line-height:1.8;">
                         $T_0 = 0.1 \frac{A_v F_v}{A_a F_a} = \mathbf{0.135 \text{ s}}$<br>
                         $T_C = 0.48 \frac{A_v F_v}{A_a F_a} = \mathbf{0.648 \text{ s}}$<br>
                         $T_L = 2.4 F_v = \mathbf{3.72 \text{ s}}$<br><br>
-                        Si $T \leq T_C$:<br>
-                        $S_a = 2.5 A_a F_a I = \mathbf{0.719g}$<br>
-                        <br><b>Demanda actual:</b>
+                        <b>Demanda para TU Edificio:</b>
                         <div class="caja-formula" style="padding:5px; color: var(--ce-verde); border-color: var(--ce-verde);">
                             $S_a(T) = \mathbf{<span id="lbl-Sa"></span> g}$
                         </div>
                     </div>
                 </div>
                 <div class="w3-col m9">
-                    <div style="height: 250px; width: 100%;"><canvas id="espectroChart"></canvas></div>
+                    <div style="height: 280px; width: 100%;"><canvas id="espectroChart"></canvas></div>
                 </div>
             </div>
         </div>
@@ -182,8 +185,7 @@
                     <p class="w3-small">La aceleración espectral equivale a $a = S_a \cdot g$. Por la Segunda Ley de Newton, las masas generan una fuerza inercial total.</p>
                     <div class="caja-formula" style="background: #fdedec; border-color: #e74c3c;">
                         $$ F = M \cdot a $$
-                        $$ V_s = \left(\frac{W}{g}\right)(S_a \cdot g) $$
-                        $$ \mathbf{V_s = S_a \cdot W} $$
+                        $$ V_s = \left(\frac{W}{g}\right)(S_a \cdot g) \rightarrow \mathbf{V_s = S_a \cdot W} $$
                     </div>
                     <div class="caja-formula" style="color: #c0392b; border-color: #c0392b;">
                         $V_s = (<span class="val-sa-text"></span>) \cdot (<span class="val-w-text"></span>)$<br>
@@ -214,7 +216,6 @@
                         Para $0.5 < T < 2.5$ $\rightarrow k = 0.75 + 0.5T$<br><br>
                         <b>$k = \mathbf{<span id="lbl-k" class="w3-text-blue"></span>}$</b>
                     </div>
-                    <p class="w3-tiny w3-justify"><i>*Si $k=1$, la fuerza crece linealmente. Si $k>1$, la altura pesa más, empujando la fuerza hacia arriba para simular la flexibilidad del edificio.</i></p>
                 </div>
                 <div class="w3-col m8 w3-padding">
                     <div class="w3-responsive">
@@ -248,7 +249,6 @@
 
     <!-- SCRIPTS -->
     <script>
-        // Parámetros Globales Fijos (Bucaramanga Suelo C)
         const Aa=0.25, Av=0.25, Fa=1.15, Fv=1.55, I=1.0;
         const T0 = 0.1 * (Av*Fv)/(Aa*Fa), TC = 0.48 * (Av*Fv)/(Aa*Fa), TL = 2.4 * Fv;
         const W_PISO_TIPICO = 1660, W_CUBIERTA = 1300;
@@ -257,14 +257,12 @@
         let T_a = 0, C_u = 1.285, T_limite = 0, T_diseno = 0, Sa = 0, Vs = 0, k = 1.0;
         let pisos_data = [];
         
-        // Datos Respaldo Choco
         const dataChoco = [{"x": 0.0105, "y": 0.239}, {"x": 0.05, "y": 0.246}, {"x": 0.1, "y": 0.360}, {"x": 0.15, "y": 0.538}, {"x": 0.2, "y": 0.518}, {"x": 0.25, "y": 0.641}, {"x": 0.288, "y": 0.922}, {"x": 0.35, "y": 0.711}, {"x": 0.4, "y": 0.647}, {"x": 0.5, "y": 0.546}, {"x": 0.6, "y": 0.285}, {"x": 0.7, "y": 0.164}, {"x": 0.8, "y": 0.138}, {"x": 1.0, "y": 0.067}, {"x": 1.2, "y": 0.030}, {"x": 1.5, "y": 0.018}, {"x": 2.0, "y": 0.012}, {"x": 2.5, "y": 0.007}, {"x": 3.0, "y": 0.006}];
         let dataNSR = [];
         let espectroChart = null;
         let nodosAnimacion = [], reqAnim = null;
 
         function initSistema() {
-            // Generar curva NSR matematicamente
             dataNSR = [];
             for(let t=0; t<=3.0; t+=0.05) {
                 let sa_val = calcularSa(t);
@@ -274,10 +272,18 @@
             actualizarModelo();
         }
 
+        // --- LAS 4 RAMAS EXACTAS DE LA NSR-10 ---
         function calcularSa(T) {
-            if(T === 0) return Aa*Fa*I;
-            if(T <= TC) return 2.5 * Aa * Fa * I;
-            if(T > TC && T <= TL) return (1.2 * Av * Fv * I) / T;
+            let sa_plate = 2.5 * Aa * Fa * I;
+            if(T < T0) {
+                return sa_plate * (0.4 + 0.6 * (T / T0));
+            }
+            if(T <= TC) {
+                return sa_plate;
+            }
+            if(T <= TL) {
+                return (1.2 * Av * Fv * I) / T;
+            }
             return (1.2 * Av * Fv * TL * I) / (T * T);
         }
 
@@ -293,9 +299,7 @@
             
             let h_n = n_pisos * h_piso;
             document.getElementById('val-hn').innerText = h_n.toFixed(2);
-            document.querySelectorAll('.val-hn-text').forEach(e => e.innerText = h_n.toFixed(2));
 
-            // PASO 1: MASA
             pisos_data = [];
             W_total = 0;
             let tbMasas = document.getElementById('tabla-masas');
@@ -305,18 +309,14 @@
                 let w = (i === n_pisos) ? W_CUBIERTA : W_PISO_TIPICO;
                 pisos_data.push({ nivel: i, hx: i * h_piso, Wx: w, F_elas: 0 });
                 W_total += w;
-                
-                // Mostrar desglose ficticio para narrativa
                 let cm_e = Math.round(w * 0.4); let cm_ne = Math.round(w * 0.6);
                 tbMasas.innerHTML += `<tr><td>${i}</td><td>${cm_e}</td><td>${cm_ne}</td><td>0</td><td style="font-weight:bold;">${w}</td></tr>`;
             }
-            // Invertir arreglo para cálculos de piso 1 a n
             pisos_data.reverse(); 
             
             document.getElementById('lbl-Wtot').innerText = W_total.toFixed(0);
             document.querySelectorAll('.val-w-text').forEach(e => e.innerText = W_total.toFixed(0));
 
-            // PASO 2: PERIODO
             T_a = 0.047 * Math.pow(h_n, 0.90);
             T_limite = C_u * T_a;
             
@@ -343,7 +343,6 @@
             }
             document.getElementById('lbl-Tdiseno').innerText = T_diseno.toFixed(3);
 
-            // PASO 3: ESPECTRO Sa
             Sa = calcularSa(T_diseno);
             document.getElementById('lbl-Sa').innerText = Sa.toFixed(3);
             document.querySelectorAll('.val-sa-text').forEach(e => e.innerText = Sa.toFixed(3));
@@ -353,11 +352,9 @@
                 espectroChart.update();
             }
 
-            // PASO 4: NEWTON (Vs)
             Vs = Sa * W_total;
             document.getElementById('lbl-Vs').innerText = Vs.toFixed(0);
 
-            // PASO 5: FHE (k, Cvx, Fx)
             if (T_diseno <= 0.5) k = 1.0;
             else if (T_diseno < 2.5) k = 0.75 + 0.5 * T_diseno;
             else k = 2.0;
@@ -378,9 +375,7 @@
                 tbFhe.innerHTML += `<tr><td>${p.nivel}</td><td>${p.hx.toFixed(2)}</td><td>${p.Wx.toFixed(0)}</td><td>${p.Whk.toFixed(0)}</td><td>${p.Cvx.toFixed(3)}</td><td style="font-weight:bold; background:#f8f9fa; color:#2C3E50;">${p.Fx.toFixed(0)} kN &rarr;</td></tr>`;
             });
             
-            // Check sum
             document.getElementById('res-sum-f').innerHTML = `<b>${sumF.toFixed(0)} kN &check;</b>`;
-
             prepararAnimacion();
         }
 
@@ -390,9 +385,9 @@
                 type: 'line',
                 data: {
                     datasets: [
-                        { label: 'Espectro Real (Sismo Chocó)', data: dataChoco, borderColor: '#7f8c8d', borderWidth: 2, pointRadius: 0, fill: false, tension: 0.1 },
-                        { label: 'Demanda BGA (NSR-10)', data: dataNSR, borderColor: '#27AE60', borderWidth: 3, pointRadius: 0, fill: false, tension: 0 },
-                        { label: 'Demanda de TU Edificio', data: [{x: 0, y: 0}], backgroundColor: '#D35400', borderColor: '#D35400', pointRadius: 7, pointHoverRadius: 9, showLine: false, type: 'scatter' }
+                        { label: 'Espectro de respuesta (5% amort.) — Sismo Chocó', data: dataChoco, borderColor: '#7f8c8d', borderWidth: 2, pointRadius: 0, fill: false, tension: 0.1 },
+                        { label: 'Espectro NSR-10 — Bucaramanga — Suelo C', data: dataNSR, borderColor: '#27AE60', borderWidth: 3, pointRadius: 0, fill: false, tension: 0 },
+                        { label: 'TU EDIFICIO', data: [{x: 0, y: 0}], backgroundColor: '#D35400', borderColor: '#D35400', pointRadius: 8, pointHoverRadius: 10, showLine: false, type: 'scatter' }
                     ]
                 },
                 options: {
