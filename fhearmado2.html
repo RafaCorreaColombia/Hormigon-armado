@@ -101,7 +101,7 @@
     
     <!-- HEADER -->
     <div class="header-rc">
-        <img src="../assets/IsotipoFOscuroT.png" alt="Criterio Estructural" class="brand-logo-header">
+        <img src="assets/IsotipoFOscuroT.png" alt="Criterio Estructural" class="brand-logo-header">
         <h1 class="w3-xxlarge">La Física del Sismo y la NSR-10</h1>
         <p class="w3-large"><em>"Laboratorio: Trazabilidad de la Fuerza Sísmica Equivalente"</em></p>
         <span class="w3-tag w3-white w3-text-red w3-round">Dinámica Estructural / NSR-10</span>
@@ -382,7 +382,7 @@
     <footer class="w3-container w3-padding-32 w3-center w3-text-grey w3-light-grey w3-margin-top">
         <div class="w3-border-top w3-border-grey w3-padding-24" style="max-width: 500px; margin: auto;">
             
-            <img src="../assets/IsotipoFClaroT.png" alt="Criterio Estructural" class="brand-logo-footer">
+            <img src="assets/IsotipoFClaroT.png" alt="Criterio Estructural" class="brand-logo-footer">
             <p class="w3-medium"><b>Autor</b></p>
             <h4 style="margin:0;"><b>Ing. Rafael Antonio Correa Melano</b></h4>
             <p class="w3-small">
@@ -423,7 +423,7 @@
     // Función asíncrona para leer el CSV
     async function cargarDatosExternos() {
         try {
-            const response = await fetch('../assets/sismo_choco_acelerograma_2.csv');
+            const response = await fetch('assets/sismo_choco_acelerograma.csv');
             if (!response.ok) throw new Error("No se pudo cargar el CSV");
             
             const csvData = await response.text();
@@ -444,10 +444,22 @@
         // 1. Esperamos a que los datos del CSV se carguen
         await cargarDatosExternos();
         
-        // 2. Generamos la curva NSR
-        dataNSR = [];
+        // 2. Generamos la curva NSR (¡CORREGIDO!)
+        let periodos = [];
         for(let t=0; t<=3.0; t+=0.05) {
-            dataNSR.push({x: t, y: calcularSa(t)});
+            periodos.push(t);
+        }
+        // Inyectamos las esquinas exactas de la NSR-10 para evitar falsas pendientes
+        periodos.push(T0, TC, TL);
+        
+        // Ordenamos los puntos de menor a mayor
+        periodos.sort((a, b) => a - b);
+        
+        dataNSR = [];
+        for(let t of periodos) {
+            if (t <= 3.0) { // Límite visual del gráfico
+                dataNSR.push({x: t, y: calcularSa(t)});
+            }
         }
         
         // 3. Inicializamos los componentes visuales
