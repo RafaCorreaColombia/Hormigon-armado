@@ -37,6 +37,9 @@
         table th { background-color: var(--ce-texto); color: white; font-size: 0.85em; text-align: center;}
         table td { font-size: 0.85em; text-align: center; vertical-align: middle;}
         .td-left { text-align: left !important; }
+        
+        /* Contenedor para valores dinámicos sin romper MathJax */
+        .math-dinamico { font-family: 'MathJax_Math-italic', 'Times New Roman', serif; font-size: 1.1em; margin-top: 5px; }
     </style>
 </head>
 <body>
@@ -52,7 +55,7 @@
         <!-- PANEL DE ENTRADA -->
         <div class="ce-card" style="border-left-color: var(--ce-texto); background: #fafafa;">
             <h5><b>Parámetros del Caso de Estudio</b></h5>
-            <p class="w3-tiny w3-text-grey">Ejemplo ilustrativo — Bucaramanga — Grupo de Uso I — Perfil de Suelo C. Estos valores corresponden a este modelo particular y no deben asumirse como universales.</p>
+            <p class="w3-tiny w3-text-grey">Ejemplo de cálculo — Bucaramanga — Grupo de Uso I — Perfil C. Estos valores corresponden a este modelo ilustrativo y no deben asumirse como los parámetros universales de la ciudad.</p>
             <div class="w3-row-padding" style="margin: 0 -16px;">
                 <!-- Edificio -->
                 <div class="w3-col m6">
@@ -72,12 +75,12 @@
                 <!-- Amenaza -->
                 <div class="w3-col m6">
                     <table class="w3-table w3-bordered w3-small w3-border">
-                        <tr class="w3-light-grey"><th colspan="2">Parámetros Sísmicos (NSR-10)</th><th>Origen</th></tr>
+                        <tr class="w3-light-grey"><th colspan="2">Parámetros Sísmicos</th><th>Origen</th></tr>
                         <tr><td>$A_a$</td><td>$0.25$</td><td>Amenaza sísmica</td></tr>
                         <tr><td>$A_v$</td><td>$0.25$</td><td>Amenaza sísmica</td></tr>
-                        <tr><td>$F_a$</td><td>$1.15$</td><td>Efecto local (Suelo C)</td></tr>
-                        <tr><td>$F_v$</td><td>$1.55$</td><td>Efecto local (Suelo C)</td></tr>
-                        <tr><td>$I$</td><td>$1.00$</td><td>Grupo de Uso I</td></tr>
+                        <tr><td>$F_a$</td><td>$1.15$</td><td>Efecto local</td></tr>
+                        <tr><td>$F_v$</td><td>$1.55$</td><td>Efecto local</td></tr>
+                        <tr><td>$I$</td><td>$1.00$</td><td>Grupo de Uso</td></tr>
                     </table>
                 </div>
             </div>
@@ -86,22 +89,25 @@
         <!-- PASO 1: MASA -->
         <div class="ce-card" style="border-left-color: var(--ce-azul);">
             <h4><b>1. ¿De dónde salió la Masa? ($M$)</b></h4>
-            <p class="w3-small">La dinámica necesita la masa porque <b>la masa es la propiedad que genera la fuerza de inercia</b> cuando el sistema se acelera ($F = M \cdot a$). El peso sísmico total ($W$) proviene de la suma de cargas gravitacionales reales por nivel.</p>
+            <p class="w3-small">La dinámica necesita la masa porque <b>la masa es la que genera la fuerza de inercia cuando el sistema se acelera</b> ($F = M \cdot a$). El peso sísmico total ($W$) proviene de la suma de cargas gravitacionales reales.</p>
             
             <div class="w3-row">
                 <div class="w3-col m7 w3-padding">
                     <table class="w3-table w3-bordered w3-small w3-border" id="tabla-masas">
-                        <tr class="w3-light-grey"><th>Nivel</th><th>CM Estructura*</th><th>CM No Estruct.*</th><th>CV consid.*</th><th>$W_i$ (kN)</th></tr>
+                        <tr class="w3-light-grey"><th>Nivel</th><th>$W_{estructura}$</th><th>$W_{acabados}$</th><th>$W_{muros}$</th><th>$W_{CV}$</th><th>$W_i$ (kN)</th></tr>
                         <!-- Inyectado por JS -->
                     </table>
-                    <p class="w3-tiny w3-text-grey" style="margin-top:4px;"><i>*Desglose ilustrativo de cargas gravitacionales (peso propio, acabados, muros y fracción de carga viva según uso).</i></p>
+                    <p class="w3-tiny w3-text-grey" style="margin-top:4px;"><i>Desglose ilustrativo (kN). En la realidad, estas cargas provienen del metrado exacto del proyecto.</i></p>
                 </div>
                 <div class="w3-col m5 w3-padding">
                     <div class="caja-formula">
-                        $$ W = \sum_{i=1}^n W_i = \mathbf{<span id="lbl-Wtot" class="w3-text-blue"></span> \text{ kN}} $$
+                        $$ W = \sum_{i=1}^n W_i $$
+                        <div class="math-dinamico w3-text-blue">
+                            $W =$ <span id="lbl-Wtot"></span> kN
+                        </div>
                     </div>
                     <div class="caja-formula" style="border-color: var(--ce-azul);">
-                        $$ M = \frac{W}{g} = \frac{W}{9.81} $$
+                        $$ M = \frac{W}{g} $$
                     </div>
                 </div>
             </div>
@@ -112,30 +118,35 @@
         <!-- PASO 2: PERIODO -->
         <div class="ce-card" style="border-left-color: #F39C12;">
             <h4><b>2. El Período de Vibración ($T$)</b></h4>
-            <p class="w3-small">La estructura tiene masa ($M$) y rigidez ($K$). Su vibración teórica responde a $T \approx 2\pi\sqrt{M/K}$. La NSR-10 (A.4.2) proporciona una estimación inicial ($T_a$) basada en el sistema estructural.</p>
+            <p class="w3-small">La estructura tiene masa ($M$) y rigidez ($K$). Su vibración teórica responde a $T \approx 2\pi\sqrt{M/K}$. La NSR-10 (A.4.2) proporciona una estimación inicial ($T_a$) empírica.</p>
             
             <div class="w3-row-padding">
                 <div class="w3-col m4">
                     <div class="caja-formula w3-small">
                         Período Aproximado ($T_a$)<br>
                         $$ T_a = C_t \cdot h_n^\alpha $$
-                        <b>$T_a = <span id="lbl-Ta" class="w3-text-orange"></span> \text{ s}$</b>
+                        <div class="math-dinamico w3-text-orange">
+                            $T_a =$ <span id="lbl-Ta"></span> s
+                        </div>
                     </div>
                 </div>
                 <div class="w3-col m4">
                     <div class="caja-formula w3-small">
                         Límite Normativo ($C_u T_a$)<br>
                         $$ C_u = \max(1.2, 1.75 - 1.2 A_v F_v) $$
-                        <b>$C_u T_a = <span id="lbl-CuTa" class="w3-text-orange"></span> \text{ s}$</b>
+                        <div class="math-dinamico w3-text-orange">
+                            $C_u T_a =$ <span id="lbl-CuTa"></span> s
+                        </div>
                     </div>
                 </div>
                 <div class="w3-col m4">
                     <div class="caja-narrativa" style="margin: 0; height: 100%;">
-                        <b><i class="fa fa-hand-o-right"></i> Modelo Modal (ETABS)</b><br>
-                        El modelo tiene un período modal $T_{modal}$. La NSR-10 establece límites para el período empleado en el cálculo sísmico.<br>
+                        <b><i class="fa fa-desktop"></i> Modelo Modal (ETABS)</b><br>
+                        El modelo tiene un período modal $T_{modal}$. La NSR-10 establece límites y procedimientos para el período que puede emplearse en el cálculo.<br>
                         <input type="checkbox" id="chk-modal" onchange="toggleModal()"> <label>Ingresar $T_{modal}$</label>
                         <div id="box-modal" style="display:none; margin-top:5px;">
-                            $T_{modal} = $ <input type="number" id="val-tmodal" value="0.51" step="0.01" style="width:60px;" oninput="actualizarModelo()"> s
+                            <span style="font-family: 'MathJax_Math-italic', serif; font-style: italic;">$T_{modal} =$</span> 
+                            <input type="number" id="val-tmodal" value="0.51" step="0.01" style="width:65px;" oninput="actualizarModelo()"> s
                         </div>
                     </div>
                 </div>
@@ -143,7 +154,10 @@
             
             <div class="caja-formula" style="border-color: #F39C12; background: #fdf5e6; margin-top: 15px;">
                 Período Adoptado para Diseño ($T$):<br>
-                $$ T = \min(T_{modal}, C_u T_a) \rightarrow \mathbf{T = <span id="lbl-Tdiseno" class="w3-text-orange" style="font-size:1.2em;"></span> \text{ s}} $$
+                $$ T = \min(T_{modal}, C_u T_a) $$
+                <div class="math-dinamico w3-text-orange" style="font-size: 1.2em;">
+                    $T =$ <span id="lbl-Tdiseno"></span> s
+                </div>
             </div>
             <div id="alerta-modal" class="caja-alerta" style="display:none;"></div>
         </div>
@@ -162,18 +176,19 @@
             <div class="w3-row">
                 <div class="w3-col m3 w3-padding">
                     <div class="w3-small" style="line-height:1.8;">
+                        Implementación espectro NSR-10:<br>
                         $T_0 = 0.135 \text{ s}$<br>
                         $T_C = 0.648 \text{ s}$<br>
                         $T_L = 3.72 \text{ s}$<br><br>
                         <b>Demanda para TU Edificio:</b>
-                        <div class="caja-formula" style="padding:5px; color: var(--ce-verde); border-color: var(--ce-verde);">
-                            $S_a(T) = \mathbf{<span id="lbl-Sa"></span> g}$
+                        <div class="caja-formula math-dinamico" style="padding:5px; color: var(--ce-verde); border-color: var(--ce-verde);">
+                            $S_a(T) =$ <span id="lbl-Sa"></span> g
                         </div>
                     </div>
                 </div>
                 <div class="w3-col m9">
                     <div style="height: 280px; width: 100%;"><canvas id="espectroChart"></canvas></div>
-                    <p class="w3-tiny w3-text-grey" style="margin-top:5px;"><i>Nota: Comparación física ilustrativa. El espectro registrado del sismo del Chocó corresponde a un movimiento particular y no constituye el espectro de diseño oficial de Bucaramanga.</i></p>
+                    <p class="w3-tiny w3-text-grey" style="margin-top:5px; line-height: 1.4;"><i><b>Comparación física ilustrativa.</b> El espectro registrado corresponde a un movimiento sísmico particular y no constituye el espectro de diseño oficial de Bucaramanga.</i></p>
                 </div>
             </div>
         </div>
@@ -187,19 +202,22 @@
                 <div class="w3-col m6">
                     <p class="w3-small">La aceleración espectral define una aceleración equivalente $a = S_a \cdot g$. Aplicando la Segunda Ley de Newton, obtenemos el cortante basal de diseño:</p>
                     <div class="caja-formula" style="background: #fdedec; border-color: #e74c3c;">
-                        $$ V_s = M \cdot a = \left(\frac{W}{g}\right)(S_a \cdot g) $$
-                        $$ \mathbf{V_s = S_a \cdot W} $$
+                        $$ V_s = \left(\frac{W}{g}\right)(S_a \cdot g) \rightarrow V_s = S_a W $$
                     </div>
                     <div class="caja-formula" style="color: #c0392b; border-color: #c0392b;">
-                        $V_s = (<span class="val-sa-text"></span>) \cdot (<span class="val-w-text"></span>)$<br>
-                        $$ \mathbf{V_s = <span id="lbl-Vs" style="font-size:1.2em;"></span> \text{ kN}} $$
+                        <div class="math-dinamico w3-small" style="margin-bottom: 5px;">
+                            $V_s =$ <span id="val-sa-text"></span> $\times$ <span id="val-w-text"></span> kN
+                        </div>
+                        <div class="math-dinamico" style="font-size:1.2em;">
+                            $V_s =$ <span id="lbl-Vs"></span> kN
+                        </div>
                     </div>
                 </div>
                 <div class="w3-col m6">
                     <div class="grafico-container" style="height: 200px; background: white;">
                         <svg id="svg-edificio" width="100%" height="100%"></svg>
                     </div>
-                    <p class="w3-tiny w3-text-grey w3-center"><i>Representación conceptual de la respuesta dinámica y la reacción basal $V_s$.</i></p>
+                    <p class="w3-tiny w3-text-grey w3-center"><i>Representación conceptual de la respuesta dinámica. Las fuerzas de inercia equilibran la reacción $V_s$.</i></p>
                 </div>
             </div>
         </div>
@@ -209,7 +227,7 @@
         <!-- PASO 5: FHE -->
         <div class="ce-card" style="border-left-color: var(--ce-texto);">
             <h4><b>5. Reparto Estático FHE ($C_{vx}$)</b></h4>
-            <p class="w3-small">¿Cómo repartimos $V_s$ en la altura? La norma utiliza factores $C_{vx}$. El peso $W_x$ pondera la masa y el término $h_x^k$ aproxima la forma de la respuesta dinâmica en distribución estática.</p>
+            <p class="w3-small">¿Cómo repartimos $V_s$ en la altura? La norma utiliza factores $C_{vx}$. El peso $W_x$ pondera la masa y el término $h_x^k$ aproxima la forma de la respuesta dinámica en distribución estática.</p>
             
             <div class="w3-row">
                 <div class="w3-col m4 w3-padding">
@@ -217,7 +235,9 @@
                         El exponente $k$ (NSR-10 A.4.3.3)<br>
                         Para $T \leq 0.5$s $\rightarrow k = 1.0$<br>
                         Para $0.5 < T < 2.5$ $\rightarrow k = 0.75 + 0.5T$<br><br>
-                        <b>$k = \mathbf{<span id="lbl-k" class="w3-text-blue"></span>}$</b>
+                        <div class="math-dinamico w3-text-blue">
+                            $k =$ <span id="lbl-k"></span>
+                        </div>
                     </div>
                 </div>
                 <div class="w3-col m8 w3-padding">
@@ -252,14 +272,15 @@
 
     <!-- SCRIPTS -->
     <script>
+        // Parámetros Fijos del Ejemplo (Bucaramanga Suelo C)
         const Aa=0.25, Av=0.25, Fa=1.15, Fv=1.55, I=1.0;
         const T0 = 0.1 * (Av*Fv)/(Aa*Fa), TC = 0.48 * (Av*Fv)/(Aa*Fa), TL = 2.4 * Fv;
-        const W_PISO_TIPICO = 1660, W_CUBIERTA = 1300;
         
         let n_pisos = 4, h_piso = 2.90, W_total = 0;
         let T_a = 0, C_u = 1.285, T_limite = 0, T_diseno = 0, Sa = 0, Vs = 0, k = 1.0;
         let pisos_data = [];
         
+        // Datos Respaldo Choco
         const dataChoco = [{"x": 0.0105, "y": 0.239}, {"x": 0.05, "y": 0.246}, {"x": 0.1, "y": 0.360}, {"x": 0.15, "y": 0.538}, {"x": 0.2, "y": 0.518}, {"x": 0.25, "y": 0.641}, {"x": 0.288, "y": 0.922}, {"x": 0.35, "y": 0.711}, {"x": 0.4, "y": 0.647}, {"x": 0.5, "y": 0.546}, {"x": 0.6, "y": 0.285}, {"x": 0.7, "y": 0.164}, {"x": 0.8, "y": 0.138}, {"x": 1.0, "y": 0.067}, {"x": 1.2, "y": 0.030}, {"x": 1.5, "y": 0.018}, {"x": 2.0, "y": 0.012}, {"x": 2.5, "y": 0.007}, {"x": 3.0, "y": 0.006}];
         let dataNSR = [];
         let espectroChart = null;
@@ -268,24 +289,18 @@
         function initSistema() {
             dataNSR = [];
             for(let t=0; t<=3.0; t+=0.05) {
-                let sa_val = calcularSa(t);
-                dataNSR.push({x: t, y: sa_val});
+                dataNSR.push({x: t, y: calcularSa(t)});
             }
             crearGrafica();
             actualizarModelo();
         }
 
+        // Las 4 ramas de la NSR-10 implementadas estrictamente
         function calcularSa(T) {
             let sa_plate = 2.5 * Aa * Fa * I;
-            if(T < T0) {
-                return sa_plate * (0.4 + 0.6 * (T / T0));
-            }
-            if(T <= TC) {
-                return sa_plate;
-            }
-            if(T <= TL) {
-                return (1.2 * Av * Fv * I) / T;
-            }
+            if(T < T0) return sa_plate * (0.4 + 0.6 * (T / T0));
+            if(T <= TC) return sa_plate;
+            if(T <= TL) return (1.2 * Av * Fv * I) / T;
             return (1.2 * Av * Fv * TL * I) / (T * T);
         }
 
@@ -305,19 +320,21 @@
             pisos_data = [];
             W_total = 0;
             let tbMasas = document.getElementById('tabla-masas');
-            tbMasas.innerHTML = '<tr class="w3-light-grey"><th>Nivel</th><th>CM Estructura*</th><th>CM No Estruct.*</th><th>CV consid.*</th><th>$W_i$ (kN)</th></tr>';
+            tbMasas.innerHTML = '<tr class="w3-light-grey"><th>Nivel</th><th>$W_{estr}$</th><th>$W_{acab}$</th><th>$W_{muros}$</th><th>$W_{CV}$</th><th>$W_i$ (kN)</th></tr>';
             
             for(let i = n_pisos; i >= 1; i--) {
-                let w = (i === n_pisos) ? W_CUBIERTA : W_PISO_TIPICO;
+                // Desglose ilustrativo explícito
+                let w_estr = 600, w_acab = 220, w_muros = (i === n_pisos) ? 100 : 500, w_cv = 0; 
+                let w = w_estr + w_acab + w_muros + w_cv;
+                
                 pisos_data.push({ nivel: i, hx: i * h_piso, Wx: w, F_elas: 0 });
                 W_total += w;
-                let cm_e = Math.round(w * 0.4); let cm_ne = Math.round(w * 0.6);
-                tbMasas.innerHTML += `<tr><td>${i}</td><td>${cm_e}</td><td>${cm_ne}</td><td>0</td><td style="font-weight:bold;">${w}</td></tr>`;
+                tbMasas.innerHTML += `<tr><td>${i}</td><td>${w_estr}</td><td>${w_acab}</td><td>${w_muros}</td><td>${w_cv}</td><td style="font-weight:bold;">${w}</td></tr>`;
             }
             pisos_data.reverse(); 
             
             document.getElementById('lbl-Wtot').innerText = W_total.toFixed(0);
-            document.querySelectorAll('.val-w-text').forEach(e => e.innerText = W_total.toFixed(0));
+            document.getElementById('val-w-text').innerText = W_total.toFixed(0);
 
             T_a = 0.047 * Math.pow(h_n, 0.90);
             T_limite = C_u * T_a;
@@ -347,10 +364,11 @@
 
             Sa = calcularSa(T_diseno);
             document.getElementById('lbl-Sa').innerText = Sa.toFixed(3);
-            document.querySelectorAll('.val-sa-text').forEach(e => e.innerText = Sa.toFixed(3));
+            document.getElementById('val-sa-text').innerText = Sa.toFixed(3);
             
             if(espectroChart) {
                 espectroChart.data.datasets[2].data = [{x: T_diseno, y: Sa}];
+                espectroChart.data.datasets[2].label = `TU EDIFICIO (T = ${T_diseno.toFixed(2)}s)`;
                 espectroChart.update();
             }
 
@@ -388,14 +406,14 @@
                 data: {
                     datasets: [
                         { label: 'Espectro de respuesta (5% amort.) — Sismo Chocó', data: dataChoco, borderColor: '#7f8c8d', borderWidth: 2, pointRadius: 0, fill: false, tension: 0.1 },
-                        { label: 'Espectro NSR-10 — Bucaramanga — Suelo C', data: dataNSR, borderColor: '#27AE60', borderWidth: 3, pointRadius: 0, fill: false, tension: 0 },
+                        { label: 'Espectro de diseño NSR-10 — Bucaramanga — Suelo C', data: dataNSR, borderColor: '#27AE60', borderWidth: 3, pointRadius: 0, fill: false, tension: 0 },
                         { label: 'TU EDIFICIO', data: [{x: 0, y: 0}], backgroundColor: '#D35400', borderColor: '#D35400', pointRadius: 8, pointHoverRadius: 10, showLine: false, type: 'scatter' }
                     ]
                 },
                 options: {
                     responsive: true, maintainAspectRatio: false,
                     scales: {
-                        x: { type: 'linear', title: { display: true, text: 'Periodo T (s)' }, min: 0, max: 2.5 },
+                        x: { type: 'linear', title: { display: true, text: 'Período T (s)' }, min: 0, max: 2.5 },
                         y: { title: { display: true, text: 'Aceleración Espectral Sa (g)' }, min: 0 }
                     },
                     plugins: { legend: { position: 'top' } }
@@ -423,7 +441,10 @@
                 col.setAttribute("stroke", "#7f8c8d"); col.setAttribute("stroke-width", "4"); svg.appendChild(col);
                 let circ = document.createElementNS("http://www.w3.org/2000/svg", "circle");
                 circ.setAttribute("cy", cy); circ.setAttribute("r", 9); circ.setAttribute("fill", "#2980B9"); svg.appendChild(circ);
-                nodosAnimacion.push({ cy, amp: 40 * Math.pow(p.hx / (pisos_data.length*h_piso), k), col, circ });
+                
+                // Forma modal idealizada pura independiente de k
+                let formaIdeal = Math.sin((p.hx / (pisos_data.length * h_piso)) * Math.PI / 2);
+                nodosAnimacion.push({ cy, amp: 40 * formaIdeal, col, circ });
             });
 
             if(reqAnim) cancelAnimationFrame(reqAnim);
