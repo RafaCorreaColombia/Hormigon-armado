@@ -623,7 +623,8 @@
             let circ = document.createElementNS("http://www.w3.org/2000/svg", "circle");
             circ.setAttribute("cy", cy); circ.setAttribute("r", 9); circ.setAttribute("fill", "#2980B9"); svg.appendChild(circ);
             
-            let formaIdeal = Math.sin((p.hx / (pisos_data.length * h_piso)) * Math.PI / 2);
+            let h_relativo = p.hx / (pisos_data.length * h_piso);
+let formaIdeal = Math.pow(h_relativo, k);
             nodosAnimacion.push({ cy, amp: 40 * formaIdeal, col, circ });
         });
 
