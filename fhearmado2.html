@@ -101,9 +101,9 @@
     
     <!-- HEADER -->
     <div class="header-rc">
-        <img src="assets/IsotipoFOscuroT.png" alt="Criterio Estructural" class="brand-logo-header">
+        <img src="../assets/IsotipoFOscuroT.png" alt="Criterio Estructural" class="brand-logo-header">
         <h1 class="w3-xxlarge">La Física del Sismo y la NSR-10</h1>
-        <p class="w3-large"><em>"Laboratorio 2B: Trazabilidad de la Fuerza Sísmica Estática Equivalente"</em></p>
+        <p class="w3-large"><em>"Laboratorio 2B: Trazabilidad de la Fuerza Sísmica Equivalente"</em></p>
         <span class="w3-tag w3-white w3-text-red w3-round">Dinámica Estructural / NSR-10</span>
     </div>
 
@@ -157,7 +157,6 @@
             
             <div class="w3-row">
                 <div class="w3-col m7 w3-padding">
-                    <!-- TABLA CORREGIDA: Uso de subíndices HTML y unidades explícitas -->
                     <div class="w3-responsive">
                         <table class="w3-table w3-bordered w3-small w3-border" id="tabla-masas">
                             <tr class="w3-light-grey">
@@ -301,20 +300,26 @@
         <!-- PASO 5: FHE -->
         <div class="ce-card" style="border-left-color: var(--azul-profundo);">
             <h4><b>5. Reparto Estático FHE ($C_{vx}$)</b></h4>
-            <p class="w3-small">¿Cómo repartimos $V_s$ en la altura? La norma utiliza factores $C_{vx}$. El peso $W_x$ pondera la masa y el término $h_x^k$ aproxima la forma de la respuesta dinámica en distribución estática.</p>
+            <p class="w3-small">¿Cómo repartimos el cortante $V_s$ en la altura? La Fuerza Horizontal Equivalente ($F_x$) se distribuye usando factores $C_{vx}$. El peso $W_x$ pondera la masa y el término $h_x^k$ aproxima la forma de la respuesta dinámica.</p>
             
             <div class="w3-row">
-                <div class="w3-col m4 w3-padding">
+                <div class="w3-col m5 w3-padding">
                     <div class="caja-formula w3-small" style="padding:10px;">
+                        $$ F_x = C_{vx} V_s $$
+                        $$ C_{vx} = \frac{W_x h_x^k}{\sum_{i=1}^{n} W_i h_i^k} $$
+                        
+                        <hr style="margin: 8px 0; border-color: #ddd;">
+                        
                         El exponente $k$ (NSR-10 A.4.3.3)<br>
-                        Para $T \leq 0.5$s $\rightarrow k = 1.0$<br>
-                        Para $0.5 < T < 2.5$ $\rightarrow k = 0.75 + 0.5T$<br><br>
+                        Para $T \leq 0.5$ s $\rightarrow k = 1.0$<br>
+                        Para $0.5 < T \leq 2.5$ s $\rightarrow k = 0.75 + 0.5T$<br>
+                        Para $T > 2.5$ s $\rightarrow k = 2.0$<br><br>
                         <div class="math-dinamico w3-text-indigo">
                             $k =$ <span id="lbl-k"></span>
                         </div>
                     </div>
                 </div>
-                <div class="w3-col m8 w3-padding">
+                <div class="w3-col m7 w3-padding">
                     <div class="w3-responsive">
                         <table class="w3-table w3-bordered w3-small w3-centered w3-border" id="tabla-fhe">
                             <thead>
@@ -377,7 +382,7 @@
     <footer class="w3-container w3-padding-32 w3-center w3-text-grey w3-light-grey w3-margin-top">
         <div class="w3-border-top w3-border-grey w3-padding-24" style="max-width: 500px; margin: auto;">
             
-            <img src="assets/IsotipoFClaroT.png" alt="Criterio Estructural" class="brand-logo-footer">
+            <img src="../assets/IsotipoFClaroT.png" alt="Criterio Estructural" class="brand-logo-footer">
             <p class="w3-medium"><b>Autor</b></p>
             <h4 style="margin:0;"><b>Ing. Rafael Antonio Correa Melano</b></h4>
             <p class="w3-small">
@@ -418,7 +423,7 @@
     // Función asíncrona para leer el CSV
     async function cargarDatosExternos() {
         try {
-            const response = await fetch('assets/sismo_choco_acelerograma.csv');
+            const response = await fetch('../assets/sismo_choco_acelerograma_2.csv');
             if (!response.ok) throw new Error("No se pudo cargar el CSV");
             
             const csvData = await response.text();
@@ -515,7 +520,8 @@
             let diff = Math.abs(t_modal - T_a) / T_a * 100;
             if(diff > 10) {
                 alerta.style.display = 'block';
-                alerta.innerHTML = `<b>⚠️ Diferencia de ${diff.toFixed(1)}%.</b> La norma (NSR-10) pide revisar el modelo si difiere más del 10% de $T_a$.`;
+                // AQUÍ ESTÁ EL CAMBIO PARA ELIMINAR EL SIGNO $ DEL ALERT:
+                alerta.innerHTML = `<b>⚠️ Diferencia de ${diff.toFixed(1)}%.</b> La norma (NSR-10) pide revisar el modelo si difiere más del 10% de T<sub>a</sub>.`;
             } else {
                 alerta.style.display = 'none';
             }
@@ -539,7 +545,7 @@
         document.getElementById('lbl-Vs').innerText = Vs.toFixed(0);
 
         if (T_diseno <= 0.5) k = 1.0;
-        else if (T_diseno < 2.5) k = 0.75 + 0.5 * T_diseno;
+        else if (T_diseno <= 2.5) k = 0.75 + 0.5 * T_diseno;
         else k = 2.0;
         
         document.getElementById('lbl-k').innerText = k.toFixed(2);
