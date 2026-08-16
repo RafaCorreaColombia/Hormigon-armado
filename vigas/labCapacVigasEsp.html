@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Viga que Sabe Cómo Fallar | Criterio Estructural</title>
+    
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <!-- Configuración MathJax v3 -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        /* PALETA DE COLORES DE LA MARCA */
+        :root {
+            --azul-profundo: #1A2530;
+            --naranja-estructural: #E67E22;
+            --gris-claro: #F4F5F7;
+            --ce-verde: #27AE60; 
+            --ce-rojo: #c0392b;
+            --ce-amarillo: #F1C40F;
+        }
+
+        body { background-color: var(--gris-claro); font-family: 'Segoe UI', sans-serif; color: var(--azul-profundo); }
+        
+        .contenedor-principal { max-width: 1000px; margin: 30px auto; border-radius: 12px; background: white; padding: 0; overflow: hidden; box-shadow: 0 8px 25px rgba(26,37,48,0.15); }
+        .header-rc { background: var(--azul-profundo); color: white; padding: 40px 20px; text-align: center; }
+        .brand-logo-header { max-width: 360px; height: auto; margin-bottom: 20px; display: inline-block; }
+        .contenido-body { padding: 40px; }
+        
+        /* CAJAS Y RESALTADOS */
+        .ce-card { background: white; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); padding: 25px; margin-bottom: 25px; border-left: 6px solid var(--azul-profundo); position: relative; }
+        .caja-narrativa { background: #e8f4f8; border-left: 4px solid var(--azul-profundo); padding: 15px; margin: 15px 0; font-size: 1.05em; font-style: italic;}
+        .caja-alerta { background: #fdedec; border-left: 4px solid var(--ce-rojo); padding: 12px; margin: 15px 0; font-size: 0.95em; color: var(--ce-rojo);}
+        .caja-exito { background: #eafaf1; border-left: 4px solid var(--ce-verde); padding: 12px; margin: 15px 0; font-size: 0.95em; color: #1e8449;}
+        .caja-formula { background: #f8f9fa; border: 1px solid #dee2e6; padding: 12px; border-radius: 8px; text-align: center; margin: 10px 0; font-size: 1.1em; font-weight: bold;}
+        .caja-destacada { background: var(--azul-profundo); color: white; border-radius: 8px; padding: 15px; text-align: center; margin: 15px 0; }
+        
+        /* BOTONES INTERACTIVOS */
+        .btn-opcion { background-color: #f8f9fa; border: 2px solid #ddd; padding: 12px 15px; border-radius: 8px; cursor: pointer; transition: 0.2s; margin-bottom: 10px; font-weight: 500;}
+        .btn-opcion:hover { border-color: var(--naranja-estructural); background-color: #fffaf6; }
+        .btn-opcion.correct { border-color: var(--ce-verde); background-color: #eafaf1; }
+        .btn-opcion.wrong { border-color: var(--ce-rojo); background-color: #fdedec; }
+
+        .svg-container { width: 100%; height: 250px; background: #fafafa; border: 1px solid #eee; border-radius: 8px; position: relative; overflow: hidden; margin-bottom: 15px;}
+        
+        /* BLOQUEO DE MÓDULOS */
+        .locked-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.85); z-index: 10; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(2px); border-radius: 8px;}
+        .locked-msg { background: var(--azul-profundo); color: white; padding: 10px 20px; border-radius: 20px; font-weight: bold; font-size: 0.9em; box-shadow: 0 4px 6px rgba(0,0,0,0.2); }
+
+        /* HOTSPOTS DETALLADO (Ahora invisibles hasta hacer hover) */
+        .hotspot { cursor: pointer; fill: transparent; transition: 0.3s; }
+        .hotspot:hover { fill: rgba(230, 126, 34, 0.3); stroke: var(--naranja-estructural); stroke-width: 2; stroke-dasharray: 4;}
+        .hotspot.found { fill: rgba(192, 57, 43, 0.2); stroke: var(--ce-rojo); stroke-dasharray: 0; stroke-width: 2; }
+
+        /* ORDENAMIENTO */
+        .sort-item { background: white; border: 1px solid #ccc; padding: 10px 15px; margin: 5px 0; border-radius: 6px; cursor: pointer; border-left: 4px solid #7f8c8d; transition: 0.2s;}
+        .sort-item:hover { background: #f1f1f1; border-left-color: var(--naranja-estructural); }
+        .sort-item.ordered { border-left-color: var(--ce-verde); background: #eafaf1; cursor: default; opacity: 0.7;}
+
+        /* MODO INGENIERO */
+        .modo-ing-card { background: var(--azul-profundo); color: white; border-radius: 8px; padding: 25px; margin-top: 30px; display: none; }
+        .modo-ing-card .caja-formula { background: #2c3e50; border-color: #34495e; color: #ecf0f1; font-size: 1em; padding: 8px;}
+        .modo-ing-card h5 { color: var(--naranja-estructural); font-weight: bold; border-bottom: 1px solid #34495e; padding-bottom: 5px; margin-top: 20px;}
+
+        @media (max-width: 800px) { .contenedor-principal { width: 100% !important; margin: 0 !important; border-radius: 0 !important; box-shadow: none; padding: 0 !important; } .contenido-body { padding: 20px; } }
+    </style>
+</head>
+<body>
+
+<div class="contenedor-principal w3-animate-opacity">
+
+    <!-- HEADER -->
+    <div class="header-rc">
+        <img src="../assets/IsotipoFOscuroT.png" alt="Criterio Estructural" class="brand-logo-header" onerror="this.src='https://via.placeholder.com/360x100?text=Criterio+Estructural'">
+        <h1 class="w3-xxlarge">La Viga que Sabe Cómo Fallar</h1>
+        <p class="w3-large"><em>"De la rótula plástica al cortante de diseño (Pórticos DES)"</em></p>
+        <span class="w3-tag w3-white w3-text-red w3-round" style="margin-top:10px;">Hormigón Armado 2 / NSR-10 C.21.5</span>
+    </div>
+
+    <!-- BADGE CRITERIO -->
+    <div style="text-align: right; padding: 10px 30px 0 0;">
+        <span style="font-size: 11px; color: #1A2530; border: 1px solid #1A2530; padding: 4px 10px; border-radius: 4px; background: #F4F5F7; text-transform: uppercase;">
+            <b><i class="fa fa-lightbulb-o"></i> LABORATORIO DE CRITERIO</b>
+        </span>
+    </div>
+    
+    <div class="contenido-body">
+
+        <div class="caja-narrativa" style="text-align: center; font-size: 1.1em;">
+            "Aquí no vienes a obtener el resultado. Vienes a descubrir por qué el resultado debe ser ese.<br><br>
+            <b>El diseño por capacidad es una cadena causal. No empiezas diseñando estribos. Primero decides el mecanismo.</b>"
+        </div>
+
+        <!-- MÓDULO 1: EL MECANISMO -->
+        <div class="ce-card" id="mod-1" style="border-left-color: var(--azul-profundo);">
+            <h4><b>1. La decisión fundamental del diseñador</b></h4>
+            <p>No estamos diseñando para que la estructura nunca falle. Estamos diseñando para <b>decidir cómo debe fallar</b> cuando el sismo la lleve al rango inelástico.</p>
+            
+            <div class="w3-row-padding">
+                <div class="w3-col m6">
+                    <div class="svg-container" id="svg-portico">
+                        <svg width="100%" height="100%" viewBox="0 0 400 250">
+                            <rect x="80" y="50" width="20" height="180" fill="#7f8c8d"/>
+                            <rect x="300" y="50" width="20" height="180" fill="#7f8c8d"/>
+                            <rect x="60" y="50" width="280" height="20" fill="#95a5a6"/>
+                            <polygon points="80,230 100,230 90,210" fill="#34495e"/>
+                            <polygon points="300,230 320,230 310,210" fill="#34495e"/>
+                            
+                            <g id="rotulas-viga" style="display:none;">
+                                <circle cx="115" cy="60" r="12" fill="rgba(231, 76, 60, 0.8)"/>
+                                <circle cx="285" cy="60" r="12" fill="rgba(231, 76, 60, 0.8)"/>
+                                <text x="200" y="35" font-size="12" text-anchor="middle" fill="#27AE60" font-weight="bold">Mecanismo Dúctil</text>
+                            </g>
+                            <g id="rotulas-col" style="display:none;">
+                                <circle cx="90" cy="200" r="12" fill="rgba(231, 76, 60, 0.8)"/>
+                                <circle cx="310" cy="200" r="12" fill="rgba(231, 76, 60, 0.8)"/>
+                                <text x="200" y="140" font-size="12" text-anchor="middle" fill="#c0392b" font-weight="bold">Colapso / Piso Blando</text>
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+                <div class="w3-col m6">
+                    <p><b>Pregunta #1</b><br>Si queremos un mecanismo dúctil en un pórtico Especial (DES), ¿qué preferimos que ocurra primero?</p>
+                    <div class="btn-opcion" onclick="evaluarMec(this, 'A')">A. Que fallen primero las columnas.</div>
+                    <div class="btn-opcion" onclick="evaluarMec(this, 'B')">B. Que se formen rótulas plásticas en las vigas.</div>
+                    <div class="btn-opcion" onclick="evaluarMec(this, 'C')">C. Que la viga alcance primero una falla por cortante.</div>
+                    
+                    <div id="res-mec" style="display:none; margin-top:15px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MÓDULO 2: DE Mn a Mpr -->
+        <div class="ce-card" id="mod-2" style="border-left-color: var(--ce-verde);">
+            <div id="lock-2" class="locked-overlay"><div class="locked-msg">🔒 Define primero tu mecanismo de falla</div></div>
+            
+            <h4><b>2. De $M_n$ a $M_{pr}$: La viga da más de lo que dice su cálculo</b></h4>
+            
+            <p>Antes de diseñar por capacidad, recordamos que la resistencia nominal a flexión es $M_n = A_s f_y (d - a/2)$. <br>
+            <i><a href="#" style="color:var(--naranja-estructural); font-weight:bold; text-decoration:none;">(Ver Laboratorio de Flexión $\nearrow$)</a></i></p>
+            
+            <p>Si ya conoces $M_n$, ¿por qué la norma te obliga a usar una "resistencia probable" ($M_{pr}$) mayor para diseñar el cortante?</p>
+            
+            <div class="btn-opcion" onclick="evaluarMpr(this, false)">A. Por factores de seguridad contra sismos inesperados de mayor magnitud.</div>
+            <div class="btn-opcion" onclick="evaluarMpr(this, true)">B. Porque cuando el acero entra al rango inelástico, la resistencia que desarrolla supera $f_y$ (sobrerresistencia y endurecimiento por deformación).</div>
+            <div class="btn-opcion" onclick="evaluarMpr(this, false)">C. Porque la resistencia del concreto a compresión ($f'_c$) aumenta con los años.</div>
+
+            <div id="res-mpr" style="display:none; margin-top:15px;"></div>
+        </div>
+
+        <!-- MÓDULO 3: CONSTRUYE EL EQUILIBRIO -->
+        <div class="ce-card" id="mod-3" style="border-left-color: var(--naranja-estructural);">
+            <div id="lock-3" class="locked-overlay"><div class="locked-msg">🔒 Entiende primero la sobrerresistencia de la rótula</div></div>
+            
+            <h4><b>3. Del Mecanismo al Equilibrio ($V_e$)</b></h4>
+            <p>Ya sabes que tus rótulas pueden alcanzar $M_{pr}$. Ahora, <b>construye el diagrama de cuerpo libre</b> para encontrar el cortante ($V_e$) que la viga debe resistir para no fallar antes de que las rótulas fluyan (NSR-10 C.21.5.4).</p>
+            
+            <div class="w3-row">
+                <div class="w3-col m5 w3-padding">
+                    
+                    <b>1. ¿Qué momentos aplicas en los nudos?</b>
+                    <select id="sel-m" class="w3-select w3-border w3-margin-bottom" onchange="verificarDCL()">
+                        <option value="">Selecciona...</option>
+                        <option value="Mu">Momentos de análisis (M_u)</option>
+                        <option value="Mpr">Resistencia probable (M_pr)</option>
+                    </select>
+
+                    <b>2. ¿En qué longitud actúan?</b>
+                    <select id="sel-l" class="w3-select w3-border w3-margin-bottom" onchange="verificarDCL()">
+                        <option value="">Selecciona...</option>
+                        <option value="eje">Luz entre ejes (L)</option>
+                        <option value="Ln">Luz libre (L_n)</option>
+                    </select>
+
+                    <b>3. ¿Qué cargas sumas?</b>
+                    <select id="sel-w" class="w3-select w3-border" onchange="verificarDCL()">
+                        <option value="">Selecciona...</option>
+                        <option value="nada">Ninguna (Solo sismo)</option>
+                        <option value="wg">Carga gravitacional mayorada</option>
+                    </select>
+                    
+                    <div id="res-dcl" class="w3-margin-top" style="display:none;"></div>
+                </div>
+                <div class="w3-col m7 w3-padding">
+                    <div class="svg-container" style="height: 250px; background: white;">
+                        <svg width="100%" height="100%" viewBox="0 0 500 250" id="svg-dcl">
+                            <!-- Viga Base -->
+                            <rect x="50" y="100" width="400" height="20" fill="#ecf0f1"/>
+                            <text x="250" y="115" text-anchor="middle" font-size="12" fill="#7f8c8d" id="txt-esperando">Selecciona los parámetros para construir el diagrama...</text>
+                            
+                            <!-- SECUENCIA ANIMADA -->
+                            <g id="anim-step-1" style="opacity:0; transition: opacity 0.5s;">
+                                <circle cx="65" cy="110" r="15" fill="rgba(241, 196, 15, 0.5)"/>
+                                <circle cx="435" cy="110" r="15" fill="rgba(241, 196, 15, 0.5)"/>
+                                <text x="250" y="115" text-anchor="middle" font-size="12" font-weight="bold" fill="#f39c12">1. Se forman las rótulas</text>
+                            </g>
+                            <g id="anim-step-2" style="opacity:0; transition: opacity 0.5s;">
+                                <path d="M 70 70 A 20 20 0 0 0 70 150" stroke="#c0392b" stroke-width="4" fill="none" marker-end="url(#arrowRed)"/>
+                                <text x="30" y="115" font-weight="bold" fill="#c0392b">M_pr</text>
+                                <path d="M 430 150 A 20 20 0 0 0 430 70" stroke="#c0392b" stroke-width="4" fill="none" marker-end="url(#arrowRed)"/>
+                                <text x="445" y="115" font-weight="bold" fill="#c0392b">M_pr</text>
+                                <path d="M 50 70 L 450 70" stroke="#2980b9" stroke-dasharray="4"/>
+                                <line x1="100" y1="70" x2="100" y2="95" stroke="#2980b9" marker-end="url(#arrowBlue)"/>
+                                <line x1="250" y1="70" x2="250" y2="95" stroke="#2980b9" marker-end="url(#arrowBlue)"/>
+                                <line x1="400" y1="70" x2="400" y2="95" stroke="#2980b9" marker-end="url(#arrowBlue)"/>
+                            </g>
+                            <g id="anim-step-3" style="opacity:0; transition: opacity 0.5s;">
+                                <line x1="50" y1="180" x2="50" y2="125" stroke="#e67e22" stroke-width="5" marker-end="url(#arrowOrange)"/>
+                                <text x="60" y="160" fill="#e67e22" font-weight="bold" font-size="16">V_e</text>
+                                <line x1="450" y1="40" x2="450" y2="95" stroke="#e67e22" stroke-width="5" marker-end="url(#arrowOrange)"/>
+                                <text x="415" y="60" fill="#e67e22" font-weight="bold" font-size="16">V_e</text>
+                            </g>
+                            
+                            <defs>
+                                <marker id="arrowRed" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#c0392b"/></marker>
+                                <marker id="arrowBlue" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#2980b9"/></marker>
+                                <marker id="arrowOrange" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#e67e22"/></marker>
+                            </defs>
+                        </svg>
+                    </div>
+                    
+                    <div id="formula-dcl" class="caja-formula" style="display:none; color: var(--naranja-estructural); font-family: 'MathJax_Math-italic', serif;">
+                        $$ \boxed{V_e = \frac{M_{pr,izq} + M_{pr,der}}{L_n} \pm V_g} $$
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MÓDULO 4: QUIEN GOBIERNA -->
+        <div class="ce-card" id="mod-4" style="border-left-color: var(--ce-rojo);">
+            <div id="lock-4" class="locked-overlay"><div class="locked-msg">🔒 Construye primero el equilibrio ($V_e$)</div></div>
+            
+            <h4><b>4. ¿Quién gobierna el diseño transversal?</b></h4>
+            <p>Ya conoces tu demanda de cortante ($V_e$) y vas a calcular los estribos ($V_s$). Pero una viga DES no solo resiste cortante; debe conservar su núcleo de concreto mientras la rótula fluye. <br><b>¿Qué factor gobierna la cantidad final de acero transversal que colocarás en los planos?</b></p>
+            
+            <div class="w3-row-padding">
+                <div class="w3-col m6"><div class="btn-opcion w3-center" onclick="evaluarVmax(this, 'A')">A. El área $A_v$ requerida estrictamente para proveer resistencia ($V_s$).</div></div>
+                <div class="w3-col m6"><div class="btn-opcion w3-center" onclick="evaluarVmax(this, 'B')">B. El límite físico de compresión diagonal del alma de concreto ($V_{n,max}$).</div></div>
+            </div>
+            <div class="w3-row-padding">
+                <div class="w3-col m6"><div class="btn-opcion w3-center" onclick="evaluarVmax(this, 'C')">C. Los requisitos de confinamiento normativo ($2h$, ganchos a 135°).</div></div>
+                <div class="w3-col m6"><div class="btn-opcion w3-center" onclick="evaluarVmax(this, 'D')">D. El refuerzo final debe satisfacer simultáneamente la resistencia, límites del concreto y detallado.</div></div>
+            </div>
+            
+            <div id="res-vmax" style="display:none; margin-top:15px;"></div>
+        </div>
+
+        <!-- MÓDULO 5: ENCUENTRA EL ERROR A CIEGAS -->
+        <div class="ce-card" id="mod-5" style="border-left-color: var(--azul-profundo);">
+            <div id="lock-5" class="locked-overlay"><div class="locked-msg">🔒 Define primero tu estrategia de diseño transversal</div></div>
+            
+            <h4><b>5. Auditoría Visual: El diseño en obra</b></h4>
+            <p class="w3-small">Has calculado $V_e$, determinado $V_s$ y chequeado el límite del alma. ¿Ya terminaste? No. Ahora debes convertir esos números en una viga construible.<br><b>Inspecciona esta viga DES y haz clic en las 3 zonas donde identifiques errores graves de armado estructural (NSR-10 C.21.5.3).</b></p>
+            
+            <div class="w3-center w3-margin-bottom">
+                <span class="w3-tag w3-large w3-padding w3-indigo w3-round" id="contador-errores">Anomalías detectadas: 0 / 3</span>
+            </div>
+
+            <div class="svg-container" style="height: 200px;">
+                <svg width="100%" height="100%" viewBox="0 0 600 200">
+                    <rect x="50" y="60" width="500" height="80" fill="#ecf0f1" stroke="#bdc3c7" stroke-width="2"/>
+                    <rect x="10" y="20" width="40" height="160" fill="#95a5a6"/>
+                    <rect x="550" y="20" width="40" height="160" fill="#95a5a6"/>
+                    
+                    <line x1="10" y1="75" x2="590" y2="75" stroke="#34495e" stroke-width="4"/>
+                    <line x1="10" y1="125" x2="590" y2="125" stroke="#34495e" stroke-width="4"/>
+                    
+                    <g stroke="#e67e22" stroke-width="2">
+                        <!-- Estribos OK -->
+                        <line x1="220" y1="65" x2="220" y2="135"/>
+                        <line x1="260" y1="65" x2="260" y2="135"/>
+                        <line x1="340" y1="65" x2="340" y2="135"/>
+                        
+                        <!-- Anomalía 1: Separación gigante cerca al nudo izquierdo -->
+                        <line x1="70" y1="65" x2="70" y2="135"/>
+                        <line x1="150" y1="65" x2="150" y2="135"/> 
+                        
+                        <!-- Anomalía 2: Estribo abierto (No abraza la barra superior) en el centro -->
+                        <path d="M 300 85 L 300 135 L 310 135" stroke="#e67e22" stroke-width="3" fill="none"/>
+                        <text x="295" y="55" font-size="10" fill="#c0392b" class="alerta-svg" style="display:none; font-weight:bold;">¡Abierto!</text>
+
+                        <!-- Anomalía 3: Empalme real visual pegado al nudo derecho -->
+                        <g stroke="#34495e" stroke-width="4">
+                            <!-- Interrupción de la barra continua para hacer el traslapo -->
+                            <rect x="420" y="70" width="70" height="10" fill="#ecf0f1" stroke="none"/> 
+                            <line x1="400" y1="73" x2="470" y2="73" />
+                            <line x1="430" y1="78" x2="500" y2="78" />
+                        </g>
+                    </g>
+                    
+                    <!-- Hotspots invisibles -->
+                    <rect class="hotspot" x="50" y="50" width="120" height="100" onclick="mostrarError(this, 'error1')"/>
+                    <rect class="hotspot" x="280" y="50" width="40" height="100" onclick="mostrarError(this, 'error2', true)"/>
+                    <rect class="hotspot" x="400" y="50" width="120" height="100" onclick="mostrarError(this, 'error3')"/>
+                </svg>
+            </div>
+            
+            <div id="error1" class="caja-alerta" style="display:none;"><b>1. Separación Excesiva (Falta de Confinamiento):</b> Cerca a la cara del apoyo (longitud $2h$) se desarrolla la rótula. Allí se exigen estribos muy juntos (ej. $s \leq d/4$) para confinar el núcleo y evitar el pandeo de las barras en compresión.</div>
+            <div id="error2" class="caja-alerta" style="display:none; border-color:var(--ce-amarillo); background:#fcf3cf; color:#7d6608;"><b>2. Estribo Abierto (Falta de gancho sísmico a 135°):</b> Un estribo en "U" o con ganchos a 90° se abrirá en cuanto el concreto de recubrimiento se descascare durante el sismo, perdiendo todo el confinamiento y la resistencia al cortante de tajo.</div>
+            <div id="error3" class="caja-alerta" style="display:none;"><b>3. Traslapo en Zona Prohibida:</b> No se permiten empalmes por traslapo cerca de los nudos (distancia $<2h$). Una barra que está entrando en fluencia (rango inelástico) no puede transferir esfuerzos de tracción de forma segura a otra barra paralela.</div>
+            
+            <div class="w3-center">
+                <button id="btn-to-6" class="w3-button w3-indigo w3-round" style="display:none; width: 100%;" onclick="desbloquear(6)">Avanzar al Reto Final &rarr;</button>
+            </div>
+        </div>
+
+        <!-- MÓDULO 6: EL RETO FINAL -->
+        <div class="ce-card" id="mod-6" style="border-left-color: var(--naranja-estructural);">
+            <div id="lock-6" class="locked-overlay"><div class="locked-msg">🔒 Completa la auditoría visual primero</div></div>
+            
+            <h4><b>6. Explica tu Diseño (Reto Final)</b></h4>
+            <p>Un ingeniero junior te pregunta: <i>"¿Por qué esta viga tiene tantos estribos en los extremos?"</i>. Demuestra tu criterio ordenando la cadena causal del diseño por capacidad.</p>
+            
+            <div class="w3-row">
+                <div class="w3-col m6 w3-padding">
+                    <p class="w3-small w3-text-grey"><b>Elige las etapas en el orden lógico (M-P-V-L-D):</b></p>
+                    <div id="banco-opciones">
+                        <div class="sort-item" id="item-D" onclick="seleccionarOrden(this, 'D')"><b>D</b> - Detailing: ¿Cómo garantizo que la rótula sobreviva al sismo?</div>
+                        <div class="sort-item" id="item-L" onclick="seleccionarOrden(this, 'L')"><b>L</b> - Limit: ¿Puede el alma resistir esa fuerza? ($V_{n,max}$)</div>
+                        <div class="sort-item" id="item-P" onclick="seleccionarOrden(this, 'P')"><b>P</b> - Probable strength: ¿Qué resistencia real desarrollará la rótula? ($M_{pr}$)</div>
+                        <div class="sort-item" id="item-M" onclick="seleccionarOrden(this, 'M')"><b>M</b> - Mechanism: ¿Dónde quiero que ocurra la disipación?</div>
+                        <div class="sort-item" id="item-V" onclick="seleccionarOrden(this, 'V')"><b>V</b> - Ve: ¿Qué cortante me exige ese mecanismo?</div>
+                    </div>
+                </div>
+                <div class="w3-col m6 w3-padding">
+                    <p class="w3-small w3-text-grey"><b>Tu cadena causal:</b></p>
+                    <div id="lista-ordenada" style="min-height: 200px; background: #fafafa; border: 2px dashed #ccc; padding: 10px; border-radius: 8px;"></div>
+                    
+                    <button class="w3-button w3-light-grey w3-border w3-round w3-small w3-margin-top" onclick="reiniciarCadena()">🔄 Reiniciar cadena</button>
+                </div>
+            </div>
+            <div id="res-final" style="display:none; margin-top: 15px;"></div>
+        </div>
+
+        <!-- MODO INGENIERO -->
+        <div class="w3-center w3-margin-top" id="btn-modo-ing-container" style="display:none;">
+            <button class="w3-button w3-indigo w3-round w3-large" onclick="document.getElementById('modo-ingeniero').style.display = 'block'; this.style.display='none';">🔓 Mostrar la ingeniería detrás</button>
+        </div>
+
+        <div id="modo-ingeniero" class="modo-ing-card w3-animate-bottom">
+            <h3 class="w3-text-white" style="border-bottom: 2px solid var(--naranja-estructural); padding-bottom:10px;"><b>Formulación Matemática</b></h3>
+            <p>El diseño por capacidad es la integración de 6 etapas fundamentales de cuantificación.</p>
+            
+            <div class="w3-row-padding">
+                <div class="w3-col m4">
+                    <h5>1. Flexión Inicial</h5>
+                    <p class="w3-small">Equilibrio estático de la sección nominal.</p>
+                    <div class="caja-formula">$$ a = \frac{A_s f_y}{0.85 f'_c b} $$</div>
+                    <div class="caja-formula">$$ M_n = A_s f_y \left(d - \frac{a}{2}\right) $$</div>
+                </div>
+                <div class="w3-col m4">
+                    <h5>2. Resistencia Probable</h5>
+                    <p class="w3-small">Sobrerresistencia del acero (NSR-10 C.21.5).</p>
+                    <div class="caja-formula">$$ f_{y,prob} \approx 1.25 f_y $$</div>
+                    <div class="caja-formula">$$ M_{pr} \approx A_s (1.25f_y) \left(d - \frac{a_{pr}}{2}\right) $$</div>
+                </div>
+                <div class="w3-col m4">
+                    <h5>3. Cortante por Capacidad</h5>
+                    <p class="w3-small">Demanda impuesta por el mecanismo plástico.</p>
+                    <div class="caja-formula" style="padding: 20px 5px;">$$ V_e = \frac{\Sigma M_{pr}}{L_n} \pm V_g $$</div>
+                </div>
+            </div>
+            
+            <div class="w3-row-padding w3-margin-top">
+                <div class="w3-col m4">
+                    <h5>4. Cortante Resistente</h5>
+                    <p class="w3-small">Respuesta del concreto y el refuerzo transversal.</p>
+                    <div class="caja-formula">$$ V_n = V_c + V_s $$</div>
+                </div>
+                <div class="w3-col m4">
+                    <h5>5. Límite Físico</h5>
+                    <p class="w3-small">Control de compresión diagonal del alma.</p>
+                    <div class="caja-formula">$$ V_n \leq V_{n,max} $$</div>
+                    <p class="w3-small w3-text-grey" style="text-align:center;"><i>Si no cumple, cambiar geometría o f'c.</i></p>
+                </div>
+                <div class="w3-col m4">
+                    <h5>6. Decisión Transversal Final</h5>
+                    <p class="w3-small">El acero que realmente colocarás en obra.</p>
+                    <div class="caja-formula" style="border-color: var(--naranja-estructural); background:#1A2530;">
+                        $$ A_{v,final} = \max \begin{cases} A_{v,resistencia} \\ A_{v,mínimo} \\ A_{v,detallado} \end{cases} $$
+                    </div>
+                </div>
+            </div>
+            <p class="w3-center w3-margin-top w3-medium" style="color:var(--ce-verde); font-weight:bold;">El valor final de los estribos no sale de una sola ecuación de resistencia.</p>
+        </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div style="max-width: 800px; margin: auto; padding: 0 15px;"><hr style="border: 0; height: 1px; background-color: #ddd; margin: 40px 0;"></div>
+    <footer class="w3-container w3-padding-32 w3-center w3-text-grey w3-light-grey w3-margin-top">
+        <div class="w3-border-top w3-border-grey w3-padding-24" style="max-width: 500px; margin: auto;">
+            <p class="w3-medium"><b>Autor</b></p>
+            <h4 style="margin:0;"><b>Ing. Rafael Antonio Correa Melano</b></h4>
+            <p class="w3-small">Ingeniero Civil • M.IE.<br>Universidad Industrial de Santander</p>
+            <div class="w3-margin-top"><span class="w3-tag w3-round w3-white w3-border w3-border-red w3-text-red w3-small">Bucaramanga, Colombia 🇨🇴</span></div>
+        </div>
+    </footer>
+
+</div>
+
+<!-- SCRIPTS DE LÓGICA -->
+<script>
+    function desbloquear(numMod) {
+        let lock = document.getElementById('lock-' + numMod);
+        if(lock) lock.style.display = 'none';
+        document.getElementById('mod-' + numMod).scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function limpiarBotones(btn) {
+        const modulo = btn.closest('.ce-card');
+        modulo.querySelectorAll('.btn-opcion').forEach(b => {
+            b.classList.remove('correct', 'wrong', 'selected');
+        });
+    }
+
+    // Módulo 1: Mecanismo
+    function evaluarMec(btn, opcion) {
+        limpiarBotones(btn);
+        let divRes = document.getElementById('res-mec');
+        divRes.style.display = 'block';
+        
+        let vRotulas = document.getElementById('rotulas-viga');
+        let cRotulas = document.getElementById('rotulas-col');
+        
+        if(opcion === 'B') {
+            btn.classList.add('correct');
+            divRes.innerHTML = `<div class="caja-exito"><b>✅ Filosofía columna fuerte – viga débil.</b><br>No buscamos que las vigas sean débiles. Buscamos que, dentro del mecanismo global, las vigas sean las primeras en alcanzar su capacidad inelástica. Esto favorece la ductilidad del sistema.</div><button class="w3-button w3-indigo w3-round w3-small" onclick="desbloquear(2)">Continuar a Flexión &rarr;</button>`;
+            vRotulas.style.display = 'block'; cRotulas.style.display = 'none';
+        } else {
+            btn.classList.add('wrong');
+            divRes.innerHTML = `<div class="caja-alerta"><b>❌ Cuidado con la falla.</b> Si las rótulas se forman primero en columnas (Piso Blando) o falla el cortante (Falla Frágil), la estructura no disipará energía de forma segura y puede colapsar.</div>`;
+            vRotulas.style.display = (opcion==='A')?'none':'none'; 
+            cRotulas.style.display = (opcion==='A')?'block':'none';
+        }
+    }
+
+    // Módulo 2: Mpr
+    function evaluarMpr(btn, esCorrecto) {
+        limpiarBotones(btn);
+        let divRes = document.getElementById('res-mpr');
+        divRes.style.display = 'block';
+        
+        if(esCorrecto) {
+            btn.classList.add('correct');
+            divRes.innerHTML = `<div class="caja-exito"><b>✅ Correcto.</b><br>Para estimar la resistencia probable de la rótula, la norma adopta una tensión superior a $f_y$ ($1.25f_y$), asociada a la sobrerresistencia esperada del acero y al endurecimiento por deformación al entrar al rango inelástico.<br><b>Si calculas el cortante asumiendo solo $M_n$, vas a subestimar gravemente la demanda real de cortante.</b></div><button class="w3-button w3-indigo w3-round w3-small" onclick="desbloquear(3)">Continuar al Cortante &rarr;</button>`;
+        } else {
+            btn.classList.add('wrong');
+            divRes.innerHTML = `<div class="caja-alerta"><b>❌ Revisa el concepto.</b> El factor de 1.25 es una idealización normativa para reconocer el comportamiento real de la metalurgia del acero sometido a grandes deformaciones, no un margen de error constructivo o del concreto.</div>`;
+        }
+    }
+
+    // Módulo 3: DCL
+    function verificarDCL() {
+        let m = document.getElementById('sel-m').value;
+        let l = document.getElementById('sel-l').value;
+        let w = document.getElementById('sel-w').value;
+        
+        let res = document.getElementById('res-dcl');
+        let txtVacio = document.getElementById('txt-esperando');
+        let formDCL = document.getElementById('formula-dcl');
+        
+        let step1 = document.getElementById('anim-step-1');
+        let step2 = document.getElementById('anim-step-2');
+        let step3 = document.getElementById('anim-step-3');
+        
+        if(m === 'Mpr' && l === 'Ln' && w === 'wg') {
+            txtVacio.style.display = 'none';
+            res.style.display = 'block';
+            res.innerHTML = `<div class="caja-exito"><b>✅ ¡Equilibrio Perfecto!</b><br><br><i>El sismo empuja en ambas direcciones. Por eso la fórmula tiene un $\\pm V_g$: en un extremo de la viga el cortante gravitacional se suma al sísmico, y en el otro se resta. Tú debes diseñar el acero para el caso más crítico en cada nudo.</i></div><button class="w3-button w3-indigo w3-round w3-small" onclick="desbloquear(4)">Avanzar al Detallado &rarr;</button>`;
+            
+            step1.style.opacity = '1';
+            setTimeout(() => { step1.style.opacity = '0'; step2.style.opacity = '1'; }, 1500);
+            setTimeout(() => { step3.style.opacity = '1'; formDCL.style.display = 'block'; }, 3000);
+            
+        } else {
+            res.style.display = 'none';
+            txtVacio.style.display = 'block';
+            formDCL.style.display = 'none';
+            step1.style.opacity = '0'; step2.style.opacity = '0'; step3.style.opacity = '0';
+        }
+    }
+
+    // Módulo 4: Vmax y Confinamiento
+    function evaluarVmax(btn, opcion) {
+        limpiarBotones(btn);
+        let divRes = document.getElementById('res-vmax');
+        divRes.style.display = 'block';
+        
+        if(opcion === 'D') {
+            btn.classList.add('correct');
+            divRes.innerHTML = `<div class="caja-exito"><b>✅ Criterio Estructural Puro.</b><br>El diseño no es simplemente "escoger el mayor". Es una integración: calculas $V_s$ por equilibrio, verificas que el material no estalle por compresión diagonal ($V_{n,max}$), y garantizas que el confinamiento normativo ($2h$) permita el desarrollo de la rótula. \n<br><br>
+            <div class="caja-destacada">🧠 <b>MÁS ESTRIBOS $\\neq$ MÁS RESISTENCIA INFINITA</b><br><br> $V_s \\uparrow \\quad \\not\\Rightarrow \\quad V_n \\uparrow \\text{ indefinidamente}$ <br><br>$V_{n,max}$ no es otra opción para maximizar, es un techo físico del material. Si lo superas, debes cambiar la geometría o la calidad del concreto.</div></div>
+            <button class="w3-button w3-indigo w3-round w3-small" onclick="desbloquear(5)">Avanzar a Inspección &rarr;</button>`;
+        } else {
+            btn.classList.add('wrong');
+            divRes.innerHTML = `<div class="caja-alerta"><b>❌ Incompleto.</b> Esa opción es cierta, pero el diseño transversal debe cumplir <b>todas</b> las exigencias físicas y normativas simultáneamente. Busca la opción más integradora.</div>`;
+        }
+    }
+
+    // Módulo 5: Errores a ciegas
+    let erroresEncontrados = 0;
+    function mostrarError(elemento, idError, isCenter = false) {
+        if(!elemento.classList.contains('found')) {
+            elemento.classList.add('found');
+            document.getElementById(idError).style.display = 'block';
+            erroresEncontrados++;
+            
+            if(isCenter) document.querySelector('.alerta-svg').style.display = 'block';
+            
+            document.getElementById('contador-errores').innerText = `Anomalías detectadas: ${erroresEncontrados} / 3`;
+            
+            if(erroresEncontrados === 3) {
+                document.getElementById('contador-errores').className = "w3-tag w3-large w3-padding w3-green w3-round";
+                document.getElementById('btn-to-6').style.display = 'inline-block';
+            }
+        }
+    }
+
+    // Módulo 6: Reto Final
+    let ordenCorrecto = ['M', 'P', 'V', 'L', 'D'];
+    let ordenUsuario = [];
+    
+    function seleccionarOrden(elem, letra) {
+        if(elem.classList.contains('ordered')) return;
+        
+        elem.classList.add('ordered');
+        document.getElementById('lista-ordenada').appendChild(elem);
+        ordenUsuario.push(letra);
+        
+        if(ordenUsuario.length === 5) { verificarOrden(); }
+    }
+    
+    function verificarOrden() {
+        let divRes = document.getElementById('res-final');
+        divRes.style.display = 'block';
+        
+        if(JSON.stringify(ordenUsuario) === JSON.stringify(ordenCorrecto)) {
+            divRes.innerHTML = `<div class="caja-exito" style="font-size: 1.1em; text-align:center;"><b>🎓 ¡Criterio Estructural Demostrado!</b><br><br>Has entendido la secuencia M-P-V-L-D.<br>El detallado no es un apéndice de la memoria de cálculo, <b>es parte del mecanismo</b>. No diseñaste los estribos directamente; diseñaste un mecanismo y los estribos fueron su consecuencia física.<br><br><i>"Eres un ingeniero, no una calculadora."</i></div>`;
+            document.getElementById('btn-modo-ing-container').style.display = 'block';
+        } else {
+            divRes.innerHTML = `<div class="caja-alerta"><b>❌ La cadena causal se rompió.</b> Usa el botón "Reiniciar cadena" y vuelve a analizar el flujo lógico.</div>`;
+        }
+    }
+
+    function reiniciarCadena() {
+        ordenUsuario = [];
+        document.getElementById('res-final').style.display = 'none';
+        let banco = document.getElementById('banco-opciones');
+        
+        // Reinsertamos en orden explícito y robusto
+        const orderOriginal = ['item-D', 'item-L', 'item-P', 'item-M', 'item-V'];
+        orderOriginal.forEach(id => {
+            let elem = document.getElementById(id);
+            if(elem) {
+                elem.classList.remove('ordered');
+                banco.appendChild(elem);
+            }
+        });
+    }
+
+</script>
+</body>
+</html>
