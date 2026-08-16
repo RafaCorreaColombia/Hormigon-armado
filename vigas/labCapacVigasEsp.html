@@ -42,7 +42,9 @@
         .caja-narrativa { background: #e8f4f8; border-left: 4px solid var(--azul-profundo); padding: 15px; margin: 15px 0; font-size: 1.05em; font-style: italic;}
         .caja-alerta { background: #fdedec; border-left: 4px solid var(--ce-rojo); padding: 12px; margin: 15px 0; font-size: 0.95em; color: var(--ce-rojo);}
         .caja-exito { background: #eafaf1; border-left: 4px solid var(--ce-verde); padding: 12px; margin: 15px 0; font-size: 0.95em; color: #1e8449;}
-        .caja-formula { background: #f8f9fa; border: 1px solid #dee2e6; padding: 12px; border-radius: 8px; text-align: center; margin: 10px 0; font-size: 1.1em; font-weight: bold;}
+        
+        /* Tipografía matemática corregida */
+        .caja-formula { background: #f8f9fa; border: 1px solid #dee2e6; padding: 12px; border-radius: 8px; text-align: center; margin: 10px 0; font-size: 1.1em; font-weight: bold; font-family: 'Cambria Math', 'Times New Roman', serif;}
         .caja-destacada { background: var(--azul-profundo); color: white; border-radius: 8px; padding: 15px; text-align: center; margin: 15px 0; }
         
         /* BOTONES INTERACTIVOS */
@@ -57,9 +59,9 @@
         .locked-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.85); z-index: 10; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(2px); border-radius: 8px;}
         .locked-msg { background: var(--azul-profundo); color: white; padding: 10px 20px; border-radius: 20px; font-weight: bold; font-size: 0.9em; box-shadow: 0 4px 6px rgba(0,0,0,0.2); }
 
-        /* HOTSPOTS DETALLADO (Ahora invisibles hasta hacer hover) */
-        .hotspot { cursor: pointer; fill: transparent; transition: 0.3s; }
-        .hotspot:hover { fill: rgba(230, 126, 34, 0.3); stroke: var(--naranja-estructural); stroke-width: 2; stroke-dasharray: 4;}
+        /* HOTSPOTS DETALLADO (Accesibilidad mejorada) */
+        .hotspot { cursor: pointer; fill: transparent; stroke: rgba(230, 126, 34, 0.2); stroke-width: 1; stroke-dasharray: 4; transition: 0.3s; }
+        .hotspot:hover { fill: rgba(230, 126, 34, 0.3); stroke: var(--naranja-estructural); stroke-width: 2;}
         .hotspot.found { fill: rgba(192, 57, 43, 0.2); stroke: var(--ce-rojo); stroke-dasharray: 0; stroke-width: 2; }
 
         /* ORDENAMIENTO */
@@ -72,7 +74,13 @@
         .modo-ing-card .caja-formula { background: #2c3e50; border-color: #34495e; color: #ecf0f1; font-size: 1em; padding: 8px;}
         .modo-ing-card h5 { color: var(--naranja-estructural); font-weight: bold; border-bottom: 1px solid #34495e; padding-bottom: 5px; margin-top: 20px;}
 
-        @media (max-width: 800px) { .contenedor-principal { width: 100% !important; margin: 0 !important; border-radius: 0 !important; box-shadow: none; padding: 0 !important; } .contenido-body { padding: 20px; } }
+        /* RESPONSIVE SVG */
+        @media (max-width: 600px) { 
+            .contenedor-principal { width: 100% !important; margin: 0 !important; border-radius: 0 !important; box-shadow: none; padding: 0 !important; } 
+            .contenido-body { padding: 20px; } 
+            .svg-container { height: 180px; }
+            .svg-container text { font-size: 9px !important; }
+        }
     </style>
 </head>
 <body>
@@ -110,21 +118,80 @@
                 <div class="w3-col m6">
                     <div class="svg-container" id="svg-portico">
                         <svg width="100%" height="100%" viewBox="0 0 400 250">
-                            <rect x="80" y="50" width="20" height="180" fill="#7f8c8d"/>
-                            <rect x="300" y="50" width="20" height="180" fill="#7f8c8d"/>
-                            <rect x="60" y="50" width="280" height="20" fill="#95a5a6"/>
-                            <polygon points="80,230 100,230 90,210" fill="#34495e"/>
-                            <polygon points="300,230 320,230 310,210" fill="#34495e"/>
-                            
-                            <g id="rotulas-viga" style="display:none;">
-                                <circle cx="115" cy="60" r="12" fill="rgba(231, 76, 60, 0.8)"/>
-                                <circle cx="285" cy="60" r="12" fill="rgba(231, 76, 60, 0.8)"/>
-                                <text x="200" y="35" font-size="12" text-anchor="middle" fill="#27AE60" font-weight="bold">Mecanismo Dúctil</text>
+                            <!-- Pórtico base (gris claro, no deformado) -->
+                            <g opacity="0.3">
+                                <rect x="80" y="50" width="20" height="180" fill="#bdc3c7"/>
+                                <rect x="300" y="50" width="20" height="180" fill="#bdc3c7"/>
+                                <rect x="60" y="50" width="280" height="20" fill="#bdc3c7"/>
                             </g>
+                            
+                            <!-- ESTADO INICIAL (Siempre visible) -->
+                            <g id="estado-inicial">
+                                <rect x="80" y="50" width="20" height="180" fill="#7f8c8d" stroke="#34495e" stroke-width="2"/>
+                                <rect x="300" y="50" width="20" height="180" fill="#7f8c8d" stroke="#34495e" stroke-width="2"/>
+                                <rect x="60" y="50" width="280" height="20" fill="#95a5a6" stroke="#34495e" stroke-width="2"/>
+                                
+                                <!-- Apoyo simple -->
+                                <polygon points="80,235 100,235 90,245" fill="#2c3e50"/>
+                                <polygon points="300,235 320,235 310,245" fill="#2c3e50"/>
+                                
+                                <!-- Carga lateral (flecha azul) -->
+                                <defs>
+                                    <marker id="arrowLateral" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                                        <path d="M0,0 L0,6 L9,3 z" fill="#3498db" />
+                                    </marker>
+                                </defs>
+                                <line x1="10" y1="60" x2="50" y2="60" stroke="#3498db" stroke-width="4" marker-end="url(#arrowLateral)"/>
+                                <text x="15" y="45" font-size="11" fill="#3498db" font-weight="bold">F_sismo</text>
+                            </g>
+                            
+                            <!-- MECANISMO DÚCTIL (rótulas en vigas) -->
+                            <g id="rotulas-viga" style="display:none;">
+                                <!-- Deformada lateral (pórtico desplazado) -->
+                                <path d="M 100 50 Q 120 50, 130 60 L 130 230" stroke="#27AE60" stroke-width="3" fill="none" stroke-dasharray="5,5"/>
+                                <path d="M 320 50 Q 340 50, 350 60 L 350 230" stroke="#27AE60" stroke-width="3" fill="none" stroke-dasharray="5,5"/>
+                                
+                                <!-- Rótulas plásticas en vigas (con "crack" visual) -->
+                                <g>
+                                    <!-- Rótula izquierda -->
+                                    <circle cx="105" cy="60" r="15" fill="none" stroke="#e74c3c" stroke-width="3"/>
+                                    <line x1="95" y1="50" x2="115" y2="70" stroke="#e74c3c" stroke-width="2"/>
+                                    <line x1="95" y1="70" x2="115" y2="50" stroke="#e74c3c" stroke-width="2"/>
+                                    
+                                    <!-- Rótula derecha -->
+                                    <circle cx="295" cy="60" r="15" fill="none" stroke="#e74c3c" stroke-width="3"/>
+                                    <line x1="285" y1="50" x2="305" y2="70" stroke="#e74c3c" stroke-width="2"/>
+                                    <line x1="285" y1="70" x2="305" y2="50" stroke="#e74c3c" stroke-width="2"/>
+                                </g>
+                                
+                                <!-- Etiqueta -->
+                                <rect x="140" y="20" width="120" height="25" fill="#27AE60" rx="5"/>
+                                <text x="200" y="37" font-size="12" text-anchor="middle" fill="white" font-weight="bold">✓ MECANISMO DÚCTIL</text>
+                            </g>
+                            
+                            <!-- MECANISMO DE COLAPSO (rótulas en columnas) -->
                             <g id="rotulas-col" style="display:none;">
-                                <circle cx="90" cy="200" r="12" fill="rgba(231, 76, 60, 0.8)"/>
-                                <circle cx="310" cy="200" r="12" fill="rgba(231, 76, 60, 0.8)"/>
-                                <text x="200" y="140" font-size="12" text-anchor="middle" fill="#c0392b" font-weight="bold">Colapso / Piso Blando</text>
+                                <!-- Deformada lateral EXCESIVA (colapso) -->
+                                <path d="M 100 50 Q 150 50, 160 60 L 160 230" stroke="#c0392b" stroke-width="3" fill="none" stroke-dasharray="5,5"/>
+                                <path d="M 320 50 Q 370 50, 380 60 L 380 230" stroke="#c0392b" stroke-width="3" fill="none" stroke-dasharray="5,5"/>
+                                
+                                <!-- Rótulas en BASE de columnas (piso blando) -->
+                                <g>
+                                    <!-- Rótula izquierda inferior -->
+                                    <circle cx="90" cy="220" r="15" fill="none" stroke="#e74c3c" stroke-width="3"/>
+                                    <line x1="80" y1="210" x2="100" y2="230" stroke="#e74c3c" stroke-width="2"/>
+                                    <line x1="80" y1="230" x2="100" y2="210" stroke="#e74c3c" stroke-width="2"/>
+                                    
+                                    <!-- Rótula derecha inferior -->
+                                    <circle cx="310" cy="220" r="15" fill="none" stroke="#e74c3c" stroke-width="3"/>
+                                    <line x1="300" y1="210" x2="320" y2="230" stroke="#e74c3c" stroke-width="2"/>
+                                    <line x1="300" y1="230" x2="320" y2="210" stroke="#e74c3c" stroke-width="2"/>
+                                </g>
+                                
+                                <!-- Etiqueta de PELIGRO -->
+                                <rect x="140" y="120" width="120" height="40" fill="#c0392b" rx="5"/>
+                                <text x="200" y="137" font-size="11" text-anchor="middle" fill="white" font-weight="bold">⚠ PISO BLANDO</text>
+                                <text x="200" y="152" font-size="9" text-anchor="middle" fill="white">(Colapso inminente)</text>
                             </g>
                         </svg>
                     </div>
@@ -152,10 +219,53 @@
             <p>Si ya conoces $M_n$, ¿por qué la norma te obliga a usar una "resistencia probable" ($M_{pr}$) mayor para diseñar el cortante?</p>
             
             <div class="btn-opcion" onclick="evaluarMpr(this, false)">A. Por factores de seguridad contra sismos inesperados de mayor magnitud.</div>
-            <div class="btn-opcion" onclick="evaluarMpr(this, true)">B. Porque cuando el acero entra al rango inelástico, la resistencia que desarrolla supera $f_y$ (sobrerresistencia y endurecimiento por deformación).</div>
+            <div class="btn-opcion" onclick="evaluarMpr(this, true)">B. Porque cuando el acero entra al rango inelástico, la resistencia que desarrolla supera $f_y$ (sobrerresistencia y endurecimiento).</div>
             <div class="btn-opcion" onclick="evaluarMpr(this, false)">C. Porque la resistencia del concreto a compresión ($f'_c$) aumenta con los años.</div>
 
             <div id="res-mpr" style="display:none; margin-top:15px;"></div>
+            
+            <!-- Gráfico de sobrerresistencia (Se muestra al acertar) -->
+            <div class="svg-container" style="height: 200px; margin-top: 15px; display:none;" id="grafico-mpr">
+                <svg width="100%" height="100%" viewBox="0 0 500 200">
+                    <!-- Ejes -->
+                    <line x1="50" y1="150" x2="450" y2="150" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrowAxis)"/>
+                    <line x1="50" y1="150" x2="50" y2="20" stroke="#2c3e50" stroke-width="2" marker-end="url(#arrowAxis)"/>
+                    <text x="470" y="155" font-size="12" fill="#2c3e50">ε (deformación)</text>
+                    <text x="30" y="15" font-size="12" fill="#2c3e50">σ (esfuerzo)</text>
+                    
+                    <!-- Curva esfuerzo-deformación del acero -->
+                    <path d="M 50 150 L 150 100 L 250 90 L 350 70" stroke="#3498db" stroke-width="3" fill="none"/>
+                    
+                    <!-- Línea horizontal de fy -->
+                    <line x1="50" y1="100" x2="450" y2="100" stroke="#27AE60" stroke-width="2" stroke-dasharray="5"/>
+                    <text x="460" y="105" font-size="11" fill="#27AE60" font-weight="bold">f_y</text>
+                    
+                    <!-- Línea horizontal de 1.25fy -->
+                    <line x1="50" y1="70" x2="450" y2="70" stroke="#c0392b" stroke-width="2" stroke-dasharray="5"/>
+                    <text x="460" y="75" font-size="11" fill="#c0392b" font-weight="bold">1.25 f_y</text>
+                    
+                    <!-- Punto de fluencia -->
+                    <circle cx="150" cy="100" r="5" fill="#27AE60"/>
+                    <text x="155" y="120" font-size="10" fill="#27AE60">Fluencia (diseño)</text>
+                    
+                    <!-- Punto de sobrerresistencia -->
+                    <circle cx="250" cy="90" r="5" fill="#c0392b"/>
+                    <text x="255" y="85" font-size="10" fill="#c0392b" font-weight="bold">Sobrerresistencia (real)</text>
+                    
+                    <!-- Flecha curva indicando endurecimiento -->
+                    <path d="M 180 110 Q 220 105, 240 95" stroke="#e67e22" stroke-width="2" fill="none" marker-end="url(#arrowCurve)"/>
+                    <text x="190" y="125" font-size="10" fill="#e67e22" font-style="italic">Endurecimiento</text>
+                    
+                    <defs>
+                        <marker id="arrowAxis" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+                            <path d="M0,0 L0,8 L8,4 z" fill="#2c3e50" />
+                        </marker>
+                        <marker id="arrowCurve" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                            <path d="M0,0 L0,6 L6,3 z" fill="#e67e22" />
+                        </marker>
+                    </defs>
+                </svg>
+            </div>
         </div>
 
         <!-- MÓDULO 3: CONSTRUYE EL EQUILIBRIO -->
@@ -194,42 +304,86 @@
                 <div class="w3-col m7 w3-padding">
                     <div class="svg-container" style="height: 250px; background: white;">
                         <svg width="100%" height="100%" viewBox="0 0 500 250" id="svg-dcl">
-                            <!-- Viga Base -->
-                            <rect x="50" y="100" width="400" height="20" fill="#ecf0f1"/>
-                            <text x="250" y="115" text-anchor="middle" font-size="12" fill="#7f8c8d" id="txt-esperando">Selecciona los parámetros para construir el diagrama...</text>
+                            <!-- PASO 0: Viga aislada (siempre visible) -->
+                            <g id="viga-base">
+                                <rect x="50" y="100" width="400" height="20" fill="#ecf0f1" stroke="#7f8c8d" stroke-width="2"/>
+                                <!-- Apoyos simples -->
+                                <circle cx="50" cy="120" r="8" fill="#34495e"/>
+                                <circle cx="450" cy="120" r="8" fill="#34495e"/>
+                                
+                                <!-- Longitud Ln -->
+                                <line x1="50" y1="170" x2="450" y2="170" stroke="#95a5a6" stroke-width="1" stroke-dasharray="3"/>
+                                <line x1="50" y1="165" x2="50" y2="175" stroke="#95a5a6" stroke-width="1"/>
+                                <line x1="450" y1="165" x2="450" y2="175" stroke="#95a5a6" stroke-width="1"/>
+                                <text x="250" y="190" font-size="11" text-anchor="middle" fill="#7f8c8d" font-style="italic">L_n (luz libre)</text>
+                            </g>
                             
-                            <!-- SECUENCIA ANIMADA -->
+                            <text x="250" y="115" text-anchor="middle" font-size="12" fill="#7f8c8d" id="txt-esperando">Selecciona los parámetros...</text>
+                            
+                            <!-- PASO 1: Se forman las rótulas plásticas -->
                             <g id="anim-step-1" style="opacity:0; transition: opacity 0.5s;">
-                                <circle cx="65" cy="110" r="15" fill="rgba(241, 196, 15, 0.5)"/>
-                                <circle cx="435" cy="110" r="15" fill="rgba(241, 196, 15, 0.5)"/>
-                                <text x="250" y="115" text-anchor="middle" font-size="12" font-weight="bold" fill="#f39c12">1. Se forman las rótulas</text>
-                            </g>
-                            <g id="anim-step-2" style="opacity:0; transition: opacity 0.5s;">
-                                <path d="M 70 70 A 20 20 0 0 0 70 150" stroke="#c0392b" stroke-width="4" fill="none" marker-end="url(#arrowRed)"/>
-                                <text x="30" y="115" font-weight="bold" fill="#c0392b">M_pr</text>
-                                <path d="M 430 150 A 20 20 0 0 0 430 70" stroke="#c0392b" stroke-width="4" fill="none" marker-end="url(#arrowRed)"/>
-                                <text x="445" y="115" font-weight="bold" fill="#c0392b">M_pr</text>
-                                <path d="M 50 70 L 450 70" stroke="#2980b9" stroke-dasharray="4"/>
-                                <line x1="100" y1="70" x2="100" y2="95" stroke="#2980b9" marker-end="url(#arrowBlue)"/>
-                                <line x1="250" y1="70" x2="250" y2="95" stroke="#2980b9" marker-end="url(#arrowBlue)"/>
-                                <line x1="400" y1="70" x2="400" y2="95" stroke="#2980b9" marker-end="url(#arrowBlue)"/>
-                            </g>
-                            <g id="anim-step-3" style="opacity:0; transition: opacity 0.5s;">
-                                <line x1="50" y1="180" x2="50" y2="125" stroke="#e67e22" stroke-width="5" marker-end="url(#arrowOrange)"/>
-                                <text x="60" y="160" fill="#e67e22" font-weight="bold" font-size="16">V_e</text>
-                                <line x1="450" y1="40" x2="450" y2="95" stroke="#e67e22" stroke-width="5" marker-end="url(#arrowOrange)"/>
-                                <text x="415" y="60" fill="#e67e22" font-weight="bold" font-size="16">V_e</text>
+                                <circle cx="65" cy="110" r="18" fill="none" stroke="#f39c12" stroke-width="3" stroke-dasharray="4"/>
+                                <circle cx="435" cy="110" r="18" fill="none" stroke="#f39c12" stroke-width="3" stroke-dasharray="4"/>
+                                <text x="65" y="85" font-size="10" text-anchor="middle" fill="#f39c12" font-weight="bold">Rótula 1</text>
+                                <text x="435" y="85" font-size="10" text-anchor="middle" fill="#f39c12" font-weight="bold">Rótula 2</text>
+                                <text x="250" y="40" text-anchor="middle" font-size="13" font-weight="bold" fill="#f39c12">① Se forman rótulas plásticas en los extremos</text>
                             </g>
                             
-                            <defs>
-                                <marker id="arrowRed" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#c0392b"/></marker>
-                                <marker id="arrowBlue" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#2980b9"/></marker>
-                                <marker id="arrowOrange" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#e67e22"/></marker>
-                            </defs>
+                            <!-- PASO 2: Momentos Mpr y cargas distribuidas -->
+                            <g id="anim-step-2" style="opacity:0; transition: opacity 0.5s;">
+                                <!-- Momentos Mpr (flechas curvas rojas) -->
+                                <defs>
+                                    <marker id="arrowMpr" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+                                        <path d="M0,0 L0,8 L8,4 z" fill="#c0392b" />
+                                    </marker>
+                                </defs>
+                                <path d="M 70 70 A 25 25 0 0 0 70 150" stroke="#c0392b" stroke-width="4" fill="none" marker-end="url(#arrowMpr)"/>
+                                <text x="25" y="115" font-weight="bold" font-size="13" fill="#c0392b">M_pr</text>
+                                
+                                <path d="M 430 150 A 25 25 0 0 0 430 70" stroke="#c0392b" stroke-width="4" fill="none" marker-end="url(#arrowMpr)"/>
+                                <text x="455" y="115" font-weight="bold" font-size="13" fill="#c0392b">M_pr</text>
+                                
+                                <!-- Carga distribuida wu (flechas azules hacia abajo) -->
+                                <defs>
+                                    <marker id="arrowWu" markerWidth="6" markerHeight="6" refX="3" refY="5" orient="auto">
+                                        <path d="M0,0 L6,3 L0,6 z" fill="#2980b9" />
+                                    </marker>
+                                </defs>
+                                <g stroke="#2980b9" stroke-width="2">
+                                    <line x1="100" y1="50" x2="100" y2="95" marker-end="url(#arrowWu)"/>
+                                    <line x1="150" y1="50" x2="150" y2="95" marker-end="url(#arrowWu)"/>
+                                    <line x1="200" y1="50" x2="200" y2="95" marker-end="url(#arrowWu)"/>
+                                    <line x1="250" y1="50" x2="250" y2="95" marker-end="url(#arrowWu)"/>
+                                    <line x1="300" y1="50" x2="300" y2="95" marker-end="url(#arrowWu)"/>
+                                    <line x1="350" y1="50" x2="350" y2="95" marker-end="url(#arrowWu)"/>
+                                    <line x1="400" y1="50" x2="400" y2="95" marker-end="url(#arrowWu)"/>
+                                </g>
+                                <text x="250" y="35" font-size="11" text-anchor="middle" fill="#2980b9" font-weight="bold">w_u (carga gravitacional)</text>
+                                
+                                <text x="250" y="220" text-anchor="middle" font-size="13" font-weight="bold" fill="#2980b9">② Aplicamos momentos M_pr y cargas w_u</text>
+                            </g>
+                            
+                            <!-- PASO 3: Reacciones de cortante Ve -->
+                            <g id="anim-step-3" style="opacity:0; transition: opacity 0.5s;">
+                                <defs>
+                                    <marker id="arrowVe" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto">
+                                        <path d="M0,0 L0,10 L10,5 z" fill="#e67e22" />
+                                    </marker>
+                                </defs>
+                                <!-- Ve izquierdo (hacia arriba) -->
+                                <line x1="50" y1="190" x2="50" y2="125" stroke="#e67e22" stroke-width="6" marker-end="url(#arrowVe)"/>
+                                <text x="70" y="160" fill="#e67e22" font-weight="bold" font-size="16">V_e</text>
+                                
+                                <!-- Ve derecho (hacia abajo) -->
+                                <line x1="450" y1="30" x2="450" y2="95" stroke="#e67e22" stroke-width="6" marker-end="url(#arrowVe)"/>
+                                <text x="415" y="60" fill="#e67e22" font-weight="bold" font-size="16">V_e</text>
+                                
+                                <text x="250" y="240" text-anchor="middle" font-size="13" font-weight="bold" fill="#e67e22">③ Por equilibrio: calculamos V_e en los apoyos</text>
+                            </g>
                         </svg>
                     </div>
                     
-                    <div id="formula-dcl" class="caja-formula" style="display:none; color: var(--naranja-estructural); font-family: 'MathJax_Math-italic', serif;">
+                    <div id="formula-dcl" class="caja-formula" style="display:none; color: var(--naranja-estructural);">
                         $$ \boxed{V_e = \frac{M_{pr,izq} + M_{pr,der}}{L_n} \pm V_g} $$
                     </div>
                 </div>
@@ -253,6 +407,46 @@
             </div>
             
             <div id="res-vmax" style="display:none; margin-top:15px;"></div>
+            
+            <!-- Gráfico de Vn,max (Se muestra al acertar) -->
+            <div id="diagrama-vnmax" style="display:none; margin-top:15px;">
+                <div class="svg-container" style="height: 180px;">
+                    <svg width="100%" height="100%" viewBox="0 0 500 180">
+                        <!-- Diagrama de barras comparativo -->
+                        <g>
+                            <!-- Barra 1: Vs (resistencia de estribos) -->
+                            <rect x="50" y="80" width="80" height="70" fill="#3498db"/>
+                            <text x="90" y="120" font-size="12" text-anchor="middle" fill="white" font-weight="bold">V_s</text>
+                            <text x="90" y="165" font-size="11" text-anchor="middle" fill="#2c3e50">Estribos</text>
+                            
+                            <!-- Barra 2: Vc (resistencia del concreto) -->
+                            <rect x="160" y="100" width="80" height="50" fill="#95a5a6"/>
+                            <text x="200" y="130" font-size="12" text-anchor="middle" fill="white" font-weight="bold">V_c</text>
+                            <text x="200" y="165" font-size="11" text-anchor="middle" fill="#2c3e50">Concreto</text>
+                            
+                            <!-- Barra 3: Vn = Vc + Vs -->
+                            <rect x="270" y="50" width="80" height="100" fill="#27AE60"/>
+                            <text x="310" y="105" font-size="12" text-anchor="middle" fill="white" font-weight="bold">V_n</text>
+                            <text x="310" y="165" font-size="11" text-anchor="middle" fill="#2c3e50">V_c + V_s</text>
+                            
+                            <!-- Línea horizontal de Vn,max (techo físico) -->
+                            <line x1="30" y1="35" x2="470" y2="35" stroke="#c0392b" stroke-width="3" stroke-dasharray="8,4"/>
+                            <text x="480" y="40" font-size="12" fill="#c0392b" font-weight="bold">V_n,max</text>
+                            
+                            <!-- Flecha indicando límite -->
+                            <path d="M 320 55 L 340 40" stroke="#c0392b" stroke-width="2" marker-end="url(#arrowLimit)"/>
+                            <text x="360" y="30" font-size="10" fill="#c0392b" font-weight="bold">No puedes superar esto</text>
+                            <text x="360" y="45" font-size="9" fill="#c0392b">(falla por compresión diagonal)</text>
+                        </g>
+                        
+                        <defs>
+                            <marker id="arrowLimit" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                                <path d="M0,0 L0,6 L6,3 z" fill="#c0392b" />
+                            </marker>
+                        </defs>
+                    </svg>
+                </div>
+            </div>
         </div>
 
         <!-- MÓDULO 5: ENCUENTRA EL ERROR A CIEGAS -->
@@ -268,40 +462,73 @@
 
             <div class="svg-container" style="height: 200px;">
                 <svg width="100%" height="100%" viewBox="0 0 600 200">
+                    <!-- Columnas de apoyo -->
+                    <rect x="10" y="20" width="40" height="160" fill="#95a5a6" stroke="#7f8c8d" stroke-width="2"/>
+                    <rect x="550" y="20" width="40" height="160" fill="#95a5a6" stroke="#7f8c8d" stroke-width="2"/>
+                    
+                    <!-- Viga (sección rectangular) -->
                     <rect x="50" y="60" width="500" height="80" fill="#ecf0f1" stroke="#bdc3c7" stroke-width="2"/>
-                    <rect x="10" y="20" width="40" height="160" fill="#95a5a6"/>
-                    <rect x="550" y="20" width="40" height="160" fill="#95a5a6"/>
                     
-                    <line x1="10" y1="75" x2="590" y2="75" stroke="#34495e" stroke-width="4"/>
-                    <line x1="10" y1="125" x2="590" y2="125" stroke="#34495e" stroke-width="4"/>
+                    <!-- Acero longitudinal superior e inferior (barras negras) -->
+                    <line x1="10" y1="75" x2="590" y2="75" stroke="#34495e" stroke-width="5"/>
+                    <line x1="10" y1="125" x2="590" y2="125" stroke="#34495e" stroke-width="5"/>
                     
-                    <g stroke="#e67e22" stroke-width="2">
-                        <!-- Estribos OK -->
-                        <line x1="220" y1="65" x2="220" y2="135"/>
-                        <line x1="260" y1="65" x2="260" y2="135"/>
-                        <line x1="340" y1="65" x2="340" y2="135"/>
+                    <!-- ZONA CRÍTICA IZQUIERDA (2h) - Fondo amarillo suave -->
+                    <rect x="50" y="50" width="120" height="100" fill="rgba(241, 196, 15, 0.15)" stroke="none"/>
+                    <text x="110" y="45" font-size="10" text-anchor="middle" fill="#f39c12" font-weight="bold">Zona 2h</text>
+                    
+                    <!-- ZONA CRÍTICA DERECHA (2h) - Fondo amarillo suave -->
+                    <rect x="430" y="50" width="120" height="100" fill="rgba(241, 196, 15, 0.15)" stroke="none"/>
+                    <text x="490" y="45" font-size="10" text-anchor="middle" fill="#f39c12" font-weight="bold">Zona 2h</text>
+                    
+                    <!-- ============ ESTRIBOS ============ -->
+                    <g stroke="#e67e22" stroke-width="2.5" fill="none">
                         
-                        <!-- Anomalía 1: Separación gigante cerca al nudo izquierdo -->
-                        <line x1="70" y1="65" x2="70" y2="135"/>
-                        <line x1="150" y1="65" x2="150" y2="135"/> 
+                        <!-- ANOMALÍA 1: Separación GIGANTE (solo 2 estribos en zona crítica izq) -->
+                        <rect x="70" y="65" width="15" height="70" rx="2"/> <!-- Gancho cerrado -->
+                        <rect x="150" y="65" width="15" height="70" rx="2"/> <!-- Gancho cerrado -->
                         
-                        <!-- Anomalía 2: Estribo abierto (No abraza la barra superior) en el centro -->
-                        <path d="M 300 85 L 300 135 L 310 135" stroke="#e67e22" stroke-width="3" fill="none"/>
-                        <text x="295" y="55" font-size="10" fill="#c0392b" class="alerta-svg" style="display:none; font-weight:bold;">¡Abierto!</text>
-
-                        <!-- Anomalía 3: Empalme real visual pegado al nudo derecho -->
-                        <g stroke="#34495e" stroke-width="4">
-                            <!-- Interrupción de la barra continua para hacer el traslapo -->
-                            <rect x="420" y="70" width="70" height="10" fill="#ecf0f1" stroke="none"/> 
-                            <line x1="400" y1="73" x2="470" y2="73" />
-                            <line x1="430" y1="78" x2="500" y2="78" />
-                        </g>
+                        <!-- Flecha roja indicando la separación excesiva -->
+                        <defs>
+                            <marker id="arrowSeparacion" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+                                <path d="M0,0 L0,8 L8,4 z" fill="#c0392b" />
+                            </marker>
+                        </defs>
+                        <line x1="85" y1="155" x2="150" y2="155" stroke="#c0392b" stroke-width="2" marker-end="url(#arrowSeparacion)" marker-start="url(#arrowSeparacion)" class="alerta-svg-1" style="display:none;"/>
+                        <text x="117" y="170" font-size="11" text-anchor="middle" fill="#c0392b" font-weight="bold" class="alerta-svg-1" style="display:none;">s >> d/4 ⚠</text>
+                        
+                        <!-- ESTRIBOS CORRECTOS EN EL CENTRO (espaciamiento adecuado) -->
+                        <rect x="220" y="65" width="15" height="70" rx="2"/>
+                        <rect x="260" y="65" width="15" height="70" rx="2"/>
+                        <rect x="340" y="65" width="15" height="70" rx="2"/>
+                        <rect x="380" y="65" width="15" height="70" rx="2"/>
+                        
+                        <!-- ANOMALÍA 2: Estribo ABIERTO (gancho a 90° sin cerrar) -->
+                        <path d="M 300 85 L 300 135 L 315 135 L 315 125" stroke="#e67e22" stroke-width="3" fill="none"/>
+                        <!-- Flecha roja señalando la apertura -->
+                        <circle cx="315" cy="125" r="8" fill="none" stroke="#c0392b" stroke-width="2" stroke-dasharray="2" class="alerta-svg-2" style="display:none;"/>
+                        <text x="295" y="55" font-size="11" fill="#c0392b" font-weight="bold" class="alerta-svg-2" style="display:none;">¡Gancho 90°!</text>
+                        
+                        <!-- ANOMALÍA 3: EMPALME POR TRASLAPO en zona crítica derecha -->
+                        <!-- Barra 1: termina en x=470 -->
+                        <line x1="400" y1="73" x2="470" y2="73" stroke="#34495e" stroke-width="5"/>
+                        <!-- Barra 2: empieza en x=450 (traslapo de 20 unidades) -->
+                        <line x1="450" y1="78" x2="530" y2="78" stroke="#34495e" stroke-width="5"/>
+                        
+                        <!-- Rectángulo rojo indicando el traslapo -->
+                        <rect x="450" y="68" width="20" height="15" fill="none" stroke="#c0392b" stroke-width="2" stroke-dasharray="3" class="alerta-svg-3" style="display:none;"/>
+                        <text x="460" y="185" font-size="11" text-anchor="middle" fill="#c0392b" font-weight="bold" class="alerta-svg-3" style="display:none;">Traslapo en 2h ⚠</text>
+                        
+                        <!-- Estribos en zona crítica derecha (bien espaciados) -->
+                        <rect x="440" y="65" width="15" height="70" rx="2"/>
+                        <rect x="480" y="65" width="15" height="70" rx="2"/>
+                        <rect x="520" y="65" width="15" height="70" rx="2"/>
                     </g>
                     
-                    <!-- Hotspots invisibles -->
-                    <rect class="hotspot" x="50" y="50" width="120" height="100" onclick="mostrarError(this, 'error1')"/>
-                    <rect class="hotspot" x="280" y="50" width="40" height="100" onclick="mostrarError(this, 'error2', true)"/>
-                    <rect class="hotspot" x="400" y="50" width="120" height="100" onclick="mostrarError(this, 'error3')"/>
+                    <!-- ============ HOTSPOTS INVISIBLES ============ -->
+                    <rect class="hotspot" x="70" y="50" width="95" height="110" onclick="mostrarError(this, 'error1', 1)"/>
+                    <rect class="hotspot" x="295" y="50" width="25" height="110" onclick="mostrarError(this, 'error2', 2)"/>
+                    <rect class="hotspot" x="445" y="50" width="75" height="110" onclick="mostrarError(this, 'error3', 3)"/>
                 </svg>
             </div>
             
@@ -454,6 +681,7 @@
         if(esCorrecto) {
             btn.classList.add('correct');
             divRes.innerHTML = `<div class="caja-exito"><b>✅ Correcto.</b><br>Para estimar la resistencia probable de la rótula, la norma adopta una tensión superior a $f_y$ ($1.25f_y$), asociada a la sobrerresistencia esperada del acero y al endurecimiento por deformación al entrar al rango inelástico.<br><b>Si calculas el cortante asumiendo solo $M_n$, vas a subestimar gravemente la demanda real de cortante.</b></div><button class="w3-button w3-indigo w3-round w3-small" onclick="desbloquear(3)">Continuar al Cortante &rarr;</button>`;
+            document.getElementById('grafico-mpr').style.display = 'block';
         } else {
             btn.classList.add('wrong');
             divRes.innerHTML = `<div class="caja-alerta"><b>❌ Revisa el concepto.</b> El factor de 1.25 es una idealización normativa para reconocer el comportamiento real de la metalurgia del acero sometido a grandes deformaciones, no un margen de error constructivo o del concreto.</div>`;
@@ -502,6 +730,8 @@
             divRes.innerHTML = `<div class="caja-exito"><b>✅ Criterio Estructural Puro.</b><br>El diseño no es simplemente "escoger el mayor". Es una integración: calculas $V_s$ por equilibrio, verificas que el material no estalle por compresión diagonal ($V_{n,max}$), y garantizas que el confinamiento normativo ($2h$) permita el desarrollo de la rótula. \n<br><br>
             <div class="caja-destacada">🧠 <b>MÁS ESTRIBOS $\\neq$ MÁS RESISTENCIA INFINITA</b><br><br> $V_s \\uparrow \\quad \\not\\Rightarrow \\quad V_n \\uparrow \\text{ indefinidamente}$ <br><br>$V_{n,max}$ no es otra opción para maximizar, es un techo físico del material. Si lo superas, debes cambiar la geometría o la calidad del concreto.</div></div>
             <button class="w3-button w3-indigo w3-round w3-small" onclick="desbloquear(5)">Avanzar a Inspección &rarr;</button>`;
+            
+            document.getElementById('diagrama-vnmax').style.display = 'block';
         } else {
             btn.classList.add('wrong');
             divRes.innerHTML = `<div class="caja-alerta"><b>❌ Incompleto.</b> Esa opción es cierta, pero el diseño transversal debe cumplir <b>todas</b> las exigencias físicas y normativas simultáneamente. Busca la opción más integradora.</div>`;
@@ -510,13 +740,16 @@
 
     // Módulo 5: Errores a ciegas
     let erroresEncontrados = 0;
-    function mostrarError(elemento, idError, isCenter = false) {
+    function mostrarError(elemento, idError, numError) {
         if(!elemento.classList.contains('found')) {
             elemento.classList.add('found');
             document.getElementById(idError).style.display = 'block';
-            erroresEncontrados++;
             
-            if(isCenter) document.querySelector('.alerta-svg').style.display = 'block';
+            // Mostrar los indicadores visuales SVG correspondientes
+            let indicadores = document.querySelectorAll('.alerta-svg-' + numError);
+            indicadores.forEach(ind => ind.style.display = 'block');
+            
+            erroresEncontrados++;
             
             document.getElementById('contador-errores').innerText = `Anomalías detectadas: ${erroresEncontrados} / 3`;
             
@@ -556,9 +789,11 @@
     function reiniciarCadena() {
         ordenUsuario = [];
         document.getElementById('res-final').style.display = 'none';
+        document.getElementById('lista-ordenada').innerHTML = ''; // Vaciar destino
+        
         let banco = document.getElementById('banco-opciones');
         
-        // Reinsertamos en orden explícito y robusto
+        // Orden original explícito y robusto
         const orderOriginal = ['item-D', 'item-L', 'item-P', 'item-M', 'item-V'];
         orderOriginal.forEach(id => {
             let elem = document.getElementById(id);
