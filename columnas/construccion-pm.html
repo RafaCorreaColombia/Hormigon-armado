@@ -659,11 +659,37 @@ function sincronizarSimulador() {
         xBot_visual_linea = 30;
     }
     
-    // Para el POLÍGONO: siempre va hasta y=200, pero limita x entre 30 y 170
-    let xBot_poligono = Math.max(30, Math.min(170, xBot_real));
+    // Para el POLÍGONO: Determinar si es triángulo o trapecio
+    let puntosPoligono;
     
-    // Dibujar polígono de deformaciones (SIEMPRE hasta abajo, mostrando compatibilidad completa)
-    document.getElementById('polyDef').setAttribute('points', `100,20 ${xTop},20 ${xBot_poligono},200 100,200`);
+    if (xBot_real > 170) {
+        // La línea sale por la derecha (x=170)
+        if (y_bot_visual_linea < 200) {
+            // La línea sale ANTES de llegar abajo → TRIÁNGULO
+            // Vértices: centro-arriba, compresión-arriba, intersección-derecha, centro-abajo
+            puntosPoligono = `100,20 ${xTop},20 ${xBot_visual_linea},${y_bot_visual_linea} 100,${y_bot_visual_linea}`;
+        } else {
+            // La línea cruza TODO el SVG hasta abajo → TRAPECIO
+            // Vértices: centro-arriba, compresión-arriba, esquina-superior-derecha, esquina-inferior-derecha, centro-abajo
+            puntosPoligono = `100,20 ${xTop},20 170,20 170,200 100,200`;
+        }
+    } else if (xBot_real < 30) {
+        // La línea sale por la izquierda (x=30)
+        if (y_bot_visual_linea < 200) {
+            // La línea sale ANTES de llegar abajo → TRIÁNGULO
+            puntosPoligono = `100,20 ${xTop},20 ${xBot_visual_linea},${y_bot_visual_linea} 100,${y_bot_visual_linea}`;
+        } else {
+            // La línea cruza TODO el SVG hasta abajo → TRAPECIO
+            puntosPoligono = `100,20 ${xTop},20 30,20 30,200 100,200`;
+        }
+    } else {
+        // La línea NO se sale lateralmente → POLÍGONO COMPLETO
+        let xBot_poligono = xBot_real;
+        puntosPoligono = `100,20 ${xTop},20 ${xBot_poligono},200 100,200`;
+    }
+    
+    // Dibujar polígono de deformaciones
+    document.getElementById('polyDef').setAttribute('points', puntosPoligono);
     
     // Línea de Bernoulli (recortada visualmente en los bordes del SVG)
     document.getElementById('lineaBernoulli').setAttribute('x1', xTop); 
