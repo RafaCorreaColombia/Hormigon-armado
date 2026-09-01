@@ -632,43 +632,69 @@ function sincronizarSimulador() {
 
     // Q2: Compatibilidad (Bernoulli Exacto y Coherente)
     let scaleDef = 3000;
-    let maxStrainDisplay = 0.025; // Límite para visualización en SVG
+    let maxStrainDisplay = 0.025; // Límite SOLO para visualización del polígono
     
     // Deformación arriba (concreto cu = -0.003)
     let eps_top = -0.003;
-    // Deformación abajo (fibra extrema en y = h)
+    
+    // Deformación abajo (fibra extrema en y = h) - SIN RECORTAR para cálculos
     let eps_bot_raw = 0.003 * (h - c) / c;
-    let eps_bot = Math.max(-maxStrainDisplay, Math.min(maxStrainDisplay, eps_bot_raw));
     
     // Posiciones X en el SVG (Centro en 100. Tensión a la derecha +, Compresión a la izquierda -)
-    let xTop = 100 + (eps_top * scaleDef);
-    let xBot = 100 + (eps_bot * scaleDef);
+    let xTop = 100 + (eps_top * scaleDef); // = 100 - 9 = 91
     
-    // Dibujar polígono de deformaciones y línea de Bernoulli
-    document.getElementById('polyDef').setAttribute('points', `100,20 ${xTop},20 ${xBot},200 100,200`);
+    // Para el polígono visual: recortar eps_bot para que quepa en el SVG
+    let eps_bot_display = Math.max(-maxStrainDisplay, Math.min(maxStrainDisplay, eps_bot_raw));
+    let xBot_display = 100 + (eps_bot_display * scaleDef);
+    
+    // Para cálculos de Bernoulli: usar deformación REAL sin recortar
+    let xBot_real = 100 + (eps_bot_raw * scaleDef);
+    
+    // Dibujar polígono de deformaciones (con valores recortados para que quepa)
+    document.getElementById('polyDef').setAttribute('points', `100,20 ${xTop},20 ${xBot_display},200 100,200`);
+    
+    // Calcular punto de intersección visual de la línea de Bernoulli con los límites del SVG
+    let xBot_visual = xBot_real;
+    let y_bot_visual = 200;
+    
+    if (xBot_real > 170) {
+        // La línea se corta en x = 170
+        y_bot_visual = 20 + ((170 - xTop) / (xBot_real - xTop)) * 180;
+        xBot_visual = 170;
+    } else if (xBot_real < 30) {
+        // La línea se corta en x = 30
+        y_bot_visual = 20 + ((30 - xTop) / (xBot_real - xTop)) * 180;
+        xBot_visual = 30;
+    }
+    
+    // Línea de Bernoulli (recortada visualmente pero con geometría real)
     document.getElementById('lineaBernoulli').setAttribute('x1', xTop); 
-    document.getElementById('lineaBernoulli').setAttribute('x2', xBot);
+    document.getElementById('lineaBernoulli').setAttribute('y1', 20);
+    document.getElementById('lineaBernoulli').setAttribute('x2', xBot_visual);
+    document.getElementById('lineaBernoulli').setAttribute('y2', y_bot_visual);
+    
     document.getElementById('lineEN_def').setAttribute('y1', yEje); 
     document.getElementById('lineEN_def').setAttribute('y2', yEje);
     
     document.getElementById('lblEs1').textContent = `εs1 = ${pt.et1.toFixed(4)}`;
     document.getElementById('lblEs2').textContent = `εs2 = ${pt.et2.toFixed(4)}`;
     document.getElementById('lblEs3').textContent = `εt = ${pt.et3 > 10 ? '+∞' : pt.et3.toFixed(4)}`;
-
-    // Posiciones Y exactas de cada elemento en el SVG de Bernoulli (de y=20 a y=200, altura total 180 para h=350)
+    
+    // Posiciones Y exactas de cada elemento en el SVG de Bernoulli
     let y_top = 20;                     // Fibra superior (y = 0)
     let y_steel1 = 20 + (d1 / h) * 180;   // Fila 1 (d1 = 60)
     let y_steel2 = 20 + (d2 / h) * 180;   // Fila 2 (d2 = 175)
     let y_steel3 = 20 + (d3 / h) * 180;   // Fila 3 (d3 = 290)
-
-    // INTERPOLACIÓN LINEAL EXACTA: Garantiza que los puntos queden 100% sobre la línea negra
-    let cxTop = xTop + ((y_top - 20) / 180) * (xBot - xTop);
-    let cx1   = xTop + ((y_steel1 - 20) / 180) * (xBot - xTop);
-    let cx2   = xTop + ((y_steel2 - 20) / 180) * (xBot - xTop);
-    let cx3   = xTop + ((y_steel3 - 20) / 180) * (xBot - xTop);
-
+    
+    // INTERPOLACIÓN LINEAL EXACTA usando deformaciones REALES
+    // Garantiza que los puntos queden 100% sobre la línea negra de Bernoulli
+    let cx_top = xTop;
+    let cx1 = xTop + ((y_steel1 - y_top) / 180) * (xBot_real - xTop);
+    let cx2 = xTop + ((y_steel2 - y_top) / 180) * (xBot_real - xTop);
+    let cx3 = xTop + ((y_steel3 - y_top) / 180) * (xBot_real - xTop);
+    
     // Asignar posiciones y colores exactos a los círculos
-    document.getElementById('dotDefCu').setAttribute('cx', cxTop);
+    document.getElementById('dotDefCu').setAttribute('cx', cx_top);
     
     document.getElementById('dotDef1').setAttribute('cx', cx1); 
     document.getElementById('dotDef1').style.fill = colSup;
@@ -678,6 +704,7 @@ function sincronizarSimulador() {
     
     document.getElementById('dotDef3').setAttribute('cx', cx3); 
     document.getElementById('dotDef3').style.fill = colInf;
+
 
     // Q3: Equilibrio Escalonado ASCII y Ecuación
     document.getElementById('arrAsciiCc').innerText = getAsciiArrows(pt.Cc);
