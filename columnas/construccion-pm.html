@@ -645,35 +645,31 @@ function sincronizarSimulador() {
     // Para cálculos de Bernoulli: usar deformación REAL sin recortar
     let xBot_real = 100 + (eps_bot_raw * scaleDef);
     
-    // Calcular punto de intersección visual de la línea de Bernoulli con los límites del SVG
-    let xBot_visual = xBot_real;
-    let y_bot_visual = 200;
+    // Calcular punto de intersección visual de la LÍNEA de Bernoulli con los límites del SVG
+    let xBot_visual_linea = xBot_real;
+    let y_bot_visual_linea = 200;
     
     if (xBot_real > 170) {
         // La línea se corta en x = 170
-        y_bot_visual = 20 + ((170 - xTop) / (xBot_real - xTop)) * 180;
-        xBot_visual = 170;
+        y_bot_visual_linea = 20 + ((170 - xTop) / (xBot_real - xTop)) * 180;
+        xBot_visual_linea = 170;
     } else if (xBot_real < 30) {
         // La línea se corta en x = 30
-        y_bot_visual = 20 + ((30 - xTop) / (xBot_real - xTop)) * 180;
-        xBot_visual = 30;
+        y_bot_visual_linea = 20 + ((30 - xTop) / (xBot_real - xTop)) * 180;
+        xBot_visual_linea = 30;
     }
     
-    // Dibujar polígono de deformaciones (hasta donde se corta la línea de Bernoulli)
-    // Si la línea se corta antes de llegar a y=200, el polígono debe terminar ahí
-    if (xBot_real > 170 || xBot_real < 30) {
-        // La línea se cortó: polígono hasta el punto de intersección
-        document.getElementById('polyDef').setAttribute('points', `100,20 ${xTop},20 ${xBot_visual},${y_bot_visual} 100,${y_bot_visual}`);
-    } else {
-        // La línea NO se cortó: polígono completo hasta abajo
-        document.getElementById('polyDef').setAttribute('points', `100,20 ${xTop},20 ${xBot_visual},200 100,200`);
-    }
+    // Para el POLÍGONO: siempre va hasta y=200, pero limita x entre 30 y 170
+    let xBot_poligono = Math.max(30, Math.min(170, xBot_real));
     
-    // Línea de Bernoulli (recortada visualmente pero con geometría real)
+    // Dibujar polígono de deformaciones (SIEMPRE hasta abajo, mostrando compatibilidad completa)
+    document.getElementById('polyDef').setAttribute('points', `100,20 ${xTop},20 ${xBot_poligono},200 100,200`);
+    
+    // Línea de Bernoulli (recortada visualmente en los bordes del SVG)
     document.getElementById('lineaBernoulli').setAttribute('x1', xTop); 
     document.getElementById('lineaBernoulli').setAttribute('y1', 20);
-    document.getElementById('lineaBernoulli').setAttribute('x2', xBot_visual);
-    document.getElementById('lineaBernoulli').setAttribute('y2', y_bot_visual);
+    document.getElementById('lineaBernoulli').setAttribute('x2', xBot_visual_linea);
+    document.getElementById('lineaBernoulli').setAttribute('y2', y_bot_visual_linea);
     
     document.getElementById('lineEN_def').setAttribute('y1', yEje); 
     document.getElementById('lineEN_def').setAttribute('y2', yEje);
