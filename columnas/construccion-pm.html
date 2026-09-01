@@ -630,23 +630,54 @@ function sincronizarSimulador() {
     }
     drawVec('vecCc', pt.Cc, pt.a_eff/2); drawVec('vecF1', pt.Fs1, d1); drawVec('vecF2', pt.Fs2, d2); drawVec('vecF3', pt.Fs3, d3);
 
-    // Q2: Compatibilidad (Bernoulli Corregido)
+    // Q2: Compatibilidad (Bernoulli Exacto y Coherente)
     let scaleDef = 3000;
-    let xTop = 100 + (-0.003 * scaleDef); // Compresión izquierda
-    let xBot = 100 + (Math.max(-0.015, Math.min(0.015, pt.et3)) * scaleDef); // Tracción derecha
+    let maxStrainDisplay = 0.025; // Límite para visualización en SVG
     
+    // Deformación arriba (concreto cu = -0.003)
+    let eps_top = -0.003;
+    // Deformación abajo (fibra extrema en y = h)
+    let eps_bot_raw = 0.003 * (h - c) / c;
+    let eps_bot = Math.max(-maxStrainDisplay, Math.min(maxStrainDisplay, eps_bot_raw));
+    
+    // Posiciones X en el SVG (Centro en 100. Tensión a la derecha +, Compresión a la izquierda -)
+    let xTop = 100 + (eps_top * scaleDef);
+    let xBot = 100 + (eps_bot * scaleDef);
+    
+    // Dibujar polígono de deformaciones y línea de Bernoulli
     document.getElementById('polyDef').setAttribute('points', `100,20 ${xTop},20 ${xBot},200 100,200`);
-    document.getElementById('lineaBernoulli').setAttribute('x1', xTop); document.getElementById('lineaBernoulli').setAttribute('x2', xBot);
-    document.getElementById('lineEN_def').setAttribute('y1', yEje); document.getElementById('lineEN_def').setAttribute('y2', yEje);
+    document.getElementById('lineaBernoulli').setAttribute('x1', xTop); 
+    document.getElementById('lineaBernoulli').setAttribute('x2', xBot);
+    document.getElementById('lineEN_def').setAttribute('y1', yEje); 
+    document.getElementById('lineEN_def').setAttribute('y2', yEje);
     
     document.getElementById('lblEs1').textContent = `εs1 = ${pt.et1.toFixed(4)}`;
     document.getElementById('lblEs2').textContent = `εs2 = ${pt.et2.toFixed(4)}`;
     document.getElementById('lblEs3').textContent = `εt = ${pt.et3 > 10 ? '+∞' : pt.et3.toFixed(4)}`;
 
-    document.getElementById('dotDefCu').setAttribute('cx', xTop);
-    document.getElementById('dotDef1').setAttribute('cx', 100 + Math.max(-0.02, Math.min(0.02, pt.et1)) * scaleDef); document.getElementById('dotDef1').style.fill = colSup;
-    document.getElementById('dotDef2').setAttribute('cx', 100 + Math.max(-0.02, Math.min(0.02, pt.et2)) * scaleDef); document.getElementById('dotDef2').style.fill = colMid;
-    document.getElementById('dotDef3').setAttribute('cx', 100 + Math.max(-0.02, Math.min(0.02, pt.et3)) * scaleDef); document.getElementById('dotDef3').style.fill = colInf;
+    // Posiciones Y exactas de cada elemento en el SVG de Bernoulli (de y=20 a y=200, altura total 180 para h=350)
+    let y_top = 20;                     // Fibra superior (y = 0)
+    let y_steel1 = 20 + (d1 / h) * 180;   // Fila 1 (d1 = 60)
+    let y_steel2 = 20 + (d2 / h) * 180;   // Fila 2 (d2 = 175)
+    let y_steel3 = 20 + (d3 / h) * 180;   // Fila 3 (d3 = 290)
+
+    // INTERPOLACIÓN LINEAL EXACTA: Garantiza que los puntos queden 100% sobre la línea negra
+    let cxTop = xTop + ((y_top - 20) / 180) * (xBot - xTop);
+    let cx1   = xTop + ((y_steel1 - 20) / 180) * (xBot - xTop);
+    let cx2   = xTop + ((y_steel2 - 20) / 180) * (xBot - xTop);
+    let cx3   = xTop + ((y_steel3 - 20) / 180) * (xBot - xTop);
+
+    // Asignar posiciones y colores exactos a los círculos
+    document.getElementById('dotDefCu').setAttribute('cx', cxTop);
+    
+    document.getElementById('dotDef1').setAttribute('cx', cx1); 
+    document.getElementById('dotDef1').style.fill = colSup;
+    
+    document.getElementById('dotDef2').setAttribute('cx', cx2); 
+    document.getElementById('dotDef2').style.fill = colMid;
+    
+    document.getElementById('dotDef3').setAttribute('cx', cx3); 
+    document.getElementById('dotDef3').style.fill = colInf;
 
     // Q3: Equilibrio Escalonado ASCII y Ecuación
     document.getElementById('arrAsciiCc').innerText = getAsciiArrows(pt.Cc);
