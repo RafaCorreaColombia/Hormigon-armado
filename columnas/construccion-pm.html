@@ -638,7 +638,7 @@ function sincronizarSimulador() {
     let eps_top = -0.003;
     
     // Deformación abajo (fibra extrema en y = h) - SIN RECORTAR para cálculos
-    let eps_bot_raw = 0.003 * (h - c) / c;
+    let eps_bot_raw = 0.003 * (h - pt.c) / pt.c;
     
     // Posiciones X en el SVG (Centro en 100. Tensión a la derecha +, Compresión a la izquierda -)
     let xTop = 100 + (eps_top * scaleDef); // = 100 - 9 = 91
@@ -828,7 +828,7 @@ function iniciarVueloPunto() {
 function agregarPuntoInmediato() {
     let c_val = parseFloat(document.getElementById('inputC').value);
     let pt = calcularFisica(c_val);
-    if(!listaPuntos.find(p => p.c === c_val)) {
+    if(!listaPuntos.find(p => Math.abs(p.c - c_val) < 0.1)) {
         listaPuntos.push(pt); listaPuntos.sort((a,b) => b.c - a.c); 
         renderizarTablaYPuntos(pt.c); 
     }
@@ -905,15 +905,42 @@ function toggleModoDescubrimiento() {
 function toggleRecorridoAuto() {
     let btn = document.getElementById('btnAnimar');
     if (!animando_auto) {
-        animando_auto = true; btn.innerHTML = `<i class="fa fa-pause"></i> Pausar`; btn.className = "w3-button w3-red w3-round w3-small w3-block";
+        animando_auto = true; 
+        btn.innerHTML = `<i class="fa fa-pause"></i> Pausar`; 
+        btn.className = "w3-button w3-red w3-round w3-small w3-block";
         reiniciarTabla();
-        let arr_C = [800, 640, 330, 250, 210, 190, 175, 170.5, 165, 155, 140, 110, 65, 10]; let idx = 0;
+        
+        let arr_C = [800, 640, 330, 250, 210, 190, 175, 170.5, 165, 155, 140, 110, 65, 10]; 
+        let idx = 0;
+        
         intervaloAnimacion = setInterval(() => {
-            if (idx < arr_C.length) { document.getElementById('inputC').value = arr_C[idx]; sincronizarSimulador(); animarYGuardarPunto(); idx++; } 
-            else { animando_auto = false; clearInterval(intervaloAnimacion); btn.innerHTML = `<i class="fa fa-play"></i> Barrido Auto`; btn.className = "w3-button w3-blue w3-round w3-small w3-block"; }
-        }, 1600); 
+            if (idx < arr_C.length) { 
+                document.getElementById('inputC').value = arr_C[idx]; 
+                sincronizarSimulador(); 
+                
+                // Guardar punto SIN animación (más rápido y sin conflictos)
+                let c_val = parseFloat(document.getElementById('inputC').value);
+                let pt = calcularFisica(c_val);
+                if(!listaPuntos.find(p => Math.abs(p.c - c_val) < 0.1)) {
+                    listaPuntos.push(pt); 
+                    listaPuntos.sort((a,b) => b.c - a.c); 
+                    renderizarTablaYPuntos(pt.c); 
+                }
+                
+                idx++; 
+            } else { 
+                animando_auto = false; 
+                clearInterval(intervaloAnimacion); 
+                btn.innerHTML = `<i class="fa fa-play"></i> Barrido Auto`; 
+                btn.className = "w3-button w3-blue w3-round w3-small w3-block"; 
+            }
+        }, 800); // Intervalo reducido a 800ms (14 puntos × 0.8s = 11.2 segundos total)
+        
     } else {
-        animando_auto = false; clearInterval(intervaloAnimacion); btn.innerHTML = `<i class="fa fa-play"></i> Barrido Auto`; btn.className = "w3-button w3-blue w3-round w3-small w3-block";
+        animando_auto = false; 
+        clearInterval(intervaloAnimacion); 
+        btn.innerHTML = `<i class="fa fa-play"></i> Barrido Auto`; 
+        btn.className = "w3-button w3-blue w3-round w3-small w3-block";
     }
 }
 
