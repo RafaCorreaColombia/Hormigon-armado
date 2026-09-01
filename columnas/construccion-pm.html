@@ -659,33 +659,18 @@ function sincronizarSimulador() {
         xBot_visual_linea = 30;
     }
     
-    // Para el POLÍGONO: Determinar si es triángulo o trapecio
+    // Para el POLÍGONO: SIEMPRE hasta y=200, trapecio cuando se sale lateralmente
     let puntosPoligono;
     
     if (xBot_real > 170) {
-        // La línea sale por la derecha (x=170)
-        if (y_bot_visual_linea < 200) {
-            // La línea sale ANTES de llegar abajo → TRIÁNGULO
-            // Vértices: centro-arriba, compresión-arriba, intersección-derecha, centro-abajo
-            puntosPoligono = `100,20 ${xTop},20 ${xBot_visual_linea},${y_bot_visual_linea} 100,${y_bot_visual_linea}`;
-        } else {
-            // La línea cruza TODO el SVG hasta abajo → TRAPECIO
-            // Vértices: centro-arriba, compresión-arriba, esquina-superior-derecha, esquina-inferior-derecha, centro-abajo
-            puntosPoligono = `100,20 ${xTop},20 170,20 170,200 100,200`;
-        }
+        // La línea sale por la derecha → TRAPECIO completo hasta abajo
+        puntosPoligono = `100,20 ${xTop},20 170,20 170,200 100,200`;
     } else if (xBot_real < 30) {
-        // La línea sale por la izquierda (x=30)
-        if (y_bot_visual_linea < 200) {
-            // La línea sale ANTES de llegar abajo → TRIÁNGULO
-            puntosPoligono = `100,20 ${xTop},20 ${xBot_visual_linea},${y_bot_visual_linea} 100,${y_bot_visual_linea}`;
-        } else {
-            // La línea cruza TODO el SVG hasta abajo → TRAPECIO
-            puntosPoligono = `100,20 ${xTop},20 30,20 30,200 100,200`;
-        }
+        // La línea sale por la izquierda → TRAPECIO completo hasta abajo
+        puntosPoligono = `100,20 ${xTop},20 30,20 30,200 100,200`;
     } else {
-        // La línea NO se sale lateralmente → POLÍGONO COMPLETO
-        let xBot_poligono = xBot_real;
-        puntosPoligono = `100,20 ${xTop},20 ${xBot_poligono},200 100,200`;
+        // La línea NO se sale lateralmente → TRIÁNGULO completo hasta abajo
+        puntosPoligono = `100,20 ${xTop},20 ${xBot_real},200 100,200`;
     }
     
     // Dibujar polígono de deformaciones
@@ -705,13 +690,12 @@ function sincronizarSimulador() {
     document.getElementById('lblEs3').textContent = `εt = ${pt.et3 > 10 ? '+∞' : pt.et3.toFixed(4)}`;
     
     // Posiciones Y exactas de cada elemento en el SVG de Bernoulli
-    let y_top = 20;                     // Fibra superior (y = 0)
-    let y_steel1 = 20 + (d1 / h) * 180;   // Fila 1 (d1 = 60)
-    let y_steel2 = 20 + (d2 / h) * 180;   // Fila 2 (d2 = 175)
-    let y_steel3 = 20 + (d3 / h) * 180;   // Fila 3 (d3 = 290)
+    let y_top = 20;
+    let y_steel1 = 20 + (d1 / h) * 180;
+    let y_steel2 = 20 + (d2 / h) * 180;
+    let y_steel3 = 20 + (d3 / h) * 180;
     
     // INTERPOLACIÓN LINEAL EXACTA usando deformaciones REALES
-    // Garantiza que los puntos queden 100% sobre la línea negra de Bernoulli
     let cx_top = xTop;
     let cx1 = xTop + ((y_steel1 - y_top) / 180) * (xBot_real - xTop);
     let cx2 = xTop + ((y_steel2 - y_top) / 180) * (xBot_real - xTop);
