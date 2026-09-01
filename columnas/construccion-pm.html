@@ -659,15 +659,15 @@ function sincronizarSimulador() {
         xBot_visual_linea = 30;
     }
     
-    // Para el POLÍGONO: SIEMPRE hasta y=200, trapecio cuando se sale lateralmente
+    // Para el POLÍGONO: Trapecio correcto siguiendo la pendiente exacta hasta el borde y bajando hasta y=200
     let puntosPoligono;
     
     if (xBot_real > 170) {
-        // La línea sale por la derecha → TRAPECIO completo hasta abajo
-        puntosPoligono = `100,20 ${xTop},20 170,20 170,200 100,200`;
+        // La línea sale por la derecha → TRAPECIO completo hasta abajo usando la intersección real
+        puntosPoligono = `100,20 ${xTop},20 170,${y_bot_visual_linea} 170,200 100,200`;
     } else if (xBot_real < 30) {
-        // La línea sale por la izquierda → TRAPECIO completo hasta abajo
-        puntosPoligono = `100,20 ${xTop},20 30,20 30,200 100,200`;
+        // La línea sale por la izquierda → TRAPECIO completo hasta abajo usando la intersección real
+        puntosPoligono = `100,20 ${xTop},20 30,${y_bot_visual_linea} 30,200 100,200`;
     } else {
         // La línea NO se sale lateralmente → TRIÁNGULO completo hasta abajo
         puntosPoligono = `100,20 ${xTop},20 ${xBot_real},200 100,200`;
