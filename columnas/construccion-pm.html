@@ -606,7 +606,7 @@ function sincronizarSimulador() {
         let el = document.getElementById(id);
         if (Math.abs(force) < 10) { el.setAttribute("opacity", "0"); return; }
         let y_svg = 20 + (y_real / h) * 180;
-        let len = Math.max(10, Math.min(50, Math.abs(force) * 0.02));
+        let len = Math.max(15, Math.min(75, Math.abs(force) * 0.035));
         
         // CORRECCIÓN MARKERS:
         let xStart, xEnd, color, marker;
