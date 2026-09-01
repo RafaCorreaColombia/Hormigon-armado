@@ -705,6 +705,12 @@ function sincronizarSimulador() {
     document.getElementById('dotDef3').setAttribute('cx', cx3); 
     document.getElementById('dotDef3').style.fill = colInf;
 
+    // Ocultar puntos que se salen del SVG
+    document.getElementById('dotDef1').style.opacity = (cx1 < 30 || cx1 > 170) ? "0" : "1";
+    document.getElementById('dotDef2').style.opacity = (cx2 < 30 || cx2 > 170) ? "0" : "1";
+    document.getElementById('dotDef3').style.opacity = (cx3 < 30 || cx3 > 170) ? "0" : "1";
+
+
 
     // Q3: Equilibrio Escalonado ASCII y Ecuación
     document.getElementById('arrAsciiCc').innerText = getAsciiArrows(pt.Cc);
