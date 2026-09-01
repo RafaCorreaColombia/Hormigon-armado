@@ -632,7 +632,6 @@ function sincronizarSimulador() {
 
     // Q2: Compatibilidad (Bernoulli Exacto y Coherente)
     let scaleDef = 3000;
-    let maxStrainDisplay = 0.025; // Límite SOLO para visualización del polígono
     
     // Deformación arriba (concreto cu = -0.003)
     let eps_top = -0.003;
@@ -643,15 +642,8 @@ function sincronizarSimulador() {
     // Posiciones X en el SVG (Centro en 100. Tensión a la derecha +, Compresión a la izquierda -)
     let xTop = 100 + (eps_top * scaleDef); // = 100 - 9 = 91
     
-    // Para el polígono visual: recortar eps_bot para que quepa en el SVG
-    let eps_bot_display = Math.max(-maxStrainDisplay, Math.min(maxStrainDisplay, eps_bot_raw));
-    let xBot_display = 100 + (eps_bot_display * scaleDef);
-    
     // Para cálculos de Bernoulli: usar deformación REAL sin recortar
     let xBot_real = 100 + (eps_bot_raw * scaleDef);
-    
-    // Dibujar polígono de deformaciones (con valores recortados para que quepa)
-    document.getElementById('polyDef').setAttribute('points', `100,20 ${xTop},20 ${xBot_display},200 100,200`);
     
     // Calcular punto de intersección visual de la línea de Bernoulli con los límites del SVG
     let xBot_visual = xBot_real;
@@ -665,6 +657,16 @@ function sincronizarSimulador() {
         // La línea se corta en x = 30
         y_bot_visual = 20 + ((30 - xTop) / (xBot_real - xTop)) * 180;
         xBot_visual = 30;
+    }
+    
+    // Dibujar polígono de deformaciones (hasta donde se corta la línea de Bernoulli)
+    // Si la línea se corta antes de llegar a y=200, el polígono debe terminar ahí
+    if (xBot_real > 170 || xBot_real < 30) {
+        // La línea se cortó: polígono hasta el punto de intersección
+        document.getElementById('polyDef').setAttribute('points', `100,20 ${xTop},20 ${xBot_visual},${y_bot_visual} 100,${y_bot_visual}`);
+    } else {
+        // La línea NO se cortó: polígono completo hasta abajo
+        document.getElementById('polyDef').setAttribute('points', `100,20 ${xTop},20 ${xBot_visual},200 100,200`);
     }
     
     // Línea de Bernoulli (recortada visualmente pero con geometría real)
@@ -704,13 +706,11 @@ function sincronizarSimulador() {
     
     document.getElementById('dotDef3').setAttribute('cx', cx3); 
     document.getElementById('dotDef3').style.fill = colInf;
-
+    
     // Ocultar puntos que se salen del SVG
     document.getElementById('dotDef1').style.opacity = (cx1 < 30 || cx1 > 170) ? "0" : "1";
     document.getElementById('dotDef2').style.opacity = (cx2 < 30 || cx2 > 170) ? "0" : "1";
     document.getElementById('dotDef3').style.opacity = (cx3 < 30 || cx3 > 170) ? "0" : "1";
-
-
 
     // Q3: Equilibrio Escalonado ASCII y Ecuación
     document.getElementById('arrAsciiCc').innerText = getAsciiArrows(pt.Cc);
