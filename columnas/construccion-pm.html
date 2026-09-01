@@ -53,21 +53,15 @@
 
         #puntoVolador { position: fixed; width: 14px; height: 14px; background-color: var(--naranja-estructural); border: 2px solid white; border-radius: 50%; z-index: 9999; pointer-events: none; opacity: 0; box-shadow: 0 0 15px rgba(230,126,34,0.8); transition: top 0.6s cubic-bezier(0.25, 1, 0.5, 1), left 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.2s; }
 
-        /* Estilos para el manifiesto de ideas */
         .manifiesto-box { background: #f8fafc; border-left: 4px solid var(--naranja-estructural); padding: 15px 20px; margin-top: 20px; border-radius: 0 8px 8px 0; }
         .lema-destacado { background: rgba(230, 126, 34, 0.1); border: 1px dashed var(--naranja-estructural); padding: 12px 15px; border-radius: 8px; text-align: center; font-weight: bold; color: var(--azul-profundo); margin-top: 15px; }
         
         ::-webkit-scrollbar { height: 6px; width: 6px; }
         ::-webkit-scrollbar-thumb { background: var(--naranja-estructural); border-radius: 10px; }
 
-        /* Ajuste responsivo para pantallas móviles con respiro lateral simétrico */
         @media (max-width: 1250px) {
             .contenedor-principal {
-                width: 100% !important;
-                margin: 0 !important;
-                border-radius: 0 !important;
-                box-shadow: none;
-                padding: 0 !important;
+                width: 100% !important; margin: 0 !important; border-radius: 0 !important; box-shadow: none; padding: 0 !important;
             }
         }
     </style>
@@ -95,18 +89,15 @@
 
     <div class="w3-padding-24" style="padding-left:30px; padding-right:30px;">
 
-        <!-- OBJETIVO NARRATIVO MEJORADO -->
         <div class="w3-panel w3-leftbar w3-border-red w3-pale-red w3-padding-16 w3-round">
             <h5 class="w3-text-dark-grey w3-margin-0"><b><i class="fa fa-bullseye w3-text-red"></i> Objetivo del laboratorio</b></h5>
             <p class="w3-small" style="margin-top: 8px;">En el laboratorio anterior (Flexión) descubrimos un solo punto de la curva: una posición del eje neutro produce un único estado de deformaciones, un único equilibrio interno y un único par resistente $(P_n, M_n)$. <br><br><b>Hoy construiremos toda la curva.</b> En este laboratorio haremos exactamente lo mismo... pero repetido para todas las posiciones posibles del eje neutro.</p>
             
-            <!-- Lema central destacado -->
             <div class="lema-destacado w3-small">
                 <i class="fa fa-quote-left w3-text-orange"></i> El diagrama P–M no se calcula con una fórmula; se construye resolviendo el equilibrio para muchas posiciones del eje neutro. <i class="fa fa-quote-right w3-text-orange"></i>
             </div>
         </div>
 
-        <!-- SECCIÓN DE ESTUDIO -->
         <div class="w3-panel w3-border w3-round-large w3-padding w3-card-2 w3-white">
             <h6 class="w3-text-dark-grey w3-margin-0"><b><i class="fa fa-cubes w3-text-red"></i> Sección en Estudio</b></h6>
             <div class="w3-row w3-small w3-margin-top">
@@ -121,7 +112,6 @@
             </div>
         </div>
 
-        <!-- SLIDER Y CONTROL -->
         <div class="w3-panel w3-light-grey w3-padding-16 w3-round-large w3-margin-top w3-row-padding w3-card-2">
             <div class="w3-col l8">
                 <label><b>Profundidad del Eje Neutro ($c$):</b> <span id="valC" class="highlight" style="font-size:1.3em;">170.6</span> mm <span class="w3-text-grey w3-small">&nbsp;&nbsp;(Deformación a tracción $\epsilon_t = $ <span id="valEt_disp">--</span>)</span></label>
@@ -149,18 +139,20 @@
                 <button onclick="animarYGuardarPunto()" id="btnGuardarPunto" class="w3-button w3-red w3-hover-dark-grey w3-round-large w3-block w3-margin-bottom" style="font-weight:bold;">
                     <i class="fa fa-crosshairs"></i> Construir y Guardar Punto
                 </button>
-                <div class="w3-row">
+                <div class="w3-row w3-margin-bottom">
                     <div class="w3-half" style="padding-right:4px;">
                         <button onclick="toggleRecorridoAuto()" id="btnAnimar" class="w3-button w3-blue w3-round w3-small w3-block"><i class="fa fa-play"></i> Barrido Auto</button>
                     </div>
                     <div class="w3-half" style="padding-left:4px;">
-                        <button onclick="reiniciarTabla()" class="w3-button w3-white w3-border w3-round w3-small w3-block"><i class="fa fa-trash"></i> Limpiar PM</button>
+                        <button onclick="saltarABalanceado()" class="w3-button w3-amber w3-round w3-small w3-block" style="color:#1A2530!important; font-weight:bold;"><i class="fa fa-star"></i> Balanceado</button>
                     </div>
+                </div>
+                <div class="w3-row">
+                    <button onclick="reiniciarTabla()" class="w3-button w3-white w3-border w3-round w3-small w3-block"><i class="fa fa-trash"></i> Limpiar PM</button>
                 </div>
             </div>
         </div>
 
-        <!-- 4 CUADRANTES -->
         <div class="w3-row-padding w3-margin-top w3-stretch" style="display: flex; flex-wrap: wrap;">
             
             <!-- Q1: SECCIÓN CON RESULTANTES -->
@@ -174,16 +166,15 @@
                             <defs>
                                 <filter id="shadow"><feDropShadow dx="2" dy="4" stdDeviation="4" flood-opacity="0.15"/></filter>
                                 <linearGradient id="gradW" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#f97316" stop-opacity="0.6"/><stop offset="100%" stop-color="#dc2626" stop-opacity="0.6"/></linearGradient>
+                                <!-- MARKERS CORREGIDOS -->
                                 <marker id="arrComp" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#dc2626"/></marker>
-                                <marker id="arrTrac" viewBox="0 0 10 10" refX="2" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 10 0 L 0 5 L 10 10 z" fill="#2563eb"/></marker>
+                                <marker id="arrTrac" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb"/></marker>
                             </defs>
                             
                             <rect x="80" y="20" width="100" height="180" fill="#fafafa" stroke="#1A2530" stroke-width="2" filter="url(#shadow)"/>
-                            <!-- Etiqueta 'a' -->
                             <rect id="secWhitney" class="anim-suave" x="80" y="20" width="100" height="0" fill="url(#gradW)"/>
                             <text id="txtA_vis" class="anim-suave" x="185" y="25" font-size="9" fill="#f97316" font-weight="bold">a</text>
                             
-                            <!-- Eje Neutro 'c' -->
                             <line id="secEjeNeutro" class="anim-suave" x1="60" y1="20" x2="200" y2="20" stroke="#dc2626" stroke-width="2" stroke-dasharray="4,2"/>
                             <text id="txtC_vis" class="anim-suave" x="205" y="25" font-size="10" fill="#dc2626" font-weight="bold">c</text>
                             
@@ -191,10 +182,10 @@
                             <circle id="b2a" cx="95" cy="110" r="4.5" stroke="#fff" stroke-width="1.5" class="anim-suave"/> <circle id="b2b" cx="165" cy="110" r="4.5" stroke="#fff" stroke-width="1.5" class="anim-suave"/>
                             <circle id="b3a" cx="95" cy="169" r="4.5" stroke="#fff" stroke-width="1.5" class="anim-suave"/> <circle id="b3b" cx="130" cy="169" r="4.5" stroke="#fff" stroke-width="1.5" class="anim-suave"/> <circle id="b3c" cx="165" cy="169" r="4.5" stroke="#fff" stroke-width="1.5" class="anim-suave"/>
 
-                            <line id="vecCc" class="anim-suave" x1="20" y1="20" x2="70" y2="20" stroke="#dc2626" stroke-width="2" marker-end="url(#arrComp)" opacity="0"/>
-                            <line id="vecF1" class="anim-suave" x1="20" y1="51" x2="70" y2="51" stroke="#2563eb" stroke-width="2" marker-end="url(#arrTrac)" opacity="0"/>
-                            <line id="vecF2" class="anim-suave" x1="20" y1="110" x2="70" y2="110" stroke="#2563eb" stroke-width="2" marker-end="url(#arrTrac)" opacity="0"/>
-                            <line id="vecF3" class="anim-suave" x1="20" y1="169" x2="70" y2="169" stroke="#2563eb" stroke-width="2" marker-end="url(#arrTrac)" opacity="0"/>
+                            <line id="vecCc" class="anim-suave" x1="20" y1="20" x2="70" y2="20" stroke-width="2" opacity="0"/>
+                            <line id="vecF1" class="anim-suave" x1="20" y1="51" x2="70" y2="51" stroke-width="2" opacity="0"/>
+                            <line id="vecF2" class="anim-suave" x1="20" y1="110" x2="70" y2="110" stroke-width="2" opacity="0"/>
+                            <line id="vecF3" class="anim-suave" x1="20" y1="169" x2="70" y2="169" stroke-width="2" opacity="0"/>
                         </svg>
                     </div>
                 </div>
@@ -208,15 +199,17 @@
                     </div>
                     <div class="w3-center" style="flex-grow:1; display:flex; align-items:center; justify-content:center;">
                         <svg viewBox="0 0 200 220" width="100%" height="180" style="background:#F4F5F7; border-radius:6px;">
+                            <!-- Etiquetas del polígono corregido -->
+                            <text x="25" y="215" font-size="9" fill="#dc2626" font-weight="bold">Comp (-)</text>
+                            <text x="140" y="215" font-size="9" fill="#2563eb" font-weight="bold">Tracc (+)</text>
+
                             <line x1="100" y1="20" x2="100" y2="200" stroke="#999" stroke-width="1"/>
                             
-                            <!-- Polígono renderizado correctamente (Izquierda Tensión, Derecha Compresión) -->
                             <polygon id="polyDef" class="anim-suave" points="" fill="rgba(230,126,34,0.15)" stroke="none"/>
                             
                             <line id="lineEN_def" class="anim-suave" x1="30" y1="20" x2="170" y2="20" stroke="black" stroke-dasharray="3" stroke-width="1"/>
-                            <text x="105" y="15" font-size="9" fill="#dc2626" font-weight="bold">εcu=-0.003</text>
+                            <text x="45" y="15" font-size="9" fill="#dc2626" font-weight="bold">εcu=-0.003</text>
                             
-                            <!-- Línea de Bernoulli -->
                             <line id="lineaBernoulli" class="anim-suave" x1="100" y1="20" x2="100" y2="200" stroke="#1A2530" stroke-width="2"/>
                             
                             <line x1="30" y1="51" x2="170" y2="51" stroke="#ccc" stroke-dasharray="2,2"/>
@@ -245,7 +238,6 @@
                     </div>
                     <div class="w3-small" style="flex-grow:1; display:flex; flex-direction:column; justify-content:space-between;">
                         
-                        <!-- Esquema ASCII -->
                         <div class="w3-row w3-center w3-margin-bottom" style="font-family: monospace; font-size: 11px; font-weight: bold; background: #fdf6f0; padding: 10px 5px; border-radius: 6px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); min-height:85px; display:flex; align-items:flex-end;">
                             <div class="w3-col" style="width: 25%;">
                                 <span class="w3-text-red">C<sub>c</sub></span><br>
@@ -269,13 +261,14 @@
                             </div>
                         </div>
 
-                        <!-- Ecuación Viva -->
+                        <!-- ECUACIÓN MEJORADA -->
                         <div class="w3-light-grey w3-padding w3-round" style="font-family: monospace; font-size: 9px; line-height: 1.5;">
-                            <b>ΣF = P<sub>n</sub></b><br>
-                            P<sub>n</sub> = <span id="eqPnCc" class="w3-text-red">Cc</span> <span id="signF1">+</span> <span id="eqPnF1">Fs1</span> <span id="signF2">+</span> <span id="eqPnF2">Fs2</span> <span id="signF3">+</span> <span id="eqPnF3">Fs3</span><br>
+                            <b>ΣF<sub>vertical</sub> = P<sub>n</sub></b><br>
+                            P<sub>n</sub> = <span id="eqPnCc" class="w3-text-red">Cc</span> <span id="signF1"></span> <span id="eqPnF1" class="w3-text-blue">Fs1</span> <span id="signF2"></span> <span id="eqPnF2" class="w3-text-blue">Fs2</span> <span id="signF3"></span> <span id="eqPnF3" class="w3-text-blue">Fs3</span><br>
+                            <span class="w3-tiny w3-text-grey">(+ Tracción arriba, - Compresión abajo)</span><br>
                             <b class="w3-text-dark-grey" style="font-size:12px;">P<sub>n</sub> = <span id="valPnSuma">--</span> kN</b>
                             <hr style="margin: 4px 0; border-color:#ccc;">
-                            <b>ΣM = M<sub>n</sub></b> <span class="w3-text-grey">(respecto al centroide)</span><br>
+                            <b>ΣM<sub>centroide</sub> = M<sub>n</sub></b><br>
                             <b class="w3-text-dark-grey" style="font-size:12px;">M<sub>n</sub> = <span id="valMnSuma">--</span> kNm</b>
                         </div>
                     </div>
@@ -289,24 +282,35 @@
                         <b class="w3-text-dark-grey" style="font-size: 1.1em;">4. Diagrama P-M</b><br>
                         <span class="w3-tiny w3-text-grey">Puntos descubiertos: <b id="contadorPuntos" class="w3-text-red w3-medium">0</b></span>
                         <button onclick="toggleCurvaTeorica()" id="btnCurvaTeorica" class="w3-button w3-tiny w3-round w3-border w3-light-grey" style="position:absolute; right:-5px; top:-5px; padding:2px 5px; z-index:5;"><i class="fa fa-eye"></i> Teoría</button>
+                        
+                        <!-- LEYENDA AGREGADA -->
+                        <div class="w3-tiny w3-margin-top" style="display: flex; justify-content: center; gap: 10px;">
+                            <span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--rojo-compresion);"></span> Compresión</span>
+                            <span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--naranja-transicion);"></span> Transición</span>
+                            <span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--verde-traccion);"></span> Tracción</span>
+                        </div>
                     </div>
+                    
                     <div class="w3-center" style="position: relative; flex-grow:1; display:flex; align-items:center;">
                         <svg id="svgPM" viewBox="0 0 250 220" width="100%" height="180" style="background:#fff; border:1px solid #ddd; border-radius:6px;">
                             
-                            <!-- Regiones de Fondo -->
-                            <rect id="bgComp" class="zona-teorica" x="0" y="0" width="250" height="0" fill="var(--rojo-compresion)"/>
-                            <rect id="bgTrans" class="zona-teorica" x="0" y="0" width="250" height="0" fill="var(--naranja-transicion)"/>
                             <rect id="bgTrac" class="zona-teorica" x="0" y="0" width="250" height="0" fill="var(--verde-traccion)"/>
+                            <rect id="bgTrans" class="zona-teorica" x="0" y="0" width="250" height="0" fill="var(--naranja-transicion)"/>
+                            <rect id="bgComp" class="zona-teorica" x="0" y="0" width="250" height="0" fill="var(--rojo-compresion)"/>
 
                             <g id="gridPM" opacity="0.4"></g>
 
-                            <text id="txtZ1" class="texto-teorico" x="240" y="0" font-size="8" fill="#999" text-anchor="end">COMPRESIÓN (-)</text>
-                            <text id="txtZ2" class="texto-teorico" x="240" y="0" font-size="8" fill="#999" text-anchor="end">TRANSICIÓN</text>
                             <text id="txtZ3" class="texto-teorico" x="240" y="0" font-size="8" fill="#999" text-anchor="end">TRACCIÓN (+)</text>
+                            <text id="txtZ2" class="texto-teorico" x="240" y="0" font-size="8" fill="#999" text-anchor="end">TRANSICIÓN</text>
+                            <text id="txtZ1" class="texto-teorico" x="240" y="0" font-size="8" fill="#999" text-anchor="end">COMPRESIÓN (-)</text>
 
                             <!-- Ejes -->
                             <line id="pmEjeX" x1="20" y1="180" x2="240" y2="180" stroke="#888" stroke-width="1.5"/>
                             <line id="pmEjeY" x1="30" y1="10" x2="30" y2="210" stroke="#888" stroke-width="1.5"/>
+                            
+                            <!-- ETIQUETAS EJES -->
+                            <text x="15" y="115" font-size="10" fill="#1A2530" font-weight="bold" transform="rotate(-90, 15, 115)">Pn (kN)</text>
+                            <text x="135" y="205" font-size="10" fill="#1A2530" font-weight="bold" text-anchor="middle">Mn (kN·m)</text>
                             
                             <!-- Curvas -->
                             <path id="bgNomComp" class="curva-teorica" fill="none" stroke="var(--rojo-compresion)" stroke-width="1.5" stroke-dasharray="2,2"/>
@@ -320,7 +324,6 @@
                             <circle id="ptFlex" class="curva-teorica" cx="0" cy="0" r="3" fill="#1A2530"/><text id="txtFlex" class="curva-teorica" x="0" y="0" font-size="8">○ Flexión Pura</text>
                             <circle id="ptTen" class="curva-teorica" cx="0" cy="0" r="3" fill="#1A2530"/><text id="txtTen" class="curva-teorica" x="0" y="0" font-size="8" text-anchor="end">○ Tracción Pura</text>
 
-                            <!-- Ruta estudiante -->
                             <path id="rutaConstruida" fill="none" stroke="#1A2530" stroke-width="1.5" class="anim-suave"/>
                             <g id="grupoPuntos"></g>
                             <circle id="puntoFantasma" class="punto-fantasma anim-suave dato-revelable" cx="30" cy="180"/>
@@ -331,7 +334,6 @@
 
         </div>
 
-        <!-- MANIFIESTO Y PROGRESIÓN PEDAGÓGICA (NUEVO) -->
         <div class="manifiesto-box w3-small w3-margin-top">
             <b><i class="fa fa-graduation-cap w3-text-orange"></i> La evolución conceptual de Criterio Estructural:</b>
             <p style="margin: 6px 0 0 0; line-height: 1.5; color: #4a5568;">
@@ -365,20 +367,16 @@
             </div>
         </div>
 
-    
-
-        <!-- Línea Divisoria con el estilo elegante -->
         <div style="max-width: 800px; margin: auto; padding: 0 15px;">
             <hr style="border: 0; height: 1px; background-color: #ddd; margin: 40px 0;">
         </div>
-
         <hr style="border: 0; height: 1px; background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(230, 126, 34, 0.75), rgba(0, 0, 0, 0)); margin-top: 50px;">
+        
         <div class="w3-center w3-padding-32" style="margin-top: 50px; clear: both;">
             <a href="../index.html" class="w3-button w3-light-grey w3-round-large w3-border">Inicio</a>
             <a href="../vigas/simulador.html" class="w3-button w3-red w3-round-large">Repasar Labs 1, 2 y 3: Flexión</a>
         </div>
         
-        <!-- Protocolo de Integridad Académica -->
         <div class="w3-panel w3-sand w3-leftbar w3-border-red w3-padding-16 w3-margin-top" style="font-style: italic;">
             <h5 class="w3-text-dark-grey" style="margin-top: 0;"><b>⚠️ Protocolo de Integridad Académica</b></h5>
             <p class="w3-small">
@@ -388,7 +386,6 @@
             </p>
         </div>
 
-        <!-- Sección de Consultas -->
         <div class="w3-container w3-margin-top w3-padding-32">
             <h3 class="w3-border-red" style="border-bottom: 2px solid var(--naranja-estructural) !important; padding-bottom: 8px; margin-top: 0; font-weight: bold;">
                 Consultas y Discusión Académica
@@ -406,44 +403,26 @@
             </div>
         </div>
     
-    </div> <!-- Cierra el div .w3-padding-24 principal -->
+    </div>
 
-    <!-- Footer con el gris institucional de la marca -->
     <footer class="w3-container w3-padding-32 w3-center w3-text-grey" style="background-color: var(--gris-claro); margin-top: 0;">
         <div class="w3-border-top w3-border-light-grey w3-padding-24" style="max-width: 500px; margin: auto;">
             <img src="../assets/IsotipoFClaroT.png" alt="Criterio Estructural" class="brand-logo-footer" style="max-width: 200px;">
              <p class="w3-medium"><b>Autor</b></p>
-
-            <h4 style="margin:0;">
-                <b>Ing. Rafael Antonio Correa Melano</b>
-            </h4>
-            
-            <p class="w3-small">
-                Ingeniero Civil • M.IE.<br>
-                Universidad Industrial de Santander
-            </p>
-            
+            <h4 style="margin:0;"><b>Ing. Rafael Antonio Correa Melano</b></h4>
+            <p class="w3-small">Ingeniero Civil • M.IE.<br>Universidad Industrial de Santander</p>
             <hr style="opacity:0.2">
-            
-            <p class="w3-small w3-text-grey">
-                <b>Criterio Estructural</b><br>
-                © 2026 Rafael Antonio Correa Melano.<br>
-                Todos los derechos reservados.
-            </p>
+            <p class="w3-small w3-text-grey"><b>Criterio Estructural</b><br>© 2026 Rafael Antonio Correa Melano.<br>Todos los derechos reservados.</p>
             <div class="w3-margin-top">
                 <span class="w3-tag w3-round w3-white w3-border w3-border-red w3-text-red w3-small">Bucaramanga, Colombia 🇨🇴</span>
             </div>
         </div>
     </footer>
 
-</div> <!-- Cierra el div .contenedor-principal -->
-
-
-    
-
+</div>
 
 <script>
-// --- FÍSICA Y GEOMETRÍA (Áreas de barra de 6/8" exactas) ---
+// --- FÍSICA Y GEOMETRÍA ---
 const b = 300, h = 350, fc = 28, fy = 420, Es = 200000;
 const d1 = 60, d2 = 175, d3 = 290;
 const A_bar = Math.PI * Math.pow(19.05, 2) / 4; // 285.023 mm²
@@ -482,20 +461,17 @@ function iniciarEscalas() {
     let ancho = svgW - mar - 20; let alto = svgH - mar - 10;
     scaleX = ancho / (ptMaxM * 1.15); 
     
-    // Y SVG va de 0 a svgH. Max Compresión (ptMinP) debe estar arriba (mar).
-    // Max Tracción (ptMaxP) debe estar abajo (svgH - mar).
+    // INVERSIÓN EJE Y: Tracción (positiva) arriba, Compresión (negativa) abajo.
     let rangoY = ptMaxP - ptMinP;
     scaleY = alto / rangoY;
-    
-    // Eje X donde Pn = 0
-    yCero = mar + (0 - ptMinP) * scaleY; 
+    yCero = mar + ptMaxP * scaleY; 
     
     document.getElementById('pmEjeX').setAttribute('y1', yCero); document.getElementById('pmEjeX').setAttribute('y2', yCero);
 
     // Retícula SVG
     let gridSVG = document.getElementById('gridPM'); gridSVG.innerHTML = "";
     for(let p = -4000; p <= 2000; p+=1000) {
-        let py = yCero + p * scaleY;
+        let py = yCero - p * scaleY;
         if(py > 10 && py < 210) gridSVG.innerHTML += `<line x1="25" y1="${py}" x2="240" y2="${py}" stroke="#ddd" stroke-dasharray="2,2"/>`;
     }
     for(let m = 50; m <= 300; m+=50) {
@@ -514,19 +490,22 @@ function iniciarEscalas() {
     let minDist = 9999;
     ptsBg.forEach(p => { if (Math.abs(p.Pn) < minDist) { minDist = Math.abs(p.Pn); ptFlex = p; } });
     
-    let yBal = yCero + ptBal.Pn * scaleY;
-    let yDuct = yCero + ptDuctil.Pn * scaleY;
+    let yBal = yCero - ptBal.Pn * scaleY;
+    let yDuct = yCero - ptDuctil.Pn * scaleY;
     
-    document.getElementById('bgComp').setAttribute("y", 0); document.getElementById('bgComp').setAttribute("height", yBal);
-    document.getElementById('txtZ1').setAttribute("y", yBal - 5);
-    document.getElementById('bgTrans').setAttribute("y", yBal); document.getElementById('bgTrans').setAttribute("height", yDuct - yBal);
-    document.getElementById('txtZ2').setAttribute("y", yDuct - 5);
-    document.getElementById('bgTrac').setAttribute("y", yDuct); document.getElementById('bgTrac').setAttribute("height", svgH - yDuct);
-    document.getElementById('txtZ3').setAttribute("y", svgH - 5);
+    // Configuración Rectángulos Zonas (Tracción Arriba, Compresión Abajo)
+    document.getElementById('bgTrac').setAttribute("y", 0); document.getElementById('bgTrac').setAttribute("height", yDuct);
+    document.getElementById('txtZ3').setAttribute("y", 10);
+    
+    document.getElementById('bgTrans').setAttribute("y", yDuct); document.getElementById('bgTrans').setAttribute("height", yBal - yDuct);
+    document.getElementById('txtZ2').setAttribute("y", yDuct + 10);
+    
+    document.getElementById('bgComp').setAttribute("y", yBal); document.getElementById('bgComp').setAttribute("height", svgH - yBal);
+    document.getElementById('txtZ1').setAttribute("y", svgH - 5);
 
     ptsBg.forEach((pt, i) => {
-        let px = mar + pt.Mn * scaleX; let py = yCero + pt.Pn * scaleY;
-        let pxd = mar + (pt.Mn * pt.phi) * scaleX; let pyd = yCero + (pt.Pn * pt.phi) * scaleY;
+        let px = mar + pt.Mn * scaleX; let py = yCero - pt.Pn * scaleY;
+        let pxd = mar + (pt.Mn * pt.phi) * scaleX; let pyd = yCero - (pt.Pn * pt.phi) * scaleY;
 
         let cmd = (i === 0) ? `M ${px},${py} ` : `L ${px},${py} `;
         let cmdd = (i === 0) ? `M ${pxd},${pyd} ` : `L ${pxd},${pyd} `;
@@ -540,49 +519,40 @@ function iniciarEscalas() {
     document.getElementById('bgNomTrac').setAttribute("d", pathTrac);
     document.getElementById('bgDiseno').setAttribute("d", pathDis);
 
-    // Hitos
     function setHito(idPt, idTxt, pt, offsetX, offsetY) {
-        let px = mar + pt.Mn * scaleX; let py = yCero + pt.Pn * scaleY;
+        let px = mar + pt.Mn * scaleX; let py = yCero - pt.Pn * scaleY;
         document.getElementById(idPt).setAttribute("cx", px); document.getElementById(idPt).setAttribute("cy", py);
         document.getElementById(idTxt).setAttribute("x", px + offsetX); document.getElementById(idTxt).setAttribute("y", py + offsetY);
     }
-    setHito('ptPo', 'txtPo', ptPo, 8, 3); setHito('ptBal', 'txtBal', ptBal, 8, 3);
+    setHito('ptPo', 'txtPo', ptPo, 8, -3); setHito('ptBal', 'txtBal', ptBal, 8, -3);
     setHito('ptFlex', 'txtFlex', ptFlex, 8, -5); setHito('ptTen', 'txtTen', ptTen, -8, 3);
 }
 
 function calcularFisica(c) {
-    if (c < 0.1) c = 0.1; // Permitimos llegar hasta casi 0 para tracción pura
+    if (c < 0.1) c = 0.1; 
     
-    // Deformaciones (+ Tensión, - Compresión)
     let et1 = 0.003 * (d1 - c) / c;
     let et2 = 0.003 * (d2 - c) / c;
     let et3 = 0.003 * (d3 - c) / c;
 
     let a = beta1 * c;
-    let a_eff = Math.min(a, h); // Limitamos el bloque efectivo a la altura total
+    let a_eff = Math.min(a, h); 
 
-    // Concreto (Descontamos acero SOLO si queda embebido en el bloque)
     let areaAceroComp = 0;
     if (d1 < a_eff) areaAceroComp += As1;
     if (d2 < a_eff) areaAceroComp += As2;
     if (d3 < a_eff) areaAceroComp += As3;
     
-    // Concreto a compresión es negativo
     let Cc = -0.85 * fc * (a_eff * b - areaAceroComp) / 1000;
-    if (a_eff <= 0) Cc = 0; // Si c es minúsculo, no hay bloque
+    if (a_eff <= 0) Cc = 0; 
 
-    // Fuerzas del acero (Si et es +, Fs es + Tracción)
     let Fs1 = (As1 * Math.max(-fy, Math.min(fy, Es * et1))) / 1000;
     let Fs2 = (As2 * Math.max(-fy, Math.min(fy, Es * et2))) / 1000;
     let Fs3 = (As3 * Math.max(-fy, Math.min(fy, Es * et3))) / 1000;
     
-    // Sumatorias
     let Pn = Cc + Fs1 + Fs2 + Fs3;
-    
-    // Momentos respecto al centroide (h/2)
     let Mn = Math.abs(Cc * (h/2 - a_eff/2) + Fs1 * (h/2 - d1) + Fs2 * (h/2 - d2) + Fs3 * (h/2 - d3)) / 1000;
 
-    // Estado Normativo (Evaluado con la tracción de la última capa, que ahora es positiva)
     let phi = 0.65, txtEst = "Compresión", tg = "w3-tag w3-red w3-round w3-small";
     if (et3 >= 0.005) { phi = 0.90; txtEst = "Tracción"; tg = "w3-tag w3-green w3-round w3-small"; } 
     else if (et3 > ey) { phi = 0.65 + 0.25 * (et3 - ey) / (0.005 - ey); txtEst = "Transición"; tg = "w3-tag w3-orange w3-text-white w3-round w3-small"; }
@@ -600,7 +570,7 @@ function colorAcero(eps) {
 function getAsciiArrows(force) {
     if (Math.abs(force) < 5) return "-";
     let count = Math.max(1, Math.min(7, Math.ceil(Math.abs(force)/400))); 
-    return (force < 0 ? "↓" : "↑").repeat(count); // - Compresión ↓, + Tracción ↑
+    return (force < 0 ? "↓" : "↑").repeat(count);
 }
 
 function sincronizarSimulador() {
@@ -637,10 +607,14 @@ function sincronizarSimulador() {
         if (Math.abs(force) < 10) { el.setAttribute("opacity", "0"); return; }
         let y_svg = 20 + (y_real / h) * 180;
         let len = Math.max(10, Math.min(50, Math.abs(force) * 0.02));
-        let xStart = force < 0 ? 80 - len - 10 : 80;
-        let xEnd = force < 0 ? 70 : 80 + len + 10;
-        let color = force < 0 ? "#dc2626" : "#2563eb";
-        let marker = force < 0 ? "url(#arrComp)" : "url(#arrTrac)";
+        
+        // CORRECCIÓN MARKERS:
+        let xStart, xEnd, color, marker;
+        if (force < 0) { // Compresión: Empuja hacia la sección (derecha)
+            xStart = 70 - len; xEnd = 70; color = "#dc2626"; marker = "url(#arrComp)";
+        } else {         // Tracción: Hala alejándose de la sección (izquierda)
+            xStart = 70; xEnd = 70 - len; color = "#2563eb"; marker = "url(#arrTrac)";
+        }
         
         el.setAttribute("y1", y_svg); el.setAttribute("y2", y_svg);
         el.setAttribute("x1", xStart); el.setAttribute("x2", xEnd);
@@ -648,11 +622,10 @@ function sincronizarSimulador() {
     }
     drawVec('vecCc', pt.Cc, pt.a_eff/2); drawVec('vecF1', pt.Fs1, d1); drawVec('vecF2', pt.Fs2, d2); drawVec('vecF3', pt.Fs3, d3);
 
-    // Q2: Compatibilidad (Bernoulli)
-    // Tensión (+) a la izquierda, Compresión (-) a la derecha
+    // Q2: Compatibilidad (Bernoulli Corregido)
     let scaleDef = 3000;
-    let xTop = 100 - (-0.003 * scaleDef); // Concreto cu = -0.003
-    let xBot = 100 - (Math.max(-0.015, Math.min(0.015, pt.et3)) * scaleDef); 
+    let xTop = 100 + (-0.003 * scaleDef); // Compresión izquierda
+    let xBot = 100 + (Math.max(-0.015, Math.min(0.015, pt.et3)) * scaleDef); // Tracción derecha
     
     document.getElementById('polyDef').setAttribute('points', `100,20 ${xTop},20 ${xBot},200 100,200`);
     document.getElementById('lineaBernoulli').setAttribute('x1', xTop); document.getElementById('lineaBernoulli').setAttribute('x2', xBot);
@@ -663,11 +636,11 @@ function sincronizarSimulador() {
     document.getElementById('lblEs3').textContent = `εt = ${pt.et3 > 10 ? '+∞' : pt.et3.toFixed(4)}`;
 
     document.getElementById('dotDefCu').setAttribute('cx', xTop);
-    document.getElementById('dotDef1').setAttribute('cx', 100 - Math.max(-0.02, Math.min(0.02, pt.et1)) * scaleDef); document.getElementById('dotDef1').style.fill = colSup;
-    document.getElementById('dotDef2').setAttribute('cx', 100 - Math.max(-0.02, Math.min(0.02, pt.et2)) * scaleDef); document.getElementById('dotDef2').style.fill = colMid;
-    document.getElementById('dotDef3').setAttribute('cx', 100 - Math.max(-0.02, Math.min(0.02, pt.et3)) * scaleDef); document.getElementById('dotDef3').style.fill = colInf;
+    document.getElementById('dotDef1').setAttribute('cx', 100 + Math.max(-0.02, Math.min(0.02, pt.et1)) * scaleDef); document.getElementById('dotDef1').style.fill = colSup;
+    document.getElementById('dotDef2').setAttribute('cx', 100 + Math.max(-0.02, Math.min(0.02, pt.et2)) * scaleDef); document.getElementById('dotDef2').style.fill = colMid;
+    document.getElementById('dotDef3').setAttribute('cx', 100 + Math.max(-0.02, Math.min(0.02, pt.et3)) * scaleDef); document.getElementById('dotDef3').style.fill = colInf;
 
-    // Q3: Equilibrio Escalonado ASCII
+    // Q3: Equilibrio Escalonado ASCII y Ecuación
     document.getElementById('arrAsciiCc').innerText = getAsciiArrows(pt.Cc);
     document.getElementById('arrAsciiF1').innerText = getAsciiArrows(pt.Fs1);
     document.getElementById('arrAsciiF2').innerText = getAsciiArrows(pt.Fs2);
@@ -685,12 +658,11 @@ function sincronizarSimulador() {
     document.getElementById('valF2_esq').className = pt.Fs2 < 0 ? "w3-text-red" : "w3-text-blue";
     document.getElementById('valF3_esq').className = pt.Fs3 < 0 ? "w3-text-red" : "w3-text-blue";
 
+    // Ecuación mejorada
     document.getElementById('eqPnCc').innerText = pt.Cc.toFixed(1);
-    
-    // Ecuación (+ es tracción, - es compresión)
-    document.getElementById('signF1').innerText = pt.Fs1 >= 0 ? "+" : "-"; document.getElementById('eqPnF1').innerText = Math.abs(pt.Fs1).toFixed(1);
-    document.getElementById('signF2').innerText = pt.Fs2 >= 0 ? "+" : "-"; document.getElementById('eqPnF2').innerText = Math.abs(pt.Fs2).toFixed(1);
-    document.getElementById('signF3').innerText = pt.Fs3 >= 0 ? "+" : "-"; document.getElementById('eqPnF3').innerText = Math.abs(pt.Fs3).toFixed(1);
+    document.getElementById('signF1').innerText = pt.Fs1 >= 0 ? "+" : ""; document.getElementById('eqPnF1').innerText = `${pt.Fs1 >= 0 ? '' : '-'}${Math.abs(pt.Fs1).toFixed(1)}`;
+    document.getElementById('signF2').innerText = pt.Fs2 >= 0 ? "+" : ""; document.getElementById('eqPnF2').innerText = `${pt.Fs2 >= 0 ? '' : '-'}${Math.abs(pt.Fs2).toFixed(1)}`;
+    document.getElementById('signF3').innerText = pt.Fs3 >= 0 ? "+" : ""; document.getElementById('eqPnF3').innerText = `${pt.Fs3 >= 0 ? '' : '-'}${Math.abs(pt.Fs3).toFixed(1)}`;
     
     document.getElementById('eqPnF1').className = pt.Fs1 < 0 ? "w3-text-red" : "w3-text-blue";
     document.getElementById('eqPnF2').className = pt.Fs2 < 0 ? "w3-text-red" : "w3-text-blue";
@@ -699,9 +671,9 @@ function sincronizarSimulador() {
     document.getElementById('valPnSuma').innerText = `${pt.Pn > 0 ? '+' : ''}${pt.Pn.toFixed(1)}`;
     document.getElementById('valMnSuma').innerText = `${pt.Mn.toFixed(1)}`;
 
-    // Q4: Fantasma
+    // Q4: Fantasma (Corregido eje Y)
     let px = mar + pt.Mn * scaleX;
-    let py = yCero + pt.Pn * scaleY; // + porque Pn baja en Y al ser positivo (Tensión hacia abajo)
+    let py = yCero - pt.Pn * scaleY; 
     document.getElementById('puntoFantasma').setAttribute('cx', px);
     document.getElementById('puntoFantasma').setAttribute('cy', py);
 
@@ -721,7 +693,11 @@ function sincronizarSimulador() {
         }
     } else {
         estadoWowPrevio = false;
-        if (Math.abs(pt.Pn) < 30) {
+        
+        if (pt.c > 750) {
+            panel.className = "w3-panel w3-border w3-border-red w3-pale-red w3-round-large w3-padding-16 anim-suave";
+            baseText = "<b>○ Compresión Pura (Carga Axial)</b><br>El eje neutro está fuera de la sección ($c \\to \\infty$). Toda la sección trabaja a compresión uniforme. Este es el comportamiento de una columna corta sometida solo a carga axial.";
+        } else if (Math.abs(pt.Pn) < 30) {
             panel.className = "w3-panel w3-border w3-border-green w3-pale-green w3-round-large w3-padding-16 anim-suave";
             baseText = "<b>○ Flexión Pura (Comportamiento de Viga)</b><br>El esfuerzo axial es nulo ($P_n \\approx 0$). Observa en el panel de fuerzas cómo la tracción contrarresta exactamente la compresión.";
         } else if (pt.c <= 2) {
@@ -742,10 +718,8 @@ function sincronizarSimulador() {
     if (pt.a_eff < d1 && pt.c > 0.5 && pt.c < 80) {
         baseText += "<br><br><span class='w3-text-orange'><i class='fa fa-lightbulb-o'></i> <b>Observa:</b> El bloque de compresión ($a = " + pt.a_eff.toFixed(1) + "$ mm) ya no alcanza a la Fila 1 ($d_1 = 60$ mm). ¡Toda la armadura está en tracción!</span>";
     }
-    // 1. Inyectamos el texto dinámico
+    
     txt.innerHTML = baseText;
-
-    // 2. FORZAMOS A MATHJAX A RENDERIZAR EL NUEVO CONTENIDO
     if (window.MathJax && window.MathJax.typesetPromise) {
         window.MathJax.typesetPromise([txt]).catch((err) => console.log('Error MathJax:', err));
     }
@@ -781,12 +755,16 @@ function iniciarVueloPunto() {
 
 function agregarPuntoInmediato() {
     let c_val = parseFloat(document.getElementById('inputC').value);
-    console.log(document.getElementById('inputC').value);
     let pt = calcularFisica(c_val);
     if(!listaPuntos.find(p => p.c === c_val)) {
         listaPuntos.push(pt); listaPuntos.sort((a,b) => b.c - a.c); 
         renderizarTablaYPuntos(pt.c); 
     }
+}
+
+function saltarABalanceado() {
+    document.getElementById('inputC').value = cb.toFixed(1);
+    sincronizarSimulador();
 }
 
 function renderizarTablaYPuntos(c_nuevo = -1) {
@@ -802,12 +780,32 @@ function renderizarTablaYPuntos(c_nuevo = -1) {
         tr.innerHTML = `<td><b>#${index + 1}</b></td> <td>${pt.c.toFixed(1)}</td> <td>${pt.et3 > 10 ? '+∞' : pt.et3.toFixed(4)}</td> <td>${pt.Pn > 0 ? '+' : ''}${pt.Pn.toFixed(1)}</td> <td>${pt.Mn.toFixed(1)}</td> <td>${pt.phi.toFixed(2)}</td> <td><span class="${pt.tg}">${pt.txtEst}</span></td>`;
         tbody.appendChild(tr);
 
-        let px = mar + pt.Mn * scaleX; let py = yCero + pt.Pn * scaleY;
+        let px = mar + pt.Mn * scaleX; let py = yCero - pt.Pn * scaleY;
         let color = pt.et3 >= 0.005 ? "var(--verde-traccion)" : (pt.et3 > ey ? "var(--naranja-transicion)" : "var(--rojo-compresion)");
         let circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
         circle.setAttribute("cx", px); circle.setAttribute("cy", py); circle.setAttribute("r", "3.5"); circle.setAttribute("fill", color);
-        svgGrupo.appendChild(circle);
+        
+        // Tooltips de Q4 añadidos
+        circle.setAttribute("data-c", pt.c.toFixed(1));
+        circle.style.cursor = "pointer";
+        circle.addEventListener('mouseenter', function(e) {
+            let tooltip = document.createElementNS("http://www.w3.org/2000/svg", "text");
+            tooltip.setAttribute("id", "tooltip-pm");
+            let tX = px > 180 ? px - 95 : px + 5; 
+            tooltip.setAttribute("x", tX);
+            tooltip.setAttribute("y", py - 5);
+            tooltip.setAttribute("font-size", "9");
+            tooltip.setAttribute("fill", "#1A2530");
+            tooltip.setAttribute("font-weight", "bold");
+            tooltip.textContent = `c=${pt.c.toFixed(1)} | Pn=${pt.Pn.toFixed(1)} | Mn=${pt.Mn.toFixed(1)}`;
+            svgGrupo.appendChild(tooltip);
+        });
+        circle.addEventListener('mouseleave', function() {
+            let t = document.getElementById("tooltip-pm");
+            if(t) t.remove();
+        });
 
+        svgGrupo.appendChild(circle);
         d_path += (index === 0) ? `M ${px},${py} ` : `L ${px},${py} `;
     });
     pathLinea.setAttribute("d", d_path);
@@ -854,8 +852,6 @@ function reiniciarTabla() {
 
 window.onload = () => { iniciarEscalas(); sincronizarSimulador(); };
 </script>
-
-
 
 </body>
 </html>
