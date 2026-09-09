@@ -1,1 +1,1861 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Losas en Una Dirección - Guía Interactiva | Criterio Estructural</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+    <!-- jsPDF para exportar Reporte -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    
+    <style>
+        /* ===== VARIABLES GLOBALES ===== */
+        :root {
+            --color-primary: #7f1d1d;
+            --color-primary-dark: #4a0e0e;
+            --color-accent: #9a3412;
+            --color-bg: #f8fafc;
+            --color-card: #ffffff;
+            --color-border: #e2e8f0;
+            --color-text: #1e293b;
+            --color-text-muted: #64748b;
+            --color-success: #059669;
+            --color-warning: #d97706;
+            --color-danger: #dc2626;
+            --color-info: #1e40af;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+            --radius: 12px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%);
+            color: var(--color-text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        code, .mono {
+            font-family: 'JetBrains Mono', monospace;
+            background: #f1f5f9;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        /* ===== HEADER PRINCIPAL ===== */
+        .main-header {
+            background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%);
+            color: white;
+            padding: 1.5rem 1rem;
+            box-shadow: var(--shadow-lg);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .header-title h1 {
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+
+        .header-subtitle {
+            font-size: 0.875rem;
+            opacity: 0.9;
+            margin-top: 0.25rem;
+        }
+
+        .mode-selector {
+            display: flex;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.25rem;
+            border-radius: 8px;
+        }
+
+        .mode-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            background: transparent;
+            color: white;
+            cursor: pointer;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .mode-btn.active {
+            background: white;
+            color: var(--color-primary);
+        }
+
+        .mode-btn:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* ===== NAVEGACIÓN POR ETAPAS ===== */
+        .stage-nav {
+            background: white;
+            border-bottom: 2px solid var(--color-border);
+            position: sticky;
+            top: 76px;
+            z-index: 999;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .stage-nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            overflow-x: auto;
+        }
+
+        .stage-nav-container::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        .stage-nav-container::-webkit-scrollbar-thumb {
+            background: var(--color-primary);
+            border-radius: 2px;
+        }
+
+        .stage-item {
+            flex-shrink: 0;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 600;
+            color: var(--color-text-muted);
+        }
+
+        .stage-number {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--color-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.875rem;
+            transition: var(--transition);
+        }
+
+        .stage-item:hover {
+            color: var(--color-primary);
+            background: var(--color-bg);
+        }
+
+        .stage-item.active {
+            color: var(--color-primary);
+            border-bottom-color: var(--color-primary);
+        }
+
+        .stage-item.active .stage-number {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        .stage-item.completed .stage-number {
+            background: var(--color-success);
+            color: white;
+        }
+
+        /* ===== CONTENEDOR PRINCIPAL ===== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .stage-content {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .stage-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== TARJETAS ===== */
+        .card {
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--color-border);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--color-border);
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--color-primary-dark);
+        }
+
+        .card-subtitle {
+            font-size: 0.95rem;
+            color: var(--color-text-muted);
+            margin-top: 0.25rem;
+        }
+
+        /* ===== PREGUNTAS INTERACTIVAS ===== */
+        .question-box {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border: 2px solid #fbbf24;
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .question-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #92400e;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .options-grid {
+            display: grid;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .option-btn {
+            padding: 1.25rem;
+            border: 2px solid #d97706;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+            font-size: 1rem;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .option-btn:hover {
+            border-color: var(--color-accent);
+            background: #fffbeb;
+            transform: translateX(4px);
+        }
+
+        .option-btn.selected {
+            background: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+        }
+
+        /* ===== ÁREA DE REVELACIÓN ===== */
+        .reveal-box {
+            background: var(--color-bg);
+            border: 2px dashed var(--color-border);
+            border-radius: var(--radius);
+            padding: 2rem;
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+
+        .reveal-box.hidden-content {
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .reveal-btn {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .reveal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .reveal-content {
+            display: none;
+            animation: slideDown 0.4s ease;
+        }
+
+        .reveal-content.shown {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== DIAGRAMA ASCII ===== */
+        .diagram-box {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 2rem;
+            border-radius: var(--radius);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            line-height: 1.4;
+            white-space: pre;
+        }
+
+        .diagram-label {
+            color: #fbbf24;
+            font-weight: 600;
+        }
+
+        /* ===== INPUTS Y CONTROLES ===== */
+        .input-group {
+            margin: 1.5rem 0;
+        }
+
+        .input-label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: var(--color-text);
+            font-size: 1.05rem;
+        }
+
+        .input-with-slider {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .slider-container {
+            flex: 1;
+        }
+
+        .slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: var(--color-border);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--color-primary);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 0 8px rgba(127, 29, 29, 0.1);
+        }
+
+        .input-display {
+            background: white;
+            border: 2px solid var(--color-primary);
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            text-align: center;
+            min-width: 120px;
+        }
+        
+        .input-number {
+            background: white;
+            border: 2px solid var(--color-border);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--color-text);
+            width: 100%;
+            transition: var(--transition);
+        }
+        
+        .input-number:focus {
+            border-color: var(--color-primary);
+            outline: none;
+        }
+
+        /* ===== RESULTADOS ===== */
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .result-card {
+            background: var(--color-bg);
+            padding: 1.25rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--color-primary);
+            transition: var(--transition);
+        }
+
+        .result-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .result-label {
+            font-size: 0.8rem;
+            color: var(--color-text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .result-value {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--color-primary-dark);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .result-unit {
+            font-size: 1rem;
+            color: var(--color-text-muted);
+            margin-left: 0.25rem;
+            font-weight: 600;
+        }
+
+        /* ===== ALERTAS Y BADGES ===== */
+        .alert {
+            padding: 1.25rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            border-left: 4px solid;
+        }
+
+        .alert-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .alert-success { background: #d1fae5; border-color: var(--color-success); color: #065f46; }
+        .alert-warning { background: #fed7aa; border-color: var(--color-warning); color: #92400e; }
+        .alert-info { background: #dbeafe; border-color: var(--color-info); color: #1e3a8a; }
+        .alert-danger { background: #fee2e2; border-color: var(--color-danger); color: #991b1b; }
+
+        .teacher-note {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border: 2px solid #fbbf24;
+            border-radius: var(--radius);
+            padding: 1rem;
+            margin: 1rem 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+
+        .teacher-note-icon {
+            font-size: 1.25rem;
+            color: #92400e;
+            flex-shrink: 0;
+        }
+
+        .teacher-note-content { flex: 1; }
+        .teacher-note-title { font-weight: 700; color: #92400e; margin-bottom: 0.25rem; }
+        .teacher-note-text { font-size: 0.9rem; color: #78350f; }
+
+        /* ===== BOTONES DE NAVEGACIÓN ===== */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid var(--color-border);
+        }
+
+        .nav-btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .nav-btn-primary {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+            color: white;
+        }
+
+        .nav-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .nav-btn-secondary {
+            background: white;
+            color: var(--color-primary);
+            border: 2px solid var(--color-primary);
+        }
+
+        .nav-btn-secondary:hover {
+            background: var(--color-bg);
+        }
+        
+        .nav-btn-success {
+            background: var(--color-success);
+            color: white;
+        }
+        .nav-btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* ===== TABLA DE ITERACIONES ===== */
+        .iteration-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-family: 'JetBrains Mono', monospace;
+            background: white;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .iteration-table th, .iteration-table td {
+            padding: 0.75rem;
+            text-align: center;
+            border: 1px solid var(--color-border);
+        }
+
+        .iteration-table th {
+            background: var(--color-primary-dark);
+            color: white;
+            font-weight: 700;
+            font-size: 0.875rem;
+        }
+
+        .iteration-table tr:hover { background: var(--color-bg); }
+        .iteration-converged { background: #d1fae5 !important; font-weight: 700; }
+
+        /* ===== VISUAL DE LOSA ===== */
+        .slab-visual {
+            background: white;
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius);
+            padding: 2rem;
+            margin: 1.5rem 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .slab-diagram {
+            width: 100%;
+            max-width: 600px;
+            aspect-ratio: 16/9;
+            border: 3px solid var(--color-primary);
+            border-radius: 8px;
+            position: relative;
+            background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slab-label {
+            position: absolute;
+            font-weight: 700;
+            color: var(--color-primary-dark);
+            font-size: 1.1rem;
+        }
+
+        .slab-label-top { top: -30px; left: 50%; transform: translateX(-50%); }
+        .slab-label-right { right: -60px; top: 50%; transform: translateY(-50%); }
+
+        .slab-arrow {
+            position: absolute;
+            bottom: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2rem;
+            color: var(--color-accent);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+
+        /* ===== FORMULA DISPLAY ===== */
+        .formula {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.05rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+            text-align: center;
+        }
+
+        .formula-highlight { color: #fbbf24; font-weight: 700; }
+
+        /* ===== MODO OCULTO ===== */
+        .mode-teacher-only { display: none; }
+        body.mode-teacher .mode-teacher-only { display: block; }
+        body.mode-student .reveal-btn { display: none; }
+        body.mode-student .reveal-content { display: block !important; }
+        
+        /* Ocultar inicialmente los paneles de resultados calculados */
+        .computed-panel { display: none; }
+        .computed-panel.active { display: block; animation: fadeIn 0.5s; }
+
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; align-items: flex-start; }
+            .stage-item { padding: 0.75rem 1rem; }
+            .stage-name { display: none; }
+            .card { padding: 1.5rem; }
+            .result-grid { grid-template-columns: 1fr; }
+            .input-with-slider { grid-template-columns: 1fr; }
+            .nav-buttons { flex-direction: column; }
+            .slab-label-right { right: -50px; font-size: 0.9rem; }
+        }
+    </style>
+</head>
+<body class="mode-teacher">
+
+    <!-- ===== HEADER ===== -->
+    <header class="main-header">
+        <div class="header-content">
+            <div class="header-title">
+                <div>
+                    <h1><i class="fas fa-th-large"></i> Losas en Una Dirección</h1>
+                    <div class="header-subtitle">Hormigón Armado II | Prof. Rafael Antonio Correa Melano | Criterio Estructural</div>
+                </div>
+            </div>
+            <div class="mode-selector">
+                <button class="mode-btn active" id="btn-mode-teacher" onclick="setMode('teacher')">
+                    <i class="fas fa-chalkboard-teacher"></i> Modo Clase
+                </button>
+                <button class="mode-btn" id="btn-mode-student" onclick="setMode('student')">
+                    <i class="fas fa-user-graduate"></i> Modo Estudiante
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== NAVEGACIÓN POR ETAPAS ===== -->
+    <nav class="stage-nav">
+        <div class="stage-nav-container">
+            <div class="stage-item active" id="nav-stage-1" onclick="goToStage(1)">
+                <div class="stage-number">1</div><span class="stage-name">Sistema</span>
+            </div>
+            <div class="stage-item" id="nav-stage-2" onclick="goToStage(2)">
+                <div class="stage-number">2</div><span class="stage-name">Geometría</span>
+            </div>
+            <div class="stage-item" id="nav-stage-3" onclick="goToStage(3)">
+                <div class="stage-number">3</div><span class="stage-name">Materiales y Cargas</span>
+            </div>
+            <div class="stage-item" id="nav-stage-4" onclick="goToStage(4)">
+                <div class="stage-number">4</div><span class="stage-name">Análisis</span>
+            </div>
+            <div class="stage-item" id="nav-stage-5" onclick="goToStage(5)">
+                <div class="stage-number">5</div><span class="stage-name">Flexión</span>
+            </div>
+            <div class="stage-item" id="nav-stage-6" onclick="goToStage(6)">
+                <div class="stage-number">6</div><span class="stage-name">Detallado</span>
+            </div>
+            <div class="stage-item" id="nav-stage-7" onclick="goToStage(7)">
+                <div class="stage-number">7</div><span class="stage-name">Cortante y Resumen</span>
+            </div>
+            <!-- MEJORA: Botón Etapa 8 Exploración -->
+            <div class="stage-item" id="nav-stage-8" onclick="goToStage(8)">
+                <div class="stage-number"><i class="fas fa-flask"></i></div><span class="stage-name">Exploración</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===== CONTENEDOR PRINCIPAL ===== -->
+    <div class="container">
+        
+        <!-- ===== ETAPA 1: SISTEMA ESTRUCTURAL ===== -->
+        <div id="stage-1" class="stage-content active">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon"><i class="fas fa-question-circle"></i></div>
+                    <div>
+                        <div class="card-title">¿Cómo trabaja esta losa?</div>
+                        <div class="card-subtitle">Identificación del sistema estructural</div>
+                    </div>
+                </div>
+
+                <!-- Configurar Dimensiones -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem;">
+                    <div>
+                        <label class="input-label">Luz Corta (L<sub>x</sub>) [m]</label>
+                        <input type="number" id="inp-lx" class="input-number" value="4.00" step="0.1" onchange="updateStage1()">
+                    </div>
+                    <div>
+                        <label class="input-label">Luz Larga (L<sub>y</sub>) [m]</label>
+                        <input type="number" id="inp-ly" class="input-number" value="9.00" step="0.1" onchange="updateStage1()">
+                    </div>
+                </div>
+
+                <div class="slab-visual">
+                    <div class="slab-diagram">
+                        <div class="slab-label slab-label-top">L<sub>y</sub> = <span id="display-Ly">9.00</span> m</div>
+                        <div class="slab-label slab-label-right">L<sub>x</sub> = <span id="display-Lx">4.00</span> m</div>
+                        <div class="slab-arrow"><i class="fas fa-arrow-down"></i></div>
+                        <div style="text-align: center; color: var(--color-text-muted); font-weight: 600;">Dirección resistente principal</div>
+                    </div>
+                </div>
+
+                <div class="teacher-note mode-teacher-only">
+                    <div class="teacher-note-icon"><i class="fas fa-lightbulb"></i></div>
+                    <div class="teacher-note-content">
+                        <div class="teacher-note-title">💡 Nota para el Profesor:</div>
+                        <div class="teacher-note-text">Pregunte: "¿En qué dirección creen que trabajará principalmente esta losa?"</div>
+                    </div>
+                </div>
+
+                <div class="reveal-box hidden-content" id="reveal-criterio">
+                    <i class="fas fa-eye" style="font-size: 2rem; color: var(--color-text-muted);"></i>
+                    <button class="reveal-btn" onclick="revealContent('criterio')"><i class="fas fa-unlock"></i> Mostrar Criterio NSR-10</button>
+                </div>
+
+                <div class="reveal-content" id="content-criterio">
+                    <div class="alert alert-info">
+                        <i class="fas fa-book alert-icon"></i>
+                        <div>
+                            <strong>Criterio NSR-10 C.13.5.1:</strong><br>
+                            Una losa rectangular trabaja en una dirección cuando la relación entre luz larga y luz corta es > 2.0.
+                        </div>
+                    </div>
+
+                    <div class="formula">
+                        <span class="formula-highlight">L<sub>y</sub> / L<sub>x</sub></span> = 
+                        <span id="calc-Ly">9.00</span> / <span id="calc-Lx">4.00</span> = 
+                        <span class="formula-highlight" id="calc-ratio">2.25</span>
+                    </div>
+
+                    <div class="result-grid">
+                        <div class="result-card">
+                            <div class="result-label">Relación L<sub>y</sub>/L<sub>x</sub></div>
+                            <div class="result-value"><span id="result-ratio">2.25</span></div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-label">Condición</div>
+                            <div class="result-value" style="font-size: 1.25rem;" id="result-condition">2.25 > 2.0</div>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-success" id="alert-1dir" style="display: flex;">
+                        <i class="fas fa-check-circle alert-icon"></i>
+                        <div>
+                            <strong>✓ Losa en Una Dirección</strong><br>
+                            Diseñaremos una <strong>franja unitaria de b = 1000 mm</strong> equivalente a una viga ancha.
+                        </div>
+                    </div>
+                    <div class="alert alert-danger" id="alert-2dir" style="display: none;">
+                        <i class="fas fa-times-circle alert-icon"></i>
+                        <div>
+                            <strong>✗ Losa en Dos Direcciones</strong><br>
+                            La relación es menor o igual a 2.0. El análisis debe hacerse por métodos bidireccionales (Semana 8).
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="nav-btn nav-btn-secondary" disabled><i class="fas fa-arrow-left"></i> Anterior</button>
+                <button class="nav-btn nav-btn-primary" onclick="goToStage(2)">Siguiente: Geometría <i class="fas fa-arrow-right"></i></button>
+            </div>
+        </div>
+
+        <!-- ===== ETAPA 2: GEOMETRÍA ===== -->
+        <div id="stage-2" class="stage-content">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon"><i class="fas fa-ruler-combined"></i></div>
+                    <div>
+                        <div class="card-title">Espesor y Peralte Efectivo</div>
+                        <div class="card-subtitle">Geometría de la franja unitaria (b = 1000 mm)</div>
+                    </div>
+                </div>
+
+                <div class="diagram-box">
+<pre>
+                h = <span class="diagram-label" id="display-h-diagram">140</span> mm
+        ┌─────────────────────┐  ↑
+        │▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓│  │
+        │                     │  │ recubrimiento = <span class="diagram-label" id="display-rec-diagram">20</span> mm
+        │    ●───────────●    │  ↓
+        │    │           │    │  ↑
+        │    │           │    │  │
+        │    │  Concreto │    │  │ d = <span class="diagram-label" id="display-d-diagram">115</span> mm
+        │    │           │    │  │ (peralte efectivo)
+        │    │           │    │  │
+        │    ●───────────●    │  ↓
+        └─────────────────────┘
+             └─ Acero ─┘
+</pre>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Espesor Total (h) [mm]</label>
+                    <div class="input-with-slider">
+                        <div class="slider-container">
+                            <input type="range" class="slider" id="slider-h" min="100" max="250" value="140" step="5" oninput="updateGeometry()">
+                        </div>
+                        <div class="input-display"><span id="value-h">140</span> mm</div>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Recubrimiento Libre [mm]</label>
+                    <div class="input-with-slider">
+                        <div class="slider-container">
+                            <input type="range" class="slider" id="slider-rec" min="15" max="40" value="20" step="5" oninput="updateGeometry()">
+                        </div>
+                        <div class="input-display"><span id="value-rec">20</span> mm</div>
+                    </div>
+                </div>
+
+                <div class="reveal-box hidden-content" id="reveal-peralte">
+                    <button class="reveal-btn" onclick="revealContent('peralte'); updateGeometry();"><i class="fas fa-calculator"></i> Calcular Peralte Efectivo (d)</button>
+                </div>
+
+                <div class="reveal-content" id="content-peralte">
+                    <div class="formula">
+                        d = h - recubrimiento - φ<sub>barra</sub>/2<br>
+                        d = <span id="formula-h">140</span> - <span id="formula-rec">20</span> - 5 = <span class="formula-highlight" id="formula-d">115</span> mm
+                    </div>
+                    <div style="font-size: 0.85rem; text-align: center; color: var(--color-text-muted);">* Asumiendo barra No. 3 o 4 (φ/2 ≈ 5 mm) para el peralte inicial.</div>
+
+                    <div class="result-grid">
+                        <div class="result-card">
+                            <div class="result-label">Espesor Total h</div>
+                            <div class="result-value"><span id="result-h">140</span><span class="result-unit">mm</span></div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-label">Recubrimiento</div>
+                            <div class="result-value"><span id="result-rec">20</span><span class="result-unit">mm</span></div>
+                        </div>
+                        <div class="result-card" style="border-left-color: var(--color-accent);">
+                            <div class="result-label">Peralte Efectivo d</div>
+                            <div class="result-value"><span id="result-d">115</span><span class="result-unit">mm</span></div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-label">Relación L<sub>x</sub>/h</div>
+                            <div class="result-value"><span id="result-lh">28.6</span></div>
+                        </div>
+                    </div>
+                    
+                    <!-- MEJORA: Alertas y validaciones de Relación L/h -->
+                    <div id="geom-alerts" style="margin-top: 1rem;"></div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="nav-btn nav-btn-secondary" onclick="goToStage(1)"><i class="fas fa-arrow-left"></i> Anterior</button>
+                <button class="nav-btn nav-btn-primary" onclick="goToStage(3)">Siguiente: Materiales y Cargas <i class="fas fa-arrow-right"></i></button>
+            </div>
+        </div>
+
+        <!-- ===== ETAPA 3: MATERIALES Y CARGAS ===== -->
+        <div id="stage-3" class="stage-content">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon"><i class="fas fa-weight-hanging"></i></div>
+                    <div>
+                        <div class="card-title">Materiales y Solicitaciones</div>
+                        <div class="card-subtitle">Evaluación de cargas sobre la franja unitaria</div>
+                    </div>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+                    <div class="result-card" style="border-left-color: var(--color-info);">
+                        <label class="input-label">Resistencia Concreto f'<sub>c</sub> [MPa]</label>
+                        <input type="number" id="inp-fc" class="input-number" value="21" step="1" onchange="updateLoads()">
+                    </div>
+                    <div class="result-card" style="border-left-color: var(--color-info);">
+                        <label class="input-label">Fluencia Acero f<sub>y</sub> [MPa]</label>
+                        <input type="number" id="inp-fy" class="input-number" value="420" step="10" onchange="updateLoads()">
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                    <div>
+                        <label class="input-label">Carga Muerta Superpuesta s<sub>D</sub> [kN/m²]</label>
+                        <input type="number" id="inp-sd" class="input-number" value="3.5" step="0.1" onchange="updateLoads()">
+                        <div style="font-size: 0.8rem; color: var(--color-text-muted); margin-top: 5px;">* No incluye peso propio.</div>
+                    </div>
+                    <div>
+                        <label class="input-label">Carga Viva de Servicio s<sub>L</sub> [kN/m²]</label>
+                        <input type="number" id="inp-sl" class="input-number" value="2.0" step="0.1" onchange="updateLoads()">
+                    </div>
+                </div>
+
+                <div class="reveal-box hidden-content" id="reveal-cargas">
+                    <button class="reveal-btn" onclick="revealContent('cargas'); updateLoads();"><i class="fas fa-calculator"></i> Calcular Carga Mayorada (w<sub>u</sub>)</button>
+                </div>
+
+                <div class="reveal-content" id="content-cargas">
+                    <div class="formula">
+                        Peso Propio (PP) = h [m] × 24 kN/m³ = <span id="calc-pp">3.36</span> kN/m²<br>
+                        w<sub>D</sub> = PP + s<sub>D</sub> = <span id="calc-wd">6.86</span> kN/m²
+                    </div>
+                    <div class="formula">
+                        <span class="formula-highlight">w<sub>u</sub> = 1.2 w<sub>D</sub> + 1.6 w<sub>L</sub></span><br>
+                        w<sub>u</sub> = 1.2(<span id="f-wd">6.86</span>) + 1.6(<span id="f-wl">2.00</span>) = <span class="formula-highlight" id="calc-wu">11.43</span> kN/m²
+                    </div>
+                    <div class="alert alert-success">
+                        <i class="fas fa-info-circle alert-icon"></i>
+                        <div>
+                            Al trabajar con una franja de b = 1.0 m, la carga de área (kN/m²) se convierte numéricamente en carga lineal (kN/m) para el modelo 1D de la losa.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="nav-btn nav-btn-secondary" onclick="goToStage(2)"><i class="fas fa-arrow-left"></i> Anterior</button>
+                <button class="nav-btn nav-btn-primary" onclick="goToStage(4)">Siguiente: Análisis <i class="fas fa-arrow-right"></i></button>
+            </div>
+        </div>
+
+        <!-- ===== ETAPA 4: ANÁLISIS ESTRUCTURAL ===== -->
+        <div id="stage-4" class="stage-content">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon"><i class="fas fa-chart-line"></i></div>
+                    <div>
+                        <div class="card-title">Análisis de la Franja</div>
+                        <div class="card-subtitle">Momentos y cortantes críticos</div>
+                    </div>
+                </div>
+
+                <div class="teacher-note mode-teacher-only">
+                    <div class="teacher-note-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                    <div class="teacher-note-content">
+                        <div class="teacher-note-title">Momento de conexión con la Semana 6:</div>
+                        <div class="teacher-note-text">
+                            En la clase anterior obtuvimos los diagramas de momento y cortante usando el método de los coeficientes del ACI/NSR-10. 
+                            Ingresen directamente los valores máximos obtenidos.
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1rem;">
+                    <div class="result-card" style="border-left-color: var(--color-accent); background: #fff7ed;">
+                        <label class="input-label">Momento Último Máximo (M<sub>u</sub>)</label>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <input type="number" id="inp-mu" class="input-number" value="24.1" step="0.1" style="font-size: 1.5rem; color: var(--color-accent);">
+                            <span class="result-unit">kN·m / m</span>
+                        </div>
+                    </div>
+                    <div class="result-card" style="border-left-color: var(--color-danger); background: #fef2f2;">
+                        <label class="input-label">Cortante Último Crítico (V<sub>u</sub>)</label>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <input type="number" id="inp-vu" class="input-number" value="29.3" step="0.1" style="font-size: 1.5rem; color: var(--color-danger);">
+                            <span class="result-unit">kN / m</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="nav-btn nav-btn-secondary" onclick="goToStage(3)"><i class="fas fa-arrow-left"></i> Anterior</button>
+                <button class="nav-btn nav-btn-primary" onclick="goToStage(5)">Siguiente: Flexión <i class="fas fa-arrow-right"></i></button>
+            </div>
+        </div>
+
+        <!-- ===== ETAPA 5: DISEÑO A FLEXIÓN ===== -->
+        <div id="stage-5" class="stage-content">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon"><i class="fas fa-sync-alt"></i></div>
+                    <div>
+                        <div class="card-title">Diseño a Flexión: El Dilema de la Iteración</div>
+                        <div class="card-subtitle">Determinación del acero principal y cuantías normativas</div>
+                    </div>
+                </div>
+
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-circle alert-icon"></i>
+                    <div>
+                        <strong>¿Por qué no es un cálculo directo?</strong><br>
+                        Para hallar <strong>A<sub>s</sub></strong> necesitamos la profundidad del bloque compresivo (<strong>a</strong>), pero para hallar <strong>a</strong> necesitamos conocer primero <strong>A<sub>s</sub></strong>.
+                    </div>
+                </div>
+
+                <div class="reveal-box hidden-content" id="reveal-iteracion">
+                    <button class="reveal-btn" onclick="revealContent('iteracion'); runIterativeDesign();"><i class="fas fa-play"></i> Ejecutar Algoritmo Iterativo</button>
+                </div>
+
+                <div class="reveal-content" id="content-iteracion">
+                    <table class="iteration-table" id="table-iter">
+                        <thead>
+                            <tr>
+                                <th>Iteración</th>
+                                <th>Suposición a<sub>inicial</sub> (mm)</th>
+                                <th>Cálculo A<sub>s</sub> (mm²)</th>
+                                <th>Recálculo a<sub>final</sub> (mm)</th>
+                                <th>|Δa| (mm)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-iter">
+                            <!-- JS will populate this -->
+                        </tbody>
+                    </table>
+
+                    <div class="result-grid" style="margin-top: 2rem;">
+                        <div class="result-card">
+                            <div class="result-label">A<sub>s</sub> (Por Resistencia)</div>
+                            <div class="result-value" style="color: var(--color-accent);"><span id="res-as-req">0</span></div>
+                            <div class="result-unit">mm²/m</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-label">A<sub>s,min</sub> (Fisuración C.10.5.4)</div>
+                            <div class="result-value"><span id="res-as-min">0</span></div>
+                            <div class="result-unit">mm²/m</div>
+                            <div style="font-size: 0.75rem; color: var(--color-text-muted); margin-top: 4px;">0.0018 b h</div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-label">A<sub>s,temp</sub> (Dirección Larga)</div>
+                            <div class="result-value"><span id="res-as-temp">0</span></div>
+                            <div class="result-unit">mm²/m</div>
+                            <div style="font-size: 0.75rem; color: var(--color-text-muted); margin-top: 4px;">0.0018 b h</div>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-success">
+                        <i class="fas fa-check-circle alert-icon"></i>
+                        <div>
+                            <strong>Conclusión de Diseño:</strong><br>
+                            El acero principal en la dirección corta será <strong><span id="res-as-final">0</span> mm²/m</strong> (el mayor entre resistencia y cuantía mínima).<br>
+                            El acero secundario (temperatura) en la dirección larga será <strong><span id="res-as-temp2">0</span> mm²/m</strong>.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="nav-btn nav-btn-secondary" onclick="goToStage(4)"><i class="fas fa-arrow-left"></i> Anterior</button>
+                <button class="nav-btn nav-btn-primary" onclick="goToStage(6)">Siguiente: Detallado <i class="fas fa-arrow-right"></i></button>
+            </div>
+        </div>
+
+        <!-- ===== ETAPA 6: DETALLADO COMERCIAL ===== -->
+        <div id="stage-6" class="stage-content">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon"><i class="fas fa-th"></i></div>
+                    <div>
+                        <div class="card-title">Selección Comercial y Espaciamiento</div>
+                        <div class="card-subtitle">De milímetros cuadrados a barras reales (NSR-10 C.7.6)</div>
+                    </div>
+                </div>
+
+                <div class="teacher-note mode-teacher-only">
+                    <div class="teacher-note-icon"><i class="fas fa-hard-hat"></i></div>
+                    <div class="teacher-note-content">
+                        <div class="teacher-note-title">Práctica Colombiana:</div>
+                        <div class="teacher-note-text">
+                            En obra, los espaciamientos no pueden ser números extraños como 17.3 cm. Usamos múltiplos comerciales: 10, 12.5, 15, 20, 25, 30 cm (siempre redondeando hacia abajo por seguridad).
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- MEJORA: Validaciones Críticas -->
+                <div id="detailing-alerts" style="margin-bottom: 1.5rem;"></div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                    <!-- Acero Principal -->
+                    <div class="result-card" style="background: white; border: 1px solid var(--color-border); border-top: 4px solid var(--color-accent);">
+                        <h3 style="color: var(--color-accent); margin-bottom: 1rem;">Acero Principal (Dir. Corta)</h3>
+                        <p style="margin-bottom: 1rem;">Requerido: <strong><span id="det-as-req">0</span> mm²/m</strong></p>
+                        
+                        <label class="input-label">Seleccionar Barra:</label>
+                        <select id="sel-bar-main" class="input-number" style="margin-bottom: 1rem;" onchange="updateDetailing()">
+                            <option value="71">No. 3 (Ø 3/8" - A_b = 71 mm²)</option>
+                            <option value="129" selected>No. 4 (Ø 1/2" - A_b = 129 mm²)</option>
+                            <option value="199">No. 5 (Ø 5/8" - A_b = 199 mm²)</option>
+                        </select>
+                        
+                        <div class="formula" style="font-size: 0.9rem; padding: 0.5rem;">
+                            s<sub>calc</sub> = (A<sub>b</sub> / A<sub>req</sub>) × 1000 = <span id="det-s-calc">0</span> cm
+                        </div>
+                        
+                        <p style="font-size: 0.85rem; color: var(--color-danger); margin-bottom: 0.5rem;">
+                            Límite s<sub>max</sub> = min(3h, 45cm) = <strong><span id="det-s-max">0</span> cm</strong>
+                        </p>
+                        
+                        <label class="input-label">Espaciamiento Adoptado (cm):</label>
+                        <select id="sel-s-main" class="input-number" style="margin-bottom: 1rem;" onchange="updateDetailing()">
+                            <option value="10">10 cm</option>
+                            <option value="12.5">12.5 cm</option>
+                            <option value="15">15 cm</option>
+                            <option value="20" selected>20 cm</option>
+                            <option value="25">25 cm</option>
+                            <option value="30">30 cm</option>
+                        </select>
+                        
+                        <div class="alert alert-info" style="margin: 0; padding: 0.75rem;">
+                            A<sub>provisto</sub> = <strong><span id="det-as-prov">0</span> mm²/m</strong>
+                        </div>
+                    </div>
+
+                    <!-- Acero Temperatura -->
+                    <div class="result-card" style="background: white; border: 1px solid var(--color-border); border-top: 4px solid var(--color-text-muted);">
+                        <h3 style="color: var(--color-text-muted); margin-bottom: 1rem;">Acero Temperatura (Dir. Larga)</h3>
+                        <p style="margin-bottom: 1rem;">Requerido: <strong><span id="det-as-temp">0</span> mm²/m</strong></p>
+                        
+                        <label class="input-label">Seleccionar Barra:</label>
+                        <select id="sel-bar-temp" class="input-number" style="margin-bottom: 1rem;" onchange="updateDetailing()">
+                            <option value="71" selected>No. 3 (Ø 3/8" - A_b = 71 mm²)</option>
+                            <option value="129">No. 4 (Ø 1/2" - A_b = 129 mm²)</option>
+                        </select>
+                        
+                        <div class="formula" style="font-size: 0.9rem; padding: 0.5rem;">
+                            s<sub>calc</sub> = (A<sub>b</sub> / A<sub>req</sub>) × 1000 = <span id="det-s-calc-t">0</span> cm
+                        </div>
+                        
+                        <p style="font-size: 0.85rem; color: var(--color-danger); margin-bottom: 0.5rem;">
+                            Límite s<sub>max</sub> = min(5h, 45cm) = <strong><span id="det-s-max-t">0</span> cm</strong>
+                        </p>
+                        
+                        <label class="input-label">Espaciamiento Adoptado (cm):</label>
+                        <select id="sel-s-temp" class="input-number" style="margin-bottom: 1rem;" onchange="updateDetailing()">
+                            <option value="15">15 cm</option>
+                            <option value="20">20 cm</option>
+                            <option value="25" selected>25 cm</option>
+                            <option value="30">30 cm</option>
+                            <option value="40">40 cm</option>
+                        </select>
+                        
+                        <div class="alert alert-info" style="margin: 0; padding: 0.75rem;">
+                            A<sub>provisto</sub> = <strong><span id="det-as-prov-t">0</span> mm²/m</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MEJORA: Representación gráfica 2D (Canvas) -->
+                <div style="margin-top: 2rem; border-top: 2px dashed var(--color-border); padding-top: 1.5rem;">
+                    <h3 style="color: var(--color-primary-dark); margin-bottom: 1rem;"><i class="fas fa-vector-square"></i> Esquema en Planta del Refuerzo (Franja 1x1m)</h3>
+                    <canvas id="slab-canvas" width="800" height="350" style="width: 100%; border: 2px solid var(--color-border); border-radius: var(--radius); background: var(--color-bg); display: block;"></canvas>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="nav-btn nav-btn-secondary" onclick="goToStage(5)"><i class="fas fa-arrow-left"></i> Anterior</button>
+                <button class="nav-btn nav-btn-primary" onclick="goToStage(7)">Siguiente: Cortante y Resumen <i class="fas fa-arrow-right"></i></button>
+            </div>
+        </div>
+
+        <!-- ===== ETAPA 7: CORTANTE Y RESUMEN ===== -->
+        <div id="stage-7" class="stage-content">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon"><i class="fas fa-shield-alt"></i></div>
+                    <div>
+                        <div class="card-title">Criterio de Cortante y Resumen</div>
+                        <div class="card-subtitle">Verificación NSR-10 C.11.2 y Memoria final</div>
+                    </div>
+                </div>
+
+                <div class="question-box">
+                    <div class="question-title"><i class="fas fa-brain"></i> Criterio Estructural</div>
+                    <p style="color: #78350f; font-weight: 500;">
+                        Las losas macizas delgadas (10-20 cm) rara vez requieren refuerzo transversal (estribos) porque la resistencia del concreto mismo (V<sub>c</sub>) supera el cortante actuante. <br>
+                        <strong>Si φV<sub>c</sub> < V<sub>u</sub>, la solución en obra no es poner estribos, sino aumentar el espesor h de la losa.</strong>
+                    </p>
+                </div>
+
+                <div class="reveal-box hidden-content" id="reveal-cortante">
+                    <button class="reveal-btn" onclick="revealContent('cortante'); updateShear();"><i class="fas fa-check-double"></i> Realizar Verificación a Cortante</button>
+                </div>
+
+                <div class="reveal-content" id="content-cortante">
+                    <div class="formula">
+                        φV<sub>c</sub> = 0.75 × 0.17 × 1.0 × √f'<sub>c</sub> × b × d<br>
+                        φV<sub>c</sub> = 0.75 × 0.17 × 1.0 × √<span id="sh-fc">21</span> × 1000 × <span id="sh-d">115</span> / 1000 = <span class="formula-highlight" id="sh-pvc">0.0</span> kN
+                    </div>
+
+                    <div class="result-grid">
+                        <div class="result-card" style="border-left-color: var(--color-success);">
+                            <div class="result-label">Resiste el concreto (φV<sub>c</sub>)</div>
+                            <div class="result-value"><span id="res-pvc">0</span><span class="result-unit">kN</span></div>
+                        </div>
+                        <div class="result-card" style="border-left-color: var(--color-danger);">
+                            <div class="result-label">Cortante Actuante (V<sub>u</sub>)</div>
+                            <div class="result-value"><span id="res-vu">0</span><span class="result-unit">kN</span></div>
+                        </div>
+                        <div class="result-card" id="sh-status-card">
+                            <div class="result-label">Estado</div>
+                            <div class="result-value" style="font-size: 1.5rem;" id="res-sh-status">OK</div>
+                        </div>
+                    </div>
+
+                    <!-- REPORTE FINAL -->
+                    <div style="margin-top: 3rem; border-top: 3px solid var(--color-primary); padding-top: 2rem;">
+                        <h2 style="color: var(--color-primary-dark); text-align: center; margin-bottom: 2rem;"><i class="fas fa-file-contract"></i> Memoria de Diseño - Resumen Final</h2>
+                        
+                        <div class="diagram-box">
+<pre style="color: #60a5fa;">
+ =========================================================
+             REPORTE DE DISEÑO DE LOSA MACIZA
+ =========================================================
+</pre>
+<pre id="final-report" style="color: #e2e8f0;"></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="nav-btn nav-btn-secondary" onclick="goToStage(6)"><i class="fas fa-arrow-left"></i> Anterior</button>
+                <!-- MEJORA: Botón PDF y Modificación Finalizar y Guardar -->
+                <button class="nav-btn" style="background: #e2e8f0; color: #1e293b;" onclick="exportToPDF()"><i class="fas fa-file-pdf"></i> Descargar PDF</button>
+                <button class="nav-btn nav-btn-success" onclick="finalizarDiseno()"><i class="fas fa-flag-checkered"></i> Finalizar y Guardar</button>
+            </div>
+        </div>
+
+        <!-- ===== ETAPA 8: MODO EXPLORACIÓN ===== -->
+        <div id="stage-8" class="stage-content">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon"><i class="fas fa-flask"></i></div>
+                    <div>
+                        <div class="card-title">Modo Exploración y Sandbox</div>
+                        <div class="card-subtitle">Modifica parámetros globales rápidamente y analiza cómo cambia el diseño</div>
+                    </div>
+                </div>
+                
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle alert-icon"></i>
+                    <div>
+                        Este panel permite alterar las condiciones iniciales del proyecto. Modifica lo que necesites, presiona "Recalcular Todo" y evalúa si la losa pasa cortante y deflexiones.
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin: 2rem 0; padding: 1.5rem; background: var(--color-bg); border-radius: var(--radius); border: 1px solid var(--color-border);">
+                    <div>
+                        <label class="input-label">Luz Corta L<sub>x</sub> [m]</label>
+                        <input type="number" id="exp-lx" class="input-number" step="0.1" onchange="syncExploration()">
+                    </div>
+                    <div>
+                        <label class="input-label">Espesor h [mm]</label>
+                        <input type="number" id="exp-h" class="input-number" step="5" onchange="syncExploration()">
+                    </div>
+                    <div>
+                        <label class="input-label">Concreto f'<sub>c</sub> [MPa]</label>
+                        <input type="number" id="exp-fc" class="input-number" step="1" onchange="syncExploration()">
+                    </div>
+                    <div>
+                        <label class="input-label">Carga Viva s<sub>L</sub> [kN/m²]</label>
+                        <input type="number" id="exp-sl" class="input-number" step="0.1" onchange="syncExploration()">
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-bottom: 3rem;">
+                    <button class="reveal-btn" style="background: var(--color-info);" onclick="recalculateAll()"><i class="fas fa-sync"></i> Recalcular Todo</button>
+                </div>
+                
+                <h3 style="color: var(--color-primary-dark); margin-bottom: 1rem; border-bottom: 2px solid var(--color-border); padding-bottom: 0.5rem;"><i class="fas fa-history"></i> Historial de Diseños (Últimos 3)</h3>
+                <div id="history-container" style="display: grid; gap: 1rem;">
+                    <!-- Rellenado por JS -->
+                </div>
+            </div>
+            
+            <div class="nav-buttons">
+                <button class="nav-btn nav-btn-secondary" onclick="goToStage(7)"><i class="fas fa-arrow-left"></i> Volver al Resumen</button>
+                <button class="nav-btn nav-btn-primary" onclick="goToStage(1)"><i class="fas fa-home"></i> Volver al Inicio (Paso 1)</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ===== SCRIPTS ===== -->
+    <script>
+        // ESTADO GLOBAL
+        const state = {
+            lx: 4.0, ly: 9.0, h: 140, rec: 20, d: 115,
+            fc: 21, fy: 420, sd: 3.5, sl: 2.0, wd: 0, wu: 0,
+            mu: 24.1, vu: 29.3,
+            asReq: 0, asMin: 0, asTemp: 0, asDesign: 0,
+            barMain: 129, sMain: 20, asProvMain: 0,
+            barTemp: 71, sTemp: 25, asProvTemp: 0,
+            pvc: 0
+        };
+
+        // INICIALIZACIÓN
+        document.addEventListener('DOMContentLoaded', () => {
+            updateGeometry();
+            updateLoads();
+            updateAnalysisData();
+            updateHistoryUI(); // MEJORA: Cargar historial guardado si existe
+        });
+
+        // FUNCIONES DE NAVEGACIÓN Y UI
+        function setMode(mode) {
+            document.body.className = `mode-${mode}`;
+            document.getElementById('btn-mode-teacher').className = `mode-btn ${mode === 'teacher' ? 'active' : ''}`;
+            document.getElementById('btn-mode-student').className = `mode-btn ${mode === 'student' ? 'active' : ''}`;
+        }
+
+        function goToStage(stageNum) {
+            document.querySelectorAll('.stage-content').forEach(el => el.classList.remove('active'));
+            document.getElementById(`stage-${stageNum}`).classList.add('active');
+            
+            document.querySelectorAll('.stage-item').forEach((el, index) => {
+                el.classList.remove('active');
+                if (index < stageNum - 1) el.classList.add('completed');
+                else el.classList.remove('completed');
+            });
+            document.getElementById(`nav-stage-${stageNum}`).classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // MEJORA: Sincronizar inputs si entramos al modo exploración
+            if(stageNum === 8) {
+                populateExploration();
+            }
+        }
+
+        function nextStage() {
+            const currentActive = document.querySelector('.stage-content.active');
+            const id = currentActive.id;
+            const currentNum = parseInt(id.split('-')[1]);
+            // MEJORA: Ahora son 8 etapas
+            if (currentNum < 8) goToStage(currentNum + 1);
+        }
+
+        function selectOption(stage, opt) {
+            const container = document.getElementById(`stage-${stage}`);
+            container.querySelectorAll('.option-btn').forEach(btn => btn.classList.remove('selected'));
+            event.currentTarget.classList.add('selected');
+        }
+
+        function revealContent(id) {
+            document.getElementById(`reveal-${id}`).style.display = 'none';
+            document.getElementById(`content-${id}`).classList.add('shown');
+            
+            // Si revelamos detallado, forzar renderizado de Canvas
+            if(id === 'cortante') { // Llama despues del stage 6
+                 // draw is already triggered by updateDetailing
+            }
+        }
+
+        // LÓGICA DE INGENIERÍA
+        function updateStage1() {
+            state.lx = parseFloat(document.getElementById('inp-lx').value);
+            state.ly = parseFloat(document.getElementById('inp-ly').value);
+            
+            document.getElementById('display-Lx').innerText = state.lx.toFixed(2);
+            document.getElementById('display-Ly').innerText = state.ly.toFixed(2);
+            document.getElementById('calc-Lx').innerText = state.lx.toFixed(2);
+            document.getElementById('calc-Ly').innerText = state.ly.toFixed(2);
+            
+            const ratio = state.ly / state.lx;
+            document.getElementById('calc-ratio').innerText = ratio.toFixed(2);
+            document.getElementById('result-ratio').innerText = ratio.toFixed(2);
+            document.getElementById('result-condition').innerText = `${ratio.toFixed(2)} ${ratio > 2.0 ? '>' : '≤'} 2.0`;
+            
+            if(ratio > 2.0) {
+                document.getElementById('alert-1dir').style.display = 'flex';
+                document.getElementById('alert-2dir').style.display = 'none';
+            } else {
+                document.getElementById('alert-1dir').style.display = 'none';
+                document.getElementById('alert-2dir').style.display = 'flex';
+            }
+        }
+
+        function updateGeometry() {
+            state.h = parseInt(document.getElementById('slider-h').value);
+            state.rec = parseInt(document.getElementById('slider-rec').value);
+            state.d = state.h - state.rec - 5; // Asumiendo mitad barra No. 3 o 4 aprox 5mm
+            
+            document.getElementById('value-h').innerText = state.h;
+            document.getElementById('value-rec').innerText = state.rec;
+            
+            document.getElementById('display-h-diagram').innerText = state.h;
+            document.getElementById('display-rec-diagram').innerText = state.rec;
+            document.getElementById('display-d-diagram').innerText = state.d;
+            
+            document.getElementById('formula-h').innerText = state.h;
+            document.getElementById('formula-rec').innerText = state.rec;
+            document.getElementById('formula-d').innerText = state.d;
+            
+            document.getElementById('result-h').innerText = state.h;
+            document.getElementById('result-rec').innerText = state.rec;
+            document.getElementById('result-d').innerText = state.d;
+            
+            const ratioLh = state.lx * 1000 / state.h;
+            document.getElementById('result-lh').innerText = ratioLh.toFixed(1);
+            
+            // MEJORA: Alertas y validaciones de L/h
+            const geomAlerts = document.getElementById('geom-alerts');
+            let geomHTML = '';
+            if (ratioLh < 20) {
+                geomHTML = `<div class="alert alert-warning" style="margin-top: 10px;"><i class="fas fa-exclamation-triangle alert-icon"></i><div><strong>Losa muy gruesa (L/h = ${ratioLh.toFixed(1)} < 20):</strong> Puede resultar antieconómica por el alto peso propio. Considere reducir 'h'.</div></div>`;
+            } else if (ratioLh > 35) {
+                geomHTML = `<div class="alert alert-warning" style="margin-top: 10px;"><i class="fas fa-exclamation-triangle alert-icon"></i><div><strong>Losa muy esbelta (L/h = ${ratioLh.toFixed(1)} > 35):</strong> Posibles problemas de deflexiones excesivas. Verifique NSR-10 CR.9.5.2. Considere aumentar 'h'.</div></div>`;
+            }
+            geomAlerts.innerHTML = geomHTML;
+            
+            updateLoads();
+        }
+
+        function updateLoads() {
+            state.fc = parseFloat(document.getElementById('inp-fc').value);
+            state.fy = parseFloat(document.getElementById('inp-fy').value);
+            state.sd = parseFloat(document.getElementById('inp-sd').value);
+            state.sl = parseFloat(document.getElementById('inp-sl').value);
+            
+            const pp = (state.h / 1000) * 24.0;
+            state.wd = pp + state.sd;
+            state.wu = 1.2 * state.wd + 1.6 * state.sl;
+            
+            document.getElementById('calc-pp').innerText = pp.toFixed(2);
+            document.getElementById('calc-wd').innerText = state.wd.toFixed(2);
+            document.getElementById('f-wd').innerText = state.wd.toFixed(2);
+            document.getElementById('f-wl').innerText = state.sl.toFixed(2);
+            document.getElementById('calc-wu').innerText = state.wu.toFixed(2);
+        }
+
+        function updateAnalysisData() {
+            state.mu = parseFloat(document.getElementById('inp-mu').value);
+            state.vu = parseFloat(document.getElementById('inp-vu').value);
+        }
+
+        function runIterativeDesign() {
+            updateAnalysisData();
+            const tbody = document.getElementById('tbody-iter');
+            tbody.innerHTML = '';
+            
+            let a = state.d / 10;
+            let As = 0;
+            const phi = 0.90;
+            const b = 1000;
+            
+            let converged = false;
+            
+            for(let i=1; i<=5; i++) {
+                let aPrev = a;
+                // As = Mu / (phi * fy * (d - a/2))
+                As = (state.mu * 1000000) / (phi * state.fy * (state.d - a/2));
+                // a = (As * fy) / (0.85 * fc * b)
+                a = (As * state.fy) / (0.85 * state.fc * b);
+                
+                let delta = Math.abs(a - aPrev);
+                
+                let tr = document.createElement('tr');
+                if(delta < 0.5 && !converged) {
+                    tr.className = 'iteration-converged';
+                    converged = true;
+                }
+                
+                tr.innerHTML = `
+                    <td>${i}</td>
+                    <td>${aPrev.toFixed(2)}</td>
+                    <td>${As.toFixed(1)}</td>
+                    <td>${a.toFixed(2)}</td>
+                    <td>${delta.toFixed(3)}</td>
+                `;
+                tbody.appendChild(tr);
+                
+                if(converged) break;
+            }
+            
+            state.asReq = As;
+            state.asMin = Math.max(0.0018 * b * state.h, (0.8 * Math.sqrt(state.fc) / state.fy) * b * state.d);
+            state.asTemp = 0.0018 * b * state.h;
+            state.asDesign = Math.max(state.asReq, state.asMin);
+            
+            document.getElementById('res-as-req').innerText = state.asReq.toFixed(0);
+            document.getElementById('res-as-min').innerText = state.asMin.toFixed(0);
+            document.getElementById('res-as-temp').innerText = state.asTemp.toFixed(0);
+            document.getElementById('res-as-final').innerText = state.asDesign.toFixed(0);
+            document.getElementById('res-as-temp2').innerText = state.asTemp.toFixed(0);
+            
+            // Send to detailing stage
+            document.getElementById('det-as-req').innerText = state.asDesign.toFixed(0);
+            document.getElementById('det-as-temp').innerText = state.asTemp.toFixed(0);
+            updateDetailing();
+        }
+
+        function updateDetailing() {
+            if(state.asDesign === 0) return; // Prevent calc if not initialized
+            
+            // Main
+            state.barMain = parseFloat(document.getElementById('sel-bar-main').value);
+            state.sMain = parseFloat(document.getElementById('sel-s-main').value);
+            
+            let sCalcMain = (state.barMain / state.asDesign) * 100; // cm
+            let sMaxMain = Math.min(3 * (state.h/10), 45); // cm
+            state.asProvMain = (state.barMain / state.sMain) * 100;
+            
+            document.getElementById('det-s-calc').innerText = sCalcMain.toFixed(1);
+            document.getElementById('det-s-max').innerText = sMaxMain.toFixed(1);
+            document.getElementById('det-as-prov').innerText = state.asProvMain.toFixed(0);
+            document.getElementById('det-as-prov').style.color = (state.asProvMain >= state.asDesign) ? 'var(--color-success)' : 'var(--color-danger)';
+            
+            // Temp
+            state.barTemp = parseFloat(document.getElementById('sel-bar-temp').value);
+            state.sTemp = parseFloat(document.getElementById('sel-s-temp').value);
+            
+            let sCalcTemp = (state.barTemp / state.asTemp) * 100;
+            let sMaxTemp = Math.min(5 * (state.h/10), 45);
+            state.asProvTemp = (state.barTemp / state.sTemp) * 100;
+            
+            document.getElementById('det-s-calc-t').innerText = sCalcTemp.toFixed(1);
+            document.getElementById('det-s-max-t').innerText = sMaxTemp.toFixed(1);
+            document.getElementById('det-as-prov-t').innerText = state.asProvTemp.toFixed(0);
+            document.getElementById('det-as-prov-t').style.color = (state.asProvTemp >= state.asTemp) ? 'var(--color-success)' : 'var(--color-danger)';
+            
+            // MEJORA: Validaciones Críticas y Alertas
+            const detAlerts = document.getElementById('detailing-alerts');
+            let detHTML = '';
+            if (state.asProvMain < state.asDesign) {
+                 detHTML += `<div class="alert alert-danger"><i class="fas fa-times-circle alert-icon"></i><div><strong>Error Crítico (Flexión):</strong> El acero principal provisto (${state.asProvMain.toFixed(0)} mm²/m) es menor al requerido (${state.asDesign.toFixed(0)} mm²/m). Reduzca la separación.</div></div>`;
+            }
+            if (state.asProvTemp < state.asTemp) {
+                 detHTML += `<div class="alert alert-danger"><i class="fas fa-times-circle alert-icon"></i><div><strong>Error Crítico (Temperatura):</strong> El acero de temperatura provisto (${state.asProvTemp.toFixed(0)} mm²/m) es menor al requerido (${state.asTemp.toFixed(0)} mm²/m). Reduzca la separación.</div></div>`;
+            }
+            detAlerts.innerHTML = detHTML;
+
+            // MEJORA: Dibujar representación visual 2D
+            drawSlabReinforcement();
+        }
+
+        // MEJORA A: Dibujo Canvas 2D
+        function drawSlabReinforcement() {
+            const canvas = document.getElementById('slab-canvas');
+            if(!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const w = canvas.width;
+            const h = canvas.height;
+            ctx.clearRect(0, 0, w, h);
+
+            // Representación de un metro cuadrado al centro
+            const cx = w/2, cy = h/2;
+            const size = 250; // tamaño visual de 1m x 1m 
+            
+            // Losa exterior decorativa
+            ctx.fillStyle = '#f1f5f9';
+            ctx.fillRect(cx - 300, cy - size/2 - 20, 600, size + 40);
+            
+            // Borde franja 1m
+            ctx.strokeStyle = '#94a3b8';
+            ctx.setLineDash([5, 5]);
+            ctx.lineWidth = 2;
+            ctx.strokeRect(cx - size/2, cy - size/2, size, size);
+            ctx.setLineDash([]);
+
+            // Etiqueta del bloque de 1m
+            ctx.fillStyle = '#64748b';
+            ctx.font = '12px Inter';
+            ctx.fillText('Franja de 1m (b = 1000mm)', cx - size/2, cy - size/2 - 8);
+
+            // Refuerzo de Temperatura (líneas horizontales, dirección Y)
+            ctx.strokeStyle = '#64748b'; 
+            ctx.lineWidth = 3;
+            // Cálculo del número de barras visuales proporcionales a 100cm (tamaño de la franja)
+            const numTemp = Math.floor(100 / state.sTemp);
+            const stepTemp = size / (100 / state.sTemp);
+            for(let i=0; i<=100/state.sTemp; i++) {
+                let y = (cy - size/2) + i * stepTemp;
+                ctx.beginPath();
+                ctx.moveTo(cx - 280, y); // Más largo para entender continuidad
+                ctx.lineTo(cx + 280, y);
+                ctx.stroke();
+            }
+
+            // Refuerzo Principal (líneas verticales, dirección X)
+            ctx.strokeStyle = '#9a3412';
+            ctx.lineWidth = 5;
+            const stepMain = size / (100 / state.sMain);
+            for(let i=0; i<=100/state.sMain; i++) {
+                let x = (cx - size/2) + i * stepMain;
+                ctx.beginPath();
+                ctx.moveTo(x, cy - size/2 - 15); // Ligeramente sobresaliente de 1m
+                ctx.lineTo(x, cy + size/2 + 15);
+                ctx.stroke();
+            }
+
+            // Leyendas y textos descriptivos
+            const getBarName = (area) => area == 71 ? 'No.3' : (area == 129 ? 'No.4' : 'No.5');
+            
+            ctx.fillStyle = '#1e293b';
+            ctx.font = 'bold 15px JetBrains Mono';
+            ctx.fillText('PLANTA: DISTRIBUCIÓN DE BARRAS', 20, 30);
+            
+            ctx.fillStyle = '#9a3412';
+            ctx.font = '14px Inter';
+            ctx.fillText(`■ Principal: Barra ${getBarName(state.barMain)} @ ${state.sMain} cm`, 20, h - 45);
+            
+            ctx.fillStyle = '#64748b';
+            ctx.fillText(`■ Temperatura: Barra ${getBarName(state.barTemp)} @ ${state.sTemp} cm`, 20, h - 20);
+        }
+
+        function updateShear() {
+            document.getElementById('sh-fc').innerText = state.fc;
+            document.getElementById('sh-d').innerText = state.d;
+            
+            // phi Vc = 0.75 * 0.17 * 1.0 * sqrt(fc) * b * d / 1000
+            state.pvc = 0.75 * 0.17 * Math.sqrt(state.fc) * 1000 * state.d / 1000;
+            
+            document.getElementById('sh-pvc').innerText = state.pvc.toFixed(1);
+            document.getElementById('res-pvc').innerText = state.pvc.toFixed(1);
+            document.getElementById('res-vu').innerText = state.vu.toFixed(1);
+            
+            const card = document.getElementById('sh-status-card');
+            const statusLabel = document.getElementById('res-sh-status');
+            
+            if(state.pvc >= state.vu) {
+                card.style.borderLeftColor = 'var(--color-success)';
+                card.style.background = '#d1fae5';
+                statusLabel.innerText = "¡CUMPLE!";
+                statusLabel.style.color = 'var(--color-success)';
+            } else {
+                card.style.borderLeftColor = 'var(--color-danger)';
+                card.style.background = '#fee2e2';
+                statusLabel.innerText = "¡FALLA! (Aumentar h)";
+                statusLabel.style.color = 'var(--color-danger)';
+            }
+            
+            generateReport();
+        }
+
+        function generateReport() {
+            const getBarName = (area) => area == 71 ? 'No.3' : (area == 129 ? 'No.4' : 'No.5');
+            const barMainName = getBarName(state.barMain);
+            const barTempName = getBarName(state.barTemp);
+            
+            const report = `
+ PARÁMETROS GEOMÉTRICOS:
+ - Luces: L_x = ${state.lx.toFixed(2)} m, L_y = ${state.ly.toFixed(2)} m (Ly/Lx = ${(state.ly/state.lx).toFixed(2)} > 2)
+ - Espesor Losa (h): ${state.h} mm
+ - Recubrimiento: ${state.rec} mm  --> Peralte efectivo (d) = ${state.d} mm
+
+ MATERIALES Y CARGAS:
+ - f'c = ${state.fc} MPa, fy = ${state.fy} MPa
+ - Carga de Servicio (Muerta / Viva): ${state.wd.toFixed(2)} / ${state.sl.toFixed(2)} kN/m²
+ - Esfuerzos Últimos: M_u = ${state.mu.toFixed(1)} kN·m/m, V_u = ${state.vu.toFixed(1)} kN/m
+
+ DISEÑO A FLEXIÓN (Franja 1.0 m):
+ - A_s Requerido (resistencia): ${state.asReq.toFixed(0)} mm²/m
+ - A_s Mínimo (fisuración):     ${state.asMin.toFixed(0)} mm²/m
+ - ACERO ADOPTADO PRINCIPAL:    ${barMainName} @ ${state.sMain} cm (A_s = ${state.asProvMain.toFixed(0)} mm²/m) ✓
+ 
+ - A_s Temperatura (retracción): ${state.asTemp.toFixed(0)} mm²/m
+ - ACERO ADOPTADO TEMP:         ${barTempName} @ ${state.sTemp} cm (A_s = ${state.asProvTemp.toFixed(0)} mm²/m) ✓
+
+ VERIFICACIÓN CORTANTE:
+ - Resistencia (φV_c): ${state.pvc.toFixed(1)} kN
+ - Cortante Actuante:  ${state.vu.toFixed(1)} kN
+ - ESTADO:             ${state.pvc >= state.vu ? 'CONFORME (No requiere estribos)' : 'REDISEÑO REQUERIDO'}
+`;
+            document.getElementById('final-report').innerText = report;
+        }
+
+        // MEJORA B: Exportar a PDF
+        function exportToPDF() {
+            if(!window.jspdf) {
+                alert("La librería PDF no se cargó correctamente. Verifique su conexión a internet.");
+                return;
+            }
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            doc.setFontSize(18);
+            doc.text("Memoria de Diseño - Losa Maciza (NSR-10)", 15, 20);
+            doc.setFontSize(10);
+            doc.text("Generado en Criterio Estructural - Prof. Rafael Correa", 15, 28);
+            
+            doc.setFont('courier', 'normal');
+            doc.setFontSize(11);
+            const reportText = document.getElementById('final-report').innerText;
+            const lines = doc.splitTextToSize(reportText, 180);
+            doc.text(lines, 15, 40);
+            
+            doc.save(`Memoria_Losa_h${state.h}_Lx${state.lx}.pdf`);
+        }
+
+        // MEJORA C y E: Historial de Diseños y Exploración
+        function finalizarDiseno() {
+            saveDesign();
+            alert('¡Diseño Completado con Éxito y Guardado en el Historial local!');
+            goToStage(8);
+        }
+
+        function saveDesign() {
+            const designs = JSON.parse(localStorage.getItem('slabDesigns') || '[]');
+            designs.unshift({
+                date: new Date().toLocaleString(),
+                params: {...state}
+            });
+            // Guardar solo los últimos 3
+            localStorage.setItem('slabDesigns', JSON.stringify(designs.slice(0, 3)));
+            updateHistoryUI();
+        }
+
+        function updateHistoryUI() {
+            const container = document.getElementById('history-container');
+            if(!container) return;
+            const designs = JSON.parse(localStorage.getItem('slabDesigns') || '[]');
+            if(designs.length === 0) {
+                container.innerHTML = '<p style="color: var(--color-text-muted);">No hay diseños guardados aún.</p>';
+                return;
+            }
+            container.innerHTML = designs.map((d, i) => `
+                <div style="background: white; padding: 1rem 1.5rem; border-radius: 8px; border: 1px solid var(--color-border); box-shadow: var(--shadow-sm); display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <strong style="color: var(--color-primary-dark);"><i class="fas fa-file-alt"></i> Versión ${i+1} (${d.date})</strong><br>
+                        <span style="font-size: 0.9rem; color: var(--color-text-muted);">
+                            L<sub>x</sub>: ${parseFloat(d.params.lx).toFixed(2)}m | h: ${d.params.h}mm | f'<sub>c</sub>: ${d.params.fc}MPa | A<sub>s,provisto</sub>: ${parseFloat(d.params.asProvMain).toFixed(0)} mm²
+                        </span>
+                    </div>
+                    <div>
+                        <span class="badge" style="background: ${d.params.pvc >= d.params.vu ? '#d1fae5' : '#fee2e2'}; color: ${d.params.pvc >= d.params.vu ? '#065f46' : '#991b1b'}; padding: 0.5rem; border-radius: 6px; font-weight: 600; font-size: 0.8rem;">
+                            ${d.params.pvc >= d.params.vu ? '✓ CORTANTE OK' : '✗ CORTANTE FALLA'}
+                        </span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function populateExploration() {
+            document.getElementById('exp-lx').value = state.lx;
+            document.getElementById('exp-h').value = state.h;
+            document.getElementById('exp-fc').value = state.fc;
+            document.getElementById('exp-sl').value = state.sl;
+            updateHistoryUI();
+        }
+
+        function syncExploration() {
+            // Lee del sandbox y escribe en los inputs originales
+            document.getElementById('inp-lx').value = document.getElementById('exp-lx').value;
+            document.getElementById('slider-h').value = document.getElementById('exp-h').value;
+            document.getElementById('inp-fc').value = document.getElementById('exp-fc').value;
+            document.getElementById('inp-sl').value = document.getElementById('exp-sl').value;
+        }
+
+        function recalculateAll() {
+            syncExploration();
+            updateStage1();
+            updateGeometry();
+            updateLoads();
+            
+            // Advertencia si cambian cosas geométricas, los esfuerzos Mu y Vu también cambiarían en la vida real,
+            // pero para el sandbox usamos los mismos momentáneamente o invitamos a repasar análisis:
+            alert("Los parámetros han sido actualizados en todo el flujo. Revise la Etapa 4 para actualizar Mu y Vu de ser necesario, luego finalice en la Etapa 7.");
+            goToStage(4);
+        }
+
+    </script>
+</body>
+</html>
