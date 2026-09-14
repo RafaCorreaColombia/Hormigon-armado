@@ -12,14 +12,13 @@
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     
-    <!-- Librerías Asíncronas -->
+    <!-- Librerías Asíncronas (MathJax únicamente) -->
     <script>
         window.MathJax = {
             tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']] }
         };
     </script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <style>
         /* PALETA DE COLORES DE LA MARCA */
@@ -74,6 +73,7 @@
         .tabla-traslapos tr:hover { background-color: #f8fafc; }
         .col-ld { background-color: rgba(26, 37, 48, 0.03); font-weight: bold;}
         .col-claseb { background-color: rgba(230, 126, 34, 0.08); font-weight: bold; color: #c0392b;}
+        .col-conf { background-color: #f1f5f9; font-weight: bold; color: var(--azul-profundo); }
 
         .btn-accion { padding: 8px 16px; border-radius: 6px; border: none; cursor: pointer; font-weight: bold; transition: 0.2s; }
         .btn-copiar { background-color: var(--azul-profundo); color: white; }
@@ -163,7 +163,6 @@
                     <label class="w3-small w3-text-grey w3-block"><b>ACERO ($f_y$)</b></label>
                     <select id="selFy" class="w3-select w3-border w3-round" onchange="generarTabla()">
                         <option value="420" selected>420 MPa</option>
-                        <option value="240">240 MPa (Liso)</option>
                     </select>
                 </div>
 
@@ -200,6 +199,26 @@
                 </div>
             </div>
 
+            <!-- MÓDULO ESPECIAL LOSA (C.12.2.3) -->
+            <div class="w3-row-padding w3-margin-top oculto" id="panelLosa" style="margin: 0 -16px; border-top: 1px solid #e2e8f0; padding-top: 15px;">
+                <div class="w3-col l6 m6 w3-margin-bottom">
+                    <label class="w3-small w3-text-grey w3-block"><b>RECUBRIMIENTO LIBRE ($c_c$) (mm)</b></label>
+                    <input type="number" id="inpRecubrimiento" class="w3-input w3-border w3-round" value="25" onchange="generarTabla()" min="10">
+                </div>
+                <div class="w3-col l6 m6 w3-margin-bottom">
+                    <label class="w3-small w3-text-grey w3-block"><b>SEPARACIÓN EJE A EJE ($s$) (mm)</b></label>
+                    <input type="number" id="inpSeparacion" class="w3-input w3-border w3-round" value="150" onchange="generarTabla()" min="20">
+                </div>
+                <div class="w3-col l12">
+                    <div class="w3-panel w3-light-grey w3-leftbar w3-border-grey w3-padding-small w3-round w3-small">
+                        <b>💡 Cálculo mediante C.12.2.3 — considerando confinamiento:</b><br>
+                        En losas se evalúa C.12.2.3 suponiendo $K_{tr} = 0$ (sin estribos transversales).<br>
+                        • $c_b$: menor valor entre la distancia desde el centro de la barra hasta la superficie de concreto más cercana ($c_c + d_b/2$) y la mitad de la separación centro a centro ($s/2$).<br>
+                        • El índice de confinamiento $(c_b + K_{tr})/d_b$ se limita automáticamente a un máximo de **2.50**.
+                    </div>
+                </div>
+            </div>
+
             <!-- ALERTAS CONTEXTUALES -->
             <div id="msgViga" class="w3-panel dato-box w3-padding-small w3-round w3-small w3-margin-top">
                 <b>💡 Criterio:</b> La longitud no decide <i>dónde</i> empalmar. En vigas, la ubicación del empalme debe responder a las demandas de la estructura (ej: acero superior en el centro de la luz, acero inferior cerca a los apoyos).
@@ -224,7 +243,7 @@
             </div>
 
             <div id="msgLosa" class="w3-panel w3-light-grey w3-leftbar w3-border-grey w3-padding-small w3-round w3-small w3-margin-top oculto">
-                <b>💡 Criterio:</b> En losas macizas, el refuerzo superior rara vez tiene más de 300 mm de concreto debajo de la barra, por lo que usualmente $\psi_t = 1.0$. Verifica el espesor libre.
+                <b>💡 Criterio:</b> Para el factor $\psi_t$, verifique la posición de la barra durante el vaciado. En una losa maciza convencional, normalmente no se superan los 300 mm de concreto fresco debajo del refuerzo superior, por lo que usualmente $\psi_t = 1.0$.
             </div>
         </div>
 
@@ -241,7 +260,7 @@
         <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 40px; border-bottom: 2px solid var(--azul-profundo); padding-bottom: 10px; flex-wrap: wrap; gap: 15px;">
             <div>
                 <h3 style="border: none; margin: 0; padding: 0;">2. TABLA PARA DESPIECE</h3>
-                <span class="w3-small w3-text-grey">Valores base según ecuación simplificada C.12.2.2</span>
+                <span class="w3-small w3-text-grey" id="txtEcuacion">Valores base según ecuación simplificada C.12.2.2</span>
             </div>
             
             <div class="no-print" style="display: flex; gap: 15px; flex-wrap: wrap;">
@@ -266,20 +285,17 @@
 
         <div class="tabla-container">
             <table class="tabla-traslapos" id="tablaMain">
-                <thead>
-                    <tr>
-                        <th>Barra</th>
-                        <th>$d_b$ (mm)</th>
-                        <th class="col-ld" id="thDesarrollo">Desarrollo<br><span style="font-size:0.8em; font-weight:normal;">($l_d$)</span></th>
-                        <th id="thClaseA">Traslapo Clase A<br><span style="font-size:0.8em; font-weight:normal;">(1.0 $l_d$)</span></th>
-                        <th class="col-claseb" id="thClaseB">Traslapo Clase B<br><span style="font-size:0.8em; font-weight:normal;">(1.3 $l_d$)</span></th>
-                        <th id="thCompresion">Compresión<br><span style="font-size:0.8em; font-weight:normal;">($l_{sc}$)</span></th>
-                    </tr>
+                <thead id="theadTabla">
+                    <!-- Encabezados dinámicos por JS -->
                 </thead>
                 <tbody id="tbodyResultados">
                     <!-- Filas generadas por JS -->
                 </tbody>
             </table>
+        </div>
+
+        <div id="noteLosaConf" class="w3-small w3-text-grey w3-margin-top oculto" style="font-style: italic;">
+            * El valor del índice $\frac{c_b + K_{tr}}{d_b}$ está limitado a un máximo de **2.50** conforme a C.12.2.3.
         </div>
 
         <div class="w3-panel w3-sand w3-leftbar w3-border-orange w3-padding-small w3-round w3-small w3-margin-top no-print">
@@ -334,13 +350,13 @@
             <div class="w3-third w3-margin-bottom">
                 <div class="w3-card w3-padding w3-round w3-white" style="height: 100%;">
                     <b class="w3-text-blue">2. Desarrollo ($l_d$)</b>
-                    <p class="w3-small">Es la traducción matemática del anclaje recto. Responde a la pregunta: <i>¿Cuánto necesito embeber la barra para que alcance su esfuerzo de fluencia ($f_y$) sin que el concreto falle por adherencia antes?</i></p>
+                    <p class="w3-small">Es la longitud de barra embebida requerida para desarrollar la resistencia especificada de la barra bajo las condiciones consideradas por la norma. Responde a la pregunta: <i>¿Cuánto necesito embeber la barra para que alcance su esfuerzo de fluencia ($f_y$) sin que el concreto falle por adherencia antes?</i></p>
                 </div>
             </div>
             <div class="w3-third w3-margin-bottom">
                 <div class="w3-card w3-padding w3-round w3-white" style="height: 100%;">
                     <b class="w3-text-blue">3. Empalme / Traslapo</b>
-                    <p class="w3-small">El empalme es el requerimiento de continuity. El <b>traslapo</b> es un método de empalme. A tracción se calcula amplificando el $l_d$ (1.0 o 1.3 veces) para compensar la concentración de esfuerzos.</p>
+                    <p class="w3-small">El empalme es el requerimiento de continuidad. El <b>traslapo</b> es un método de empalme. A tracción se calcula amplificando el $l_d$ (1.0 o 1.3 veces) para compensar la concentración de esfuerzos.</p>
                 </div>
             </div>
             
@@ -506,6 +522,8 @@
         const elemento = document.getElementById('selElemento').value;
         const panelPos = document.getElementById('panelPosicion');
         const panelSismo = document.getElementById('panelSismo');
+        const panelLosa = document.getElementById('panelLosa');
+        const noteLosaConf = document.getElementById('noteLosaConf');
         
         document.getElementById('msgViga').classList.add('oculto');
         document.getElementById('msgColumnaDMO').classList.add('oculto');
@@ -516,16 +534,25 @@
         if(elemento === 'viga') {
             panelPos.classList.remove('oculto');
             panelSismo.classList.add('oculto');
+            panelLosa.classList.add('oculto');
+            noteLosaConf.classList.add('oculto');
             document.getElementById('msgViga').classList.remove('oculto');
+            document.getElementById('txtEcuacion').innerText = "Valores base según ecuación simplificada C.12.2.2";
         } else if(elemento === 'losa') {
             panelPos.classList.remove('oculto');
             panelSismo.classList.add('oculto');
+            panelLosa.classList.remove('oculto');
+            noteLosaConf.classList.remove('oculto');
             document.getElementById('selPosicion').value = "1.0"; 
             document.getElementById('msgLosa').classList.remove('oculto');
+            document.getElementById('txtEcuacion').innerText = "Cálculo mediante C.12.2.3 — considerando confinamiento";
         } else if(elemento === 'columna') {
             panelPos.classList.add('oculto');
+            panelLosa.classList.add('oculto');
+            noteLosaConf.classList.add('oculto');
             document.getElementById('selPosicion').value = "1.0"; 
             panelSismo.classList.remove('oculto');
+            document.getElementById('txtEcuacion').innerText = "Valores base según ecuación simplificada C.12.2.2";
             
             let condSismo = document.getElementById('selSismo').value;
             if(condSismo === 'DMO' || condSismo === 'DES') {
@@ -571,37 +598,79 @@
 
         const isColumnaSismica = (elemento === 'columna' && (sismo === 'DMO' || sismo === 'DES'));
         
-        // Actualizar Títulos de Columnas con Unidades
-        document.getElementById('thDesarrollo').innerHTML = `Desarrollo<br><span style="font-size:0.8em; font-weight:normal;">($l_d$) [${unidad}]</span>`;
-        document.getElementById('thClaseA').innerHTML = `Traslapo Clase A<br><span style="font-size:0.8em; font-weight:normal;">(1.0 $l_d$) [${unidad}]</span>`;
-        document.getElementById('thClaseB').innerHTML = `Traslapo Clase B<br><span style="font-size:0.8em; font-weight:normal;">(1.3 $l_d$) [${unidad}]</span>`;
+        // Renderizar Encabezados según el Elemento
+        const thead = document.getElementById('theadTabla');
+        if (elemento === 'losa') {
+            thead.innerHTML = `
+                <tr>
+                    <th>Barra</th>
+                    <th>$d_b$ (mm)</th>
+                    <th class="col-conf">$\\frac{c_b + K_{tr}}{d_b}$</th>
+                    <th class="col-ld" id="thDesarrollo">Desarrollo<br><span style="font-size:0.8em; font-weight:normal;">($l_d$) [${unidad}]</span></th>
+                    <th id="thClaseA">Traslapo Clase A<br><span style="font-size:0.8em; font-weight:normal;">(1.0 $l_d$) [${unidad}]</span></th>
+                    <th class="col-claseb" id="thClaseB">Traslapo Clase B<br><span style="font-size:0.8em; font-weight:normal;">(1.3 $l_d$) [${unidad}]</span></th>
+                    <th id="thCompresion">Compresión<br><span style="font-size:0.8em; font-weight:normal;">($l_{sc}$) [${unidad}]</span></th>
+                </tr>
+            `;
+        } else {
+            thead.innerHTML = `
+                <tr>
+                    <th>Barra</th>
+                    <th>$d_b$ (mm)</th>
+                    <th class="col-ld" id="thDesarrollo">Desarrollo<br><span style="font-size:0.8em; font-weight:normal;">($l_d$) [${unidad}]</span></th>
+                    <th id="thClaseA">Traslapo Clase A<br><span style="font-size:0.8em; font-weight:normal;">(1.0 $l_d$) [${unidad}]</span></th>
+                    <th class="col-claseb" id="thClaseB">Traslapo Clase B<br><span style="font-size:0.8em; font-weight:normal;">(1.3 $l_d$) [${unidad}]</span></th>
+                    <th id="thCompresion">Compresión<br><span style="font-size:0.8em; font-weight:normal;">($l_{sc}$) [${unidad}]</span></th>
+                </tr>
+            `;
+        }
 
         const thComp = document.getElementById('thCompresion');
-        thComp.style.opacity = isColumnaSismica ? '0.3' : '1';
-        thComp.innerHTML = isColumnaSismica ? `Compresión<br><span style="font-size:0.7em;">(No Aplica)</span>` : `Compresión<br><span style="font-size:0.8em; font-weight:normal;">($l_{sc}$) [${unidad}]</span>`;
+        if (thComp) {
+            thComp.style.opacity = isColumnaSismica ? '0.3' : '1';
+            thComp.innerHTML = isColumnaSismica ? `Compresión<br><span style="font-size:0.7em;">(No Aplica)</span>` : `Compresión<br><span style="font-size:0.8em; font-weight:normal;">($l_{sc}$) [${unidad}]</span>`;
+        }
 
         let tbody = document.getElementById('tbodyResultados');
         tbody.innerHTML = '';
 
         barras.forEach(b => {
-            // 1. CÁLCULO BASE
-            let factor = (b.n <= 6) ? 2.1 : 1.7;
-            let ld_base_mm = (fy / (factor * 1.0 * Math.sqrt(fc))) * psi_t * 1.0 * b.db;
+            let ld_base_mm = 0;
+            let conf_str = "";
 
-            // 2. TRASLAPOS A TRACCIÓN
+            if (elemento === 'losa') {
+                const rec = parseFloat(document.getElementById('inpRecubrimiento').value) || 25;
+                const sep = parseFloat(document.getElementById('inpSeparacion').value) || 150;
+                
+                let cb1 = rec + (b.db / 2);
+                let cb2 = sep / 2;
+                let cb = Math.min(cb1, cb2);
+                
+                let conf_raw = cb / b.db;
+                let conf_capped = Math.min(conf_raw, 2.5);
+                
+                conf_str = conf_raw >= 2.5 ? "2.50*" : conf_raw.toFixed(2);
+                
+                let psi_s = (b.n <= 6) ? 0.8 : 1.0;
+                
+                // C.12.2.3
+                ld_base_mm = (fy / (1.1 * 1.0 * Math.sqrt(fc))) * ((psi_t * 1.0 * psi_s) / conf_capped) * b.db;
+            } else {
+                // C.12.2.2
+                let factor = (b.n <= 6) ? 2.1 : 1.7;
+                ld_base_mm = (fy / (factor * 1.0 * Math.sqrt(fc))) * psi_t * 1.0 * b.db;
+            }
+
             let claseA_mm = ld_base_mm * 1.0;
             let claseB_mm = ld_base_mm * 1.3;
 
-            // 3. LÍMITE ABSOLUTO DE 300mm
             let ld_final_mm = Math.max(ld_base_mm, 300);
             claseA_mm = Math.max(claseA_mm, 300);
             claseB_mm = Math.max(claseB_mm, 300);
 
-            // 4. COMPRESIÓN
             let lsc_mm = (fy <= 420) ? (0.071 * fy * b.db) : ((0.13 * fy - 24) * b.db);
             lsc_mm = Math.max(lsc_mm, 300);
 
-            // 5. FORMATEO
             let ld_out, cla_out, clb_out, lsc_out;
             if (modo.startsWith('obra')) {
                 let multiploCm = modo === 'obra10' ? 10 : 5; 
@@ -618,20 +687,32 @@
 
             let tr = document.createElement('tr');
             let compStyle = isColumnaSismica ? 'color: #ccc; text-decoration: line-through;' : '';
-            tr.innerHTML = `
-                <td><b>${b.name}</b></td>
-                <td>${b.db.toFixed(1)}</td>
-                <td class="col-ld">${ld_out}</td>
-                <td>${cla_out}</td>
-                <td class="col-claseb">${clb_out}</td>
-                <td style="${compStyle}">${lsc_out}</td>
-            `;
+            
+            if (elemento === 'losa') {
+                tr.innerHTML = `
+                    <td><b>${b.name}</b></td>
+                    <td>${b.db.toFixed(1)}</td>
+                    <td class="col-conf">${conf_str}</td>
+                    <td class="col-ld">${ld_out}</td>
+                    <td>${cla_out}</td>
+                    <td class="col-claseb">${clb_out}</td>
+                    <td style="${compStyle}">${lsc_out}</td>
+                `;
+            } else {
+                tr.innerHTML = `
+                    <td><b>${b.name}</b></td>
+                    <td>${b.db.toFixed(1)}</td>
+                    <td class="col-ld">${ld_out}</td>
+                    <td>${cla_out}</td>
+                    <td class="col-claseb">${clb_out}</td>
+                    <td style="${compStyle}">${lsc_out}</td>
+                `;
+            }
             tbody.appendChild(tr);
         });
 
         calcularEmpalmeMixto();
         
-        // Re-renderizado limpio solo en la tabla
         if (window.MathJax && MathJax.typesetPromise) {
             MathJax.typesetPromise([document.getElementById('tablaMain')]);
         }
@@ -644,19 +725,40 @@
         const psi_t = parseFloat(document.getElementById('selPosicion').value) || 1.0;
         const modo = document.getElementById('selRedondeo').value; 
         const unidad = document.getElementById('selUnidades').value;
+        const elemento = document.getElementById('selElemento').value;
         
         let idx1 = parseInt(document.getElementById('selBarra1').value);
         let idx2 = parseInt(document.getElementById('selBarra2').value);
         let bMenor = barras[Math.min(idx1, idx2)];
         let bMayor = barras[Math.max(idx1, idx2)];
 
-        let factorMayor = (bMayor.n <= 6) ? 2.1 : 1.7;
-        let ld_mayor_base = (fy / (factorMayor * 1.0 * Math.sqrt(fc))) * psi_t * bMayor.db;
+        let ld_mayor_base = 0;
+        let ld_menor_base = 0;
 
-        let factorMenor = (bMenor.n <= 6) ? 2.1 : 1.7;
-        let ld_menor_base = (fy / (factorMenor * 1.0 * Math.sqrt(fc))) * psi_t * bMenor.db;
+        if (elemento === 'losa') {
+            const rec = parseFloat(document.getElementById('inpRecubrimiento').value) || 25;
+            const sep = parseFloat(document.getElementById('inpSeparacion').value) || 150;
+            
+            // Mayor
+            let cb_M = Math.min(rec + (bMayor.db / 2), sep / 2);
+            let conf_M = Math.min(cb_M / bMayor.db, 2.5);
+            let psi_s_M = (bMayor.n <= 6) ? 0.8 : 1.0;
+            ld_mayor_base = (fy / (1.1 * 1.0 * Math.sqrt(fc))) * ((psi_t * 1.0 * psi_s_M) / conf_M) * bMayor.db;
+
+            // Menor
+            let cb_m = Math.min(rec + (bMenor.db / 2), sep / 2);
+            let conf_m = Math.min(cb_m / bMenor.db, 2.5);
+            let psi_s_m = (bMenor.n <= 6) ? 0.8 : 1.0;
+            ld_menor_base = (fy / (1.1 * 1.0 * Math.sqrt(fc))) * ((psi_t * 1.0 * psi_s_m) / conf_m) * bMenor.db;
+        } else {
+            let factorMayor = (bMayor.n <= 6) ? 2.1 : 1.7;
+            ld_mayor_base = (fy / (factorMayor * 1.0 * Math.sqrt(fc))) * psi_t * bMayor.db;
+
+            let factorMenor = (bMenor.n <= 6) ? 2.1 : 1.7;
+            ld_menor_base = (fy / (factorMenor * 1.0 * Math.sqrt(fc))) * psi_t * bMenor.db;
+        }
+
         let traslapo_menor_base = ld_menor_base * 1.3;
-
         let empalme_req_mm = Math.max(Math.max(ld_mayor_base, traslapo_menor_base), 300);
         
         let resultado = "";
@@ -677,12 +779,26 @@
         const selElem = document.getElementById('selElemento');
         const elemento = selElem.options[selElem.selectedIndex].text;
         const un = document.getElementById('selUnidades').value;
+        const sismoSelect = document.getElementById('selSismo');
+        const sismo = sismoSelect ? sismoSelect.options[sismoSelect.selectedIndex].text : '';
         
         let texto = "CRITERIO ESTRUCTURAL\nGuía Definitiva de Traslapos\n";
-        texto += `f'c = ${fc} MPa\nfy = ${fy} MPa\nElemento = ${elemento}\nPosición (ψt) = ${psi_t}\nCriterio = C.12.2.2\n\n`;
+        texto += `f'c = ${fc} MPa\nfy = ${fy} MPa\nElemento = ${elemento}\nPosición (ψt) = ${psi_t}\n`;
+        
+        if (selElem.value === 'losa') {
+            const rec = document.getElementById('inpRecubrimiento').value;
+            const sep = document.getElementById('inpSeparacion').value;
+            texto += `Recubrimiento (cc) = ${rec} mm\nSeparación (s) = ${sep} mm\nCriterio = C.12.2.3 (Considerando Confinamiento)\n\n`;
+        } else {
+            texto += `Criterio = C.12.2.2 (Simplificado)\n\n`;
+        }
         
         let tabla = document.getElementById('tablaMain');
-        texto += `Barra\td_b (mm)\tDesarrollo ld (${un})\tClase A (${un})\tClase B (${un})\tCompresion (${un})\n`;
+        if (selElem.value === 'losa') {
+            texto += `Barra\td_b (mm)\t(cb+Ktr)/db\tDesarrollo ld (${un})\tClase A (${un})\tClase B (${un})\tCompresion (${un})\n`;
+        } else {
+            texto += `Barra\td_b (mm)\tDesarrollo ld (${un})\tClase A (${un})\tClase B (${un})\tCompresion (${un})\n`;
+        }
         
         for (let i = 1; i < tabla.rows.length; i++) {
             let celdas = tabla.rows[i].cells;
@@ -690,6 +806,10 @@
                 texto += celdas[j].innerText + (j < celdas.length - 1 ? "\t" : "");
             }
             texto += "\n";
+        }
+
+        if (selElem.value === 'columna' && (sismo.includes('DMO') || sismo.includes('DES'))) {
+            texto += `\nNota: Para columnas DMO/DES deben verificarse los requisitos sísmicos específicos de C.21.\n`;
         }
 
         navigator.clipboard.writeText(texto).then(() => {
@@ -706,7 +826,6 @@
         const originalText = btn.innerHTML;
         btn.innerHTML = "<i class='fa fa-spinner fa-spin'></i> Preparando...";
 
-        // Recolectar datos actuales
         const fc = document.getElementById('selFc').value;
         const fy = document.getElementById('selFy').value;
         const posicionSelect = document.getElementById('selPosicion');
@@ -716,25 +835,52 @@
         const un = document.getElementById('selUnidades').value;
         const sismoSelect = document.getElementById('selSismo');
         const sismo = sismoSelect ? sismoSelect.options[sismoSelect.selectedIndex].text : 'N/A';
+        const logoSrc = document.querySelector('.brand-logo-header').src;
         
-        // Copiar filas de la tabla
+        let subtituloNorma = "Cálculo base — NSR-10 C.12.2.2";
+        let parametrosExtra = "";
+        let thExtra = "";
+        
+        if (selElem.value === 'losa') {
+            subtituloNorma = "Cálculo mediante C.12.2.3 — considerando confinamiento";
+            parametrosExtra = `
+            <tr>
+                <td><b>Recubrimiento libre:</b> ${document.getElementById('inpRecubrimiento').value} mm</td>
+                <td><b>Separación (s):</b> ${document.getElementById('inpSeparacion').value} mm</td>
+            </tr>`;
+            thExtra = `<th>(c<sub>b</sub>+K<sub>tr</sub>)/d<sub>b</sub></th>`;
+        }
+        
         const filas = Array.from(document.querySelectorAll('#tbodyResultados tr'));
         let filasPDF = '';
         filas.forEach(fila => {
             const celdas = Array.from(fila.cells);
-            filasPDF += `
-                <tr>
-                    <td>${celdas[0].innerText}</td>
-                    <td>${celdas[1].innerText}</td>
-                    <td style="background: #f1f3f5; font-weight: bold;">${celdas[2].innerText}</td>
-                    <td>${celdas[3].innerText}</td>
-                    <td style="background: #fdf2ee; font-weight: bold; color: #c0392b;">${celdas[4].innerText}</td>
-                    <td>${celdas[5].innerText}</td>
-                </tr>
-            `;
+            if (selElem.value === 'losa') {
+                filasPDF += `
+                    <tr>
+                        <td>${celdas[0].innerText}</td>
+                        <td>${celdas[1].innerText}</td>
+                        <td style="background: #f8fafc; font-weight: bold;">${celdas[2].innerText}</td>
+                        <td style="background: #f1f3f5; font-weight: bold;">${celdas[3].innerText}</td>
+                        <td>${celdas[4].innerText}</td>
+                        <td style="background: #fdf2ee; font-weight: bold; color: #c0392b;">${celdas[5].innerText}</td>
+                        <td>${celdas[6].innerText}</td>
+                    </tr>
+                `;
+            } else {
+                filasPDF += `
+                    <tr>
+                        <td>${celdas[0].innerText}</td>
+                        <td>${celdas[1].innerText}</td>
+                        <td style="background: #f1f3f5; font-weight: bold;">${celdas[2].innerText}</td>
+                        <td>${celdas[3].innerText}</td>
+                        <td style="background: #fdf2ee; font-weight: bold; color: #c0392b;">${celdas[4].innerText}</td>
+                        <td>${celdas[5].innerText}</td>
+                    </tr>
+                `;
+            }
         });
 
-        // Crear ventana de impresión
         const printWindow = window.open('', '_blank', 'width=800,height=600');
         
         printWindow.document.write(`
@@ -743,6 +889,7 @@
     <head>
         <meta charset="UTF-8">
         <title>Traslapos - Criterio Estructural</title>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
         <style>
             * { margin: 0; padding: 0; box-sizing: border-box; }
             body { 
@@ -759,12 +906,14 @@
                 margin-bottom: 25px; 
             }
             .pdf-brand { 
+                font-family: 'Montserrat', sans-serif;
                 font-size: 24px; 
                 font-weight: 800; 
                 letter-spacing: 1px; 
                 color: #1A2530; 
             }
             .pdf-title { 
+                font-family: 'Montserrat', sans-serif;
                 font-size: 20px; 
                 font-weight: 700; 
                 margin-top: 8px; 
@@ -856,9 +1005,10 @@
     </head>
     <body>
         <div class="pdf-header">
+            <img src="${logoSrc}" alt="Logo Criterio Estructural" style="max-width: 200px; height: auto; margin-bottom: 12px;">
             <div class="pdf-brand">CRITERIO ESTRUCTURAL</div>
             <div class="pdf-title">GUÍA DEFINITIVA DE TRASLAPOS</div>
-            <div class="pdf-subtitle">NSR-10 C.12 / C.21 · ACI 318 Cap. 25</div>
+            <div class="pdf-subtitle">${subtituloNorma}</div>
         </div>
 
         <div class="pdf-parameters">
@@ -876,6 +1026,7 @@
                 <tr>
                     <td colspan="2"><b>Condición Sísmica:</b> ${sismo}</td>
                 </tr>` : ''}
+                ${parametrosExtra}
             </table>
         </div>
 
@@ -888,6 +1039,7 @@
                 <tr>
                     <th>Barra</th>
                     <th>d<sub>b</sub> (mm)</th>
+                    ${thExtra}
                     <th>Desarrollo<br>l<sub>d</sub></th>
                     <th>Clase A<br>1.0 l<sub>d</sub></th>
                     <th>Clase B<br>1.3 l<sub>d</sub></th>
@@ -899,14 +1051,19 @@
             </tbody>
         </table>
 
+        ${selElem.value === 'losa' ? `
+        <div style="font-size: 9px; color: #64748b; margin-top: -10px; margin-bottom: 15px; font-style: italic;">
+            * El valor del índice (c_b + K_tr)/d_b está limitado a un máximo de 2.50 conforme a C.12.2.3.
+        </div>` : ''}
+
         <div class="pdf-warning">
             <b>⚠️ NOTA DE RESPONSABILIDAD PROFESIONAL</b>
             <p>
                 Los valores presentados constituyen una asistencia de predimensionamiento 
-                basada en la ecuación C.12.2.2 de la NSR-10. El ingeniero estructural 
-                responsable del proyecto debe verificar las condiciones de espaciamiento, 
-                recubrimiento, confinamiento transversal (K<sub>tr</sub>) y requisitos 
-                sísmicos especiales antes de aprobar estos valores para planos constructivos.
+                y verificación. El ingeniero estructural responsable del proyecto debe 
+                verificar las condiciones de espaciamiento, recubrimiento, confinamiento 
+                transversal (K<sub>tr</sub>) y requisitos sísmicos especiales antes 
+                de aprobar estos valores para planos constructivos.
             </p>
             <p style="margin-top: 8px;">
                 <b>Todo proyecto constructivo debe contar con la revisión y firma de un 
@@ -930,7 +1087,6 @@
 
         printWindow.document.close();
         
-        // Esperar a que se cargue completamente
         printWindow.onload = function() {
             printWindow.focus();
             setTimeout(() => {
