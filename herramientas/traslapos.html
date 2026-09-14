@@ -67,8 +67,9 @@
         h3 { color: var(--azul-profundo); border-bottom: 2px solid var(--naranja-estructural); padding-bottom: 8px; margin-top: 35px; font-weight: bold; }
         
         /* TABLA DE DESPIECE */
-        .tabla-traslapos { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 0.95em; }
-        .tabla-traslapos th { background-color: var(--azul-profundo) !important; color: white !important; padding: 12px; text-align: center; position: sticky; top: 0;}
+        .tabla-container { overflow-x: auto; width: 100%; border-radius: 6px; box-shadow: 0 0 5px rgba(0,0,0,0.05); }
+        .tabla-traslapos { width: 100%; border-collapse: collapse; font-size: 0.95em; min-width: 800px; }
+        .tabla-traslapos th { background-color: var(--azul-profundo) !important; color: white !important; padding: 12px; text-align: center; }
         .tabla-traslapos td { padding: 10px; text-align: center; border-bottom: 1px solid #e2e8f0; }
         .tabla-traslapos tr:hover { background-color: #f8fafc; }
         .col-ld { background-color: rgba(26, 37, 48, 0.03); font-weight: bold;}
@@ -96,31 +97,22 @@
 
         .oculto { display: none !important; }
         summary:focus { outline: none; }
-
-        /* ESTILOS DE IMPRESIÓN (PDF) */
-        @media print {
-            body { background-color: white; }
-            .contenedor-principal { box-shadow: none; margin: 0; max-width: 100%; border-radius: 0; padding: 0; }
-            .no-print { display: none !important; }
-            .tabla-traslapos th { color: black !important; border-bottom: 2px solid black; background-color: #f1f1f1 !important;}
-            .tabla-traslapos td { border-bottom: 1px solid #ccc; }
-            .header-rc { background: white; color: black; padding: 20px 0; border-bottom: 2px solid black;}
-            .lema-global, .ruta-aprendizaje { display: none; }
-            .flujo-item { border: 1px solid #ccc; padding: 4px 8px; color: black;}
-            .flujo-flecha-c { color: black; }
-        }
+        
+        /* Contenedor Fórmulas Responsivas */
+        .math-scroll { overflow-x: auto; padding: 10px 0; }
 
         @media (max-width: 1250px) {
             .contenedor-principal { width: 100% !important; margin: 0 !important; border-radius: 0 !important; box-shadow: none; padding: 0 !important; }
+            .contenido-body { padding: 20px; }
         }
     </style>
 </head>
 <body>
 
-<div class="contenedor-principal w3-animate-opacity" id="pdfArea">
+<div class="contenedor-principal w3-animate-opacity">
     
     <!-- HEADER Y NARRATIVA GLOBAL -->
-    <div class="header-rc">
+    <div class="header-rc no-print">
         <img src="../assets/IsotipoFOscuroT.png" alt="Logotipo Criterio Estructural - Guía de Detallamiento" class="brand-logo-header" onerror="this.src='https://via.placeholder.com/250x80/1A2530/FFFFFF?text=CRITERIO+ESTRUCTURAL'"><br>
         
         <div class="lema-global">
@@ -131,7 +123,7 @@
         <h1 class="w3-xxlarge" style="margin: 0; font-weight: bold;">Guía Definitiva de Traslapos</h1>
         <div style="font-size: 1.1em; color: #cbd5e1; margin-top: 5px;">NSR-10 C.12 / C.21 · ACI 318 Cap. 25</div>
         
-        <div class="flujo-conceptual no-print">
+        <div class="flujo-conceptual">
             <span class="flujo-item">ANCLAJE</span>
             <i class="fa fa-arrow-right flujo-flecha-c"></i>
             <span class="flujo-item">DESARROLLO ($l_d$)</span>
@@ -141,7 +133,7 @@
             <span class="flujo-item" style="color: white; border-color: var(--naranja-estructural);">↳ TRASLAPO</span>
         </div>
 
-        <div class="ruta-aprendizaje no-print">
+        <div class="ruta-aprendizaje">
             <span class="ruta-item">1. Análisis</span> <i class="fa fa-chevron-right ruta-flecha"></i>
             <span class="ruta-item">2. Diseño</span> <i class="fa fa-chevron-right ruta-flecha"></i>
             <span class="ruta-item ruta-activa">📏 3. Detallamiento y Traslapos</span> <i class="fa fa-chevron-right ruta-flecha"></i>
@@ -246,31 +238,42 @@
         </div>
 
         <!-- TABLA DE RESULTADOS -->
-        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 40px; border-bottom: 2px solid var(--azul-profundo); padding-bottom: 10px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 40px; border-bottom: 2px solid var(--azul-profundo); padding-bottom: 10px; flex-wrap: wrap; gap: 15px;">
             <div>
                 <h3 style="border: none; margin: 0; padding: 0;">2. TABLA PARA DESPIECE</h3>
                 <span class="w3-small w3-text-grey">Valores base según ecuación simplificada C.12.2.2</span>
             </div>
-            <div class="no-print">
-                <label class="w3-small w3-text-grey" style="margin-right: 10px;"><b>MOSTRAR VALORES:</b></label>
-                <select id="selRedondeo" class="w3-select w3-border w3-round w3-small" style="width: auto; display: inline-block;" onchange="generarTabla()">
-                    <option value="obra10" selected>Adoptado para despiece — 10 cm</option>
-                    <option value="obra5">Adoptado para despiece — 5 cm</option>
-                    <option value="norma">Calculados según norma</option>
-                </select>
+            
+            <div class="no-print" style="display: flex; gap: 15px; flex-wrap: wrap;">
+                <div>
+                    <label class="w3-small w3-text-grey w3-block"><b>MOSTRAR VALORES:</b></label>
+                    <select id="selRedondeo" class="w3-select w3-border w3-round w3-small" style="width: auto;" onchange="generarTabla()">
+                        <option value="obra10" selected>Adoptado para despiece — 10 cm</option>
+                        <option value="obra5">Adoptado para despiece — 5 cm</option>
+                        <option value="norma">Calculados según norma</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="w3-small w3-text-grey w3-block"><b>UNIDADES:</b></label>
+                    <select id="selUnidades" class="w3-select w3-border w3-round w3-small" style="width: auto;" onchange="generarTabla()">
+                        <option value="cm" selected>Centímetros (cm)</option>
+                        <option value="mm">Milímetros (mm)</option>
+                        <option value="m">Metros (m)</option>
+                    </select>
+                </div>
             </div>
         </div>
 
-        <div style="overflow-x: auto;">
+        <div class="tabla-container">
             <table class="tabla-traslapos" id="tablaMain">
                 <thead>
                     <tr>
                         <th>Barra</th>
                         <th>$d_b$ (mm)</th>
-                        <th class="col-ld">Desarrollo ($$l_d$$)</th>
-                        <th>Traslapo Clase A<br><span style="font-size:0.8em; font-weight:normal;">(1.0 $$l_d$$)</span></th>
-                        <th class="col-claseb">Traslapo Clase B<br><span style="font-size:0.8em; font-weight:normal;">(1.3 $$l_d$$)</span></th>
-                        <th id="thCompresion">Compresión<br><span style="font-size:0.8em; font-weight:normal;">($$l_{sc}$$)</span></th>
+                        <th class="col-ld" id="thDesarrollo">Desarrollo<br><span style="font-size:0.8em; font-weight:normal;">($l_d$)</span></th>
+                        <th id="thClaseA">Traslapo Clase A<br><span style="font-size:0.8em; font-weight:normal;">(1.0 $l_d$)</span></th>
+                        <th class="col-claseb" id="thClaseB">Traslapo Clase B<br><span style="font-size:0.8em; font-weight:normal;">(1.3 $l_d$)</span></th>
+                        <th id="thCompresion">Compresión<br><span style="font-size:0.8em; font-weight:normal;">($l_{sc}$)</span></th>
                     </tr>
                 </thead>
                 <tbody id="tbodyResultados">
@@ -305,7 +308,7 @@
                 <div class="w3-col m4">
                     <div class="w3-card w3-round w3-padding w3-center" style="background: #fdf6f0; border-left: 3px solid var(--naranja-estructural);">
                         <span class="w3-tiny">TRASLAPO CLASE B REQUERIDO</span><br>
-                        <b class="w3-xlarge w3-text-red" id="resMixto">-- cm</b>
+                        <b class="w3-xlarge w3-text-red" id="resMixto">--</b>
                     </div>
                 </div>
             </div>
@@ -325,7 +328,7 @@
             <div class="w3-third w3-margin-bottom">
                 <div class="w3-card w3-padding w3-round w3-white" style="height: 100%;">
                     <b class="w3-text-blue">1. Anclaje</b>
-                    <p class="w3-small">Es el mecanismo mediante el cual se transmite la fuerza de la barra al concreto. En una barra corrugada recta, esta transferencia ocurre principalmente mediante la interacción mecánica entre la superficie de la barra, sus corrugas y el concreto que la rodea. También puede lograrse mediante ganchos, cabezas o dispositivos mecánicos.</p>
+                    <p class="w3-small">Es el mecanismo mediante el cual se transmite la fuerza de la barra al concreto. En una barra corrugada recta, esta transferencia ocurre principalmente mediante la interacción mecánica entre la superficie de la barra, sus corrugas y el concreto que la rodea.</p>
                 </div>
             </div>
             <div class="w3-third w3-margin-bottom">
@@ -337,8 +340,26 @@
             <div class="w3-third w3-margin-bottom">
                 <div class="w3-card w3-padding w3-round w3-white" style="height: 100%;">
                     <b class="w3-text-blue">3. Empalme / Traslapo</b>
-                    <p class="w3-small">El empalme es el requerimiento de continuidad. El <b>traslapo</b> es un método de empalme. A tracción se calcula amplificando el $l_d$ (1.0 o 1.3 veces) para compensar la concentración de esfuerzos de dos barras que terminan en la misma sección.</p>
+                    <p class="w3-small">El empalme es el requerimiento de continuidad. El <b>traslapo</b> es un método de empalme. A tracción se calcula amplificando el $l_d$ (1.0 o 1.3 veces) para compensar la concentración de esfuerzos.</p>
                 </div>
+            </div>
+            
+            <div class="w3-col l12 w3-center w3-margin-top">
+                <svg width="400" height="150" style="border: 1px solid #e2e8f0; background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); max-width: 100%;">
+                    <!-- Concreto de fondo -->
+                    <rect x="10" y="20" width="380" height="110" fill="#F4F5F7" rx="5"/>
+                    <!-- Barra 1 -->
+                    <rect x="30" y="55" width="200" height="12" fill="#E67E22" rx="2" />
+                    <!-- Barra 2 -->
+                    <rect x="150" y="85" width="220" height="12" fill="#1A2530" rx="2" />
+                    <!-- Zona de traslapo -->
+                    <rect x="150" y="45" width="80" height="60" fill="none" stroke="#dc2626" stroke-width="2" stroke-dasharray="4,4"/>
+                    <!-- Cota -->
+                    <line x1="150" y1="35" x2="230" y2="35" stroke="#000" stroke-width="1"/>
+                    <line x1="150" y1="30" x2="150" y2="40" stroke="#000" stroke-width="1"/>
+                    <line x1="230" y1="30" x2="230" y2="40" stroke="#000" stroke-width="1"/>
+                    <text x="190" y="28" text-anchor="middle" font-size="12" font-weight="bold" fill="#dc2626">l<tspan baseline-shift="sub">st</tspan> (Traslapo)</text>
+                </svg>
             </div>
         </div>
 
@@ -355,14 +376,18 @@
                         <li>Refuerzo inferior ($\psi_t = 1.0$).</li>
                     </ul>
                     
-                    <p><b>Paso 1 — Desarrollo Base</b></p>
-                    <p>$$l_d = \frac{420}{2.1 \sqrt{28}}(19.05) \approx 72.0 \text{ cm}$$</p>
+                    <div class="math-scroll">
+                        <p><b>Paso 1 — Desarrollo Base</b></p>
+                        <p>$$l_d = \frac{420}{2.1 \sqrt{28}}(19.05) \approx 72.0 \text{ cm}$$</p>
+                    </div>
 
                     <p><b>Paso 2 — Tipo de Empalme</b></p>
                     <p>Asumiendo que se empalma el 50% de las barras, pero el área proporcionada no es el doble de la requerida (condición típica C.12.15.2): <b>$\rightarrow$ <span style="border:1px solid #ccc; padding:2px 5px;">Clase B</span></b></p>
 
-                    <p><b>Paso 3 — Traslapo Normativo Calculado</b></p>
-                    <p>$$l_{st} = 1.3 \times 72.0 = 93.6 \text{ cm}$$</p>
+                    <div class="math-scroll">
+                        <p><b>Paso 3 — Traslapo Normativo Calculado</b></p>
+                        <p>$$l_{st} = 1.3 \times 72.0 = 93.6 \text{ cm}$$</p>
+                    </div>
 
                     <p><b>Paso 4 — Decisión de Planos</b></p>
                     <p><b>$\rightarrow$ <span style="border:1px solid var(--naranja-estructural); padding:2px 5px; color:var(--naranja-estructural); font-weight:bold;">$l_{st} = 95 \text{ cm}$</span></b></p>
@@ -466,7 +491,6 @@
 
     // INICIALIZACIÓN
     window.onload = function() {
-        // Llenar selects del módulo mixto
         let sel1 = document.getElementById('selBarra1');
         let sel2 = document.getElementById('selBarra2');
         barras.forEach((b, index) => {
@@ -483,14 +507,12 @@
         const panelPos = document.getElementById('panelPosicion');
         const panelSismo = document.getElementById('panelSismo');
         
-        // Resetear Mensajes
         document.getElementById('msgViga').classList.add('oculto');
         document.getElementById('msgColumnaDMO').classList.add('oculto');
         document.getElementById('msgColumnaDES').classList.add('oculto');
         document.getElementById('msgColumnaC12').classList.add('oculto');
         document.getElementById('msgLosa').classList.add('oculto');
 
-        // Mostrar/Ocultar y resetear según el elemento
         if(elemento === 'viga') {
             panelPos.classList.remove('oculto');
             panelSismo.classList.add('oculto');
@@ -519,10 +541,18 @@
         generarTabla();
     }
 
-    // UTILIDAD DE REDONDEO (Milisegundos -> Centimetros -> Redondeo Múltiplo)
+    // UTILIDAD DE REDONDEO (Milisegundos -> Centímetros -> Redondeo Múltiplo)
     const redondearCm = (mm, incrementoCm) => {
         let cm = mm / 10;
         return Math.ceil(cm / incrementoCm) * incrementoCm;
+    };
+
+    // FORMATEO POR UNIDADES
+    const formatearUnidad = (mm_val, unidad) => {
+        if (unidad === 'mm') return mm_val.toFixed(0);
+        if (unidad === 'cm') return (mm_val / 10).toFixed(1).replace('.0', '');
+        if (unidad === 'm') return (mm_val / 1000).toFixed(2);
+        return mm_val;
     };
 
     // MOTOR DE CÁLCULO NORMATIVO
@@ -531,59 +561,68 @@
         const fy = parseFloat(document.getElementById('selFy').value);
         const psi_t = parseFloat(document.getElementById('selPosicion').value);
         const modo = document.getElementById('selRedondeo').value; 
+        const unidad = document.getElementById('selUnidades').value;
         const elemento = document.getElementById('selElemento').value;
         const sismo = document.getElementById('selSismo').value;
         
-        // Validación de Seguridad
         if (fc <= 0 || fy <= 0 || isNaN(fc) || isNaN(fy)) {
             console.error("Valores de materiales inválidos");
             return;
         }
 
-        // Estilos para deshabilitar la compresión visualmente si es DMO/DES
         const isColumnaSismica = (elemento === 'columna' && (sismo === 'DMO' || sismo === 'DES'));
+        
+        // Actualizar Títulos de Columnas con Unidades (Usando MathJax en línea: $l_d$)
+        document.getElementById('thDesarrollo').innerHTML = `Desarrollo<br><span style="font-size:0.8em; font-weight:normal;">($l_d$) [${unidad}]</span>`;
+        document.getElementById('thClaseA').innerHTML = `Traslapo Clase A<br><span style="font-size:0.8em; font-weight:normal;">(1.0 $l_d$) [${unidad}]</span>`;
+        document.getElementById('thClaseB').innerHTML = `Traslapo Clase B<br><span style="font-size:0.8em; font-weight:normal;">(1.3 $l_d$) [${unidad}]</span>`;
+
         const thComp = document.getElementById('thCompresion');
         thComp.style.opacity = isColumnaSismica ? '0.3' : '1';
-        thComp.innerHTML = isColumnaSismica ? `Compresión<br><span style="font-size:0.7em;">(No Aplica)</span>` : `Compresión<br><span style="font-size:0.8em; font-weight:normal;">($$l_{sc}$$)</span>`;
+        thComp.innerHTML = isColumnaSismica ? `Compresión<br><span style="font-size:0.7em;">(No Aplica)</span>` : `Compresión<br><span style="font-size:0.8em; font-weight:normal;">($l_{sc}$) [${unidad}]</span>`;
 
         let tbody = document.getElementById('tbodyResultados');
         tbody.innerHTML = '';
 
         barras.forEach(b => {
             // 1. CÁLCULO BASE ld (SIN RESTRICCIÓN DE 300mm AÚN)
-            // C.12.2.2: Factor 2.1 para N°6 o menor, 1.7 para N°7 o mayor
             let factor = (b.n <= 6) ? 2.1 : 1.7;
             let ld_base_mm = (fy / (factor * 1.0 * Math.sqrt(fc))) * psi_t * 1.0 * b.db;
 
-            // 2. TRASLAPOS A TRACCIÓN (Aún sin aplicar límite de 300mm)
+            // 2. TRASLAPOS A TRACCIÓN
             let claseA_mm = ld_base_mm * 1.0;
             let claseB_mm = ld_base_mm * 1.3;
 
-            // 3. APLICACIÓN DEL LÍMITE ABSOLUTO DE 300mm (Al final del cálculo)
+            // 3. APLICACIÓN DEL LÍMITE ABSOLUTO DE 300mm
             let ld_final_mm = Math.max(ld_base_mm, 300);
             claseA_mm = Math.max(claseA_mm, 300);
             claseB_mm = Math.max(claseB_mm, 300);
 
             // 4. TRASLAPO A COMPRESIÓN (C.12.16.2)
-            // fy ≤ 420 MPa: 0.071·fy·db
-            // fy > 420 MPa: (0.13·fy - 24)·db
+            // Resultado en mm (db está en mm)
             let lsc_mm = (fy <= 420) ? (0.071 * fy * b.db) : ((0.13 * fy - 24) * b.db);
             lsc_mm = Math.max(lsc_mm, 300);
 
-            // 5. FORMATEO SEGÚN CRITERIO (Cm)
+            // 5. FORMATEO SEGÚN CRITERIO Y UNIDAD
             let ld_out, cla_out, clb_out, lsc_out;
             
             if (modo.startsWith('obra')) {
                 let multiploCm = modo === 'obra10' ? 10 : 5; 
-                ld_out = redondearCm(ld_final_mm, multiploCm);
-                cla_out = redondearCm(claseA_mm, multiploCm);
-                clb_out = redondearCm(claseB_mm, multiploCm);
-                lsc_out = redondearCm(lsc_mm, multiploCm);
+                let ld_obra_cm = redondearCm(ld_final_mm, multiploCm);
+                let cla_obra_cm = redondearCm(claseA_mm, multiploCm);
+                let clb_obra_cm = redondearCm(claseB_mm, multiploCm);
+                let lsc_obra_cm = redondearCm(lsc_mm, multiploCm);
+
+                // Convertir de cm (obra) de vuelta a mm para formateador universal
+                ld_out = formatearUnidad(ld_obra_cm * 10, unidad);
+                cla_out = formatearUnidad(cla_obra_cm * 10, unidad);
+                clb_out = formatearUnidad(clb_obra_cm * 10, unidad);
+                lsc_out = formatearUnidad(lsc_obra_cm * 10, unidad);
             } else {
-                ld_out = (ld_final_mm / 10).toFixed(1);
-                cla_out = (claseA_mm / 10).toFixed(1);
-                clb_out = (claseB_mm / 10).toFixed(1);
-                lsc_out = (lsc_mm / 10).toFixed(1);
+                ld_out = formatearUnidad(ld_final_mm, unidad);
+                cla_out = formatearUnidad(claseA_mm, unidad);
+                clb_out = formatearUnidad(claseB_mm, unidad);
+                lsc_out = formatearUnidad(lsc_mm, unidad);
             }
 
             // Render fila
@@ -603,9 +642,9 @@
 
         calcularEmpalmeMixto();
         
-        // Disparador manual para que MathJax re-renderice si la tabla cambia
+        // Re-renderizado específico de MathJax en la tabla
         if (window.MathJax && MathJax.typesetPromise) {
-            MathJax.typesetPromise();
+            MathJax.typesetPromise([document.getElementById('tablaMain')]);
         }
     }
 
@@ -615,6 +654,7 @@
         const fy = parseFloat(document.getElementById('selFy').value);
         const psi_t = parseFloat(document.getElementById('selPosicion').value) || 1.0;
         const modo = document.getElementById('selRedondeo').value; 
+        const unidad = document.getElementById('selUnidades').value;
         
         let idx1 = parseInt(document.getElementById('selBarra1').value);
         let idx2 = parseInt(document.getElementById('selBarra2').value);
@@ -622,25 +662,23 @@
         let bMenor = barras[Math.min(idx1, idx2)];
         let bMayor = barras[Math.max(idx1, idx2)];
 
-        // ld de la barra mayor (Mantenido independiente del mínimo de 300 hasta el final)
         let factorMayor = (bMayor.n <= 6) ? 2.1 : 1.7;
         let ld_mayor_base = (fy / (factorMayor * 1.0 * Math.sqrt(fc))) * psi_t * bMayor.db;
 
-        // Traslapo Clase B de la menor
         let factorMenor = (bMenor.n <= 6) ? 2.1 : 1.7;
         let ld_menor_base = (fy / (factorMenor * 1.0 * Math.sqrt(fc))) * psi_t * bMenor.db;
         let traslapo_menor_base = ld_menor_base * 1.3;
 
-        // Rige el mayor de los dos (luego se aplica límite de 300 y formateo a obra)
         let empalme_req_mm = Math.max(ld_mayor_base, traslapo_menor_base);
         empalme_req_mm = Math.max(empalme_req_mm, 300);
         
         let resultado = "";
         if (modo.startsWith('obra')) {
             let multiploCm = modo === 'obra10' ? 10 : 5;
-            resultado = redondearCm(empalme_req_mm, multiploCm) + " cm";
+            let empalme_obra_cm = redondearCm(empalme_req_mm, multiploCm);
+            resultado = formatearUnidad(empalme_obra_cm * 10, unidad) + ` ${unidad}`;
         } else {
-            resultado = (empalme_req_mm / 10).toFixed(1) + " cm";
+            resultado = formatearUnidad(empalme_req_mm, unidad) + ` ${unidad}`;
         }
 
         document.getElementById('resMixto').innerText = resultado;
@@ -648,12 +686,12 @@
 
     // COPIAR A PORTAPAPELES
     function copiarTabla() {
-        // Recolectar contexto
         const fc = document.getElementById('selFc').value;
         const fy = document.getElementById('selFy').value;
         const psi_t = document.getElementById('selPosicion').value;
         const selElem = document.getElementById('selElemento');
         const elemento = selElem.options[selElem.selectedIndex].text;
+        const un = document.getElementById('selUnidades').value;
         
         let texto = "CRITERIO ESTRUCTURAL\nGuía Definitiva de Traslapos\n";
         texto += `f'c = ${fc} MPa\n`;
@@ -663,7 +701,7 @@
         texto += `Criterio = C.12.2.2\n\n`;
 
         let tabla = document.getElementById('tablaMain');
-        texto += "Barra\td_b (mm)\tDesarrollo ld (cm)\tClase A (cm)\tClase B (cm)\tCompresion (cm)\n";
+        texto += `Barra\td_b (mm)\tDesarrollo ld (${un})\tClase A (${un})\tClase B (${un})\tCompresion (${un})\n`;
         
         for (let i = 1; i < tabla.rows.length; i++) {
             let celdas = tabla.rows[i].cells;
@@ -681,13 +719,70 @@
         });
     }
 
-    // EXPORTAR PDF
+    // EXPORTACIÓN A PDF MEJORADA (Plantilla Estilizada Independiente)
     function exportarPDF() {
         const btn = document.querySelector('.btn-imprimir');
         const originalText = btn.innerHTML;
         btn.innerHTML = "<i class='fa fa-spinner fa-spin'></i> Generando...";
         
-        const elemento = document.getElementById('pdfArea');
+        // Recolección de Datos Actuales
+        const fc = document.getElementById('selFc').value;
+        const fy = document.getElementById('selFy').value;
+        const psi_t = document.getElementById('selPosicion').options[document.getElementById('selPosicion').selectedIndex].text;
+        const selElem = document.getElementById('selElemento');
+        const elemento = selElem.options[selElem.selectedIndex].text;
+        const un = document.getElementById('selUnidades').value;
+
+        // Clonar la tabla para el documento final sin alterar el DOM visible
+        const tablaClone = document.getElementById('tablaMain').outerHTML;
+
+        // Construcción del HTML para el PDF
+        const pdfContent = `
+            <div style="font-family: 'Segoe UI', sans-serif; padding: 20px; color: #1A2530;">
+                <div style="text-align: center; border-bottom: 3px solid #E67E22; padding-bottom: 15px; margin-bottom: 25px;">
+                    <h1 style="margin: 0; color: #1A2530; font-size: 24px; font-weight: 800;">CRITERIO ESTRUCTURAL</h1>
+                    <p style="margin: 5px 0 0 0; color: #7f8c8d; font-size: 12px; letter-spacing: 1px; text-transform: uppercase;">Memoria de Detallamiento: Traslapos (NSR-10 / ACI 318)</p>
+                </div>
+                
+                <div style="margin-bottom: 25px; padding: 15px; border: 1px solid #e2e8f0; border-radius: 8px; background-color: #F4F5F7;">
+                    <h3 style="margin: 0 0 10px 0; color: #E67E22; font-size: 14px;">Parámetros del Proyecto</h3>
+                    <table style="width: 100%; font-size: 12px;">
+                        <tr>
+                            <td style="padding: 4px;"><b>Concreto (f'c):</b> ${fc} MPa</td>
+                            <td style="padding: 4px;"><b>Acero (fy):</b> ${fy} MPa</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 4px;"><b>Elemento Analizado:</b> ${elemento}</td>
+                            <td style="padding: 4px;"><b>Posición Refuerzo:</b> ${psi_t}</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <h3 style="margin: 0 0 10px 0; color: #1A2530; font-size: 14px;">Tabla de Longitudes (Unidades: ${un})</h3>
+                    <div style="font-size: 11px;">
+                        ${tablaClone}
+                    </div>
+                </div>
+
+                <div style="margin-top: 35px; padding: 15px; border-left: 5px solid #dc2626; background-color: #fdf6f0; font-size: 11px; color: #1A2530; line-height: 1.5;">
+                    <b>⚠️ Nota de Responsabilidad Profesional:</b> Los valores presentados constituyen una asistencia de predimensionamiento y detallado fundamental basada en la ecuación C.12.2.2 de la NSR-10 (Norma Sismo Resistente Colombiana). El ingeniero estructural responsable del proyecto, portador de matrícula profesional vigente, tiene la responsabilidad exclusiva de revisar, auditar y aprobar estos resultados para su implementación en planos constructivos, verificando además índices de confinamiento transversal ($K_{tr}$) y requisitos sísmicos especiales.
+                </div>
+
+                <div style="margin-top: 40px; text-align: center; font-size: 10px; color: #95a5a6;">
+                    Generado automáticamente por Criterio Estructural - ${new Date().toLocaleString()}
+                </div>
+            </div>
+            
+            <style>
+                table { width: 100%; border-collapse: collapse; font-family: 'Segoe UI', sans-serif;}
+                th { background-color: #1A2530 !important; color: white !important; padding: 10px; text-align: center; border: 1px solid #1A2530;}
+                td { padding: 8px; text-align: center; border-bottom: 1px solid #e2e8f0; border-left: 1px solid #e2e8f0; border-right: 1px solid #e2e8f0;}
+                .col-ld { background-color: rgba(26, 37, 48, 0.05); font-weight: bold; }
+                .col-claseb { background-color: rgba(230, 126, 34, 0.1); font-weight: bold; color: #c0392b; }
+            </style>
+        `;
+
         const opt = {
             margin:       10,
             filename:     'Traslapos_CriterioEstructural_' + new Date().toISOString().split('T')[0] + '.pdf',
@@ -695,9 +790,18 @@
             html2canvas:  { scale: 2, useCORS: true },
             jsPDF:        { unit: 'mm', format: 'letter', orientation: 'portrait' }
         };
-        
-        html2pdf().set(opt).from(elemento).save().then(() => {
+
+        // Crear un contenedor temporal fuera del DOM visible
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = pdfContent;
+
+        // Generar PDF y manejar promesas (Éxito o Error)
+        html2pdf().set(opt).from(tempDiv).save().then(() => {
             btn.innerHTML = originalText;
+        }).catch(err => {
+            btn.innerHTML = originalText;
+            alert("Error al generar PDF. Intente de nuevo.");
+            console.error(err);
         });
     }
 
