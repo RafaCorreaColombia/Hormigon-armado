@@ -545,7 +545,7 @@
             noteLosaConf.classList.remove('oculto');
             document.getElementById('selPosicion').value = "1.0"; 
             document.getElementById('msgLosa').classList.remove('oculto');
-            document.getElementById('txtEcuacion').innerText = "Cálculo mediante C.12.2.3 — considerando confinamiento";
+            document.getElementById('txtEcuacion').innerText = "Cálculo mediante C.12.2.3 ";
         } else if(elemento === 'columna') {
             panelPos.classList.add('oculto');
             panelLosa.classList.add('oculto');
@@ -788,7 +788,7 @@
         if (selElem.value === 'losa') {
             const rec = document.getElementById('inpRecubrimiento').value;
             const sep = document.getElementById('inpSeparacion').value;
-            texto += `Recubrimiento (cc) = ${rec} mm\nSeparación (s) = ${sep} mm\nCriterio = C.12.2.3 (Considerando Confinamiento)\n\n`;
+            texto += `Recubrimiento (cc) = ${rec} mm\nSeparación (s) = ${sep} mm\nCriterio = C.12.2.3\n\n`;
         } else {
             texto += `Criterio = C.12.2.2 (Simplificado)\n\n`;
         }
@@ -835,7 +835,7 @@
         const un = document.getElementById('selUnidades').value;
         const sismoSelect = document.getElementById('selSismo');
         const sismo = sismoSelect ? sismoSelect.options[sismoSelect.selectedIndex].text : 'N/A';
-        const logoSrc = document.querySelector('.brand-logo-header').src;
+        const logoSrc = document.querySelector('.brand-logo-footer').src;
         
         let subtituloNorma = "Cálculo base — NSR-10 C.12.2.2";
         let parametrosExtra = "";
