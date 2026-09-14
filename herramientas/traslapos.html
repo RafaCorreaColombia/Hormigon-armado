@@ -340,7 +340,7 @@
             <div class="w3-third w3-margin-bottom">
                 <div class="w3-card w3-padding w3-round w3-white" style="height: 100%;">
                     <b class="w3-text-blue">3. Empalme / Traslapo</b>
-                    <p class="w3-small">El empalme es el requerimiento de continuidad. El <b>traslapo</b> es un método de empalme. A tracción se calcula amplificando el $l_d$ (1.0 o 1.3 veces) para compensar la concentración de esfuerzos.</p>
+                    <p class="w3-small">El empalme es el requerimiento de continuity. El <b>traslapo</b> es un método de empalme. A tracción se calcula amplificando el $l_d$ (1.0 o 1.3 veces) para compensar la concentración de esfuerzos.</p>
                 </div>
             </div>
             
@@ -348,12 +348,12 @@
                 <svg width="400" height="150" style="border: 1px solid #e2e8f0; background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); max-width: 100%;">
                     <!-- Concreto de fondo -->
                     <rect x="10" y="20" width="380" height="110" fill="#F4F5F7" rx="5"/>
-                    <!-- Barra 1 -->
-                    <rect x="30" y="64" width="200" height="12" fill="#E67E22" rx="2" />
-                    <!-- Barra 2 (Pegada a la barra 1) -->
-                    <rect x="150" y="76" width="220" height="12" fill="#1A2530" rx="2" />
+                    <!-- Barra 1 (Más ancha y pegada) -->
+                    <rect x="30" y="66" width="200" height="10" fill="#E67E22" rx="2" />
+                    <!-- Barra 2 (Pegada a la barra 1 simulando amarre) -->
+                    <rect x="150" y="74" width="220" height="10" fill="#1A2530" rx="2" />
                     <!-- Zona de traslapo -->
-                    <rect x="150" y="55" width="80" height="44" fill="none" stroke="#dc2626" stroke-width="2" stroke-dasharray="4,4"/>
+                    <rect x="150" y="55" width="80" height="40" fill="none" stroke="#dc2626" stroke-width="2" stroke-dasharray="4,4"/>
                     <!-- Cota -->
                     <line x1="150" y1="42" x2="230" y2="42" stroke="#000" stroke-width="1"/>
                     <line x1="150" y1="37" x2="150" y2="47" stroke="#000" stroke-width="1"/>
@@ -700,217 +700,244 @@
         });
     }
 
-    // EXPORTAR PDF 
+    // EXPORTAR PDF MEDIANTE IMPRESIÓN (Método Robusto)
     function exportarPDF() {
         const btn = document.querySelector('.btn-imprimir');
         const originalText = btn.innerHTML;
+        btn.innerHTML = "<i class='fa fa-spinner fa-spin'></i> Preparando...";
 
-        btn.innerHTML = "<i class='fa fa-spinner fa-spin'></i> Generando...";
-
+        // Recolectar datos actuales
         const fc = document.getElementById('selFc').value;
         const fy = document.getElementById('selFy').value;
-
         const posicionSelect = document.getElementById('selPosicion');
         const psi_t = posicionSelect.options[posicionSelect.selectedIndex].text;
-
         const selElem = document.getElementById('selElemento');
         const elemento = selElem.options[selElem.selectedIndex].text;
-
         const un = document.getElementById('selUnidades').value;
-
         const sismoSelect = document.getElementById('selSismo');
-        const sismo = sismoSelect.options[sismoSelect.selectedIndex].text;
-
-        /* ---------------------------------------------------------
-           1. COPIAR LAS FILAS DE LA TABLA
-           --------------------------------------------------------- */
+        const sismo = sismoSelect ? sismoSelect.options[sismoSelect.selectedIndex].text : 'N/A';
+        
+        // Copiar filas de la tabla
         const filas = Array.from(document.querySelectorAll('#tbodyResultados tr'));
         let filasPDF = '';
-
         filas.forEach(fila => {
             const celdas = Array.from(fila.cells);
             filasPDF += `
                 <tr>
                     <td>${celdas[0].innerText}</td>
                     <td>${celdas[1].innerText}</td>
-                    <td class="ld">${celdas[2].innerText}</td>
+                    <td style="background: #f1f3f5; font-weight: bold;">${celdas[2].innerText}</td>
                     <td>${celdas[3].innerText}</td>
-                    <td class="claseB">${celdas[4].innerText}</td>
+                    <td style="background: #fdf2ee; font-weight: bold; color: #c0392b;">${celdas[4].innerText}</td>
                     <td>${celdas[5].innerText}</td>
                 </tr>
             `;
         });
 
-        /* ---------------------------------------------------------
-           2. CONSTRUIR DOCUMENTO PDF
-           --------------------------------------------------------- */
-        const tempDiv = document.createElement('div');
-        tempDiv.id = 'pdfTempContainer';
-
-        tempDiv.innerHTML = `
-            <div class="pdf-page">
-                <div class="pdf-header">
-                    <div class="pdf-brand">CRITERIO ESTRUCTURAL</div>
-                    <div class="pdf-title">GUÍA DEFINITIVA DE TRASLAPOS</div>
-                    <div class="pdf-subtitle">Cálculo base — NSR-10 C.12.2.2</div>
-                    <div class="pdf-note">
-                        Valores calculados sin redondeo normativo.
-                        La aplicabilidad de la ecuación simplificada,
-                        las condiciones de empalme y los requisitos
-                        especiales de detallamiento deben verificarse
-                        según el proyecto.
-                    </div>
-                </div>
-
-                <div class="pdf-parameters">
-                    <div class="pdf-section-title">PARÁMETROS DEL PROYECTO</div>
-                    <table class="pdf-param-table">
-                        <tr>
-                            <td><b>Concreto:</b><br>f'c = ${fc} MPa</td>
-                            <td><b>Acero:</b><br>fy = ${fy} MPa</td>
-                        </tr>
-                        <tr>
-                            <td><b>Elemento:</b><br>${elemento}</td>
-                            <td><b>Posición:</b><br>${psi_t}</td>
-                        </tr>
-                        ${elemento === 'Columna' ? `
-                        <tr>
-                            <td colspan="2"><b>Condición sísmica:</b><br>${sismo}</td>
-                        </tr>` : ''}
-                    </table>
-                </div>
-
-                <div class="pdf-section-title tabla-title">
-                    LONGITUDES DE DESARROLLO Y EMPALME (Unidades: ${un})
-                </div>
-
-                <table class="pdf-main-table">
-                    <thead>
-                        <tr>
-                            <th>Barra</th>
-                            <th>d<sub>b</sub><br>(mm)</th>
-                            <th>Desarrollo<br>l<sub>d</sub></th>
-                            <th>Clase A<br>1.0 l<sub>d</sub></th>
-                            <th>Clase B<br>1.3 l<sub>d</sub></th>
-                            <th>Compresión<br>l<sub>sc</sub></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${filasPDF}
-                    </tbody>
-                </table>
-
-                <div class="pdf-warning">
-                    <b>NOTA DE RESPONSABILIDAD PROFESIONAL</b>
-                    <p>
-                        Los valores presentados constituyen una asistencia
-                        para el análisis preliminar y el detallamiento.
-                        La longitud definitiva debe verificarse considerando
-                        las condiciones de espaciamiento, recubrimiento,
-                        confinamiento, ubicación del empalme y demás
-                        requisitos aplicables de la NSR-10.
-                    </p>
-                </div>
-
-                <div class="pdf-footer">
-                    Criterio Estructural · Guía Definitiva de Traslapos<br>
-                    Generado automáticamente el ${new Date().toLocaleString('es-CO')}
-                </div>
-            </div>
-        `;
-
-        /* ---------------------------------------------------------
-           3. ESTILOS AISLADOS DEL PDF
-           --------------------------------------------------------- */
-        const style = document.createElement('style');
-        style.innerHTML = `
-            #pdfTempContainer {
-                position: fixed;
-                left: 0;
-                top: 0;
-                width: 800px;
+        // Crear ventana de impresión
+        const printWindow = window.open('', '_blank', 'width=800,height=600');
+        
+        printWindow.document.write(`
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <title>Traslapos - Criterio Estructural</title>
+        <style>
+            * { margin: 0; padding: 0; box-sizing: border-box; }
+            body { 
+                font-family: Arial, Helvetica, sans-serif; 
+                color: #1A2530; 
                 background: white;
-                z-index: 2147483647;
-                font-family: Arial, Helvetica, sans-serif;
-                box-sizing: border-box;
-                color: #1A2530;
-                pointer-events: none;
+                padding: 30px;
+                line-height: 1.4;
             }
-            #pdfTempContainer * { box-sizing: border-box; }
-            #pdfTempContainer .pdf-page { width: 800px; padding: 38px 42px 32px 42px; background: white; min-height: 1050px; }
-            #pdfTempContainer .pdf-header { text-align: center; border-bottom: 3px solid #E67E22; padding-bottom: 18px; margin-bottom: 25px; }
-            #pdfTempContainer .pdf-brand { font-size: 25px; font-weight: 800; letter-spacing: 1px; color: #1A2530; }
-            #pdfTempContainer .pdf-title { font-size: 21px; font-weight: 700; margin-top: 8px; color: #1A2530; }
-            #pdfTempContainer .pdf-subtitle { font-size: 13px; font-weight: 700; margin-top: 8px; color: #E67E22; }
-            #pdfTempContainer .pdf-note { font-size: 10px; line-height: 1.45; color: #64748b; margin-top: 10px; }
-            #pdfTempContainer .pdf-parameters { border: 1px solid #dce2e8; background: #F4F5F7; padding: 14px; margin-bottom: 25px; border-radius: 6px; }
-            #pdfTempContainer .pdf-section-title { font-size: 12px; font-weight: 800; letter-spacing: 0.5px; color: #1A2530; margin-bottom: 10px; }
-            #pdfTempContainer .pdf-param-table { width: 100%; border-collapse: collapse; font-size: 11px; }
-            #pdfTempContainer .pdf-param-table td { width: 50%; padding: 7px; border: 1px solid #dce2e8; vertical-align: top; }
-            #pdfTempContainer .tabla-title { margin-bottom: 10px; }
-            #pdfTempContainer .pdf-main-table { width: 100%; border-collapse: collapse; font-size: 10.5px; }
-            #pdfTempContainer .pdf-main-table th { background: #1A2530; color: white; padding: 9px 6px; text-align: center; border: 1px solid #1A2530; font-weight: 700; }
-            #pdfTempContainer .pdf-main-table th:nth-child(5) { background: #c0392b; border-color: #c0392b; }
-            #pdfTempContainer .pdf-main-table td { padding: 7px 6px; text-align: center; border: 1px solid #dce2e8; }
-            #pdfTempContainer .pdf-main-table tr:nth-child(even) td { background: #f8fafc; }
-            #pdfTempContainer .pdf-main-table td.ld { font-weight: 700; background: #f1f3f5; }
-            #pdfTempContainer .pdf-main-table td.claseB { font-weight: 700; color: #c0392b; background: #fdf2ee; }
-            #pdfTempContainer .pdf-warning { margin-top: 30px; padding: 13px 15px; border-left: 5px solid #E67E22; background: #fdf6f0; font-size: 10px; line-height: 1.5; }
-            #pdfTempContainer .pdf-warning p { margin: 7px 0 0 0; }
-            #pdfTempContainer .pdf-footer { margin-top: 35px; padding-top: 12px; border-top: 1px solid #dce2e8; text-align: center; font-size: 9px; line-height: 1.5; color: #94a3b8; }
-        `;
+            .pdf-header { 
+                text-align: center; 
+                border-bottom: 3px solid #E67E22; 
+                padding-bottom: 15px; 
+                margin-bottom: 25px; 
+            }
+            .pdf-brand { 
+                font-size: 24px; 
+                font-weight: 800; 
+                letter-spacing: 1px; 
+                color: #1A2530; 
+            }
+            .pdf-title { 
+                font-size: 20px; 
+                font-weight: 700; 
+                margin-top: 8px; 
+            }
+            .pdf-subtitle { 
+                font-size: 12px; 
+                font-weight: 700; 
+                margin-top: 8px; 
+                color: #E67E22; 
+            }
+            .pdf-parameters { 
+                border: 1px solid #dce2e8; 
+                background: #F4F5F7; 
+                padding: 15px; 
+                margin-bottom: 25px; 
+                border-radius: 6px; 
+            }
+            .pdf-section-title { 
+                font-size: 13px; 
+                font-weight: 800; 
+                letter-spacing: 0.5px; 
+                color: #1A2530; 
+                margin-bottom: 10px; 
+            }
+            .pdf-param-table { 
+                width: 100%; 
+                border-collapse: collapse; 
+                font-size: 11px; 
+            }
+            .pdf-param-table td { 
+                width: 50%; 
+                padding: 8px; 
+                border: 1px solid #dce2e8; 
+                vertical-align: top; 
+            }
+            .tabla-title { 
+                margin-top: 20px;
+                margin-bottom: 10px; 
+            }
+            .pdf-main-table { 
+                width: 100%; 
+                border-collapse: collapse; 
+                font-size: 11px; 
+                margin-bottom: 20px;
+            }
+            .pdf-main-table th { 
+                background: #1A2530; 
+                color: white; 
+                padding: 10px 6px; 
+                text-align: center; 
+                border: 1px solid #1A2530; 
+                font-weight: 700; 
+            }
+            .pdf-main-table td { 
+                padding: 8px 6px; 
+                text-align: center; 
+                border: 1px solid #dce2e8; 
+            }
+            .pdf-main-table tr:nth-child(even) td { 
+                background: #f8fafc; 
+            }
+            .pdf-warning { 
+                margin-top: 25px; 
+                padding: 15px; 
+                border-left: 5px solid #E67E22; 
+                background: #fdf6f0; 
+                font-size: 10px; 
+                line-height: 1.6; 
+            }
+            .pdf-warning b { 
+                display: block; 
+                margin-bottom: 8px; 
+                font-size: 11px;
+            }
+            .pdf-footer { 
+                margin-top: 30px; 
+                padding-top: 12px; 
+                border-top: 1px solid #dce2e8; 
+                text-align: center; 
+                font-size: 9px; 
+                line-height: 1.5; 
+                color: #94a3b8; 
+            }
+            @media print {
+                body { padding: 15px; }
+                .no-print { display: none !important; }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="pdf-header">
+            <div class="pdf-brand">CRITERIO ESTRUCTURAL</div>
+            <div class="pdf-title">GUÍA DEFINITIVA DE TRASLAPOS</div>
+            <div class="pdf-subtitle">NSR-10 C.12 / C.21 · ACI 318 Cap. 25</div>
+        </div>
 
-        /* ---------------------------------------------------------
-           4. INSERTAR EN DOM (Sin display:none ni posiciones locas)
-           --------------------------------------------------------- */
-        document.head.appendChild(style);
-        document.body.appendChild(tempDiv);
+        <div class="pdf-parameters">
+            <div class="pdf-section-title">PARÁMETROS DEL PROYECTO</div>
+            <table class="pdf-param-table">
+                <tr>
+                    <td><b>Concreto (f'c):</b> ${fc} MPa</td>
+                    <td><b>Acero (fy):</b> ${fy} MPa</td>
+                </tr>
+                <tr>
+                    <td><b>Elemento Analizado:</b> ${elemento}</td>
+                    <td><b>Posición Refuerzo:</b> ${psi_t}</td>
+                </tr>
+                ${elemento === 'Columna' ? `
+                <tr>
+                    <td colspan="2"><b>Condición Sísmica:</b> ${sismo}</td>
+                </tr>` : ''}
+            </table>
+        </div>
 
-        /* ---------------------------------------------------------
-           5. CONFIGURACIÓN ROBUSTA
-           --------------------------------------------------------- */
-        const opt = {
-            margin: [8, 8, 8, 8],
-            filename: 'Traslapos_CriterioEstructural_' + new Date().toISOString().split('T')[0] + '.pdf',
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: {
-                scale: 2,
-                useCORS: true,
-                allowTaint: false,
-                backgroundColor: '#ffffff',
-                logging: false,
-                scrollX: 0,
-                scrollY: 0,
-                windowWidth: 900,
-                windowHeight: 1200
-            },
-            jsPDF: { unit: 'mm', format: 'letter', orientation: 'portrait', compress: true },
-            pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+        <div class="pdf-section-title tabla-title">
+            LONGITUDES DE DESARROLLO Y EMPALME (Unidades: ${un})
+        </div>
+
+        <table class="pdf-main-table">
+            <thead>
+                <tr>
+                    <th>Barra</th>
+                    <th>d<sub>b</sub> (mm)</th>
+                    <th>Desarrollo<br>l<sub>d</sub></th>
+                    <th>Clase A<br>1.0 l<sub>d</sub></th>
+                    <th>Clase B<br>1.3 l<sub>d</sub></th>
+                    <th>Compresión<br>l<sub>sc</sub></th>
+                </tr>
+            </thead>
+            <tbody>
+                ${filasPDF}
+            </tbody>
+        </table>
+
+        <div class="pdf-warning">
+            <b>⚠️ NOTA DE RESPONSABILIDAD PROFESIONAL</b>
+            <p>
+                Los valores presentados constituyen una asistencia de predimensionamiento 
+                basada en la ecuación C.12.2.2 de la NSR-10. El ingeniero estructural 
+                responsable del proyecto debe verificar las condiciones de espaciamiento, 
+                recubrimiento, confinamiento transversal (K<sub>tr</sub>) y requisitos 
+                sísmicos especiales antes de aprobar estos valores para planos constructivos.
+            </p>
+            <p style="margin-top: 8px;">
+                <b>Todo proyecto constructivo debe contar con la revisión y firma de un 
+                ingeniero estructural con matrícula profesional vigente.</b>
+            </p>
+        </div>
+
+        <div class="pdf-footer">
+            Criterio Estructural · Guía Definitiva de Traslapos<br>
+            Generado automáticamente el ${new Date().toLocaleString('es-CO', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            })}
+        </div>
+    </body>
+    </html>
+        `);
+
+        printWindow.document.close();
+        
+        // Esperar a que se cargue completamente
+        printWindow.onload = function() {
+            printWindow.focus();
+            setTimeout(() => {
+                printWindow.print();
+                btn.innerHTML = originalText;
+            }, 250);
         };
-
-        /* ---------------------------------------------------------
-           6. DAR TIEMPO AL NAVEGADOR PARA PINTAR EL DOM
-           --------------------------------------------------------- */
-        requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-                html2pdf()
-                    .set(opt)
-                    .from(tempDiv)
-                    .save()
-                    .then(() => {
-                        document.body.removeChild(tempDiv);
-                        document.head.removeChild(style);
-                        btn.innerHTML = originalText;
-                    })
-                    .catch(err => {
-                        console.error('Error generando PDF:', err);
-                        if (tempDiv.parentNode) tempDiv.parentNode.removeChild(tempDiv);
-                        if (style.parentNode) style.parentNode.removeChild(style);
-                        btn.innerHTML = originalText;
-                        alert('No fue posible generar el PDF. Revisa la consola del navegador para más información.');
-                    });
-            });
-        });
     }
 
 </script>
