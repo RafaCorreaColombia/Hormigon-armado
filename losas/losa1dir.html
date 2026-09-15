@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Ejemplo práctico de diseño de losa maciza en una dirección según NSR-10. Geometría, cargas, momentos y despiece.">
+    <meta name="author" content="Ing. Rafael Antonio Correa Melano">
+    
+    <title>Diseño Losa Maciza - Criterio Estructural</title>
+    
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <!-- Librerías Asíncronas (MathJax) -->
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']] }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        /* PALETA DE COLORES DE LA MARCA (Heredada intacta) */
+        :root {
+            --azul-profundo: #1A2530;
+            --naranja-estructural: #E67E22;
+            --gris-claro: #F4F5F7;
+        }
+
+        body { background-color: var(--gris-claro); font-family: 'Segoe UI', sans-serif; color: var(--azul-profundo); }
+        .contenedor-principal {
+            max-width: 1250px; margin: 30px auto; border-radius: 12px;
+            background: white; padding: 0; overflow: hidden;
+            box-shadow: 0 8px 25px rgba(26,37,48,0.15);
+        }
+        
+        /* HEADER Y MANIFIESTO */
+        .header-rc { background: var(--azul-profundo); color: white; padding: 30px 20px; text-align: center; position: relative; }
+        .brand-logo-header { max-width: 250px; height: auto; margin-bottom: 10px; display: inline-block; }
+        .lema-global { font-size: 0.9em; letter-spacing: 2px; color: #a0aec0; text-transform: uppercase; margin-bottom: 20px; font-weight: bold; }
+        .lema-global span { color: var(--naranja-estructural); }
+
+        /* RUTA DE APRENDIZAJE */
+        .ruta-aprendizaje {
+            display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 20px;
+            font-size: 0.85em; color: #a0aec0;
+        }
+        .ruta-item { padding: 4px 12px; border-radius: 20px; border: 1px solid #4a5568; background: rgba(255,255,255,0.05); }
+        .ruta-activa { border-color: var(--naranja-estructural); color: white; background: rgba(230, 126, 34, 0.2); font-weight: bold; }
+        .ruta-flecha { color: #4a5568; font-size: 0.8em; }
+
+        .contenido-body { padding: 40px; }
+        
+        /* CAJAS Y RESALTADOS (Paneles de Criterio Estructural) */
+        .panel-control { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 25px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); margin-bottom: 25px; }
+        .panel-titulo { margin-top: 0; font-weight: bold; color: var(--azul-profundo); border-bottom: 2px solid var(--naranja-estructural); padding-bottom: 8px; margin-bottom: 20px; font-size: 1.2em; }
+        
+        /* TABLAS ESTANDARIZADAS */
+        .tabla-container { overflow-x: auto; width: 100%; border-radius: 6px; box-shadow: 0 0 5px rgba(0,0,0,0.05); margin: 15px 0; }
+        .tabla-traslapos { width: 100%; border-collapse: collapse; font-size: 0.95em; min-width: 600px; }
+        .tabla-traslapos th { background-color: var(--azul-profundo) !important; color: white !important; padding: 12px; text-align: center; }
+        .tabla-traslapos td { padding: 10px; text-align: center; border-bottom: 1px solid #e2e8f0; }
+        .tabla-traslapos tr:hover { background-color: #f8fafc; }
+
+        /* LOGO FOOTER */
+        .brand-logo-footer { max-width: 200px; height: auto; margin-bottom: 15px; display: inline-block; }
+        footer { background-color: var(--gris-claro) !important; }
+
+        /* OVERRIDES W3.CSS */
+        .w3-text-red { color: var(--naranja-estructural) !important; }
+        .w3-border-red { border-color: var(--naranja-estructural) !important; }
+        .w3-red { background-color: var(--naranja-estructural) !important; color: white !important; }
+        .w3-pale-red { background-color: #fdf6f0 !important; }
+        .w3-blue { background-color: var(--azul-profundo) !important; color: white !important; }
+        .w3-text-blue { color: var(--azul-profundo) !important; }
+        
+        summary:focus { outline: none; }
+        .math-scroll { overflow-x: auto; padding: 10px 0; }
+
+        @media (max-width: 1250px) {
+            .contenedor-principal { width: 100% !important; margin: 0 !important; border-radius: 0 !important; box-shadow: none; padding: 0 !important; }
+            .contenido-body { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="contenedor-principal w3-animate-opacity">
+    
+    <!-- HEADER Y NARRATIVA GLOBAL -->
+    <div class="header-rc no-print">
+        <img src="../assets/IsotipoFOscuroT.png" alt="Logotipo Criterio Estructural" class="brand-logo-header" onerror="this.src='https://via.placeholder.com/250x80/1A2530/FFFFFF?text=CRITERIO+ESTRUCTURAL'"><br>
+        
+        <div class="lema-global">
+            Guía de Detallamiento Estructural <br>
+            <span>Aprender haciendo. Comprender antes de detallar.</span>
+        </div>
+        
+        <h1 class="w3-xxlarge" style="margin: 0; font-weight: bold;">Diseño de Losa Maciza en una Dirección</h1>
+        <div style="font-size: 1.1em; color: #cbd5e1; margin-top: 5px;">Ejemplo Práctico: Configuración de 8 Luces</div>
+
+        <div class="ruta-aprendizaje">
+            <span class="ruta-item">1. Análisis</span> <i class="fa fa-chevron-right ruta-flecha"></i>
+            <span class="ruta-item ruta-activa">📐 2. Diseño</span> <i class="fa fa-chevron-right ruta-flecha"></i>
+            <span class="ruta-item">3. Detallamiento y Traslapos</span> <i class="fa fa-chevron-right ruta-flecha"></i>
+            <span class="ruta-item">4. Despiece Final</span>
+        </div>
+    </div>
+
+    <div class="contenido-body">
+
+        <!-- CARD 1: GEOMETRÍA -->
+        <div class="panel-control">
+            <h2 class="panel-titulo">1. Geometría y Configuración</h2>
+            <p>Se analiza una losa continua con las siguientes luces entre ejes:</p>
+
+            <div class="w3-row-padding" style="margin: 0 -16px;">
+                <div class="w3-col l3 m6 w3-margin-bottom">
+                    <div class="w3-panel w3-pale-blue w3-leftbar w3-border-blue w3-padding w3-round">
+                        <strong>Luces Exteriores (2):</strong><br> \( L = 4.30 \text{ m} \)
+                    </div>
+                </div>
+                <div class="w3-col l3 m6 w3-margin-bottom">
+                    <div class="w3-panel w3-pale-blue w3-leftbar w3-border-blue w3-padding w3-round">
+                        <strong>Apoyos Exteriores:</strong><br> \( 0.40 \text{ m} \)
+                    </div>
+                </div>
+                <div class="w3-col l3 m6 w3-margin-bottom">
+                    <div class="w3-panel w3-pale-blue w3-leftbar w3-border-blue w3-padding w3-round">
+                        <strong>Luces Interiores (6):</strong><br> \( L = 4.50 \text{ m} \)
+                    </div>
+                </div>
+                <div class="w3-col l3 m6 w3-margin-bottom">
+                    <div class="w3-panel w3-pale-blue w3-leftbar w3-border-blue w3-padding w3-round">
+                        <strong>Apoyos Interiores:</strong><br> \( 0.35 \text{ m} \)
+                    </div>
+                </div>
+            </div>
+
+            <div class="w3-center w3-margin-top w3-padding w3-round" style="background-color: #f8fafc; border: 1px solid #e2e8f0;">
+                <img src="https://lms.uis.edu.co/ava/draftfile.php/610615/user/draft/84838765/1773935181570.png" alt="Planta General" style="max-width: 100%; height: auto; border-radius: 5px;">
+                <p class="w3-small w3-text-grey w3-margin-top"><i>Figura 1: Planta General del Sistema de Losa.</i></p>
+            </div>
+        </div>
+
+        <!-- CARD 2: PREDIMENSIONAMIENTO -->
+        <div class="panel-control">
+            <h2 class="panel-titulo">2. Predimensionamiento (Control de Deflexión)</h2>
+            <p>Ver NSR-10 Tabla C.9.5(a). Calculamos el espesor mínimo \( h \) según las condiciones de continuidad:</p>
+            
+            <ul class="w3-ul w3-border w3-round" style="margin-bottom: 15px;">
+                <li><strong>Un extremo continuo:</strong> \( h = \frac{4.30}{24} = 0.179 \text{ m} \approx 0.18 \text{ m} \)</li>
+                <li><strong>Ambos extremos continuos:</strong> \( h = \frac{4.50}{28} = 0.160 \text{ m} \)</li>
+            </ul>
+
+            <div class="w3-panel w3-sand w3-leftbar w3-border-orange w3-padding w3-round">
+                Adoptamos un espesor comercial de <strong>\( h = 0.17 \text{ m} \)</strong>.<br>
+                <span class="w3-text-red"><b>⚠️ Nota:</b> Dado que 0.17 &lt; 0.18, es obligatorio realizar el chequeo de deflexiones.</span>
+            </div>
+
+            <div class="w3-panel w3-pale-blue w3-leftbar w3-border-blue w3-padding w3-round">
+                <strong>Cálculo del Peralte Efectivo:</strong><br>
+                <div class="math-scroll">
+                    \[ d = h - \text{recub} - \frac{\phi}{2} = 170 - 20 - \frac{12.7}{2} = 143.65 \text{ mm} \]
+                </div>
+                <p class="w3-small w3-text-grey" style="margin: 0;">Donde: recubrimiento = 20 mm, barra No. 4 (φ = 12.7 mm)</p>
+            </div>
+        </div>
+
+        <!-- CARD 3: CARGAS -->
+        <div class="panel-control">
+            <h2 class="panel-titulo">3. Análisis de Cargas (Ancho unitario \( b = 1.0 \text{ m} \))</h2>
+            
+            <div class="w3-row-padding" style="margin: 0 -16px;">
+                <div class="w3-col l3 m6 w3-margin-bottom">
+                    <div class="w3-panel w3-light-grey w3-leftbar w3-border-grey w3-padding w3-round h-100">
+                        <strong>Peso Propio:</strong><br> \( 24 \frac{\text{kN}}{\text{m}^3} \cdot 0.17 \text{ m} = 4.08 \frac{\text{kN}}{\text{m}^2} \)
+                    </div>
+                </div>
+                <div class="w3-col l3 m6 w3-margin-bottom">
+                    <div class="w3-panel w3-light-grey w3-leftbar w3-border-grey w3-padding w3-round h-100">
+                        <strong>Carga Muerta (\( w_D \)):</strong><br> \( 1.0 \frac{\text{kN}}{\text{m}^2} \) (Adicional)
+                    </div>
+                </div>
+                <div class="w3-col l3 m6 w3-margin-bottom">
+                    <div class="w3-panel w3-light-grey w3-leftbar w3-border-grey w3-padding w3-round h-100">
+                        <strong>Carga Viva (\( w_L \)):</strong><br> \( 3.8 \frac{\text{kN}}{\text{m}^2} \)
+                    </div>
+                </div>
+                <div class="w3-col l3 m6 w3-margin-bottom">
+                    <div class="w3-panel w3-light-grey w3-leftbar w3-border-grey w3-padding w3-round h-100">
+                        <strong>Total Carga Muerta:</strong><br> \( 5.08 \frac{\text{kN}}{\text{m}^2} \)
+                    </div>
+                </div>
+            </div>
+
+            <p>Combinaciones de carga:</p>
+            <ul>
+                <li>\( 1.4D = 1.4(5.08) = 7.11 \frac{\text{kN}}{\text{m}^2} \)</li>
+                <li>\( 1.2D + 1.6L = 1.2(5.08) + 1.6(3.8) = 12.18 \frac{\text{kN}}{\text{m}^2} \)</li>
+            </ul>
+
+            <div class="w3-panel w3-pale-green w3-leftbar w3-border-green w3-padding w3-round w3-center w3-large">
+                <b>Carga de Diseño Final:</b> \( w_u = 12.18 \frac{\text{kN}}{\text{m}^2} \)
+            </div>
+        </div>
+
+        <!-- CARD 4: VERIFICACIÓN -->
+        <div class="panel-control">
+            <h2 class="panel-titulo">4. Verificación de Coeficientes (NSR-10 C.13.5.5.3)</h2>
+            <p>Para usar el método simplificado de momentos, verificamos las 4 condiciones:</p>
+            
+            <ul class="w3-ul w3-border w3-round">
+                <li>✅ <strong>a) Vano:</strong> Tiene 8 luces (mínimo 2).</li>
+                <li>✅ <strong>b) Distribución:</strong> Cargas uniformemente distribuidas.</li>
+                <li>✅ <strong>c) Relación L/D:</strong> \( L \le 3D \rightarrow 3.8 \le 3(5.08) = 15.24 \) (Cumple).</li>
+                <li>✅ <strong>d) Geometría:</strong> Losa prismática (sección constante).</li>
+            </ul>
+            <p class="w3-text-blue w3-margin-top"><b>Conclusión:</b> Es posible aplicar los coeficientes de momentos y cortantes de la norma.</p>
+        </div>
+
+        <!-- CARD 5: MOMENTOS -->
+        <div class="panel-control">
+            <h2 class="panel-titulo">5. Cálculo de Momentos Flectores \( M_u \)</h2>
+            <p class="w3-small w3-text-grey" style="margin-top:-15px;">Aplicación de coeficientes según ubicación del vano. Ver NSR-10 C.13.5.5.3</p>
+            
+            <p>Para el cálculo, utilizamos la carga última \( w_u = 12.18 \text{ kN/m}^2 \) y las luces libres correspondientes.</p>
+
+            <div class="tabla-container">
+                <table class="tabla-traslapos">
+                    <thead>
+                        <tr>
+                            <th style="text-align:left;">Ubicación</th>
+                            <th>Luz \( L_n \)</th>
+                            <th>Coeficiente</th>
+                            <th>\( M_u \) Calculado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="text-align:left;">Apoyo Exterior (Cara Ext.)</td>
+                            <td>\( 3.925 \text{ m} \)</td>
+                            <td>\( 1/24 \)</td>
+                            <td><b>\( 7.8 \text{ kNm/m} \)</b></td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">Centro Tramo Exterior (+)</td>
+                            <td>\( 3.925 \text{ m} \)</td>
+                            <td>\( 1/14 \)</td>
+                            <td><b>\( 13.4 \text{ kNm/m} \)</b></td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">Primer Apoyo Interior (-)</td>
+                            <td>\( 4.038 \text{ m}^* \)</td>
+                            <td>\( 1/10 \)</td>
+                            <td class="w3-text-red"><b>\( 19.8 \text{ kNm/m} \)</b></td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">Apoyos Interiores Típicos (-)</td>
+                            <td>\( 4.15 \text{ m} \)</td>
+                            <td>\( 1/11 \)</td>
+                            <td><b>\( 19.1 \text{ kNm/m} \)</b></td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">Centro Tramo Interior (+)</td>
+                            <td>\( 4.15 \text{ m} \)</td>
+                            <td>\( 1/16 \)</td>
+                            <td><b>\( 13.1 \text{ kNm/m} \)</b></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="w3-small w3-text-grey">* Luz promedio entre \( 3.925 \text{ m} \) y \( 4.15 \text{ m} \) para momentos negativos en apoyos interiores inmediatos al exterior.</p>
+
+            <div class="w3-center w3-margin-top w3-padding w3-round" style="background-color: #f8fafc; border: 1px solid #e2e8f0;">
+                <p><b>Esquema de Ubicación de Momentos Críticos</b></p>
+                <div class="math-scroll w3-white w3-border w3-round w3-padding">
+                    <pre style="text-align:left; margin:0; font-size:13px;">    7.8 kNm          19.85 kNm        19.1 kNm         19.1 kNm
+ ↓─────────────────↓────────────────↓────────────────↓
+ │                 │                │                │
+ │   Ext. 1        │   Int. 1       │   Int. 2       │
+ │   L=3.925m      │   L=4.15m      │   L=4.15m      │
+ │                 │                │                │
+ ├─────────────────┼────────────────┼────────────────┤
+      13.4↑             13.1↑            13.1↑
+  (Momento +)       (Momento +)      (Momento +)</pre>
+                </div>
+            </div>
+
+            <div class="w3-center w3-margin-top w3-padding w3-round" style="background-color: #f8fafc; border: 1px solid #e2e8f0;">
+                <img src="https://lms.uis.edu.co/ava/draftfile.php/610615/user/draft/84838765/1773936650744.png" style="max-width: 100%; height: auto; border-radius: 5px;">
+                <p class="w3-small w3-text-grey w3-margin-top"><i>Figura 2: Diagrama de Momentos por Elementos Finitos.</i></p>
+            </div>
+        </div>
+
+        <!-- CARD 6: CORTANTES -->
+        <div class="panel-control">
+            <h2 class="panel-titulo">6. Cálculo de Cortantes de Diseño \( V_u \)</h2>
+            <p class="w3-small w3-text-grey" style="margin-top:-15px;">Resistencia requerida en las caras de los apoyos. Ver NSR-10 C.13.5.5.3</p>
+
+            <div class="w3-row-padding" style="margin: 0 -16px;">
+                <div class="w3-col l12 w3-margin-bottom">
+                    <div class="w3-panel w3-light-grey w3-leftbar w3-border-grey w3-padding w3-round">
+                        <strong>Cara del primer apoyo interior (Tramo exterior):</strong>
+                        <div class="math-scroll">\[ V_u = 1.15 \cdot \frac{w_u \cdot L_n}{2} = 1.15 \cdot \frac{12.18 \cdot 3.925}{2} = \mathbf{27.5 \text{ kN/m}} \]</div>
+                    </div>
+                </div>
+                <div class="w3-col l6 m12 w3-margin-bottom">
+                    <div class="w3-panel w3-light-grey w3-leftbar w3-border-grey w3-padding w3-round">
+                        <strong>Cara exterior del primer apoyo:</strong>
+                        <div class="math-scroll">\[ V_u = \frac{12.18 \cdot 3.925}{2} = \mathbf{23.9 \text{ kN/m}} \]</div>
+                    </div>
+                </div>
+                <div class="w3-col l6 m12 w3-margin-bottom">
+                    <div class="w3-panel w3-light-grey w3-leftbar w3-border-grey w3-padding w3-round">
+                        <strong>Demás caras de apoyos (Luz típica):</strong>
+                        <div class="math-scroll">\[ V_u = \frac{12.18 \cdot 4.15}{2} = \mathbf{25.3 \text{ kN/m}} \]</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="w3-panel w3-pale-blue w3-leftbar w3-border-blue w3-padding w3-round">
+                <strong>Análisis Crítico:</strong> El cortante máximo de diseño es de <strong>\( 27.5 \text{ kN} \)</strong>. Este valor es el que debemos comparar contra la resistencia nominal del concreto \( \phi V_c \).
+            </div>
+
+            <div class="w3-center w3-margin-top w3-padding w3-round" style="background-color: #f8fafc; border: 1px solid #e2e8f0;">
+                <img src="https://lms.uis.edu.co/ava/draftfile.php/610615/user/draft/84838765/1773936627562.png" style="max-width: 100%; height: auto; border-radius: 5px;">
+                <p class="w3-small w3-text-grey w3-margin-top"><i>Figura 3: Diagrama de Cortantes por Elementos Finitos.</i></p>
+            </div>
+        </div>
+
+        <!-- CARD 7: FLEXIÓN Y REFUERZO -->
+        <div class="panel-control">
+            <h2 class="panel-titulo">7. Diseño por Flexión y Refuerzo</h2>
+            <p class="w3-small w3-text-grey" style="margin-top:-15px;">Parámetros de diseño y cálculo de acero (\( f'_c = 28 \text{ MPa} \), \( f_y = 420 \text{ MPa} \))</p>
+
+            <div class="w3-row-padding" style="margin: 0 -16px;">
+                <div class="w3-col l3 m6 w3-margin-bottom">
+                    <div class="w3-panel w3-pale-blue w3-leftbar w3-border-blue w3-padding-small w3-round">
+                        <strong>Ancho (b):</strong> \( 1000 \text{ mm} \)
+                    </div>
+                </div>
+                <div class="w3-col l3 m6 w3-margin-bottom">
+                    <div class="w3-panel w3-pale-blue w3-leftbar w3-border-blue w3-padding-small w3-round">
+                        <strong>Peralte (d):</strong> \( 143.65 \text{ mm} \)
+                    </div>
+                </div>
+                <div class="w3-col l3 m6 w3-margin-bottom">
+                    <div class="w3-panel w3-pale-blue w3-leftbar w3-border-blue w3-padding-small w3-round">
+                        <strong>Barra:</strong> No. 4 (\( 127 \text{ mm}^2 \))
+                    </div>
+                </div>
+                <div class="w3-col l3 m6 w3-margin-bottom">
+                    <div class="w3-panel w3-pale-blue w3-leftbar w3-border-blue w3-padding-small w3-round">
+                        <strong>\( \rho_{min} \):</strong> \( 0.0018 \) (\( A_{s,min} = 306 \text{ mm}^2 \))
+                    </div>
+                </div>
+            </div>
+
+            <details class="w3-panel w3-border w3-round w3-white w3-margin-top w3-margin-bottom" style="cursor: pointer;">
+                <summary style="font-weight: bold; padding: 12px 10px; color: var(--naranja-estructural);">
+                    🔍 Ver Desarrollo Detallado: Iteración para Diseño a Flexión (Repaso Armado I)
+                </summary>
+                <div class="w3-padding w3-small math-scroll" style="border-top: 1px solid #eee;">
+                    <p><strong>Datos:</strong></p>
+                    <ul>
+                        <li>\( M_u = 19.85 \text{ kNm/m} = 19.85 \times 10^6 \text{ Nmm/m} \)</li>
+                        <li>\( b = 1000 \text{ mm} \), \( d = 143.65 \text{ mm} \)</li>
+                        <li>\( f'_c = 28 \text{ MPa} \), \( f_y = 420 \text{ MPa} \), \( \phi = 0.90 \)</li>
+                    </ul>
+                    
+                    <p><strong>Iteración para obtener "a":</strong></p>
+                    <p><strong>Paso 1:</strong> Suponer \( a_0 = \frac{d}{10} = 14.4 \text{ mm} \)</p>
+                    <p><strong>Paso 2:</strong> Calcular \( A_s \):
+                        \[ A_s = \frac{M_u}{\phi f_y (d - a/2)} = \frac{19.85 \times 10^6}{0.90 \times 420 \times (143.65 - 14.4/2)} = 365.3 \text{ mm}^2 \]
+                    </p>
+                    <p><strong>Paso 3:</strong> Recalcular \( a \):
+                        \[ a_1 = \frac{A_s f_y}{0.85 f'_c b} = \frac{365.3 \times 420}{0.85 \times 28 \times 1000} = 6.45 \text{ mm} \]
+                    </p>
+                    <p><strong>Paso 4:</strong> Verificar convergencia:
+                        \[ |a_1 - a_0| = 7.95 \text{ mm} > 1 \text{ mm} \quad \text{(No convergió)} \]
+                    </p>
+                    <hr>
+                    <p><strong>Iteración 2 con \( a_0 = 6.45 \text{ mm} \):</strong></p>
+                    <p>
+                        \[ A_s = 373.0 \text{ mm}^2 \]
+                        \[ a_2 = 6.59 \text{ mm} \]
+                        \[ |a_2 - a_1| = 0.14 \text{ mm} < 1 \text{ mm} \quad \text{✓ CONVERGIÓ} \]
+                    </p>
+                    
+                    <p><strong>Cuantía requerida:</strong>
+                        \[ \rho_{req} = \frac{A_s}{b \cdot d} = 0.00260 \]
+                    </p>
+                    
+                    <p><strong>Verificación de cuantía mínima:</strong></p>
+                    <div class="w3-panel w3-light-grey w3-padding w3-round">
+                        <strong>Opción 1 (NSR-10 C.7.12):</strong> \( A_{s,min} = 0.0018 \times b \times h = 306 \text{ mm}^2 \)<br>
+                        <strong>Opción 2 (NSR-10 C.10.5.4):</strong> \( A_{s,min} = \frac{0.8\sqrt{28}}{420} \times 1000 \times 143.65 = 137.1 \text{ mm}^2 \)
+                    </div>
+                    
+                    <p><strong>Decisión:</strong> \( A_s = 373.0 \text{ mm}^2 > A_{s,min} = 306 \text{ mm}^2 \) → <b>Gobierna el acero por resistencia</b></p>
+                    
+                    <p><strong>Selección de refuerzo (Separación):</strong>
+                        \[ s = \frac{A_b \times 1000}{A_s} = \frac{127 \times 1000}{373.0} = 340.5 \text{ mm} \]
+                    </p>
+                    <p><strong>Espaciamiento adoptado:</strong> <b>s = 325 mm</b> (múltiplo comercial inmediato inferior)</p>
+                    
+                    <div class="w3-panel w3-sand w3-leftbar w3-border-orange w3-padding w3-round">
+                        <strong>Verificación de \( s_{max} \):</strong><br>
+                        \( s_{max} = \min(3h, 450) = 450 \text{ mm} \)<br>
+                        \( s_{adoptado} = 325 \text{ mm} < 450 \text{ mm} \) ✓
+                    </div>
+                </div>
+            </details>
+
+            <h4 class="w3-text-blue" style="font-weight:bold; margin-top:30px;">Resultados de Armadura por Tramo</h4>
+            <div class="tabla-container">
+                <table class="tabla-traslapos">
+                    <thead>
+                        <tr>
+                            <th style="text-align:left;">Ubicación</th>
+                            <th>\( M_u \) (kNm)</th>
+                            <th>\( \rho_{req} \)</th>
+                            <th>\( A_s \) Final (\( \text{mm}^2 \))</th>
+                            <th>Separación (s)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="text-align:left;">Ext: \( M_u - \) exterior</td>
+                            <td>\( 7.82 \)</td>
+                            <td>\( 0.00101 \)</td>
+                            <td class="w3-text-green"><b>\( 306 \text{ (min)} \)</b></td>
+                            <td>\( s = 400 \text{ mm} \)</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">Ext: \( M_u + \) centro</td>
+                            <td>\( 13.40 \)</td>
+                            <td>\( 0.00174 \)</td>
+                            <td class="w3-text-green"><b>\( 306 \text{ (min)} \)</b></td>
+                            <td>\( s = 400 \text{ mm} \)</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">Ext: \( M_u - \) interior</td>
+                            <td>\( 19.85 \)</td>
+                            <td>\( 0.00260 \)</td>
+                            <td><b>\( 374.1 \)</b></td>
+                            <td>\( s = 325 \text{ mm} \)</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">Int: \( M_u - \) apoyo</td>
+                            <td>\( 19.06 \)</td>
+                            <td>\( 0.00250 \)</td>
+                            <td><b>\( 359.0 \)</b></td>
+                            <td>\( s = 350 \text{ mm} \)</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">Int: \( M_u + \) centro</td>
+                            <td>\( 13.11 \)</td>
+                            <td>\( 0.00171 \)</td>
+                            <td class="w3-text-green"><b>\( 306 \text{ (min)} \)</b></td>
+                            <td>\( s = 400 \text{ mm} \)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="w3-panel w3-pale-green w3-leftbar w3-border-green w3-padding w3-round">
+                <strong>📊 Interpretación de Resultados:</strong>
+                <ul>
+                    <li><strong>Momentos bajos</strong> (7.82, 13.40, 13.11 kNm): \( A_s \) por resistencia &lt; \( A_{s,min} \) → Gobierna <b>cuantía mínima (306 mm²)</b></li>
+                    <li><strong>Momentos altos</strong> (19.85, 19.06 kNm): \( A_s \) por resistencia &gt; \( A_{s,min} \) → Gobierna <b>acero por flexión</b></li>
+                </ul>
+                <p class="w3-small w3-text-grey">💡 <strong>Criterio Estructural:</strong> En losas delgadas con cargas moderadas, es común que la cuantía mínima gobierne en zonas de momento positivo.</p>
+            </div>
+            
+            <div class="w3-panel w3-pale-blue w3-leftbar w3-border-blue w3-padding w3-round">
+                <strong>Criterio Constructivo:</strong> Las separaciones se han redondeado hacia abajo a múltiplos de \( 25 \text{ mm} \) o \( 50 \text{ mm} \) para facilitar el armado en obra, sin superar la \( s_{max} = 450 \text{ mm} \).
+            </div>
+        </div>
+
+        <!-- CARD 8: DETALLADO Y TEMPERATURA -->
+        <div class="panel-control">
+            <h2 class="panel-titulo">8. Verificaciones de Detallado y Refuerzo Transversal</h2>
+            <p class="w3-small w3-text-grey" style="margin-top:-15px;">Control de fisuración y acero por retracción y temperatura</p>
+
+            <h4 class="w3-text-blue" style="font-weight:bold; margin-top:20px;">A. Control de Fisuración (C.10.6.4)</h4>
+            <p>Para el refuerzo a tracción, calculamos la separación máxima para controlar el ancho de grieta:</p>
+            
+            <div class="w3-row-padding" style="margin: 0 -16px;">
+                <div class="w3-col m6 w3-margin-bottom">
+                    <div class="w3-panel w3-light-grey w3-leftbar w3-border-grey w3-padding w3-round">
+                        <strong>Recubrimiento libre (\( c_c \)):</strong> \( 20 \text{ mm} \)
+                    </div>
+                </div>
+                <div class="w3-col m6 w3-margin-bottom">
+                    <div class="w3-panel w3-light-grey w3-leftbar w3-border-grey w3-padding w3-round">
+                        <strong>Esfuerzo calculado (\( f_s \)):</strong> \( 280 \text{ MPa} \) \( (2/3 f_y) \)
+                    </div>
+                </div>
+            </div>
+
+            <div class="w3-panel w3-sand w3-leftbar w3-border-orange w3-padding w3-round">
+                <p><strong>Cálculo según NSR-10 C.10.6.4:</strong></p>
+                <div class="math-scroll">
+                    \[ s_1 = 380\left(\frac{280}{f_s}\right) - 2.5\,c_c = 380(1) - 50 = 330 \text{ mm} \]
+                    \[ s_2 = 300\left(\frac{280}{f_s}\right) = 300 \text{ mm} \]
+                </div>
+                <div class="w3-white w3-border w3-round w3-padding w3-margin-top">
+                    <strong>Espaciamiento máximo por fisuración:</strong><br>
+                    \( s_{max} = \min(s_1, s_2) = \mathbf{300 \text{ mm}} \)
+                </div>
+            </div>
+
+            <div class="w3-panel w3-pale-red w3-leftbar w3-border-red w3-padding w3-round">
+                ⚠️ <strong>Criterio Estructural:</strong> Aunque el cálculo por resistencia permite hasta 400 mm en algunas zonas, el control de fisuración limita a <strong>300 mm</strong> para refuerzo principal en zonas de máximo momento negativo.
+            </div>
+
+            <h4 class="w3-text-blue" style="font-weight:bold; margin-top:30px;">B. Refuerzo por Retracción y Temperatura (C.7.12)</h4>
+            <p>Suministrado en dirección perpendicular al refuerzo principal:</p>
+            
+            <div class="w3-row-padding" style="margin: 0 -16px;">
+                <div class="w3-col l4 m12 w3-margin-bottom">
+                    <div class="w3-panel w3-light-grey w3-leftbar w3-border-grey w3-padding w3-round h-100">
+                        <strong>\( \rho_{min} \) (NSR-10):</strong> \( 0.0018 \)
+                    </div>
+                </div>
+                <div class="w3-col l4 m12 w3-margin-bottom">
+                    <div class="w3-panel w3-light-grey w3-leftbar w3-border-grey w3-padding w3-round h-100">
+                        <strong>\( A_{s,min} \):</strong> \( 306 \text{ mm}^2/\text{m} \)
+                    </div>
+                </div>
+                <div class="w3-col l4 m12 w3-margin-bottom">
+                    <div class="w3-panel w3-light-grey w3-leftbar w3-border-grey w3-padding w3-round h-100">
+                        <strong>\( s_{max} \):</strong> \( 450 \text{ mm} \)
+                    </div>
+                </div>
+            </div>
+
+            <div class="w3-panel w3-pale-green w3-leftbar w3-border-green w3-padding w3-round">
+                <strong>Cálculo de separación para No. 4:</strong><br>
+                <div class="math-scroll">\[ s = \frac{1000 \cdot A_b}{A_{s,min}} = \frac{1000 \cdot 127}{306} = 415 \text{ mm} \]</div>
+                <strong>Suministro final:</strong> Se colocarán barras No. 4 cada <strong>400 mm</strong> en toda la losa.
+            </div>
+
+            <div class="w3-panel w3-pale-blue w3-leftbar w3-border-blue w3-padding w3-round">
+                <strong>Disposición en Obra:</strong> Este refuerzo se coloca en la cara inferior en toda la extensión (sobre el refuerzo longitudinal) y debajo del refuerzo longitudinal superior en las zonas de apoyos para garantizar la integridad de la malla.
+            </div>
+        </div>
+
+        <!-- CARD 9: VERIFICACIÓN CORTANTE -->
+        <div class="panel-control">
+            <h2 class="panel-titulo">9. Verificación de Resistencia al Cortante (\( V_u \))</h2>
+            <p class="w3-small w3-text-grey" style="margin-top:-15px;">Seguridad de la sección de concreto ante esfuerzos transversales</p>
+
+            <p>Calculamos la capacidad nominal del concreto según la expresión de la norma para elementos sin refuerzo transversal (estribos):</p>
+
+            <div class="w3-panel w3-pale-red w3-border w3-border-red w3-round w3-padding w3-center">
+                <div class="math-scroll">\[ \phi V_c = \phi \cdot 0.17 \cdot \sqrt{f'c} \cdot b \cdot d \]</div>
+            </div>
+
+            <div class="w3-row-padding" style="margin: 0 -16px;">
+                <div class="w3-col l3 m6 w3-margin-bottom">
+                    <div class="w3-panel w3-light-grey w3-leftbar w3-border-grey w3-padding w3-round h-100">
+                        <strong>Cortante Máximo (\( V_u \)):</strong><br> \( 27.5 \text{ kN/m} \)
+                    </div>
+                </div>
+                <div class="w3-col l3 m6 w3-margin-bottom">
+                    <div class="w3-panel w3-light-grey w3-leftbar w3-border-grey w3-padding w3-round h-100">
+                        <strong>Capacidad Nominal (\( V_c \)):</strong><br> \( 129.2 \text{ kN/m} \)
+                    </div>
+                </div>
+                <div class="w3-col l3 m6 w3-margin-bottom">
+                    <div class="w3-panel w3-light-grey w3-leftbar w3-border-grey w3-padding w3-round h-100">
+                        <strong>Factor (\( \phi \)):</strong><br> \( 0.75 \)
+                    </div>
+                </div>
+                <div class="w3-col l3 m6 w3-margin-bottom">
+                    <div class="w3-panel w3-pale-blue w3-border w3-border-blue w3-padding w3-round w3-center h-100">
+                        <strong>\( \phi V_c \) :</strong><br>
+                        <span class="w3-text-red w3-large"><b>\( 96.9 \text{ kN/m} \)</b></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="w3-panel w3-pale-green w3-border w3-border-green w3-round w3-padding w3-center w3-large w3-margin-top">
+                ✅ <strong class="w3-text-green">VERIFICACIÓN: \( \phi V_c > V_u \) (\( 96.9 > 27.5 \))</strong>
+            </div>
+
+            <div class="w3-panel w3-pale-blue w3-leftbar w3-border-blue w3-padding w3-round">
+                <strong>📐 Análisis del Cortante:</strong>
+                <p>La resistencia nominal \( \phi V_c \) es sustancialmente mayor al cortante de diseño \( V_u \). Según las consideraciones del <strong>Capítulo C.11 de la NSR-10</strong>, para losas macizas que cumplen que \( V_u < \phi V_c \), <strong>no es obligatorio</strong> proveer un área mínima de refuerzo a cortante (estribos). Dado el amplio margen estructural de este diseño, la sección de concreto de 17 cm es completamente adecuada por sí sola.</p>
+            </div>
+        </div>
+
+        <!-- CARD 10: LONGITUDES DE DESARROLLO -->
+        <div class="panel-control">
+            <h2 class="panel-titulo">10. Longitudes de Desarrollo y Detallado del Refuerzo</h2>
+            <p class="w3-small w3-text-grey" style="margin-top:-15px;">Anclaje y extensión del acero según NSR-10 C.12</p>
+
+            <h4 class="w3-text-blue" style="font-weight:bold; margin-top:20px;">A. Longitud de Desarrollo para Barras No. 4</h4>
+            <p>Para barras corrugadas en tracción (NSR-10 C.12.2.2), fórmula simplificada:</p>
+            
+            <div class="w3-panel w3-pale-blue w3-border w3-border-blue w3-round w3-padding w3-center">
+                <div class="math-scroll">\[ L_d = \frac{f_y}{1.1 \lambda \sqrt{f'_c}} \cdot \frac{\psi_t \psi_e \psi_s}{\frac{c_b + K_{tr}}{d_b}} \cdot d_b \]</div>
+            </div>
+
+            <div class="w3-row-padding" style="margin: 0 -16px;">
+                <div class="w3-col l4 m6 w3-margin-bottom">
+                    <div class="w3-panel w3-light-grey w3-padding w3-round w3-small"><strong>\( f_y \):</strong> 420 MPa</div>
+                </div>
+                <div class="w3-col l4 m6 w3-margin-bottom">
+                    <div class="w3-panel w3-light-grey w3-padding w3-round w3-small"><strong>\( f'_c \):</strong> 28 MPa</div>
+                </div>
+                <div class="w3-col l4 m6 w3-margin-bottom">
+                    <div class="w3-panel w3-light-grey w3-padding w3-round w3-small"><strong>\( \lambda \):</strong> 1.0</div>
+                </div>
+                <div class="w3-col l4 m6 w3-margin-bottom">
+                    <div class="w3-panel w3-light-grey w3-padding w3-round w3-small"><strong>\( d_b \):</strong> 12.7 mm (No. 4)</div>
+                </div>
+                <div class="w3-col l4 m6 w3-margin-bottom">
+                    <div class="w3-panel w3-light-grey w3-padding w3-round w3-small"><strong>\( \psi_t \):</strong> 1.3 (superior)</div>
+                </div>
+                <div class="w3-col l4 m6 w3-margin-bottom">
+                    <div class="w3-panel w3-light-grey w3-padding w3-round w3-small"><strong>\( \psi_e, \psi_s \):</strong> 1.0</div>
+                </div>
+            </div>
+
+            <div class="w3-panel w3-sand w3-leftbar w3-border-orange w3-padding w3-round">
+                <strong>Cálculo simplificado (método conservador):</strong><br>
+                Para losas con barras No. 4, \( f_y = 420 \text{ MPa} \) y \( f'_c = 28 \text{ MPa} \):
+                <div class="math-scroll">\[ L_d \approx 40 \phi = 40 \times 12.7 = 508 \text{ mm} \approx \mathbf{51 \text{ cm}} \]</div>
+            </div>
+
+            <h4 class="w3-text-blue" style="font-weight:bold; margin-top:30px;">B. Extensiones Mínimas del Refuerzo (NSR-10 C.13.3.8)</h4>
+            
+            <div class="tabla-container">
+                <table class="tabla-traslapos">
+                    <thead>
+                        <tr>
+                            <th style="text-align:left;">Tipo de Refuerzo</th>
+                            <th>Extensión Mínima</th>
+                            <th>Para este Ejemplo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="text-align:left;">Refuerzo negativo en apoyo interior</td>
+                            <td>\( \geq L_n/3 \) desde cara del apoyo</td>
+                            <td><b>\( 4150/3 = 1383 \text{ mm} \approx 1.40 \text{ m} \)</b></td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">Refuerzo positivo en tramos</td>
+                            <td>\( L_d \) completo + extensión 150 mm</td>
+                            <td><b>\( 510 + 150 = 660 \text{ mm} \)</b></td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">Anclaje en apoyo exterior</td>
+                            <td>Gancho estándar 90° o \( L_d \) recto</td>
+                            <td><b>\( L_{dh} \approx 20\phi = 254 \text{ mm} \)</b></td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">Traslapes (si se usan)</td>
+                            <td>Mínimo 300 mm (Clase A)</td>
+                            <td><b>\( 300 \text{ mm} \)</b></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="w3-panel w3-pale-blue w3-leftbar w3-border-blue w3-padding w3-round">
+                <strong>💡 Criterio Práctico de Obra:</strong><br>
+                En losas continuas, es común usar <strong>refuerzo corrido</strong> en la parte inferior (acero positivo) con bastones adicionales en zonas de momento negativo. Esto simplifica el armado y garantiza continuidad estructural.
+            </div>
+        </div>
+
+        <!-- CARD 11: DESPIECE -->
+        <div class="panel-control">
+            <h2 class="panel-titulo">11. Esquema de Despiece del Refuerzo</h2>
+            <p class="w3-small w3-text-grey" style="margin-top:-15px;">Distribución esquemática final en corte longitudinal</p>
+
+            <div class="w3-center w3-margin-top w3-padding w3-round" style="background-color: #f8fafc; border: 1px dashed var(--azul-profundo);">
+                <p style="font-weight:700; color: var(--azul-profundo);">Corte Esquemático - Disposición de Acero</p>
+                <img src="URL_DE_SU_IMAGEN_DE_AUTOCAD_AQUI.png" alt="Despiece de Losa" style="max-width: 100%; height: auto; min-height: 250px; background-color:#ffffff; border: 1px solid #ccc; border-radius: 5px;">
+                <p class="w3-small w3-text-grey w3-margin-top"><i>Disposición final del refuerzo longitudinal y transversal a lo largo de la losa.</i></p>
+            </div>
+
+            <div class="math-scroll w3-margin-top">
+                <pre class="w3-code w3-white w3-border w3-round" style="font-size: 12px;">GUÍA PARA INTERPRETAR EL DESPIECE:
+
+Refuerzo Superior (Momentos Negativos):
+  • Apoyo Int. 1: Bastones No.4 @ 325 mm extendiendo 1.40m a cada lado del apoyo.
+  • Apoyo Int. 2: Bastones No.4 @ 350 mm extendiendo 1.40m a cada lado del apoyo.
+
+Refuerzo Inferior (Momentos Positivos):
+  • Corrido: No.4 @ 400 mm a lo largo de toda la losa.
+
+Refuerzo Transversal (Temperatura):
+  • Perpendicular al principal: No.4 @ 400 mm, sobre el refuerzo corrido.</pre>
+            </div>
+        </div>
+
+        <!-- CARD 12: RETO ESTUDIANTE -->
+        <div class="panel-control" style="margin-bottom: 0;">
+            <h2 class="panel-titulo" style="border-color: #7b1fa2;">12. Paso Final — Reto para el Estudiante</h2>
+            
+            <div class="w3-panel w3-pale-red w3-leftbar w3-padding w3-round" style="border-color: #7b1fa2 !important;">
+                <strong>Reto para el estudiante (Repaso Armado 1):</strong><br>
+                Como el espesor adoptado (\( 0.17 \text{ m} \)) es menor al predimensionamiento por tabla (\( 0.18 \text{ m} \)), es <strong>obligatorio</strong> calcular las deflexiones inmediatas y a largo plazo. ¡A desempolvar los apuntes de inercias!
+            </div>
+        </div>
+
+        <!-- SECCIÓN DE COMENTARIOS INFERIOR HEREDADA -->
+        <div class="w3-container w3-margin-top w3-padding-32 no-print">
+            <h3 class="w3-border-red">Consultas y Discusión Académica</h3>
+            <p class="w3-small w3-text-grey">Inicia sesión con tu cuenta de GitHub para dejar una pregunta o comentario técnico sobre este ejemplo.</p>
+            <script src="https://utteranc.es/client.js"
+                repo="rafacorreacolombia/Hormigon-armado"
+                issue-term="pathname"
+                theme="github-light"
+                crossorigin="anonymous"
+                async>
+            </script>                                        
+        </div>
+                        
+    </div>
+       
+    <!-- FOOTER INTACTO -->
+    <footer class="w3-container w3-padding-32 w3-center w3-text-grey w3-light-grey w3-margin-top no-print">
+        <div class="w3-border-top w3-border-grey w3-padding-24" style="max-width: 500px; margin: auto;">
+            <img src="../assets/IsotipoFClaroT.png" alt="Logotipo Criterio Estructural - Pie de página" class="brand-logo-footer" onerror="this.src='https://via.placeholder.com/200x60/F4F5F7/1A2530?text=CRITERIO+ESTRUCTURAL'">
+            <p class="w3-medium"><b>Autor</b></p>
+
+            <h4 style="margin:0;">
+                <b>Ing. Rafael Antonio Correa Melano</b>
+            </h4>
+            
+            <p class="w3-small">
+                Ingeniero Civil • M.IE.<br>
+                Universidad Industrial de Santander
+            </p>
+            
+            <hr style="opacity:0.2">
+            
+            <p class="w3-small w3-text-grey">
+                <b>Criterio Estructural</b><br>
+                © 2026 Rafael Antonio Correa Melano.<br>
+                Todos los derechos reservados.
+            </p>
+            <div class="w3-margin-top">
+                <span class="w3-tag w3-round w3-white w3-border w3-border-red w3-text-red w3-small">Bucaramanga, Colombia 🇨🇴</span>
+            </div>
+        </div>
+    </footer>
+</div>
+
+</body>
+</html>
