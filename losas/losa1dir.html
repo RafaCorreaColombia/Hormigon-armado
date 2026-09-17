@@ -261,7 +261,7 @@
                             <td style="text-align:left;">Primer Apoyo Interior (-)</td>
                             <td>\( 4.038 \text{ m}^* \)</td>
                             <td>\( 1/10 \)</td>
-                            <td class="ce-destacado"><b>\( 19.8 \text{ kNm/m} \)</b></td>
+                            <td class="ce-destacado"><b>\( 19.85 \text{ kNm/m} \)</b></td>
                         </tr>
                         <tr>
                             <td style="text-align:left;">Apoyos Interiores Típicos (-)</td>
@@ -354,20 +354,73 @@
                     <p><strong>Iteración para obtener "a":</strong></p>
                     <p><strong>Paso 1:</strong> Suponer \( a_0 = \frac{d}{10} = 14.4 \text{ mm} \)</p>
                     <p><strong>Paso 2:</strong> Calcular \( A_s \):
-                        \[ A_s = \frac{M_u}{\phi f_y (d - a/2)} = \frac{19.85 \times 10^6}{0.90 \times 420 \times (143.65 - 14.4/2)} = 365.3 \text{ mm}^2 \]
+                        \[ A_s = \frac{M_u}{\phi f_y (d - a/2)} = \frac{19.85 \times 10^6}{0.90 \times 420 \times (143.65 - 14.4/2)} = 384.9 \text{ mm}^2 \]
                     </p>
                     <p><strong>Paso 3:</strong> Recalcular \( a \):
-                        \[ a_1 = \frac{A_s f_y}{0.85 f'_c b} = \frac{365.3 \times 420}{0.85 \times 28 \times 1000} = 6.45 \text{ mm} \]
+                        \[ a_1 = \frac{A_s f_y}{0.85 f'_c b} = \frac{384.9 \times 420}{0.85 \times 28 \times 1000} = 6.79 \text{ mm} \]
                     </p>
                     <p><strong>Paso 4:</strong> Verificar convergencia:
-                        \[ |a_1 - a_0| = 7.95 \text{ mm} > 1 \text{ mm} \quad \text{(No convergió)} \]
+                        \[
+                        \frac{|a_1-a_0|}{a_1}
+                        =
+                        \frac{|6.79-14.4|}{6.79}
+                        =
+                        112.1\%
+                        >
+                        1\%
+                        \]
                     </p>
+                    
+                    <p style="color: var(--gris-texto); margin-left: 10px;">
+                        No convergió → continuar iterando.
+                    </p>
+                    
                     <hr style="border-top: 1px dashed var(--gris-borde);">
-                    <p><strong>Iteración 2 con \( a_0 = 6.45 \text{ mm} \):</strong></p>
+                    
+                    <p><strong>Iteración 2 con \(a_1=6.79\text{ mm}\):</strong></p>
+                    
                     <p>
-                        \[ A_s = 373.0 \text{ mm}^2 \]
-                        \[ a_2 = 6.59 \text{ mm} \]
-                        \[ |a_2 - a_1| = 0.14 \text{ mm} < 1 \text{ mm} \quad \textbf{\color{#E67E22}{✓ CONVERGIÓ}} \]
+                        \[
+                        A_s=374.4\text{ mm}^2
+                        \]
+                        \[
+                        a_2=6.61\text{ mm}
+                        \]
+                        \[
+                        \frac{|a_2-a_1|}{a_2}
+                        =
+                        \frac{|6.61-6.79|}{6.61}
+                        =
+                        2.72\%
+                        >
+                        1\%
+                        \]
+                    </p>
+                    
+                    <p style="color: var(--gris-texto); margin-left: 10px;">
+                        No convergió → continuar iterando.
+                    </p>
+                    
+                    <p><strong>Iteración 3 con \(a_2=6.61\text{ mm}\):</strong></p>
+                    
+                    <p>
+                        \[
+                        A_s=374.2\text{ mm}^2
+                        \]
+                        \[
+                        a_3=6.60\text{ mm}
+                        \]
+                        \[
+                        \frac{|a_3-a_2|}{a_3}
+                        \approx
+                        0.15\%
+                        <
+                        1\%
+                        \]
+                    </p>
+                    
+                    <p style="color: var(--naranja-estructural); font-weight: bold; text-align: center;">
+                        ✓ CONVERGIÓ
                     </p>
                     
                     <p><strong>Cuantía requerida:</strong>
@@ -380,10 +433,10 @@
                         <strong>Opción 2 (NSR-10 C.10.5.4):</strong> \( A_{s,min} = \frac{0.8\sqrt{28}}{420} \times 1000 \times 143.65 = 137.1 \text{ mm}^2 \)
                     </div>
                     
-                    <p><strong>Decisión:</strong> \( A_s = 373.0 \text{ mm}^2 > A_{s,min} = 306 \text{ mm}^2 \) → <b class="ce-destacado">Gobierna el acero por resistencia</b></p>
+                    <p><strong>Decisión:</strong> \( A_s = 374.2 \text{ mm}^2 > A_{s,min} = 306 \text{ mm}^2 \) → <b class="ce-destacado">Gobierna el acero por resistencia</b></p>
                     
                     <p><strong>Selección de refuerzo (Separación):</strong>
-                        \[ s = \frac{A_b \times 1000}{A_s} = \frac{127 \times 1000}{373.0} = 340.5 \text{ mm} \]
+                        \[ s = \frac{A_b \times 1000}{A_s} = \frac{127 \times 1000}{374.2} = 339.4 \text{ mm} \]
                     </p>
                     <p><strong>Espaciamiento adoptado:</strong> <b>s = 325 mm</b> (múltiplo comercial inmediato inferior)</p>
                     
