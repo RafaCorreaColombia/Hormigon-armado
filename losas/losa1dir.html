@@ -643,8 +643,8 @@
 
             <div class="w3-panel ce-panel-naranja w3-padding w3-round">
                 <strong>Cálculo simplificado (método conservador):</strong><br>
-                Para losas con barras No. 4, \( f_y = 420 \text{ MPa} \) y \( f'_c = 28 \text{ MPa} \):
-                <div class="math-scroll">\[ L_d \approx 40 \phi = 40 \times 12.7 = 508 \text{ mm} \approx \mathbf{51 \text{ cm}} \]</div>
+                Para losas con barras No. 4, \( f_y = 420 \text{ MPa} \), \( f'_c = 28 \text{ MPa} \), \( recub = 20 \text{ mm} \) y empalme por traslapo Clase B:
+                <div class="math-scroll">\[ L_{traslapo} \approx 36 \phi = 36 \times 12.7 = 459 \text{ mm} \approx \mathbf{46 \text{ cm}} \]</div>
             </div>
 
             <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:30px;">B. Extensiones Mínimas del Refuerzo (NSR-10 C.13.3.8)</h4>
@@ -661,24 +661,20 @@
                     <tbody>
                         <tr>
                             <td style="text-align:left;">Refuerzo negativo en apoyo interior</td>
-                            <td>\( \geq L_n/3 \) desde cara del apoyo</td>
-                            <td><b>\( 4150/3 = 1383 \text{ mm} \approx 1.40 \text{ m} \)</b></td>
+                            <td>\( \geq 0.3 L_n \) desde cara del apoyo</td>
+                            <td><b>\( 0.3 * 4150 = 1245 \text{ mm} \approx 1.25 \text{ m} \)</b></td>
                         </tr>
                         <tr>
                             <td style="text-align:left;">Refuerzo positivo en tramos</td>
-                            <td>\( L_d \) completo + extensión 150 mm</td>
-                            <td><b>\( 510 + 150 = 660 \text{ mm} \)</b></td>
+                            <td> Si se usa, Empalme por Traslapo Clase B: \( L_{traslapo} \)</td>
+                            <td><b>\( 460 \text{ mm} \)</b></td>
                         </tr>
                         <tr>
                             <td style="text-align:left;">Anclaje en apoyo exterior</td>
-                            <td>Gancho estándar 90° o \( L_d \) recto</td>
+                            <td>Gancho estándar 90° : \( L_{dh} \), Ver C.12.5 </td>
                             <td><b>\( L_{dh} \approx 20\phi = 254 \text{ mm} \)</b></td>
                         </tr>
-                        <tr>
-                            <td style="text-align:left;">Traslapes (si se usan)</td>
-                            <td>Mínimo 300 mm (Clase A)</td>
-                            <td><b>\( 300 \text{ mm} \)</b></td>
-                        </tr>
+                        
                     </tbody>
                 </table>
             </div>
@@ -704,11 +700,11 @@
                 <pre class="w3-code w3-white w3-border w3-round" style="font-size: 12px; border-color: var(--gris-borde)!important;">GUÍA PARA INTERPRETAR EL DESPIECE:
 
 Refuerzo Superior (Momentos Negativos):
-  • Apoyo Int. 1: Bastones No.4 @ 325 mm extendiendo 1.40m a cada lado del apoyo.
-  • Apoyo Int. 2: Bastones No.4 @ 350 mm extendiendo 1.40m a cada lado del apoyo.
+  • Apoyo Ext. 1: Bastones No.4 @ 300 mm extendiendo 1.25m desde la cara del apoyo.
+  • Apoyo Int. 2: Bastones No.4 @ 300 mm extendiendo 1.25m a cada lado del apoyo.
 
 Refuerzo Inferior (Momentos Positivos):
-  • Corrido: No.4 @ 400 mm a lo largo de toda la losa.
+  • Corrido: No.4 @ 300 mm a lo largo de toda la losa.
 
 Refuerzo Transversal (Temperatura):
   • Perpendicular al principal: No.4 @ 400 mm, sobre el refuerzo corrido.</pre>
