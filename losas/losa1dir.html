@@ -619,97 +619,222 @@
             </div>
         </div>
 
+
+        
         <!-- CARD 10: LONGITUDES DE DESARROLLO -->
-        <div class="panel-control">
-            <h2 class="panel-titulo">10. Longitudes de Desarrollo y Detallado del Refuerzo</h2>
-            <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Anclaje y extensión del acero según NSR-10 C.12</p>
+                <div class="panel-control">
+                    <h2 class="panel-titulo">10. Longitudes de Desarrollo y Detallado del Refuerzo</h2>
+                    <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Anclaje y extensión del acero según NSR-10 C.12</p>
+        
+                    <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:20px;">
+                        A. Longitud de Desarrollo — Refuerzo a Tracción
+                    </h4>
+        
+                    <p>
+                        Para las barras corrugadas del refuerzo principal se verifica la longitud de
+                        desarrollo en tracción de acuerdo con <strong>NSR-10 C.12.2</strong>.
+                        Para este ejemplo se utilizan barras No. 4 (\(d_b=12.7\text{ mm}\)),
+                        concreto de peso normal y \(f'_c=28\text{ MPa}\).
+                    </p>
+        
+                    <div class="w3-panel ce-panel-azul w3-padding w3-center w3-round"
+                         style="border: 1px solid var(--azul-profundo);">
+                        <div class="math-scroll">
+                            \[
+                            l_d =
+                            \frac{f_y}{1.1\,\lambda\sqrt{f'_c}}
+                            \frac{\psi_t\psi_e\psi_s}
+                            {\left(\frac{c_b+K_{tr}}{d_b}\right)}
+                            d_b
+                            \]
+                        </div>
+                    </div>
+        
+                    <div class="ce-grid ce-grid-6">
+                        <div class="w3-panel ce-panel-gris w3-padding w3-round w3-small" style="margin:0;">
+                            <strong>\(f_y\):</strong> 420 MPa
+                        </div>
+                        <div class="w3-panel ce-panel-gris w3-padding w3-round w3-small" style="margin:0;">
+                            <strong>\(f'_c\):</strong> 28 MPa
+                        </div>
+                        <div class="w3-panel ce-panel-gris w3-padding w3-round w3-small" style="margin:0;">
+                            <strong>\(\lambda\):</strong> 1.0
+                        </div>
+                        <div class="w3-panel ce-panel-gris w3-padding w3-round w3-small" style="margin:0;">
+                            <strong>\(d_b\):</strong> 12.7 mm (No. 4)
+                        </div>
+                        <div class="w3-panel ce-panel-gris w3-padding w3-round w3-small" style="margin:0;">
+                            <strong>\(\psi_t\):</strong> 1.3
+                        </div>
+                        <div class="w3-panel ce-panel-gris w3-padding w3-round w3-small" style="margin:0;">
+                            <strong>\(\psi_e,\psi_s\):</strong> 1.0
+                        </div>
+                    </div>
+        
+                    <p>
+                        El valor obtenido se utiliza como referencia para comprobar que las barras
+                        dispongan de longitud suficiente para desarrollar su resistencia.
+                        <strong>La longitud de desarrollo no debe confundirse con la longitud de traslapo.</strong>
+                    </p>
+        
+                    <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:30px;">
+                        B. Anclaje del Refuerzo Superior en el Apoyo Exterior
+                    </h4>
+        
+                    <p>
+                        En el apoyo exterior se ha considerado un <strong>momento negativo</strong>.
+                        Por tanto, el refuerzo superior debe desarrollar la fuerza de tracción asociada
+                        a ese momento y no puede terminar simplemente en la cara del apoyo.
+                    </p>
+        
+                    <p>
+                        Para garantizar el anclaje de las barras superiores se adopta un
+                        <strong>gancho estándar de 90°</strong> y se verifica su longitud de desarrollo
+                        de acuerdo con <strong>NSR-10 C.12.5</strong>.
+                    </p>
+        
+                    <div class="w3-panel ce-panel-naranja w3-padding w3-round">
+                        <strong>Importante:</strong><br>
+                        El gancho no se adopta únicamente como una regla geométrica.
+                        Su longitud se verifica para garantizar que la barra pueda desarrollar
+                        la resistencia requerida en la zona del apoyo.
+                    </div>
+        
+                    <p>
+                        Para este ejemplo, el valor calculado resulta del orden de
+                        <strong>\(L_{dh}\approx 250\text{ mm}\)</strong>, sujeto a las condiciones
+                        y límites mínimos establecidos por C.12.5.
+                    </p>
+        
+                    <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:30px;">
+                        C. Traslapo del Refuerzo Inferior Continuo
+                    </h4>
+        
+                    <p>
+                        El refuerzo inferior se dispone de forma continua a lo largo de los tramos.
+                        Cuando sea necesario realizar un empalme, se utiliza un
+                        <strong>traslapo en tracción</strong> y se verifica de acuerdo con
+                        <strong>NSR-10 C.12.15</strong>.
+                    </p>
+        
+                    <p>
+                        Para este ejemplo se adopta un empalme <strong>Clase B</strong>.
+                        La longitud se obtiene a partir de la longitud de desarrollo correspondiente
+                        y de los factores exigidos para el tipo de empalme.
+                    </p>
+        
+                    <div class="w3-panel ce-panel-naranja w3-padding w3-round">
+                        <strong>Resultado para este ejemplo:</strong>
+                        <div class="math-scroll">
+                            \[
+                            L_{traslapo}\approx36d_b
+                            =36(12.7)
+                            \approx459\text{ mm}
+                            \approx46\text{ cm}
+                            \]
+                        </div>
+                        <span class="w3-small">
+                            El valor anterior corresponde a las condiciones particulares adoptadas
+                            para este ejemplo y debe verificarse nuevamente si cambian las
+                            condiciones de desarrollo o empalme.
+                        </span>
+                    </div>
+        
+                    <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:30px;">
+                        D. Extensión del Refuerzo: Validación con el Diagrama de Momentos
+                    </h4>
+        
+                    <p>
+                        La longitud de los bastones superiores y la continuidad del refuerzo inferior
+                        no se definen únicamente mediante una distancia fija.
+                        Se contrastan con el <strong>diagrama de momentos de diseño</strong>.
+                    </p>
+        
+                    <p>
+                        La idea es sencilla: una barra debe prolongarse más allá de la sección donde
+                        deja de ser necesaria para flexión, de manera que exista longitud suficiente
+                        para desarrollar la fuerza de la barra.
+                    </p>
+        
+                    <div class="w3-panel ce-panel-azul w3-padding w3-round">
+                        <strong>Validación para este ejemplo:</strong><br>
+                        Del diagrama de momentos se obtiene la longitud requerida de la zona de
+                        refuerzo superior. Al incorporar la longitud de desarrollo y las condiciones
+                        geométricas del apoyo, el resultado conduce a una extensión adoptada de
+                        aproximadamente <strong>\(1.50\text{ m}\)</strong>.
+                    </div>
+        
+                    <p>
+                        Por tanto, el \(1.50\text{ m}\) que aparece en el despiece no debe interpretarse
+                        como una regla universal de la NSR-10. Es el resultado de
+                        <strong>analizar el diagrama de momentos y comprobar la longitud necesaria
+                        para desarrollar el refuerzo adoptado</strong>.
+                    </p>
+        
+                    <div class="w3-panel ce-panel-naranja w3-padding w3-round">
+                        <strong>💡 Criterio Estructural:</strong><br>
+                        El despiece no empieza dibujando una longitud "típica".
+                        Primero preguntamos dónde se necesita el acero según el comportamiento
+                        estructural; después verificamos cuánto debe prolongarse para que pueda
+                        desarrollar la resistencia que estamos suponiendo.
+                    </div>
+                </div>
+        
+                <!-- CARD 11: DESPIECE -->
+                <div class="panel-control">
+                    <h2 class="panel-titulo">11. Esquema de Despiece del Refuerzo</h2>
+                    <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Distribución esquemática final en corte longitudinal</p>
+        
+                    <div class="w3-center w3-margin-top w3-padding w3-round ce-panel-gris"
+                         style="border: 1px dashed var(--azul-profundo); border-left: none;">
+                        <p style="font-weight:700; color: var(--azul-profundo);">
+                            Corte Esquemático — Disposición del Refuerzo
+                        </p>
+        
+                        <img src="URL_DE_SU_IMAGEN_DE_AUTOCAD_AQUI.png"
+                             alt="Despiece de Losa"
+                             style="max-width: 100%; height: auto; min-height: 250px;
+                                    background-color:#ffffff; border: 1px solid var(--gris-borde);
+                                    border-radius: 5px;">
+        
+                        <p class="w3-small w3-margin-top" style="opacity: 0.7;">
+                            Disposición final del refuerzo longitudinal y transversal a lo largo de la losa.
+                        </p>
+                    </div>
+        
+                    <div class="math-scroll w3-margin-top">
+                        <pre class="w3-code w3-white w3-border w3-round"
+                             style="font-size: 12px; border-color: var(--gris-borde)!important; font-family: monospace;">GUÍA PARA INTERPRETAR EL DESPIECE:
+        
+        Refuerzo Superior — Momentos Negativos:
+        • Apoyo exterior: Bastones No.4 @ 300 mm con gancho de 90°.
+        • Apoyo interior: Bastones No.4 @ 300 mm.
+        • Extensión adoptada: 1.50 m, validada mediante el diagrama de momentos
+          y la longitud de desarrollo requerida.
+        
+        Refuerzo Inferior — Momentos Positivos:
+        • Corrido: No.4 @ 300 mm a lo largo de toda la losa.
+        • Si se requiere empalme: traslapo Clase B ≈ 460 mm,
+          sujeto a las condiciones de desarrollo correspondientes.
+        
+        Refuerzo Transversal — Distribución:
+        • Perpendicular al refuerzo principal: No.4 @ 400 mm,
+          según la función de este refuerzo y las verificaciones correspondientes.</pre>
+                    </div>
+        
+                    <div class="w3-panel ce-panel-azul w3-padding w3-round w3-margin-top">
+                        <strong>Lectura estructural del despiece:</strong><br>
+                        El armado final no es una colección de longitudes convencionales.
+                        Cada barra responde a una necesidad identificada en el análisis:
+                        resistencia a flexión, continuidad, desarrollo y detallado.
+                    </div>
+                </div>
 
-            <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:20px;">A. Longitud de Desarrollo para Barras No. 4</h4>
-            <p>Para barras corrugadas en tracción (NSR-10 C.12.2.2), fórmula simplificada:</p>
-            
-            <div class="w3-panel ce-panel-azul w3-padding w3-center w3-round" style="border: 1px solid var(--azul-profundo);">
-                <div class="math-scroll">\[ L_d = \frac{f_y}{1.1 \lambda \sqrt{f'_c}} \cdot \frac{\psi_t \psi_e \psi_s}{\frac{c_b + K_{tr}}{d_b}} \cdot d_b \]</div>
-            </div>
 
-            <!-- AQUÍ ESTÁ LA SOLUCIÓN CON GRID PARA EL PROBLEMA DE LOS CUADROS MOVIDOS -->
-            <div class="ce-grid ce-grid-6">
-                <div class="w3-panel ce-panel-gris w3-padding w3-round w3-small" style="margin:0;"><strong>\( f_y \):</strong> 420 MPa</div>
-                <div class="w3-panel ce-panel-gris w3-padding w3-round w3-small" style="margin:0;"><strong>\( f'_c \):</strong> 28 MPa</div>
-                <div class="w3-panel ce-panel-gris w3-padding w3-round w3-small" style="margin:0;"><strong>\( \lambda \):</strong> 1.0</div>
-                <div class="w3-panel ce-panel-gris w3-padding w3-round w3-small" style="margin:0;"><strong>\( d_b \):</strong> 12.7 mm (No. 4)</div>
-                <div class="w3-panel ce-panel-gris w3-padding w3-round w3-small" style="margin:0;"><strong>\( \psi_t \):</strong> 1.3 (superior)</div>
-                <div class="w3-panel ce-panel-gris w3-padding w3-round w3-small" style="margin:0;"><strong>\( \psi_e, \psi_s \):</strong> 1.0</div>
-            </div>
 
-            <div class="w3-panel ce-panel-naranja w3-padding w3-round">
-                <strong>Cálculo simplificado (método conservador):</strong><br>
-                Para losas con barras No. 4, \( f_y = 420 \text{ MPa} \), \( f'_c = 28 \text{ MPa} \), \( recub = 20 \text{ mm} \) y empalme por traslapo Clase B:
-                <div class="math-scroll">\[ L_{traslapo} \approx 36 \phi = 36 \times 12.7 = 459 \text{ mm} \approx \mathbf{46 \text{ cm}} \]</div>
-            </div>
 
-            <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:30px;">B. Extensiones Mínimas del Refuerzo (NSR-10 C.13.3.8)</h4>
-            
-            <div class="tabla-container">
-                <table class="tabla-traslapos">
-                    <thead>
-                        <tr>
-                            <th style="text-align:left;">Tipo de Refuerzo</th>
-                            <th>Extensión Mínima</th>
-                            <th>Para este Ejemplo</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="text-align:left;">Refuerzo negativo en apoyo interior</td>
-                            <td>\( \geq 0.3 L_n \) desde cara del apoyo</td>
-                            <td><b>\( 0.3 * 4150 = 1245 \text{ mm} \approx 1.25 \text{ m} \)</b></td>
-                        </tr>
-                        <tr>
-                            <td style="text-align:left;">Refuerzo positivo en tramos</td>
-                            <td> Si se usa, Empalme por Traslapo Clase B: \( L_{traslapo} \)</td>
-                            <td><b>\( 460 \text{ mm} \)</b></td>
-                        </tr>
-                        <tr>
-                            <td style="text-align:left;">Anclaje en apoyo exterior</td>
-                            <td>Gancho estándar 90° : \( L_{dh} \), Ver C.12.5 </td>
-                            <td><b>\( L_{dh} \approx 20\phi = 254 \text{ mm} \)</b></td>
-                        </tr>
-                        
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="w3-panel ce-panel-azul w3-padding w3-round">
-                <strong>💡 Criterio Práctico de Obra:</strong><br>
-                En losas continuas, es común usar <strong>refuerzo corrido</strong> en la parte inferior (acero positivo) con bastones adicionales en zonas de momento negativo. Esto simplifica el armado y garantiza continuidad estructural.
-            </div>
-        </div>
-
-        <!-- CARD 11: DESPIECE -->
-        <div class="panel-control">
-            <h2 class="panel-titulo">11. Esquema de Despiece del Refuerzo</h2>
-            <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Distribución esquemática final en corte longitudinal</p>
-
-            <div class="w3-center w3-margin-top w3-padding w3-round ce-panel-gris" style="border: 1px dashed var(--azul-profundo); border-left: none;">
-                <p style="font-weight:700; color: var(--azul-profundo);">Corte Esquemático - Disposición de Acero</p>
-                <img src="URL_DE_SU_IMAGEN_DE_AUTOCAD_AQUI.png" alt="Despiece de Losa" style="max-width: 100%; height: auto; min-height: 250px; background-color:#ffffff; border: 1px solid var(--gris-borde); border-radius: 5px;">
-                <p class="w3-small w3-margin-top" style="opacity: 0.7;"><i>Disposición final del refuerzo longitudinal y transversal a lo largo de la losa.</i></p>
-            </div>
-
-            <div class="math-scroll w3-margin-top">
-                <pre class="w3-code w3-white w3-border w3-round" style="font-size: 12px; border-color: var(--gris-borde)!important;">GUÍA PARA INTERPRETAR EL DESPIECE:
-
-Refuerzo Superior (Momentos Negativos):
-  • Apoyo Ext. 1: Bastones No.4 @ 300 mm extendiendo 1.25m desde la cara del apoyo.
-  • Apoyo Int. 2: Bastones No.4 @ 300 mm extendiendo 1.25m a cada lado del apoyo.
-
-Refuerzo Inferior (Momentos Positivos):
-  • Corrido: No.4 @ 300 mm a lo largo de toda la losa.
-
-Refuerzo Transversal (Temperatura):
-  • Perpendicular al principal: No.4 @ 400 mm, sobre el refuerzo corrido.</pre>
-            </div>
-        </div>
+        
+        
 
         <!-- CARD 12: RETO ESTUDIANTE -->
         <div class="panel-control" style="margin-bottom: 0;">
