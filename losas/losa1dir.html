@@ -198,14 +198,14 @@
                     <strong>Carga Viva (\( w_L \)):</strong><br> \( 3.8 \frac{\text{kN}}{\text{m}^2} \)
                 </div>
                 <div class="w3-panel ce-panel-gris w3-padding w3-round" style="margin:0;">
-                    <strong>Total Carga Muerta:</strong><br> \( 5.08 \frac{\text{kN}}{\text{m}^2} \)
+                    <strong>Total Carga Muerta (\(D\)):</strong><br> \( 5.08 \frac{\text{kN}}{\text{m}^2} \)
                 </div>
             </div>
 
             <p>Combinaciones de carga:</p>
             <ul style="margin-bottom: 20px;">
                 <li>\( 1.4D = 1.4(5.08) = 7.11 \frac{\text{kN}}{\text{m}^2} \)</li>
-                <li>\( 1.2D + 1.6L = 1.2(5.08) + 1.6(3.8) = 12.18 \frac{\text{kN}}{\text{m}^2} \)</li>
+                <li>\( 1.2D + 1.6 w_L = 1.2(5.08) + 1.6(3.8) = 12.18 \frac{\text{kN}}{\text{m}^2} \)</li>
             </ul>
 
             <div class="w3-panel ce-panel-naranja w3-padding w3-round w3-center w3-large">
@@ -324,6 +324,8 @@
             <h2 class="panel-titulo">7. Diseño por Flexión y Refuerzo</h2>
             <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Parámetros de diseño y cálculo de acero (\( f'_c = 28 \text{ MPa} \), \( f_y = 420 \text{ MPa} \))</p>
 
+            <p>Primero determinamos el acero requerido por resistencia y una separación preliminar para cada zona. La separación final se definirá después de verificar los requisitos de detallado y control de fisuración.</p>
+
             <div class="ce-grid ce-grid-4">
                 <div class="w3-panel ce-panel-azul w3-padding-small w3-round" style="margin:0;">
                     <strong>Ancho (b):</strong> \( 1000 \text{ mm} \)
@@ -427,8 +429,7 @@
                         \[ \rho_{req} = \frac{A_s}{b \cdot d} = 0.00260 \]
                     </p>
                     
-                   <p><strong>Verificación de cuantía mínima:</strong></p>
-
+                    <p><strong>Verificación de cuantía mínima:</strong></p>
                     <div class="w3-panel ce-panel-gris w3-padding w3-round">
                         <strong>NSR-10 C.10.5.4 → C.7.12.2.1:</strong><br>
                         Para losas estructurales de espesor uniforme, el refuerzo mínimo
@@ -444,20 +445,13 @@
                     
                     <p><strong>Decisión:</strong> \( A_s = 374.2 \text{ mm}^2 > A_{s,min} = 306 \text{ mm}^2 \) → <b class="ce-destacado">Gobierna el acero por resistencia</b></p>
                     
-                    <p><strong>Selección de refuerzo (Separación):</strong>
-                        \[ s = \frac{A_b \times 1000}{A_s} = \frac{127 \times 1000}{374.2} = 339.4 \text{ mm} \]
+                    <p><strong>Cálculo de separación requerida por resistencia:</strong>
+                        \[ s_{resistencia} = \frac{A_b \times 1000}{A_s} = \frac{127 \times 1000}{374.2} = 339.4 \text{ mm} \]
                     </p>
-                    <p><strong>Espaciamiento adoptado:</strong> <b>s = 325 mm</b> (múltiplo comercial inmediato inferior)</p>
-                    
-                    <div class="w3-panel ce-panel-naranja w3-padding w3-round">
-                        <strong>Verificación de \( s_{max} \):</strong><br>
-                        \( s_{max} = \min(3h, 450) = 450 \text{ mm} \)<br>
-                        \( s_{adoptado} = 325 \text{ mm} < 450 \text{ mm} \) ✓
-                    </div>
                 </div>
             </details>
 
-            <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:30px;">Resultados de Armadura por Tramo</h4>
+            <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:30px;">Resultados de Diseño por Resistencia</h4>
             <div class="tabla-container">
                 <table class="tabla-traslapos">
                     <thead>
@@ -465,8 +459,8 @@
                             <th style="text-align:left;">Ubicación</th>
                             <th>\( M_u \) (kNm)</th>
                             <th>\( \rho_{req} \)</th>
-                            <th>\( A_s \) Final (\( \text{mm}^2 \))</th>
-                            <th>Separación (s)</th>
+                            <th>\( A_s \) Requerido (\( \text{mm}^2 \))</th>
+                            <th>\( s_{resistencia} \) (mm)</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -474,40 +468,41 @@
                             <td style="text-align:left;">Ext: \( M_u - \) exterior</td>
                             <td>\( 7.82 \)</td>
                             <td>\( 0.00101 \)</td>
-                            <td class="ce-destacado"><b>\( 306 \text{ (min)} \)</b></td>
-                            <td>\( s = 400 \text{ mm} \)</td>
+                            <td><b>\( 306 \text{ (min)} \)</b></td>
+                            <td>\( 415^* \)</td>
                         </tr>
                         <tr>
                             <td style="text-align:left;">Ext: \( M_u + \) centro</td>
                             <td>\( 13.40 \)</td>
                             <td>\( 0.00174 \)</td>
-                            <td class="ce-destacado"><b>\( 306 \text{ (min)} \)</b></td>
-                            <td>\( s = 400 \text{ mm} \)</td>
+                            <td><b>\( 306 \text{ (min)} \)</b></td>
+                            <td>\( 415^* \)</td>
                         </tr>
                         <tr>
                             <td style="text-align:left;">Ext: \( M_u - \) interior</td>
                             <td>\( 19.85 \)</td>
                             <td>\( 0.00260 \)</td>
-                            <td><b>\( 374.2 \)</b></td>
-                            <td>\( s = 325 \text{ mm} \)</td>
+                            <td class="ce-destacado"><b>\( 374.2 \)</b></td>
+                            <td class="ce-destacado">\( 339 \)</td>
                         </tr>
                         <tr>
                             <td style="text-align:left;">Int: \( M_u - \) apoyo</td>
                             <td>\( 19.06 \)</td>
                             <td>\( 0.00250 \)</td>
                             <td><b>\( 359.0 \)</b></td>
-                            <td>\( s = 350 \text{ mm} \)</td>
+                            <td>\( 354 \)</td>
                         </tr>
                         <tr>
                             <td style="text-align:left;">Int: \( M_u + \) centro</td>
                             <td>\( 13.11 \)</td>
                             <td>\( 0.00171 \)</td>
-                            <td class="ce-destacado"><b>\( 306 \text{ (min)} \)</b></td>
-                            <td>\( s = 400 \text{ mm} \)</td>
+                            <td><b>\( 306 \text{ (min)} \)</b></td>
+                            <td>\( 415^* \)</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
+            <p class="w3-small" style="opacity: 0.8; margin-top: 5px;">* Limitado además por \( s_{max} = \min(3h, 450) = 450 \text{ mm} \).</p>
 
             <div class="w3-panel ce-panel-azul w3-padding w3-round">
                 <strong>📊 Interpretación de Resultados:</strong>
@@ -515,21 +510,19 @@
                     <li><strong>Momentos bajos</strong> (7.82, 13.40, 13.11 kNm): \( A_s \) por resistencia &lt; \( A_{s,min} \) → Gobierna <b>cuantía mínima (306 mm²)</b></li>
                     <li><strong>Momentos altos</strong> (19.85, 19.06 kNm): \( A_s \) por resistencia &gt; \( A_{s,min} \) → Gobierna <b>acero por flexión</b></li>
                 </ul>
-                <p class="w3-small" style="opacity: 0.8;">💡 <strong>Criterio Estructural:</strong> En losas delgadas con cargas moderadas, es común que la cuantía mínima gobierne en zonas de momento positivo.</p>
-            </div>
-            
-            <div class="w3-panel ce-panel-gris w3-padding w3-round">
-                <strong>Criterio Constructivo:</strong> Las separaciones se han redondeado hacia abajo a múltiplos de \( 25 \text{ mm} \) o \( 50 \text{ mm} \) para facilitar el armado en obra, sin superar la \( s_{max} = 450 \text{ mm} \).
+                <p class="w3-small" style="opacity: 0.8; margin-bottom:0;">💡 <strong>Criterio Estructural:</strong> En losas delgadas con cargas moderadas, es común que la cuantía mínima gobierne en zonas de momento positivo.</p>
             </div>
         </div>
 
         <!-- CARD 8: DETALLADO Y TEMPERATURA -->
         <div class="panel-control">
             <h2 class="panel-titulo">8. Verificaciones de Detallado y Refuerzo Transversal</h2>
-            <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Control de fisuración y acero por retracción y temperatura</p>
+            <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Control de fisuración y decisión final del refuerzo principal</p>
+            
+            <p>La separación obtenida por resistencia no constituye todavía la separación final. Verificamos ahora los límites de espaciamiento asociados al control de fisuración.</p>
 
             <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:20px;">A. Control de Fisuración (C.10.6.4)</h4>
-            <p>Para el refuerzo a tracción, calculamos la separación máxima para controlar el ancho de grieta:</p>
+            <p>Calculamos la separación máxima para controlar el ancho de grieta en las zonas donde el refuerzo trabaja a tracción:</p>
             
             <div class="ce-grid ce-grid-2">
                 <div class="w3-panel ce-panel-gris w3-padding w3-round" style="margin:0;">
@@ -546,22 +539,78 @@
                     \[ s_1 = 380\left(\frac{280}{f_s}\right) - 2.5\,c_c = 380(1) - 50 = 330 \text{ mm} \]
                     \[ s_2 = 300\left(\frac{280}{f_s}\right) = 300 \text{ mm} \]
                 </div>
-                <div class="w3-white w3-border w3-round w3-padding w3-margin-top" style="border-color: var(--naranja-estructural)!important;">
-                    <strong>Espaciamiento máximo por fisuración:</strong><br>
-                    \( s_{max} = \min(s_1, s_2) = \mathbf{300 \text{ mm}} \)
+                <div class="w3-white w3-border w3-round w3-padding w3-margin-top" style="border-color: var(--naranja-estructural)!important; text-align: center;">
+                    <strong>Límite por fisuración:</strong> \( s_{fisuración} = \min(s_1, s_2) = \mathbf{300 \text{ mm}} \)
                 </div>
             </div>
 
             <div class="w3-panel ce-panel-azul w3-padding w3-round">
-                <span class="ce-destacado">⚠️ Criterio Estructural:</span> Aunque el cálculo por resistencia permite hasta 400 mm en algunas zonas, el control de fisuración limita a <strong>300 mm</strong> para refuerzo principal en zonas de máximo momento negativo.
+                <strong>💡 Criterio Estructural:</strong> La separación obtenida por resistencia debe verificarse frente a los límites de espaciamiento para control de fisuración. Para las condiciones adoptadas en este ejercicio, el límite de <strong>300 mm controla la separación</strong> del refuerzo principal en las zonas donde este trabaja a tracción.
+            </div>
+            
+            <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:30px;">B. Selección Final del Refuerzo Principal</h4>
+            <p>La separación definitiva se adopta considerando la más crítica entre las tres restricciones:</p>
+            
+            <div class="w3-panel ce-panel-gris w3-padding w3-center w3-round" style="border: 1px solid var(--gris-borde);">
+                <div class="math-scroll">\[ s_{adoptado} = \min \left( s_{resistencia}, s_{fisuración}, s_{max} \right) \]</div>
             </div>
 
-            <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:30px;">B. Refuerzo por Retracción y Temperatura (C.7.12)</h4>
+            <div class="tabla-container">
+                <table class="tabla-traslapos">
+                    <thead>
+                        <tr>
+                            <th style="text-align:left;">Zonas</th>
+                            <th>\( s_{resistencia} \)</th>
+                            <th>\( s_{fisuración} \)</th>
+                            <th>\( s_{adoptado} \) (Final)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="text-align:left;">Exterior \( M_u - \)</td>
+                            <td>\( 415 \text{ mm} \)</td>
+                            <td>\( 300 \text{ mm} \)</td>
+                            <td><b>\( 300 \text{ mm} \)</b></td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">Exterior \( M_u + \)</td>
+                            <td>\( 415 \text{ mm} \)</td>
+                            <td>\( 300 \text{ mm} \)</td>
+                            <td><b>\( 300 \text{ mm} \)</b></td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">Interior \( M_u - \) (crítico)</td>
+                            <td><span class="ce-destacado">\( 339 \text{ mm} \)</span></td>
+                            <td>\( 300 \text{ mm} \)</td>
+                            <td class="ce-destacado"><b>\( 300 \text{ mm} \)</b></td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">Interior \( M_u - \) típico</td>
+                            <td>\( 354 \text{ mm} \)</td>
+                            <td>\( 300 \text{ mm} \)</td>
+                            <td><b>\( 300 \text{ mm} \)</b></td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">Interior \( M_u + \)</td>
+                            <td>\( 415 \text{ mm} \)</td>
+                            <td>\( 300 \text{ mm} \)</td>
+                            <td><b>\( 300 \text{ mm} \)</b></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <p>Se adopta <strong>No. 4 @ 300 mm</strong> en todas las posiciones. Verificamos el acero provisto final:</p>
+            
+            <div class="math-scroll w3-center">\[ A_{s,prov} = \frac{127 \times 1000}{300} = \mathbf{423.3 \text{ mm}^2/\text{m}} \]</div>
+            <p class="w3-center w3-small" style="color: var(--gris-texto);">\( (423.3 \text{ mm}^2 > A_{s,req} \text{ máximo de } 374.2 \text{ mm}^2) \rightarrow \textbf{CUMPLE} \)</p>
+
+            <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:30px;">C. Refuerzo por Retracción y Temperatura (C.7.12)</h4>
             <p>Suministrado en dirección perpendicular al refuerzo principal:</p>
             
             <div class="ce-grid ce-grid-3">
                 <div class="w3-panel ce-panel-gris w3-padding w3-round" style="margin:0;">
-                    <strong>\( \rho_{min} \) (NSR-10):</strong> \( 0.0018 \)
+                    <strong>\( \rho_{min} \):</strong> \( 0.0018 \)
                 </div>
                 <div class="w3-panel ce-panel-gris w3-padding w3-round" style="margin:0;">
                     <strong>\( A_{s,min} \):</strong> \( 306 \text{ mm}^2/\text{m} \)
@@ -571,14 +620,10 @@
                 </div>
             </div>
 
-            <div class="w3-panel ce-panel-azul w3-padding w3-round">
+            <div class="w3-panel ce-panel-naranja w3-padding w3-round">
                 <strong>Cálculo de separación para No. 4:</strong><br>
                 <div class="math-scroll">\[ s = \frac{1000 \cdot A_b}{A_{s,min}} = \frac{1000 \cdot 127}{306} = 415 \text{ mm} \]</div>
-                <strong>Suministro final:</strong> Se colocarán barras No. 4 cada <strong>400 mm</strong> en toda la losa.
-            </div>
-
-            <div class="w3-panel ce-panel-gris w3-padding w3-round">
-                <strong>Disposición en Obra:</strong> Este refuerzo se coloca en la cara inferior en toda la extensión (sobre el refuerzo longitudinal) y debajo del refuerzo longitudinal superior en las zonas de apoyos para garantizar la integridad de la malla.
+                <strong>Disposición transversal final:</strong> Se colocarán barras No. 4 cada <strong>400 mm</strong> sobre el refuerzo principal inferior.
             </div>
         </div>
 
