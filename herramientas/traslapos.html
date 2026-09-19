@@ -69,11 +69,32 @@
         .tabla-container { overflow-x: auto; width: 100%; border-radius: 6px; box-shadow: 0 0 5px rgba(0,0,0,0.05); }
         .tabla-traslapos { width: 100%; border-collapse: collapse; font-size: 0.95em; min-width: 800px; }
         .tabla-traslapos th { background-color: var(--azul-profundo) !important; color: white !important; padding: 12px; text-align: center; }
-        .tabla-traslapos td { padding: 10px; text-align: center; border-bottom: 1px solid #e2e8f0; }
-        .tabla-traslapos tr:hover { background-color: #f8fafc; }
+        .tabla-traslapos td { padding: 10px; text-align: center; border-bottom: 1px solid #e2e8f0; transition: background-color 0.3s; }
+        .tabla-traslapos tr:hover td { background-color: #f8fafc; }
         .col-ld { background-color: rgba(26, 37, 48, 0.03); font-weight: bold;}
         .col-claseb { background-color: rgba(230, 126, 34, 0.08); font-weight: bold; color: #c0392b;}
         .col-conf { background-color: #f1f5f9; font-weight: bold; color: var(--azul-profundo); }
+
+        /* SISTEMA DE RESALTADO DE CALIBRES */
+        .chip-calibre {
+            display: inline-block; padding: 3px 10px; border: 1px solid #cbd5e1;
+            border-radius: 15px; font-size: 0.8em; cursor: pointer; color: #475569;
+            background: white; transition: all 0.2s; user-select: none;
+        }
+        .chip-calibre:hover { background: #f1f5f9; border-color: #94a3b8; }
+        .chip-calibre.activo {
+            background: var(--naranja-estructural); color: white;
+            border-color: var(--naranja-estructural); font-weight: bold;
+            box-shadow: 0 2px 4px rgba(230, 126, 34, 0.3);
+        }
+        /* Clase aplicada a la fila destacada (tr) */
+        .fila-destacada td {
+            background-color: rgba(230, 126, 34, 0.08) !important; 
+        }
+        .fila-destacada td:first-child {
+            border-left: 5px solid var(--naranja-estructural);
+            color: var(--naranja-estructural);
+        }
 
         .btn-accion { padding: 8px 16px; border-radius: 6px; border: none; cursor: pointer; font-weight: bold; transition: 0.2s; }
         .btn-copiar { background-color: var(--azul-profundo); color: white; }
@@ -263,13 +284,21 @@
                 <span class="w3-small w3-text-grey" id="txtEcuacion">Valores base según ecuación simplificada C.12.2.2</span>
             </div>
             
-            <div class="no-print" style="display: flex; gap: 15px; flex-wrap: wrap;">
+            <div class="no-print" style="display: flex; gap: 20px; flex-wrap: wrap; align-items: flex-end;">
+                <!-- SECCIÓN DE CHIPS PARA RESALTAR -->
+                <div>
+                    <label class="w3-small w3-text-grey w3-block" style="margin-bottom: 5px;"><b>RESALTAR BARRAS:</b></label>
+                    <div id="contenedorChips" style="display: flex; flex-wrap: wrap; gap: 4px;">
+                        <!-- Chips generados por JS -->
+                    </div>
+                </div>
+
                 <div>
                     <label class="w3-small w3-text-grey w3-block"><b>MOSTRAR VALORES:</b></label>
                     <select id="selRedondeo" class="w3-select w3-border w3-round w3-small" style="width: auto;" onchange="generarTabla()">
                         <option value="obra10" selected>Adoptado para despiece — 10 cm</option>
                         <option value="obra5">Adoptado para despiece — 5 cm</option>
-                        <option value="norma">Calculados según norma</option>
+                        <option value="norma">Calculados exactos de norma</option>
                     </select>
                 </div>
                 <div>
@@ -505,6 +534,9 @@
         { name: "N° 11", n: 11, db: 35.81 }
     ];
 
+    // CONJUNTO DE BARRAS DESTACADAS
+    let calibresDestacados = new Set();
+
     // INICIALIZACIÓN
     window.onload = function() {
         let sel1 = document.getElementById('selBarra1');
@@ -514,8 +546,30 @@
             sel2.innerHTML += `<option value="${index}" ${b.n===8 ? 'selected':''}>${b.name}</option>`;
         });
         
+        inicializarChips();
         actualizarContexto();
     };
+
+    // GENERAR CHIPS DE SELECCIÓN
+    function inicializarChips() {
+        const container = document.getElementById('contenedorChips');
+        barras.forEach(b => {
+            let chip = document.createElement('span');
+            chip.className = 'chip-calibre';
+            chip.innerText = b.name;
+            chip.onclick = function() {
+                if (calibresDestacados.has(b.n)) {
+                    calibresDestacados.delete(b.n);
+                    chip.classList.remove('activo');
+                } else {
+                    calibresDestacados.add(b.n);
+                    chip.classList.add('activo');
+                }
+                generarTabla(); 
+            };
+            container.appendChild(chip);
+        });
+    }
 
     // LÓGICA DE INTERFAZ DINÁMICA
     function actualizarContexto() {
@@ -686,6 +740,9 @@
             }
 
             let tr = document.createElement('tr');
+            if (calibresDestacados.has(b.n)) {
+                tr.className = "fila-destacada";
+            }
             let compStyle = isColumnaSismica ? 'color: #ccc; text-decoration: line-through;' : '';
             
             if (elemento === 'losa') {
@@ -777,45 +834,65 @@
         const fy = document.getElementById('selFy').value;
         const psi_t = document.getElementById('selPosicion').value;
         const selElem = document.getElementById('selElemento');
-        const elemento = selElem.options[selElem.selectedIndex].text;
+        const elemento = selElem.options[selElem.selectedIndex].text.toUpperCase();
         const un = document.getElementById('selUnidades').value;
         const sismoSelect = document.getElementById('selSismo');
         const sismo = sismoSelect ? sismoSelect.options[sismoSelect.selectedIndex].text : '';
+        const modoSelect = document.getElementById('selRedondeo');
+        const modoText = modoSelect.options[modoSelect.selectedIndex].text;
         
         let texto = "CRITERIO ESTRUCTURAL\nGuía Definitiva de Traslapos\n";
-        texto += `f'c = ${fc} MPa\nfy = ${fy} MPa\nElemento = ${elemento}\nPosición (ψt) = ${psi_t}\n`;
+        texto += `------------------------------------\n`;
+        texto += `ELEMENTO: ${elemento}\n`;
+        texto += `f'c: ${fc} MPa | fy: ${fy} MPa\n`;
+        texto += `Posición (ψt): ${psi_t}\n`;
+        texto += `Modo: ${modoText}\n`;
         
         if (selElem.value === 'losa') {
             const rec = document.getElementById('inpRecubrimiento').value;
             const sep = document.getElementById('inpSeparacion').value;
-            texto += `Recubrimiento (cc) = ${rec} mm\nSeparación (s) = ${sep} mm\nCriterio = C.12.2.3\n\n`;
+            texto += `Recubrimiento: ${rec} mm | Separación: ${sep} mm\nNorma: C.12.2.3\n`;
         } else {
-            texto += `Criterio = C.12.2.2 (Simplificado)\n\n`;
+            texto += `Norma: C.12.2.2 (Simplificado)\n`;
         }
+
+        if (selElem.value === 'columna') {
+            texto += `Condición Sísmica: ${sismo}\n`;
+        }
+        texto += `------------------------------------\n\n`;
         
         let tabla = document.getElementById('tablaMain');
         if (selElem.value === 'losa') {
-            texto += `Barra\td_b (mm)\t(cb+Ktr)/db\tDesarrollo ld (${un})\tClase A (${un})\tClase B (${un})\tCompresion (${un})\n`;
+            texto += `Barra\td_b (mm)\t(cb+Ktr)/db\tDesarrollo (${un})\tClase A (${un})\tClase B (${un})\tCompresión (${un})\n`;
         } else {
-            texto += `Barra\td_b (mm)\tDesarrollo ld (${un})\tClase A (${un})\tClase B (${un})\tCompresion (${un})\n`;
+            texto += `Barra\td_b (mm)\tDesarrollo (${un})\tClase A (${un})\tClase B (${un})\tCompresión (${un})\n`;
         }
         
         for (let i = 1; i < tabla.rows.length; i++) {
-            let celdas = tabla.rows[i].cells;
+            let fila = tabla.rows[i];
+            let celdas = fila.cells;
+            let esDestacada = fila.classList.contains('fila-destacada');
+            
             for (let j = 0; j < celdas.length; j++) {
-                texto += celdas[j].innerText + (j < celdas.length - 1 ? "\t" : "");
+                let celdaText = celdas[j].innerText;
+                if(j === 0 && esDestacada) celdaText = celdaText + " (*)";
+                texto += celdaText + (j < celdas.length - 1 ? "\t" : "");
             }
             texto += "\n";
         }
 
+        if (calibresDestacados.size > 0) {
+            texto += `\n(*) Filas resaltadas en la interfaz de usuario.\n`;
+        }
+
         if (selElem.value === 'columna' && (sismo.includes('DMO') || sismo.includes('DES'))) {
-            texto += `\nNota: Para columnas DMO/DES deben verificarse los requisitos sísmicos específicos de C.21.\n`;
+            texto += `Nota: Para columnas DMO/DES deben verificarse los requisitos sísmicos específicos de C.21.\n`;
         }
 
         navigator.clipboard.writeText(texto).then(() => {
             let btn = document.querySelector('.btn-copiar');
             let original = btn.innerHTML;
-            btn.innerHTML = "<i class='fa fa-check'></i> ¡Copiado!";
+            btn.innerHTML = "<i class='fa fa-check'></i> ¡Copiado a Excel!";
             setTimeout(() => { btn.innerHTML = original; }, 2000);
         });
     }
@@ -831,10 +908,12 @@
         const posicionSelect = document.getElementById('selPosicion');
         const psi_t = posicionSelect.options[posicionSelect.selectedIndex].text;
         const selElem = document.getElementById('selElemento');
-        const elemento = selElem.options[selElem.selectedIndex].text;
+        const elemento = selElem.options[selElem.selectedIndex].text.toUpperCase();
         const un = document.getElementById('selUnidades').value;
         const sismoSelect = document.getElementById('selSismo');
         const sismo = sismoSelect ? sismoSelect.options[sismoSelect.selectedIndex].text : 'N/A';
+        const modoSelect = document.getElementById('selRedondeo');
+        const modoText = modoSelect.options[modoSelect.selectedIndex].text;
         const logoSrc = document.querySelector('.brand-logo-footer').src;
         
         let subtituloNorma = "Cálculo base — NSR-10 C.12.2.2";
@@ -842,11 +921,11 @@
         let thExtra = "";
         
         if (selElem.value === 'losa') {
-            subtituloNorma = "Cálculo mediante C.12.2.3 — considerando confinamiento";
+            subtituloNorma = "Cálculo mediante C.12.2.3 — evaluación de confinamiento";
             parametrosExtra = `
             <tr>
                 <td><b>Recubrimiento libre:</b> ${document.getElementById('inpRecubrimiento').value} mm</td>
-                <td><b>Separación (s):</b> ${document.getElementById('inpSeparacion').value} mm</td>
+                <td><b>Separación a eje (s):</b> ${document.getElementById('inpSeparacion').value} mm</td>
             </tr>`;
             thExtra = `<th>(c<sub>b</sub>+K<sub>tr</sub>)/d<sub>b</sub></th>`;
         }
@@ -855,27 +934,31 @@
         let filasPDF = '';
         filas.forEach(fila => {
             const celdas = Array.from(fila.cells);
+            const esDestacada = fila.classList.contains('fila-destacada');
+            const bgDestacada = esDestacada ? 'background: #fff4ed;' : '';
+            const boldDestacada = esDestacada ? 'font-weight: 800; color: #E67E22; border-left: 4px solid #E67E22;' : '';
+
             if (selElem.value === 'losa') {
                 filasPDF += `
                     <tr>
-                        <td>${celdas[0].innerText}</td>
-                        <td>${celdas[1].innerText}</td>
-                        <td style="background: #f8fafc; font-weight: bold;">${celdas[2].innerText}</td>
-                        <td style="background: #f1f3f5; font-weight: bold;">${celdas[3].innerText}</td>
-                        <td>${celdas[4].innerText}</td>
-                        <td style="background: #fdf2ee; font-weight: bold; color: #c0392b;">${celdas[5].innerText}</td>
-                        <td>${celdas[6].innerText}</td>
+                        <td style="${bgDestacada} ${boldDestacada}">${celdas[0].innerText}</td>
+                        <td style="${bgDestacada}">${celdas[1].innerText}</td>
+                        <td style="${bgDestacada} background-color: ${esDestacada? '#fff4ed' : '#f8fafc'}; font-weight: bold;">${celdas[2].innerText}</td>
+                        <td style="${bgDestacada} background-color: ${esDestacada? '#fff4ed' : '#f1f3f5'}; font-weight: bold;">${celdas[3].innerText}</td>
+                        <td style="${bgDestacada}">${celdas[4].innerText}</td>
+                        <td style="${bgDestacada} background-color: ${esDestacada? '#fcece3' : '#fdf2ee'}; font-weight: bold; color: #c0392b;">${celdas[5].innerText}</td>
+                        <td style="${bgDestacada}">${celdas[6].innerText}</td>
                     </tr>
                 `;
             } else {
                 filasPDF += `
                     <tr>
-                        <td>${celdas[0].innerText}</td>
-                        <td>${celdas[1].innerText}</td>
-                        <td style="background: #f1f3f5; font-weight: bold;">${celdas[2].innerText}</td>
-                        <td>${celdas[3].innerText}</td>
-                        <td style="background: #fdf2ee; font-weight: bold; color: #c0392b;">${celdas[4].innerText}</td>
-                        <td>${celdas[5].innerText}</td>
+                        <td style="${bgDestacada} ${boldDestacada}">${celdas[0].innerText}</td>
+                        <td style="${bgDestacada}">${celdas[1].innerText}</td>
+                        <td style="${bgDestacada} background-color: ${esDestacada? '#fff4ed' : '#f1f3f5'}; font-weight: bold;">${celdas[2].innerText}</td>
+                        <td style="${bgDestacada}">${celdas[3].innerText}</td>
+                        <td style="${bgDestacada} background-color: ${esDestacada? '#fcece3' : '#fdf2ee'}; font-weight: bold; color: #c0392b;">${celdas[4].innerText}</td>
+                        <td style="${bgDestacada}">${celdas[5].innerText}</td>
                     </tr>
                 `;
             }
@@ -952,6 +1035,9 @@
             .tabla-title { 
                 margin-top: 20px;
                 margin-bottom: 10px; 
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
             }
             .pdf-main-table { 
                 width: 100%; 
@@ -972,7 +1058,7 @@
                 text-align: center; 
                 border: 1px solid #dce2e8; 
             }
-            .pdf-main-table tr:nth-child(even) td { 
+            .pdf-main-table tr:nth-child(even) td:not([style*="background: #fff4ed"]) { 
                 background: #f8fafc; 
             }
             .pdf-warning { 
@@ -1007,22 +1093,22 @@
         <div class="pdf-header">
             <img src="${logoSrc}" alt="Logo Criterio Estructural" style="max-width: 200px; height: auto; margin-bottom: 12px;">
             <div class="pdf-brand">CRITERIO ESTRUCTURAL</div>
-            <div class="pdf-title">GUÍA DEFINITIVA DE TRASLAPOS</div>
-            <div class="pdf-subtitle">${subtituloNorma}</div>
+            <div class="pdf-title">LONGITUDES DE DESARROLLO Y TRASLAPO</div>
+            <div class="pdf-subtitle">ELEMENTO ESTRUCTURAL: ${elemento}</div>
         </div>
 
         <div class="pdf-parameters">
             <div class="pdf-section-title">PARÁMETROS DEL PROYECTO</div>
             <table class="pdf-param-table">
                 <tr>
-                    <td><b>Concreto (f'c):</b> ${fc} MPa</td>
-                    <td><b>Acero (fy):</b> ${fy} MPa</td>
+                    <td><b>Resistencia Concreto (f'c):</b> ${fc} MPa</td>
+                    <td><b>Límite Fluencia (fy):</b> ${fy} MPa</td>
                 </tr>
                 <tr>
-                    <td><b>Elemento Analizado:</b> ${elemento}</td>
-                    <td><b>Posición Refuerzo:</b> ${psi_t}</td>
+                    <td><b>Posición del Refuerzo (ψt):</b> ${psi_t}</td>
+                    <td><b>Redondeo / Mostrar:</b> ${modoText}</td>
                 </tr>
-                ${elemento === 'Columna' ? `
+                ${elemento === 'COLUMNA' ? `
                 <tr>
                     <td colspan="2"><b>Condición Sísmica:</b> ${sismo}</td>
                 </tr>` : ''}
@@ -1031,7 +1117,8 @@
         </div>
 
         <div class="pdf-section-title tabla-title">
-            LONGITUDES DE DESARROLLO Y EMPALME (Unidades: ${un})
+            <span>TABLA DE DESPIECE NORMATIVO (Unidades: ${un})</span>
+            <span style="font-size: 10px; font-weight: normal; color: #64748b;">${subtituloNorma}</span>
         </div>
 
         <table class="pdf-main-table">
