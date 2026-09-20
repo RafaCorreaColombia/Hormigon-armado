@@ -155,6 +155,139 @@
 
     <div class="contenido-body">
 
+        <!-- BRÚJULA DEL EJEMPLO -->
+        <div class="panel-control no-print" id="brujula" style="border: 2px solid var(--naranja-estructural); box-shadow: 0 4px 15px rgba(230,126,34,0.1);">
+            <h2 class="panel-titulo" style="border-bottom: none; margin-bottom: 5px; font-size: 1.4em;">🧭 BRÚJULA — ¿Qué estamos diseñando?</h2>
+            
+            <div style="border-left: 4px solid var(--naranja-estructural); padding-left: 15px; margin-bottom: 25px;">
+                <p class="w3-large" style="color: var(--gris-texto); font-style: italic; margin-top: 0;">
+                    El objetivo no es obtener un diagrama bonito ni completar una serie de ecuaciones.
+                </p>
+                <p style="margin-bottom: 0;">
+                    Estamos diseñando una losa de concreto reforzado en dos direcciones hasta convertir una geometría, unas cargas y unas condiciones de apoyo en algo que <strong>pueda construirse</strong>. El recorrido es este:
+                </p>
+            </div>
+            
+            <div class="tabla-container">
+                <table class="tabla-traslapos">
+                    <thead>
+                        <tr>
+                            <th style="text-align:left; background-color: var(--azul-suave)!important; color: var(--azul-profundo)!important; width: 40%;">Pregunta</th>
+                            <th style="text-align:left; background-color: var(--azul-suave)!important; color: var(--azul-profundo)!important;">Lo que necesitamos obtener</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="text-align:left; font-weight: 500;">¿Qué losa tengo?</td>
+                            <td style="text-align:left;">Geometría, luces, apoyos y condiciones de aplicación</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left; font-weight: 500;">¿Qué espesor necesito?</td>
+                            <td style="text-align:left;">Rigidez, control de deflexiones y resistencia</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left; font-weight: 500;">¿Qué cargas recibe?</td>
+                            <td style="text-align:left;">\(w_u\) y combinaciones de diseño</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left; font-weight: 500;">¿Cuánto momento debe resistir?</td>
+                            <td style="text-align:left;">\(M_u\)</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left; font-weight: 500;">¿Cuánto acero necesita?</td>
+                            <td style="text-align:left;">\(A_s\)</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left; font-weight: 500;">¿Resiste el cortante?</td>
+                            <td style="text-align:left;">\(\phi V_c \ge V_u\)</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left; font-weight: 500;">¿Cómo coloco ese acero?</td>
+                            <td style="text-align:left;">Separaciones, desarrollo, anclaje, traslapos e interrupciones</td>
+                        </tr>
+                        <tr style="background-color: var(--naranja-suave);">
+                            <td style="text-align:left; font-weight:bold; color: var(--naranja-estructural);">¿Qué termina llegando a la obra?</td>
+                            <td style="text-align:left; font-weight:bold; color: var(--naranja-estructural);">El despiece</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Mapa Visual -->
+            <div class="w3-center w3-margin-top w3-padding-24 w3-round ce-panel-gris" style="font-family: monospace; font-size: 1.15em; line-height: 1.8; color: var(--azul-profundo);">
+                <strong>GEOMETRÍA</strong><br>
+                <i class="fa fa-arrow-down" style="color: var(--gris-texto); font-size: 0.8em;"></i><br>
+                <strong>¿QUÉ ESPESOR NECESITO?</strong><br>
+                <i class="fa fa-arrow-down" style="color: var(--gris-texto); font-size: 0.8em;"></i><br>
+                <strong>FLEXIÓN ─────────────── CORTANTE</strong><br>
+                <i class="fa fa-arrow-down" style="color: var(--gris-texto); font-size: 0.8em;"></i> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <i class="fa fa-arrow-down" style="color: var(--gris-texto); font-size: 0.8em;"></i><br>
+                <strong>¿CUÁNTO MOMENTO? &nbsp; &nbsp; &nbsp; &nbsp; ¿CUÁNTO \(V_u\)?</strong><br>
+                <i class="fa fa-arrow-down" style="color: var(--gris-texto); font-size: 0.8em;"></i> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <i class="fa fa-arrow-down" style="color: var(--gris-texto); font-size: 0.8em;"></i><br>
+                <strong>¿CUÁNTO ACERO? &nbsp; &nbsp; &nbsp; &nbsp; \(\phi V_c \ge V_u\)</strong><br>
+                <i class="fa fa-arrow-down" style="color: var(--gris-texto); font-size: 0.8em;"></i><br>
+                <strong>DETALLAMIENTO</strong><br>
+                <i class="fa fa-arrow-down" style="color: var(--gris-texto); font-size: 0.8em;"></i><br>
+                <strong>TRASLAPOS · DESARROLLO · ANCLAJE · SEPARACIONES</strong><br>
+                <i class="fa fa-arrow-down" style="color: var(--naranja-estructural); font-size: 0.8em;"></i><br>
+                <strong class="w3-xlarge ce-destacado">DESPIECE</strong><br>
+                <i class="fa fa-arrow-down" style="color: var(--naranja-estructural); font-size: 0.8em;"></i><br>
+                <strong class="w3-xxlarge" style="color: var(--azul-profundo);">OBRA</strong>
+            </div>
+
+            <!-- Ecuaciones Base -->
+            <div class="math-scroll w3-center w3-margin-top w3-padding w3-xlarge">
+                \[
+                \boxed{\phi M_n \ge M_u}
+                \qquad\qquad
+                \boxed{\phi V_c \ge V_u}
+                \]
+            </div>
+            
+            <div class="w3-center w3-large w3-margin-bottom" style="font-style: italic; color: var(--gris-texto);">
+                > Ese es el piso del problema.
+            </div>
+            
+            <p class="w3-center w3-padding" style="margin-top: 0;">
+                Todo lo que ocurre entre la geometría y el despiece existe para poder llegar a esas verificaciones y convertirlas en acero que realmente pueda construirse.
+            </p>
+
+            <!-- Pies en la tierra -->
+            <div class="w3-panel w3-padding-large w3-round w3-margin-top" style="background-color: #f8fafc; border-left: 5px solid #94a3b8;">
+                <strong class="w3-large" style="color: var(--azul-profundo);">PIES EN LA TIERRA</strong>
+                
+                <p style="margin-top:8px; font-style:italic; color: var(--gris-texto);">
+                    > El Método de Diseño Directo es el camino que utilizaremos para obtener \(M_u\). No es el objetivo final.
+                </p>
+                
+                <p>Una vez obtenido el momento, el problema vuelve a ser el de siempre:</p>
+                
+                <div class="w3-center w3-margin-top w3-margin-bottom ce-destacado w3-large" style="letter-spacing: 1px;">
+                    \(M_u \rightarrow A_s \rightarrow \text{detallamiento} \rightarrow \text{despiece} \rightarrow \text{obra}\)
+                </div>
+                
+                <p>El resultado final no es \(M_u\). \(M_u\) es solamente una etapa. El resultado final es una losa con: <strong>espesor + resistencia + acero + anclajes + traslapos + separaciones + despiece.</strong></p>
+                <p style="margin-bottom: 0;">Por eso, si en algún momento el procedimiento parece demasiado abstracto, vuelve aquí: estamos tratando de construir una losa que resista y pueda detallarse, porque el cálculo que no puede convertirse en una disposición constructiva todavía no ha terminado.</p>
+            </div>
+
+            <!-- Segunda mirada (FEM) -->
+            <div class="w3-panel w3-padding-large w3-round w3-margin-top" style="background-color: var(--azul-suave); border-left: 5px solid var(--azul-profundo);">
+                <strong class="w3-large" style="color: var(--azul-profundo);">🔎 Una segunda mirada</strong>
+                
+                <p style="margin-top:8px; font-style:italic; color: var(--gris-texto);">
+                    > En algunos puntos del ejemplo utilizaremos un modelo de elementos finitos como herramienta de contraste.
+                </p>
+                
+                <p>No vamos a diseñar la losa "para que coincida con SAP/ETABS". El modelo FEM responde a otra pregunta: <strong>¿Cómo se distribuye espacialmente la respuesta cuando representamos explícitamente la losa, las vigas y los apoyos?</strong></p>
+                
+                <ul>
+                    <li>El método manual nos permite <strong>entender y diseñar</strong>.</li>
+                    <li>El FEM nos permite <strong>observar y contrastar</strong>.</li>
+                </ul>
+                
+                <p style="margin-bottom: 0;">Si ambos entregan exactamente el mismo diagrama, probablemente no estamos entendiendo qué representa cada modelo. Si vemos diferencias radicales, debemos auditar qué estamos leyendo (¿Mismo ancho de franja? ¿Misma sección? ¿Momento de diseño vs resultante local? ¿La viga absorbió la respuesta?).</p>
+            </div>
+        </div>
+
         <!-- ÍNDICE DE CONTENIDO -->
         <div class="panel-control no-print" style="background-color: var(--azul-suave); border-left: 4px solid var(--azul-profundo); padding: 20px;">
             <h3 style="margin-top:0; color: var(--azul-profundo); font-weight: bold;"><i class="fa fa-list"></i> Índice de Contenido</h3>
