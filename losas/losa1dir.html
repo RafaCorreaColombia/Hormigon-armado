@@ -157,6 +157,139 @@
 
     <div class="contenido-body">
 
+        <!-- BRÚJULA DEL EJEMPLO -->
+        <div class="panel-control no-print" id="brujula" style="border: 2px solid var(--naranja-estructural); box-shadow: 0 4px 15px rgba(230,126,34,0.1);">
+            <h2 class="panel-titulo" style="border-bottom: none; margin-bottom: 5px; font-size: 1.4em;">🧭 BRÚJULA — ¿Qué estamos diseñando?</h2>
+            
+            <div style="border-left: 4px solid var(--naranja-estructural); padding-left: 15px; margin-bottom: 25px;">
+                <p class="w3-large" style="color: var(--gris-texto); font-style: italic; margin-top: 0;">
+                    El objetivo no es obtener un diagrama bonito ni completar una serie de ecuaciones.
+                </p>
+                <p style="margin-bottom: 0;">
+                    Estamos diseñando una losa de concreto reforzado en una dirección hasta convertir una geometría, unas cargas y unas condiciones de apoyo en algo que <strong>pueda construirse</strong>. El recorrido es este:
+                </p>
+            </div>
+            
+            <div class="tabla-container">
+                <table class="tabla-traslapos">
+                    <thead>
+                        <tr>
+                            <th style="text-align:left; background-color: var(--azul-suave)!important; color: var(--azul-profundo)!important; width: 40%;">Pregunta</th>
+                            <th style="text-align:left; background-color: var(--azul-suave)!important; color: var(--azul-profundo)!important;">Lo que necesitamos obtener</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="text-align:left; font-weight: 500;">¿Qué losa tengo?</td>
+                            <td style="text-align:left;">Geometría, luces, apoyos y condiciones de aplicación</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left; font-weight: 500;">¿Qué espesor necesito?</td>
+                            <td style="text-align:left;">Control de deflexiones y predimensionamiento</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left; font-weight: 500;">¿Qué cargas recibe?</td>
+                            <td style="text-align:left;">\(w_u\) y combinaciones de diseño (franja unitaria)</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left; font-weight: 500;">¿Cuánto momento debe resistir?</td>
+                            <td style="text-align:left;">\(M_u\) (Coeficientes de la norma)</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left; font-weight: 500;">¿Cuánto acero necesita?</td>
+                            <td style="text-align:left;">\(A_s\) (Flexión principal y retracción)</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left; font-weight: 500;">¿Resiste el cortante?</td>
+                            <td style="text-align:left;">\(\phi V_c \ge V_u\)</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left; font-weight: 500;">¿Cómo coloco ese acero?</td>
+                            <td style="text-align:left;">Separaciones, desarrollo, anclaje, traslapos e interrupciones</td>
+                        </tr>
+                        <tr style="background-color: var(--naranja-suave);">
+                            <td style="text-align:left; font-weight:bold; color: var(--naranja-estructural);">¿Qué termina llegando a la obra?</td>
+                            <td style="text-align:left; font-weight:bold; color: var(--naranja-estructural);">El despiece</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Mapa Visual -->
+            <div class="w3-center w3-margin-top w3-padding-24 w3-round ce-panel-gris" style="font-family: monospace; font-size: 1.15em; line-height: 1.8; color: var(--azul-profundo);">
+                <strong>GEOMETRÍA</strong><br>
+                <i class="fa fa-arrow-down" style="color: var(--gris-texto); font-size: 0.8em;"></i><br>
+                <strong>¿QUÉ ESPESOR NECESITO?</strong><br>
+                <i class="fa fa-arrow-down" style="color: var(--gris-texto); font-size: 0.8em;"></i><br>
+                <strong>FLEXIÓN ─────────────── CORTANTE</strong><br>
+                <i class="fa fa-arrow-down" style="color: var(--gris-texto); font-size: 0.8em;"></i> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <i class="fa fa-arrow-down" style="color: var(--gris-texto); font-size: 0.8em;"></i><br>
+                <strong>¿CUÁNTO MOMENTO? &nbsp; &nbsp; &nbsp; &nbsp; ¿CUÁNTO \(V_u\)?</strong><br>
+                <i class="fa fa-arrow-down" style="color: var(--gris-texto); font-size: 0.8em;"></i> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <i class="fa fa-arrow-down" style="color: var(--gris-texto); font-size: 0.8em;"></i><br>
+                <strong>¿CUÁNTO ACERO? &nbsp; &nbsp; &nbsp; &nbsp; \(\phi V_c \ge V_u\)</strong><br>
+                <i class="fa fa-arrow-down" style="color: var(--gris-texto); font-size: 0.8em;"></i><br>
+                <strong>DETALLAMIENTO</strong><br>
+                <i class="fa fa-arrow-down" style="color: var(--gris-texto); font-size: 0.8em;"></i><br>
+                <strong>TRASLAPOS · DESARROLLO · ANCLAJE · SEPARACIONES</strong><br>
+                <i class="fa fa-arrow-down" style="color: var(--naranja-estructural); font-size: 0.8em;"></i><br>
+                <strong class="w3-xlarge ce-destacado">DESPIECE</strong><br>
+                <i class="fa fa-arrow-down" style="color: var(--naranja-estructural); font-size: 0.8em;"></i><br>
+                <strong class="w3-xxlarge" style="color: var(--azul-profundo);">OBRA</strong>
+            </div>
+
+            <!-- Ecuaciones Base -->
+            <div class="math-scroll w3-center w3-margin-top w3-padding w3-xlarge">
+                \[
+                \boxed{\phi M_n \ge M_u}
+                \qquad\qquad
+                \boxed{\phi V_c \ge V_u}
+                \]
+            </div>
+            
+            <div class="w3-center w3-large w3-margin-bottom" style="font-style: italic; color: var(--gris-texto);">
+                > Ese es el piso del problema.
+            </div>
+            
+            <p class="w3-center w3-padding" style="margin-top: 0;">
+                Todo lo que ocurre entre la geometría y el despiece existe para poder llegar a esas verificaciones y convertirlas en acero que realmente pueda construirse.
+            </p>
+
+            <!-- Pies en la tierra -->
+            <div class="w3-panel w3-padding-large w3-round w3-margin-top" style="background-color: #f8fafc; border-left: 5px solid #94a3b8;">
+                <strong class="w3-large" style="color: var(--azul-profundo);">PIES EN LA TIERRA</strong>
+                
+                <p style="margin-top:8px; font-style:italic; color: var(--gris-texto);">
+                    > Los coeficientes aproximados son el camino que utilizaremos para obtener \(M_u\). No son el objetivo final.
+                </p>
+                
+                <p>Una vez obtenido el momento, el problema vuelve a ser el de siempre:</p>
+                
+                <div class="w3-center w3-margin-top w3-margin-bottom ce-destacado w3-large" style="letter-spacing: 1px;">
+                    \(M_u \rightarrow A_s \rightarrow \text{detallamiento} \rightarrow \text{despiece} \rightarrow \text{obra}\)
+                </div>
+                
+                <p>El resultado final no es \(M_u\). \(M_u\) es solamente una etapa. El resultado final es una losa con: <strong>espesor + resistencia + acero + anclajes + traslapos + separaciones + despiece.</strong></p>
+                <p style="margin-bottom: 0;">Por eso, si en algún momento el procedimiento parece demasiado abstracto, vuelve aquí: estamos tratando de construir una losa que resista y pueda detallarse, porque el cálculo que no puede convertirse en una disposición constructiva todavía no ha terminado.</p>
+            </div>
+
+            <!-- Segunda mirada (FEM) -->
+            <div class="w3-panel w3-padding-large w3-round w3-margin-top" style="background-color: var(--azul-suave); border-left: 5px solid var(--azul-profundo);">
+                <strong class="w3-large" style="color: var(--azul-profundo);">🔎 Una segunda mirada</strong>
+                
+                <p style="margin-top:8px; font-style:italic; color: var(--gris-texto);">
+                    > En algunos puntos del ejemplo utilizaremos un modelo de elementos finitos como herramienta de contraste.
+                </p>
+                
+                <p>No vamos a diseñar la losa "para que coincida con SAP/ETABS". El modelo FEM responde a otra pregunta: <strong>¿Cómo se distribuye espacialmente la respuesta cuando representamos explícitamente la losa y los apoyos?</strong></p>
+                
+                <ul>
+                    <li>El método manual (coeficientes) nos permite <strong>entender y diseñar de forma ágil y conservadora</strong>.</li>
+                    <li>El FEM nos permite <strong>observar y contrastar el comportamiento global</strong>.</li>
+                </ul>
+                
+                <p style="margin-bottom: 0;">Si ambos entregan diagramas similares, confirmamos la validez de los coeficientes. Si vemos diferencias, debemos auditar qué estamos leyendo (¿Rigidez de los apoyos? ¿Redistribución de momentos?).</p>
+            </div>
+        </div>
+
         <!-- ÍNDICE DE CONTENIDO -->
         <div class="panel-control no-print" style="background-color: var(--azul-suave); border-left: 4px solid var(--azul-profundo); padding: 20px;">
             <h3 style="margin-top:0; color: var(--azul-profundo); font-weight: bold;"><i class="fa fa-list"></i> Índice de Contenido</h3>
@@ -210,7 +343,7 @@
         <!-- CARD 2: PREDIMENSIONAMIENTO -->
         <div class="panel-control" id="predimensionamiento">
             <h2 class="panel-titulo">2. Predimensionamiento (Control de Deflexión)</h2>
-            <p>Ver NSR-10 Tabla C.9.5(a). Calculamos el espesor mínimo \( h \) según las condiciones de continuidad:</p>
+            <p>Ver NSR-10 Tabla C.9.5(a). Calculamos el espesor mínimo \( h \) según las condiciones de continuity:</p>
             
             <ul class="w3-ul w3-border w3-round ce-panel-gris" style="margin-bottom: 15px; border-left: none;">
                 <li><strong>Un extremo continuo:</strong> \( h = \frac{4.30}{24} = 0.179 \text{ m} \approx 0.18 \text{ m} \)</li>
@@ -846,7 +979,7 @@
             </h4>
 
             <p>
-                La longitud de los bastones superiores y la continuidad del refuerzo inferior
+                La longitud de los bastones superiores y la continuity del refuerzo inferior
                 no se definen únicamente mediante una distancia fija.
                 Se contrastan con el <strong>diagrama de momentos de diseño</strong>.
             </p>
@@ -927,7 +1060,7 @@ Refuerzo Transversal — Distribución:
                 <strong>Lectura estructural del despiece:</strong><br>
                 El armado final no es una colección de longitudes convencionales.
                 Cada barra responde a una necesidad identificada en el análisis:
-                resistencia a flexión, continuidad, desarrollo y detallado.
+                resistencia a flexión, continuity, desarrollo y detallado.
             </div>
         </div>
 
