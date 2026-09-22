@@ -862,6 +862,11 @@
                 <img src="../assets/M22losa2d.png" alt="Distribución de Momentos M22 modelo de elementos finitos" style="max-width: 100%; height: auto; border-radius: 5px; background-color: white;">
                 <p class="w3-small w3-margin-top" style="opacity: 0.7;"><i><strong>Figura 4:</strong> Distribución de Momentos M22 para Cálculo de Refuerzo en Franjas (Eje Y). Modelo de elementos finitos. Rango (-20 kNm/m, +10 kNm/m).</i></p>
             </div>
+            <div class="w3-center w3-margin-top w3-padding w3-round ce-panel-gris" style="border: 1px dashed var(--azul-profundo); border-left: none;">
+                <img src="../assets/Momentoslosa2d.png" alt="Diagrama de Momentos" style="max-width: 100%; height: auto; border-radius: 5px; background-color: white;">
+                <p class="w3-small w3-margin-top" style="opacity: 0.7;"><i><strong>Figura 5:</strong> Diagrama de Momentos de Losa Método Directo (Eje X e Y). Se incluye franja perimetral e interior.</i></p>
+            </div>
+            
         </div>
 
         <!-- CARD 6: REFUERZO -->
@@ -1078,130 +1083,98 @@
             </div>
         </div>
 
-        <!-- CARD 8: DETALLAMIENTO Y TRASLAPOS -->
+        <!-- <!-- CARD 8: DETALLAMIENTO Y TRASLAPOS -->
         <div class="panel-control" id="detallamiento">
             <h2 class="panel-titulo">8. Detallamiento de Refuerzo y Traslapos</h2>
-            <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Longitudes de desarrollo, ganchos y empalmes según NSR-10 C.12 y C.13.3</p>
+            <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Longitudes de desarrollo, cortes y ganchos según NSR-10 C.12 y C.13.3</p>
             
-            <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:20px;">A. Longitudes de Desarrollo en Tracción (\(l_d\))</h4>
-            
-            <div class="w3-panel ce-panel-azul w3-padding w3-round">
-                <strong>Ecuación Base (NSR-10 C.12.2.2):</strong>
-                <div class="math-scroll w3-center">
-                    \[ l_d = \frac{f_y \psi_t \psi_e}{1.1 \lambda \sqrt{f'_c}} \frac{A_b}{(c_b + K_{tr})/d_b} \]
-                </div>
-                
-                <div class="ce-grid ce-grid-2 w3-margin-top">
-                    <div class="w3-white w3-padding-small w3-round w3-center" style="border: 1px solid var(--gris-borde);">
-                        <strong>Barra No. 3:</strong><br>
-                        \( d_b = 9.5 \text{ mm} \)
-                    </div>
-                    <div class="w3-white w3-padding-small w3-round w3-center" style="border: 1px solid var(--gris-borde);">
-                        <strong>Factores:</strong><br>
-                        \( \psi_t = 1.0 \) (capa única)<br>
-                        \( \psi_e = 1.0 \) (sin recub. epóxico)
-                    </div>
-                </div>
+            <div class="w3-panel ce-panel-gris w3-padding w3-round w3-small" style="border: 1px solid var(--gris-borde);">
+                <strong>Parámetros Base de Cálculo:</strong> Elemento: Losa | \(f'_c = 28 \text{ MPa}\) | \(f_y = 420 \text{ MPa}\) | Posición (\(\psi_t\)) = 1.0 | Recubrimiento = 20 mm | Separación = 260 mm | Método: Ecuación exacta (NSR-10 C.12.2.3).
             </div>
 
+            <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:20px;">A. Longitudes de Desarrollo (\(l_d\)) y Traslapos</h4>
+            
             <div class="tabla-container">
-                <table class="tabla-traslapos">
+                <table class="tabla-traslapos tabla-small">
                     <thead>
                         <tr>
                             <th style="text-align:left;">Barra</th>
-                            <th>\(l_d\) Calculado</th>
-                            <th>\(l_d\) Mínimo</th>
-                            <th>\(l_d\) Adoptado</th>
+                            <th>\(d_b\) (mm)</th>
+                            <th>\(\frac{c_b+K_{tr}}{d_b}\)</th>
+                            <th>\(l_d\) Tracción (cm)</th>
+                            <th>Clase A (cm)</th>
+                            <th>Clase B (cm)</th>
+                            <th>Compresión (cm)</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td style="text-align:left;"><strong>No. 3 (φ9.5mm)</strong></td>
-                            <td>285 mm</td>
-                            <td>300 mm</td>
-                            <td class="ce-destacado">300 mm</td>
+                        <tr style="background-color: var(--naranja-suave); font-weight: bold; border-left: 4px solid var(--naranja-estructural);">
+                            <td style="text-align:left; color: var(--naranja-estructural);">N° 3 (Proyecto)</td>
+                            <td>9.5</td>
+                            <td>2.50*</td>
+                            <td>30.0</td>
+                            <td>30.0</td>
+                            <td>30.0</td>
+                            <td>30.0</td>
                         </tr>
+                        <tr><td style="text-align:left;">N° 4</td><td>12.7</td><td>2.07</td><td>35.3</td><td>35.3</td><td>45.9</td><td>37.9</td></tr>
+                        <tr><td style="text-align:left;">N° 5</td><td>15.9</td><td>1.76</td><td>52.1</td><td>52.1</td><td>67.7</td><td>47.4</td></tr>
+                        <tr><td style="text-align:left;">N° 6</td><td>19.1</td><td>1.55</td><td>71.0</td><td>71.0</td><td>92.2</td><td>56.8</td></tr>
+                        <tr><td style="text-align:left;">N° 7</td><td>22.2</td><td>1.40</td><td>114.6</td><td>114.6</td><td>149.0</td><td>66.3</td></tr>
+                        <tr><td style="text-align:left;">N° 8</td><td>25.4</td><td>1.29</td><td>142.4</td><td>142.4</td><td>185.1</td><td>75.7</td></tr>
                     </tbody>
                 </table>
             </div>
 
-            <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:30px;">B. Longitudes de Empalme por Traslapo (NSR-10 C.12.15)</h4>
+            <div class="w3-panel ce-panel-azul w3-padding w3-round">
+                <strong>📌 Valores Exactos vs. Normativos (Barra N° 3):</strong><br>
+                <p class="w3-small" style="margin-top:5px; margin-bottom:0;">
+                    El cálculo analítico arroja un \(l_d = 211.5 \text{ mm}\) y una longitud teórica de traslapo de \(274.9 \text{ mm}\). Sin embargo, la NSR-10 exige un <strong>mínimo normativo de 300 mm</strong> para longitudes de desarrollo y empalmes a tracción. Por ello, los valores definitivos de diseño se elevan y estandarizan en <strong>30 cm</strong>.
+                </p>
+            </div>
+
+            <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:30px;">B. Reglas de Corte e Interrupción del Refuerzo (NSR-10 C.12.10)</h4>
+            
+            <div class="ce-grid ce-grid-2">
+                <div class="w3-panel ce-panel-gris w3-padding w3-round" style="margin:0;">
+                    <strong>1. Extensión más allá del punto de inflexión:</strong><br>
+                    <p class="w3-small" style="margin-top:5px; margin-bottom:0;">
+                        Cuando se despieza, el refuerzo debe extenderse más allá del punto donde ya no es necesario por cálculo analítico, una distancia igual al <strong>mayor entre el peralte efectivo (\(d\)) o \(12d_b\)</strong>. Para nuestra barra N° 3, rige el peralte, pero el mínimo normativo por diámetro es <strong>\(12d_b = 114.3 \text{ mm}\)</strong>.
+                    </p>
+                </div>
+                <div class="w3-panel ce-panel-gris w3-padding w3-round" style="margin:0;">
+                    <strong>2. Desarrollo desde el Momento Máximo:</strong><br>
+                    <p class="w3-small" style="margin-top:5px; margin-bottom:0;">
+                        Independientemente del punto de corte, toda barra debe estar anclada al menos una longitud <strong>\(l_d\) (300 mm)</strong> medida desde el punto de máximo esfuerzo (el centro del vano para momentos positivos o la cara del apoyo para momentos negativos).
+                    </p>
+                </div>
+            </div>
+
+            <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:30px;">C. Anclaje en Apoyos Exteriores (Ganchos Estándar a 90°)</h4>
             
             <div class="w3-panel ce-panel-naranja w3-padding w3-round">
-                <strong>Clasificación de Traslapos:</strong>
-                <ul class="w3-small" style="margin-top:5px; margin-bottom:0;">
-                    <li><strong>Clase A:</strong> Cuando \(A_{s,sum} \geq 2 A_{s,req}\) y menos del 50% de las barras se empalman en la misma sección → \(l_{st} = 1.0 l_d\)</li>
-                    <li><strong>Clase B:</strong> Otras condiciones → \(l_{st} = 1.3 l_d\)</li>
-                </ul>
+                <div class="ce-grid ce-grid-2">
+                    <div style="margin:0;">
+                        <strong>Anclaje Mínimo del Gancho (\(l_{dh}\)):</strong><br>
+                        <p class="w3-small" style="margin-top:5px; margin-bottom:5px;">Distancia requerida desde la sección crítica (cara del apoyo) hasta el borde exterior del doblez para desarrollar la barra.</p>
+                        <span class="w3-large ce-destacado">\(l_{dh} = \mathbf{181.4 \text{ mm}}\)</span>
+                    </div>
+                    <div style="margin:0;">
+                        <strong>Dimensión Física del Gancho (\(\approx 16d_b\)):</strong><br>
+                        <p class="w3-small" style="margin-top:5px; margin-bottom:5px;">Longitud total constructiva del doblez, medida desde el extremo de corte hasta la cara exterior de la porción recta de la barra a 90°.</p>
+                        <span class="w3-large ce-destacado">Longitud total = \(\mathbf{152.4 \text{ mm}}\)</span>
+                    </div>
+                </div>
+                <p class="w3-small" style="margin-top:10px; margin-bottom:0;">
+                    <i>Nota Constructiva (NSR-10 C.7.1.1):</i> El gancho estándar a 90° exige una extensión recta final de al menos \(12d_b\). La dimensión de 152.4 mm garantiza el cumplimiento de la geometría del mandril de doblado más esta extensión normativa en el extremo libre.
+                </p>
             </div>
-
-            <div class="tabla-container">
-                <table class="tabla-traslapos">
-                    <thead>
-                        <tr>
-                            <th style="text-align:left;">Ubicación</th>
-                            <th>Clase de Traslapo</th>
-                            <th>\(l_{st}\) Requerido</th>
-                            <th>\(l_{st}\) Adoptado</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="text-align:left;"><strong>Zonas de Momento Positivo</strong></td>
-                            <td>Clase A</td>
-                            <td>\(1.0 \times 300 = 300 \text{ mm}\)</td>
-                            <td class="ce-destacado">400 mm</td>
-                        </tr>
-                        <tr>
-                            <td style="text-align:left;"><strong>Zonas de Momento Negativo</strong></td>
-                            <td>Clase B</td>
-                            <td>\(1.3 \times 300 = 390 \text{ mm}\)</td>
-                            <td class="ce-destacado">400 mm</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="w3-panel ce-panel-azul w3-padding w3-round w3-small">
-                <strong>📌 Nota Constructiva:</strong> Los traslapos deben ubicarse en zonas de <strong>bajo esfuerzo</strong> (alejados de los puntos de momento máximo) y escalonarse para no concentrar discontinuidades en una misma sección.
-            </div>
-
-            <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:30px;">C. Extensión de Barras según NSR-10 Figura C.13.3.8</h4>
             
             <div class="w3-center w3-margin-top w3-padding w3-round ce-panel-gris" style="border: 1px solid var(--gris-borde); border-left: none;">
                 <img src="../assets/CorteBarras2d.png" alt="Diagrama de corte y extensión mínima de barras de refuerzo según norma NSR-10" style="max-width: 90%; height: auto; border-radius: 5px;">
                 <p class="w3-small w3-margin-top" style="color: var(--azul-profundo); opacity: 0.7;">
                     <i><strong>Figura 6:</strong> Extensión mínima de refuerzo según NSR-10 C.13.3.8 para losas con vigas.</i>
                 </p>
-            </div>
-
-            <div class="tabla-container">
-                <table class="tabla-traslapos">
-                    <thead>
-                        <tr>
-                            <th style="text-align:left;">Tipo de Refuerzo</th>
-                            <th>Extensión Mínima desde Cara de Apoyo</th>
-                            <th>Aplicación en Proyecto</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="text-align:left;"><strong>Negativo en Apoyo Interior</strong></td>
-                            <td>\(0.30 L_n\) (continua ambos lados)</td>
-                            <td>\(0.30 \times 5100 = 1530 \text{ mm}\)</td>
-                        </tr>
-                        <tr>
-                            <td style="text-align:left;"><strong>Negativo en Apoyo Exterior</strong></td>
-                            <td>\(0.33 L_n\) (discontinua)</td>
-                            <td>\(0.33 \times 5100 = 1683 \text{ mm}\)</td>
-                        </tr>
-                        <tr>
-                            <td style="text-align:left;"><strong>Positivo en Vano</strong></td>
-                            <td>Mínimo 150 mm dentro del apoyo</td>
-                            <td>200 mm (adoptado)</td>
-                        </tr>
-                    </tbody>
-                </table>
             </div>
         </div>
 
