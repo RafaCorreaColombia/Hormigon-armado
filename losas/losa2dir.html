@@ -1277,12 +1277,74 @@
             </div>
         </div>
 
-        <!-- MDD VS MPE COMPARISON -->
-        <div class="w3-panel ce-panel-azul w3-padding w3-round">
-            <strong>🔄 ¿Cuándo usar el Método del Pórtico Equivalente?</strong>
-            <p class="w3-small" style="margin-top:5px; margin-bottom:0;">
-                Cuando el sistema no cumple alguno de los 6 requisitos del MDD (C.13.6.1), especialmente en edificios irregulares, con cargas concentradas, o con variaciones significativas de luces. El MPE permite mayor flexibilidad pero requiere un análisis estructural computacional completo.
-            </p>
+        <!-- PERSPECTIVA NORMATIVA Y EVOLUCIÓN (REEMPLAZA MDD VS MPE COMPARISON) -->
+        <div class="panel-control" id="perspectiva-normativa" style="border: 2px solid var(--azul-profundo);">
+            <h2 class="panel-titulo" style="border-bottom: 2px solid var(--azul-profundo);"><i class="fa fa-book"></i> Evolución Normativa: El futuro del Método Directo</h2>
+            
+            <p>En el estudio del diseño estructural, es vital entender la evolución del código. El Título C de la <strong>NSR-10 está basado en el ACI 318S-11</strong> (con adaptaciones al contexto colombiano). Sin embargo, la ingeniería avanza y es natural observar hacia dónde apuntan códigos más recientes como el ACI 318-19 y la actualización del AIS 100-24.</p>
+
+            <div class="w3-panel ce-panel-azul w3-padding w3-round">
+                <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:0;">¿El ACI 318-19 prohibió el Método Directo?</h4>
+                <p><strong>No.</strong> El ACI 318-19 eliminó las disposiciones detalladas (el "paso a paso") del Método de Diseño Directo y del Pórtico Equivalente porque ya no reflejan la práctica predominante de análisis, la cual ha sido ampliamente reemplazada por software de elementos finitos. Sin embargo, <strong>los métodos siguen siendo aplicables y permitidos</strong>. El código dejó de ser un manual de procedimientos de análisis de losas (teoría que pertenece a los libros de texto), para concentrarse en los requisitos de diseño y detallado.</p>
+            </div>
+
+            <div class="w3-panel w3-padding-large w3-round w3-margin-top" style="background-color: var(--naranja-suave); border-left: 5px solid var(--naranja-estructural);">
+                <strong class="w3-large" style="color: var(--azul-profundo);">💡 La Filosofía Criterio Estructural</strong>
+                <p style="margin-top:8px; font-style:italic; color: var(--gris-texto);">
+                    > "El código no te dice necesariamente cómo obtener el momento. Te dice, dado el estado de fuerzas que has determinado, qué debe cumplir tu estructura."
+                </p>
+                <p style="margin-bottom: 0;">Retirar la receta analítica del código <strong>aumenta, no disminuye, la responsabilidad del ingeniero</strong>. No se trata de concluir simplistamente que "ahora hay que usar ETABS o SAFE", sustituyendo una receta normativa por una receta de software. Se trata de entender las tres capas fundamentales del problema:</p>
+            </div>
+
+            <div class="tabla-container">
+                <table class="tabla-traslapos tabla-small w3-white">
+                    <thead>
+                        <tr>
+                            <th>Capa</th>
+                            <th>¿Qué nos preguntamos?</th>
+                            <th>Herramientas / Métodos</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="text-align:left; font-weight:bold;">1. Modelo Físico</td>
+                            <td style="text-align:left;">¿Cómo funciona una losa bidireccional y cómo transmite cargas a los apoyos?</td>
+                            <td style="text-align:left;">Cinemática, rigidez relativa, compatibilidad de deformaciones.</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left; font-weight:bold;">2. Análisis Estructural</td>
+                            <td style="text-align:left;">¿Cómo obtengo las demandas (momentos, cortantes) derivadas de ese modelo físico?</td>
+                            <td style="text-align:left;">Método Directo (MDD), Pórtico Equivalente (MPE), Elementos Finitos (FEM).</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left; font-weight:bold;">3. Reglas de Diseño</td>
+                            <td style="text-align:left;">¿Cómo convierto esas demandas en acero, espesor y detallado normativo?</td>
+                            <td style="text-align:left;">Ecuaciones de resistencia, cuantías, traslapos y anclajes.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:20px; text-align: center;">Una misma losa. Tres maneras de pensarla.</h4>
+            
+            <div class="ce-grid ce-grid-3 w3-margin-top w3-small">
+                <div class="w3-white w3-padding w3-round" style="border: 1px solid var(--gris-borde);">
+                    <strong style="color: var(--naranja-estructural);">1. Método Clásico (MDD)</strong><br>
+                    <div class="w3-margin-top">Carga → \(M_0\) → \(M_x, M_y\) → Franjas → \(A_s\)</div>
+                </div>
+                <div class="w3-white w3-padding w3-round" style="border: 1px solid var(--gris-borde);">
+                    <strong style="color: var(--naranja-estructural);">2. Pórtico Equivalente (MPE)</strong><br>
+                    <div class="w3-margin-top">Carga → Marco equivalente → \(M\) → Franjas → \(A_s\)</div>
+                </div>
+                <div class="w3-white w3-padding w3-round" style="border: 1px solid var(--gris-borde);">
+                    <strong style="color: var(--naranja-estructural);">3. Modelo FEM</strong><br>
+                    <div class="w3-margin-top">Carga → Modelo 3D → \(M_x, M_y, M_{xy}\) → Interpretación → \(A_s\)</div>
+                </div>
+            </div>
+
+            <div class="w3-panel ce-panel-gris w3-padding w3-round w3-center" style="margin-bottom:0;">
+                <strong>La verdadera pregunta de la ingeniería:</strong> ¿Por qué los tres métodos no necesariamente producen exactamente el mismo momento en cada punto? <em>Entender esa diferencia geométrica y de rigidez es lo que separa a un operador de software de un ingeniero estructural.</em>
+            </div>
         </div>
 
         <!-- REFERENCIAS -->
