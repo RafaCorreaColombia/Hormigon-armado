@@ -358,18 +358,18 @@
             </div>
 
             <div class="w3-panel ce-panel-naranja w3-padding w3-round">
-                El análisis se realizará sobre una franja representativa en la dirección Y (interior):<br>
+                El análisis se realizará sobre una franja representativa en la dirección Y:<br>
                 ✅ <strong>Relación de Aspecto:</strong> \( 5.50 / 4.25 = 1.29 \leq 2.0 \). <br>
                 El sistema se analiza como <span class="ce-destacado">Losa en Dos Direcciones</span>.
             </div>
         </div>
 
-        <!-- CARD 2: RIGIDEZ -->
+        <!-- CARD 2: RIGIDEZ (CORREGIDA) -->
         <div class="panel-control" id="rigidez">
             <h2 class="panel-titulo">2. Rigidez Relativa de Vigas (\(\alpha_f = \frac{E_{cb} I_b}{E_{cs} I_s}\))</h2>
             <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Análisis detallado y predimensionamiento. NSR-10 C.9.5.3 y C.13.6.1.6</p>
 
-            <p>Para un <strong>Panel Interior</strong>, debemos calcular la rigidez de las cuatro vigas que lo confinan. La rigidez \(\alpha_f\) relaciona la inercia de la viga (\(I_b\)) con la inercia de la franja de losa (\(I_s\)) limitada lateralmente por los ejes centrales (Ver NSR-10 C.13.2.4).</p>
+            <p>Para aplicar el procedimiento y verificar las condiciones de rigidez del sistema, debemos calcular la rigidez relativa \(\alpha_f\) de las vigas que participan en los paneles considerados. La rigidez \(\alpha_f\) relaciona la inercia de la viga (\(I_b\)) con la inercia de la franja de losa (\(I_s\)) limitada lateralmente por los ejes centrales (Ver NSR-10 C.13.2.4).</p>
             
             <div class="w3-panel ce-panel-naranja w3-padding w3-round">
                 <strong>💡 Asumimos un espesor inicial de losa \(h = 130 \text{ mm}\)</strong> para el cálculo de las inercias de la losa.
@@ -451,10 +451,16 @@
 
             <div class="w3-panel ce-panel-naranja w3-padding w3-round w3-center">
                 <span class="w3-large">\( \alpha_{fm} = \frac{\sum \alpha_f}{4} = \mathbf{2.98} \)</span>
-                <p style="margin: 5px 0 0 0; font-weight: bold;">Criterio: \(\alpha_{fm} > 2.0\). Las vigas dominan la rigidez.</p>
+                <p style="margin: 5px 0 0 0; font-weight: bold;">Criterio: \(\alpha_{fm} > 2.0\). El sistema se encuentra en el rango de rigidez de vigas utilizado por la expresión C.9-13.</p>
                 <p class="w3-small" style="margin: 5px 0 0 0; opacity: 0.8;">
                     <i>Nota: el valor de \(\alpha_{fm}\) se calculó para el panel esquinero (\(\alpha_{fm} = 2.98\)). Sin embargo, para un panel interior se obtiene \(\alpha_{fm} \approx 2.28\), también mayor a 2.0, por lo que en ambos casos las vigas dominan la rigidez del sistema.</i>
                 </p>
+            </div>
+
+            <!-- NOTA DE IDEALIZACIÓN (NUEVA) -->
+            <div class="w3-panel ce-panel-gris w3-padding w3-round w3-small">
+                <strong>📌 Nota sobre la idealización de rigidez:</strong><br>
+                Para el análisis en dirección Y se mantiene constante la sección de la viga longitudinal considerada y, por tanto, el valor de \(I_b\) de esa viga a lo largo del eje. La inercia \(I_s\), en cambio, depende del ancho de losa asociado a la viga según su ubicación —perimetral o interior—. Por ello, los valores de \(\alpha_f\) utilizados en cada condición se obtienen de forma independiente. En el modelo conceptual se considera la viga longitudinal como una sección T con la porción de losa definida por C.13.2.4 cuando corresponde.
             </div>
 
             <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:30px;">Predimensionamiento (NSR-10 C.9.5.3.3)</h4>
@@ -481,21 +487,15 @@
                 </span>
             </div>
 
+            <!-- CONCLUSIÓN DE RIGIDEZ (CORREGIDA) -->
             <div class="w3-panel ce-panel-azul w3-padding w3-round">
-                <strong>✅ Conclusión de Rigidez:</strong>
-                Como \(117.07 \text{ mm} \le 130 \text{ mm}\), nuestra suposición inicial es <strong>aceptable</strong>. ¡Es importante revisar cortante!<br><br>
+                <strong>✅ Conclusión de rigidez:</strong><br>
+                \(h = 130\,\text{mm}\) supera el espesor mínimo obtenido mediante C.9.5.3.3 para las condiciones de este sistema. Por tanto, el control de deflexiones se aborda mediante el criterio de espesor mínimo adoptado por la norma. Si las condiciones del proyecto requirieran un espesor menor o existieran condiciones particulares de carga, apoyo o elementos no estructurales, deberá realizarse una verificación explícita de deflexiones.<br><br>
                 <strong><i class="fa fa-info-circle"></i> Notas Técnicas de Obra:</strong>
                 <ul style="margin: 5px 0 0 0;">
                     <li>El espesor final debe validarse durante el diseño por flexión y cortante.</li>
                     <li><strong>Agregado Grueso:</strong> Se recomienda un tamaño máximo nominal de <strong>5/8"</strong> para garantizar el correcto flujo del concreto en un espesor de 130 mm (Ver requisitos de espaciamiento en NSR-10 C.3.3).</li>
                 </ul>
-            </div>
-
-            <div class="w3-panel ce-panel-gris w3-padding w3-round w3-margin-top">
-                <strong>⚖️ Verificación de Deflexiones (NSR-10 C.9.5.2.6):</strong>
-                <p class="w3-small" style="margin-top:5px; margin-bottom:0;">
-                    Para \(\alpha_{fm} = 2.98 > 2.0\), las deflexiones se controlan principalmente por las vigas. El espesor de 130 mm cumple con el predimensionamiento por rigidez (C.9.5.3.3), lo que garantiza deflexiones aceptables bajo cargas de servicio sin necesidad de cálculos adicionales.
-                </p>
             </div>
         </div>
 
@@ -582,12 +582,12 @@
             </div>
         </div>
 
-        <!-- CARD 5: DISTRIBUCIÓN DE MOMENTOS -->
+        <!-- CARD 5: DISTRIBUCIÓN DE MOMENTOS (CORREGIDA) -->
         <div class="panel-control" id="momentos">
-            <h2 class="panel-titulo">5. Distribución de Momentos (Dirección Y - Vano Típico)</h2>
+            <h2 class="panel-titulo">5. Distribución de Momentos — Dirección Y</h2>
             <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Análisis de Franjas según NSR-10 C.13.6.4</p>
 
-            <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:20px;">A. Panel Exterior en Y: \( L_1 = 5.50 \text{ m}, L_2 = 4.25 \text{ m} \)</h4>
+            <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:20px;">A. Franja Perimetral — Panel Exterior en Y: \( L_1 = 5.50 \text{ m}, L_2 = 4.25 \text{ m} \)</h4>
             <p>Calculamos los momentos estáticos mayorados (C.13.6.3.3) usando los factores para <strong>losa con vigas entre apoyos (Caso 2)</strong>:</p>
 
             <div class="ce-grid ce-grid-3">
@@ -664,7 +664,7 @@
                 </div>
             </div>
 
-            <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:30px;">B. Panel Interior en Y</h4>
+            <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:30px;">B. Franja Interior — Panel Interior en Y</h4>
             <p>Para paneles internos, el Momento Estático Total \(M_o\) se distribuye con factores fijos (NSR-10 C.13.6.3.2):</p>
 
             <div class="ce-grid ce-grid-2">
@@ -708,75 +708,80 @@
                 </table>
             </div>
 
-            <!-- EXPLICACIÓN CRÍTICA DEL 85/15 -->
+            <!-- EXPLICACIÓN CRÍTICA DEL 85/15 (CORREGIDA) -->
             <div class="w3-panel w3-padding-large w3-round w3-margin-top" style="background-color: var(--naranja-suave); border-left: 5px solid var(--naranja-estructural);">
                 <h3 style="color: var(--azul-profundo); margin-top: 0; font-weight: bold;">
-                    💡 Nota Pedagógica Crítica: El mito del 15% en la Franja de Columna
+                    💡 ¿Qué significa el 85/15?
                 </h3>
                 
-                <p><strong>El problema real: ¿qué significa "la losa toma el 15%"?</strong></p>
+                <p>Cuando \(\alpha_{f1}l_2/l_1\ge1.0\), la NSR-10 C.13.6.5.1 exige que las vigas entre apoyos se diseñen para resistir el 85 % de los momentos de la franja de columna. La porción de losa localizada en la franja de columna debe resistir la parte restante, de acuerdo con C.13.6.4.5.</p>
                 
-                <p>Cuando la NSR-10 (C.13.6.4.2) dice que cuando hay vigas entre apoyos, la viga toma el 85% del momento negativo interior y la losa el 15%, <strong>no está diciendo:</strong></p>
-                <ul class="w3-ul w3-border-0" style="margin-top:0;">
-                    <li><i class="fa fa-times" style="color:red;"></i> "Reste el ancho de la viga y diseñe la losa en lo que queda"</li>
-                    <li><i class="fa fa-times" style="color:red;"></i> "Calcule un ancho efectivo de T y eso es lo que toma la viga"</li>
-                    <li><i class="fa fa-times" style="color:red;"></i> "Divida la franja en dos pedazos geométricos"</li>
-                </ul>
+                <p>En este ejemplo, por tanto:</p>
+                
+                <div class="math-scroll w3-center w3-margin-top">
+                    \[
+                    M_{\text{viga}}=0.85M_{\text{FC}}
+                    \]
+                    \[
+                    M_{\text{losa}}=0.15M_{\text{FC}}
+                    \]
+                </div>
+                
+                <p style="margin-top: 15px;">La franja de columna <strong>incluye la viga</strong>. El 85/15 representa una distribución de momento entre la viga y la porción de losa de la franja; no una división geométrica de la franja.</p>
 
-                <p>Está diciendo: <strong>Del momento total asignado a la franja de columna, el sistema viga absorbe 85% y el sistema losa absorbe 15%, trabajando en conjunto.</strong></p>
+                <div class="tabla-container w3-margin-top">
+                    <table class="w3-table w3-bordered w3-white w3-small">
+                        <thead>
+                            <tr class="w3-light-grey">
+                                <th style="text-align:left;">Componente</th>
+                                <th style="text-align:center;">Momento de diseño</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="text-align:left;"><strong>Viga</strong></td>
+                                <td style="text-align:center;">\(0.85M_{\mathrm{FC}}\)</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:left;"><strong>Losa de la franja de columna</strong></td>
+                                <td style="text-align:center;">\(0.15M_{\mathrm{FC}}\)</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:left;"><strong>Franja central</strong></td>
+                                <td style="text-align:center;">\(M_{\mathrm{restante}}\)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
-                <h5 style="font-weight: bold; color: var(--naranja-estructural);">1. La distribución 85/15 es entre SISTEMAS, no entre anchos</h5>
+                <h5 style="font-weight: bold; color: var(--naranja-estructural); margin-top: 20px;">La distribución 85/15 es entre SISTEMAS, no entre anchos</h5>
                 <p style="margin-bottom: 5px;">La franja de columna sigue siendo una franja completa, con ancho \( b_{\text{franja}} = \frac{L_2}{2} \) (típicamente). Esa franja contiene una viga (si la hay) y losa a ambos lados de la viga. Toda esa zona trabaja en conjunto. El 85/15 es una partición de responsabilidad estructural, no geométrica.</p>
 
-                <h5 style="font-weight: bold; color: var(--naranja-estructural);">2. ¿Sobre qué ancho diseño el 15% de la losa?</h5>
-                <p style="margin-bottom: 5px;"><strong>Usas el ancho completo de la franja de columna.</strong> No restas el ancho de la viga ni el ancho efectivo de la T. Ese 15% ya está asignado a la losa como sistema, y la losa ocupa todo el ancho de la franja.</p>
+                <h5 style="font-weight: bold; color: var(--naranja-estructural); margin-top: 20px;">¿Sobre qué ancho diseño el 15% de la losa?</h5>
+                <p style="margin-bottom: 5px;"><strong>Usas el ancho completo de la franja de columna.</strong> No restas el ancho de la viga ni el ancho efectivo de la T. Ese 15% ya está asignado a la losa como sistema, y la losa ocupa todo el ancho de la franja. Para este ejemplo, el momento por metro lineal se obtiene distribuyendo el 15% sobre el ancho completo de la franja de diseño.</p>
 
-                <h5 style="font-weight: bold; color: var(--naranja-estructural);">3. ¿Y el ancho efectivo de la T?</h5>
+                <h5 style="font-weight: bold; color: var(--naranja-estructural); margin-top: 20px;">¿Y el ancho efectivo de la T?</h5>
                 <p style="margin-bottom: 5px;">El ancho efectivo de la viga T es un concepto diferente. Se usa para diseñar la viga (calcular su resistencia a flexión considerando que la losa participa), pero no se usa para restar de la losa al calcular el refuerzo correspondiente al 15%.</p>
 
-                <h5 style="font-weight: bold; color: var(--naranja-estructural);">4. ¿Por qué no restar el alma de la viga?</h5>
-                <p style="margin-bottom: 5px;">Porque inflarías artificialmente el momento por metro de losa, asumiendo que la losa no existe en la zona de la viga. La losa sí existe ahí (forma parte de la sección T). El 85% del momento ya fue asignado a la viga, y el 15% restante se distribuye sobre <strong>toda</strong> la losa de la franja, incluyendo la zona sobre la viga.</p>
-
-                <h5 style="font-weight: bold; color: var(--naranja-estructural);">5. Resumen Ejecutivo (FEM vs MDD)</h5>
-                <table class="w3-table w3-bordered w3-white w3-small" style="margin-top: 10px;">
-                    <tr class="w3-light-grey">
-                        <th>Concepto</th>
-                        <th>¿Qué significa?</th>
-                    </tr>
-                    <tr>
-                        <td><strong>85% a la viga</strong></td>
-                        <td>Momento que diseña la viga (sección T, acero superior concentrado)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>15% a la losa</strong></td>
-                        <td>Momento que diseña el refuerzo de losa en <em>toda</em> la franja de columna</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Ancho de diseño de losa</strong></td>
-                        <td>Ancho completo de la franja, no se resta la viga</td>
-                    </tr>
-                    <tr>
-                        <td><strong>FEM vs MDD</strong></td>
-                        <td>El FEM muestra distribución continua; el MDD la simplifica en 85/15</td>
-                    </tr>
-                </table>
+                <h5 style="font-weight: bold; color: var(--naranja-estructural); margin-top: 20px;">Modelo FEM vs MDD</h5>
+                <p style="margin-bottom: 0;">El FEM muestra una distribución continua de momentos alrededor de la viga. La regla 85/15 del MDD simplifica esa distribución en dos valores discretos: uno para la viga y uno para la losa. Ambos enfoques son válidos, pero responden a preguntas diferentes. El MDD proporciona una regla de distribución calibrada para sistemas típicos; el FEM representa la respuesta del sistema considerando explícitamente la rigidez de todos los elementos.</p>
             </div>
 
-            <!-- CUADRO COMPLETO DESPLEGABLE -->
+            <!-- CUADRO COMPLETO DESPLEGABLE (CORREGIDO) -->
             <details class="w3-panel w3-round ce-panel-gris" style="margin-top: 30px; border: 1px solid var(--gris-borde);">
                 <summary style="font-weight: bold; cursor: pointer; padding: 15px; font-size: 1.1em; color: var(--azul-profundo);">
                     <i class="fa fa-table"></i> Memoria Adicional: Cuadro Completo de Franjas (X e Y)
                 </summary>
                 <div style="padding: 15px; overflow-x: auto;">
-                    <p class="w3-small">Desglose de cálculo para vanos interiores (Vano Típico o Franja Interior en este documento) y exteriores (Vano Adyacente y Paralelo a un Borde o Franja Perimetral en este documento) en ambas direcciones (X e Y), integrando la regla de distribución del 15% a la losa.</p>
+                    <p class="w3-small">Desglose de cálculo para franjas interiores y perimetrales en ambas direcciones (X e Y), integrando la regla de distribución del 15% a la losa.</p>
                     <table class="tabla-traslapos tabla-small w3-white">
                         <thead>
                             <tr>
                                 <th>Variable</th>
-                                <th>Vano Ady. Y</th>
-                                <th>Vano Típico Y</th>
-                                <th>Vano Ady. X</th>
-                                <th>Vano Típico X</th>
+                                <th>Franja Perim. Y</th>
+                                <th>Franja Interior Y</th>
+                                <th>Franja Perim. X</th>
+                                <th>Franja Interior X</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -795,44 +800,44 @@
                             </tr>
                             <tr class="w3-light-grey"><td colspan="5" style="text-align: center; font-weight: bold;">Momentos en Franja de Columna (SÓLO LOSA 15%) (kNm)</td></tr>
                             <tr>
-                                <td style="text-align: left;">Vano Final Neg. Interior</td>
+                                <td style="text-align: left;">Negativo Interior</td>
                                 <td>7.87</td><td>13.09</td><td>5.33</td><td>7.81</td>
                             </tr>
                             <tr>
-                                <td style="text-align: left;">Vano Final Neg. Exterior</td>
+                                <td style="text-align: left;">Negativo Exterior</td>
                                 <td>1.80</td><td>3.00</td><td>1.22</td><td>1.78</td>
                             </tr>
                             <tr>
-                                <td style="text-align: left;">Vano Final Positivo</td>
+                                <td style="text-align: left;">Positivo</td>
                                 <td>6.41</td><td>10.66</td><td>4.34</td><td>6.36</td>
                             </tr>
                             <tr>
-                                <td style="text-align: left;">Vano Interior Negativo</td>
+                                <td style="text-align: left;">Interior Negativo</td>
                                 <td>7.31</td><td>12.15</td><td>4.95</td><td>7.25</td>
                             </tr>
                             <tr>
-                                <td style="text-align: left;">Vano Interior Positivo</td>
+                                <td style="text-align: left;">Interior Positivo</td>
                                 <td>3.94</td><td>6.54</td><td>2.66</td><td>3.90</td>
                             </tr>
                             <tr class="w3-light-grey"><td colspan="5" style="text-align: center; font-weight: bold;">Momentos en Franja Central (100%) (kNm)</td></tr>
                             <tr>
-                                <td style="text-align: left;">Vano Final Neg. Interior</td>
+                                <td style="text-align: left;">Negativo Interior</td>
                                 <td>5.83</td><td>19.39</td><td>6.67</td><td>26.60</td>
                             </tr>
                             <tr>
-                                <td style="text-align: left;">Vano Final Neg. Exterior</td>
+                                <td style="text-align: left;">Negativo Exterior</td>
                                 <td>1.32</td><td>4.38</td><td>1.53</td><td>6.08</td>
                             </tr>
                             <tr>
-                                <td style="text-align: left;">Vano Final Positivo</td>
+                                <td style="text-align: left;">Positivo</td>
                                 <td>4.75</td><td>15.79</td><td>5.43</td><td>21.66</td>
                             </tr>
                             <tr>
-                                <td style="text-align: left;">Vano Interior Negativo</td>
+                                <td style="text-align: left;">Interior Negativo</td>
                                 <td>5.42</td><td>18.00</td><td>6.20</td><td>24.70</td>
                             </tr>
                             <tr>
-                                <td style="text-align: left;">Vano Interior Positivo</td>
+                                <td style="text-align: left;">Interior Positivo</td>
                                 <td>2.92</td><td>9.69</td><td>3.34</td><td>13.30</td>
                             </tr>
                         </tbody>
@@ -869,10 +874,15 @@
             
         </div>
 
-        <!-- CARD 6: REFUERZO -->
+        <!-- CARD 6: REFUERZO (CORREGIDA) -->
         <div class="panel-control" id="refuerzo">
             <h2 class="panel-titulo">6. Especificaciones de Refuerzo y Límites</h2>
-            <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Parámetros: \(f'_c = 28 \text{ MPa}\) | \(f_y = 420 \text{ MPa}\) | \(d_{refY} = 105.24 \text{ mm}\) | \(d_{refX} = 95.71 \text{ mm}\)</p>
+            <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Parámetros: \(f'_c = 28 \text{ MPa}\) | \(f_y = 420 \text{ MPa}\) | \(d_{Y} = 105.24 \text{ mm}\) | \(d_{X} = 95.71 \text{ mm}\)</p>
+
+            <!-- NOTA SOBRE ORDEN DE CAPAS (NUEVA) -->
+            <div class="w3-panel ce-panel-gris w3-padding w3-round w3-small">
+                <strong>📌 Nota sobre el orden de capas:</strong> En las zonas donde ambas direcciones están en la misma cara de la losa, el refuerzo en dirección Y se dispone como primera capa y el refuerzo en dirección X como segunda capa. Por ello \(d_Y > d_X\). Los valores de \(d\) utilizados en cada cálculo corresponden a esta disposición constructiva adoptada.
+            </div>
 
             <div class="ce-grid ce-grid-2">
                 <div class="w3-panel ce-panel-azul w3-padding w3-round" style="margin:0;">
@@ -887,24 +897,30 @@
                     </div>
                 </div>
 
+                <!-- SEPARACIÓN MÁXIMA (CORREGIDA - ELIMINADO 450mm) -->
                 <div class="w3-panel ce-panel-gris w3-padding w3-round" style="margin:0;">
-                    <strong>↔️ Límites de Separación (\(s_{max}\)) NSR-10 C.13.3.2</strong>
+                    <strong>↔️ Límite de Separación — NSR-10 C.13.3.2</strong>
                     <div class="w3-small" style="margin-top: 5px;">
-                        En zonas de momento máximo, debe ser el menor entre:<br>
-                        • \( 2h = 2 \cdot 130 = \mathbf{260 \text{ mm}} \) <br>
-                        • \( 450 \text{ mm} \)
+                        En las secciones críticas, el espaciamiento centro a centro del refuerzo no debe exceder:
+                    </div>
+                    <div class="math-scroll w3-center w3-margin-top">
+                        \[ s_{max} = 2h = 2(130) = \mathbf{260 \text{ mm}} \]
                     </div>
                     <div class="w3-panel w3-white w3-padding-small w3-round w3-center w3-margin-top" style="border: 1px solid var(--naranja-estructural); font-weight: bold; color: var(--naranja-estructural);">
-                        Rige en todos los puntos críticos a momento de la losa: \( s \leq 260 \text{ mm} \)
+                        Rige: \( s \leq 260 \text{ mm} \)
                     </div>
                 </div>
             </div>
 
+            <!-- NOTA SOBRE ÁREAS Y CONVERSIÓN (AMPLIADA) -->
             <div class="w3-panel ce-panel-azul w3-padding w3-round w3-small">
-                <strong>📌 Nota sobre Áreas en las Tablas:</strong> El \(A_s\) requerido mostrado en las tablas corresponde al <strong>área total necesaria en todo el ancho de la franja</strong>. Las separaciones calculadas internamente toman en cuenta este ancho completo antes de compararse con el límite máximo de 260 mm.
+                <strong>📌 Nota sobre áreas y conversión a momento por metro:</strong> El \(A_s\) requerido mostrado en las tablas corresponde al <strong>área total necesaria en todo el ancho de la franja</strong>. En este ejemplo, \(M_u\) y \(A_s\) se expresan para el ancho completo de la franja de diseño. Por ello, el cálculo utiliza \(b = b_{\mathrm{franja}}\), no \(b = 1.00\,\text{m}\). La separación se obtiene posteriormente a partir del número de barras necesario dentro de ese ancho. Como puente conceptual:
+                <div class="math-scroll w3-center w3-margin-top">
+                    \[ A_{s,m} = \frac{A_{s,\text{franja}}}{b_{\text{franja}}} \]
+                </div>
             </div>
 
-            <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:30px;">Diseño de Refuerzo: Franja de Columna Típica Y (Ancho = 2.125 m) (Barra No. 3)</h4>
+            <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:30px;">Diseño de Refuerzo: Franja de Columna Interior Y (Ancho = 2.125 m) (Barra No. 3)</h4>
             <div class="tabla-container">
                 <table class="tabla-traslapos">
                     <thead>
@@ -917,31 +933,31 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td style="text-align:left;">Vano Final Neg. Interior</td>
+                            <td style="text-align:left;">Negativo Interior</td>
                             <td>13.09</td>
                             <td>333.4</td>
                             <td class="ce-destacado">260 mm</td>
                         </tr>
                         <tr>
-                            <td style="text-align:left;">Vano Final Neg. Exterior</td>
+                            <td style="text-align:left;">Negativo Exterior</td>
                             <td>3.00</td>
                             <td>75.6</td>
                             <td class="ce-destacado">260 mm</td>
                         </tr>
                         <tr>
-                            <td style="text-align:left;">Vano Final Positivo</td>
+                            <td style="text-align:left;">Positivo</td>
                             <td>10.66</td>
                             <td>270.8</td>
                             <td class="ce-destacado">260 mm</td>
                         </tr>
                         <tr>
-                            <td style="text-align:left;">Vano Interior Negativo</td>
+                            <td style="text-align:left;">Interior Negativo</td>
                             <td>12.15</td>
                             <td>309.2</td>
                             <td class="ce-destacado">260 mm</td>
                         </tr>
                         <tr>
-                            <td style="text-align:left;">Vano Interior Positivo</td>
+                            <td style="text-align:left;">Interior Positivo</td>
                             <td>6.54</td>
                             <td>165.6</td>
                             <td class="ce-destacado">260 mm</td>
@@ -950,7 +966,7 @@
                 </table>
             </div>
 
-            <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:30px;">Diseño de Refuerzo: Franja Central Típica Y (Ancho = 2.125 m) (Barra No. 3)</h4>
+            <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:30px;">Diseño de Refuerzo: Franja Central Interior Y (Ancho = 2.125 m) (Barra No. 3)</h4>
             <div class="tabla-container">
                 <table class="tabla-traslapos">
                     <thead>
@@ -963,31 +979,31 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td style="text-align:left;">Vano Final Neg. Interior</td>
+                            <td style="text-align:left;">Negativo Interior</td>
                             <td>19.39</td>
                             <td>497.1</td>
                             <td class="ce-destacado">260 mm</td>
                         </tr>
                         <tr>
-                            <td style="text-align:left;">Vano Final Neg. Exterior</td>
+                            <td style="text-align:left;">Negativo Exterior</td>
                             <td>4.38</td>
                             <td>110.5</td>
                             <td class="ce-destacado">260 mm</td>
                         </tr>
                         <tr>
-                            <td style="text-align:left;">Vano Final Positivo</td>
+                            <td style="text-align:left;">Positivo</td>
                             <td>15.79</td>
                             <td>403.3</td>
                             <td class="ce-destacado">260 mm</td>
                         </tr>
                         <tr>
-                            <td style="text-align:left;">Vano Interior Negativo</td>
+                            <td style="text-align:left;">Interior Negativo</td>
                             <td>18.00</td>
                             <td>460.9</td>
                             <td class="ce-destacado">260 mm</td>
                         </tr>
                         <tr>
-                            <td style="text-align:left;">Vano Interior Positivo</td>
+                            <td style="text-align:left;">Interior Positivo</td>
                             <td>9.69</td>
                             <td>246.1</td>
                             <td class="ce-destacado">260 mm</td>
@@ -1006,7 +1022,7 @@
             </div>
         </div>
 
-        <!-- CARD 7: CORTANTE -->
+        <!-- CARD 7: CORTANTE (CORREGIDA) -->
         <div class="panel-control" id="cortante">
             <h2 class="panel-titulo">7. Verificación de Cortante (\(V_u\))</h2>
             <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Protocolo NSR-10 para Losas con Vigas Rígidas (\(\alpha_1 L_2 / L_1 > 1\))</p>
@@ -1039,6 +1055,11 @@
                 </div>
             </div>
 
+            <!-- NOTA SOBRE d ADOPTADO (NUEVA) -->
+            <div class="w3-panel ce-panel-gris w3-padding w3-round w3-small w3-margin-top">
+                <strong>📌 Nota sobre el peralte efectivo adoptado:</strong> Para esta verificación se adopta \(d = d_Y = 105.24\,\text{mm}\), correspondiente a la capa de refuerzo más próxima a la cara traccionada considerada en la dirección de análisis.
+            </div>
+
             <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:30px;">B. Cortante Bidireccional (2D / Punzonamiento) - Columna interior</h4>
 
             <div class="w3-panel ce-panel-gris w3-padding w3-round">
@@ -1047,7 +1068,7 @@
                         <strong>1. Geometría Crítica:</strong>
                         <ul class="w3-small" style="margin-top:5px;">
                             <li>Columna: \(400 \times 400 \text{ mm}\) (\(\beta = 1.0\))</li>
-                            <li>Peralte prom. (\(d\)): \(105.24 \text{ mm}\)</li>
+                            <li>Peralte (\(d\)): \(105.24 \text{ mm}\)</li>
                             <li>Perímetro (\(b_o\)): \(4 \cdot (c + d) = \mathbf{2.021 \text{ m}}\)</li>
                             <li>Área Crítica (\(A_c\)): \((c+d)^2 = \mathbf{0.255 \text{ m}^2}\)</li>
                         </ul>
@@ -1078,12 +1099,14 @@
                 </div>
             </div>
 
+            <!-- NOTA DE PUNZONAMIENTO (CORREGIDA) -->
             <div class="w3-panel ce-panel-naranja w3-padding w3-round">
-                <strong>⚠️ Nota Técnica Crítica:</strong> Aunque el punzonamiento "cumple" como losa plana, en este sistema <strong>las vigas rigidizan el apoyo</strong>. El cortante real se desvía hacia las vigas mediante el mecanismo de arco y flujo a 45°, lo que reduce drásticamente el esfuerzo de punzonamiento en la losa, pero traslada la responsabilidad del cortante a la <u>viga principal</u>.
+                <strong>📌 Nota sobre el modelo de cortante:</strong><br>
+                En este ejemplo se verifica explícitamente el punzonamiento como una comprobación conservadora de la losa alrededor de la columna. La presencia de vigas modifica la distribución de rigidez y de fuerzas del sistema, pero no permite omitir automáticamente la verificación de cortante de la losa. La respuesta real del sistema puede distribuir parte importante de las fuerzas hacia las vigas; sin embargo, esa redistribución debe demostrarse mediante el modelo estructural correspondiente y no asumirse únicamente por la presencia de una viga.
             </div>
         </div>
 
-        <!-- <!-- CARD 8: DETALLAMIENTO Y TRASLAPOS -->
+        <!-- CARD 8: DETALLAMIENTO Y TRASLAPOS (CORREGIDA) -->
         <div class="panel-control" id="detallamiento">
             <h2 class="panel-titulo">8. Detallamiento de Refuerzo y Traslapos</h2>
             <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Longitudes de desarrollo, cortes y ganchos según NSR-10 C.12 y C.13.3</p>
@@ -1126,10 +1149,11 @@
                 </table>
             </div>
 
+            <!-- NOTA SOBRE VALORES CALCULADOS VS MÍNIMOS (CORREGIDA) -->
             <div class="w3-panel ce-panel-azul w3-padding w3-round">
-                <strong>📌 Valores Exactos vs. Normativos (Barra N° 3):</strong><br>
+                <strong>📌 Resultado calculado y mínimo normativo (Barra N° 3):</strong><br>
                 <p class="w3-small" style="margin-top:5px; margin-bottom:0;">
-                    El cálculo analítico arroja un \(l_d = 211.5 \text{ mm}\) y una longitud teórica de traslapo de \(274.9 \text{ mm}\). Sin embargo, la NSR-10 exige un <strong>mínimo normativo de 300 mm</strong> para longitudes de desarrollo y empalmes a tracción. Por ello, los valores definitivos de diseño se elevan y estandarizan en <strong>30 cm</strong>.
+                    El cálculo analítico mediante C.12.2.3 arroja un \(l_d = 211.5 \text{ mm}\) y una longitud teórica de traslapo de \(274.9 \text{ mm}\). Sin embargo, la NSR-10 exige un <strong>mínimo normativo de 300 mm</strong> para longitudes de desarrollo y empalmes a tracción (C.12.2.4). Por ello, los valores definitivos de diseño se adoptan en <strong>30 cm</strong>.
                 </p>
             </div>
 
@@ -1160,8 +1184,8 @@
                         <span class="w3-large ce-destacado">\(l_{dh} = \mathbf{181.4 \text{ mm}}\)</span>
                     </div>
                     <div style="margin:0;">
-                        <strong>Dimensión Física del Gancho (\(\approx 16d_b\)):</strong><br>
-                        <p class="w3-small" style="margin-top:5px; margin-bottom:5px;">Longitud total constructiva del doblez, medida desde el extremo de corte hasta la cara exterior de la porción recta de la barra a 90°.</p>
+                        <strong>Dimensión Constructiva del Gancho:</strong><br>
+                        <p class="w3-small" style="margin-top:5px; margin-bottom:5px;">Longitud total del doblez, medida desde el extremo de corte hasta la cara exterior de la porción recta de la barra a 90°. Incluye mandril de doblado más extensión recta.</p>
                         <span class="w3-large ce-destacado">Longitud total = \(\mathbf{152.4 \text{ mm}}\)</span>
                     </div>
                 </div>
@@ -1241,14 +1265,14 @@
                 </table>
             </div>
 
+            <!-- ESPECIFICACIONES DE CONSTRUCCIÓN (CORREGIDAS) -->
             <div class="w3-panel ce-panel-naranja w3-padding w3-round">
                 <strong>📋 Especificaciones de Construcción:</strong>
                 <ul class="w3-small" style="margin-top:5px; margin-bottom:0;">
+                    <li><strong>Curado:</strong> Mínimo 7 días, salvo que se utilice un procedimiento de curado acelerado conforme a NSR-10 C.5.11.</li>
+                    <li><strong>Descimbrado y reapuntalamiento:</strong> Según procedimiento de construcción, resistencia alcanzada y cargas de construcción; no se prescribe una edad fija en este ejemplo.</li>
                     <li>Recubrimiento inferior: <strong>20 mm</strong> (NSR-10 C.7.7.1)</li>
                     <li>Agregado máximo nominal: <strong>5/8"</strong></li>
-                    <li>Asentamiento recomendado: <strong>10 ± 2 cm</strong></li>
-                    <li>Curado mínimo: <strong>7 días</strong> con membrana o agua</li>
-                    <li>Resistencia de descimbrado: <strong>70% f'c</strong> (mínimo 14 días)</li>
                 </ul>
             </div>
         </div>
