@@ -84,6 +84,7 @@
         .tabla-traslapos th { background-color: var(--azul-profundo) !important; color: white !important; padding: 14px; text-align: center; transition: background-color 0.3s; }
         .tabla-traslapos td { padding: 12px; text-align: center; border-bottom: 1px solid #e2e8f0; }
         .tabla-traslapos tr:hover { background-color: var(--gris-claro); }
+        .tabla-small td, .tabla-small th { padding: 8px; font-size: 0.85em; }
 
         /* BANNERS DE TABLA RESPONSIVOS */
         @media (max-width: 768px) {
@@ -554,7 +555,7 @@
                 </span>
             </div>
 
-            <p>Cálculo del <strong>Momento Estático Mayorado \( M_0 \)</strong> en la dirección Y:</p>
+            <p>Cálculo del <strong>Momento Estático Mayorado \( M_0 \)</strong> en la dirección Y (Franja Típica):</p>
 
             <div class="w3-panel ce-panel-azul w3-padding w3-round">
                 <div class="math-scroll w3-center">
@@ -583,11 +584,11 @@
 
         <!-- CARD 5: DISTRIBUCIÓN DE MOMENTOS -->
         <div class="panel-control" id="momentos">
-            <h2 class="panel-titulo">5. Distribución de Momentos (Dirección Y)</h2>
+            <h2 class="panel-titulo">5. Distribución de Momentos (Dirección Y - Vano Típico)</h2>
             <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Análisis de Franjas según NSR-10 C.13.6.4</p>
 
             <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:20px;">A. Panel Exterior en Y: \( L_1 = 5.50 \text{ m}, L_2 = 4.25 \text{ m} \)</h4>
-            <p>Calculamos los momentos estáticos mayorados (C.13.6.3.3) usando los factores para <strong>losa con vigas entre apoyos (Caso 2)</strong>:</p>
+            <p>Calculamos los momentos estáticos mayorados (C.13.6.3.3) usando los factores para <strong>losa con vigas entre apoyos (Caso 2)</strong>[cite: 1]:</p>
 
             <div class="ce-grid ce-grid-3">
                 <div class="w3-panel ce-panel-azul w3-padding w3-round w3-center" style="margin:0;">
@@ -610,7 +611,8 @@
                         <tr>
                             <th style="text-align:left;">Momento Mayorado</th>
                             <th>Factor F.C.</th>
-                            <th>Franja Columna</th>
+                            <th>Franja Columna (Total)</th>
+                            <th>Franja Col. (SLAB 15%)</th>
                             <th>Franja Central</th>
                         </tr>
                     </thead>
@@ -618,31 +620,30 @@
                         <tr>
                             <td style="text-align:left;"><strong>Negativo Interior</strong></td>
                             <td>81.8%</td>
-                            <td class="ce-destacado">87.24 kNm</td>
+                            <td>87.24 kNm</td>
+                            <td class="ce-destacado">13.09 kNm</td>
                             <td>19.39 kNm</td>
                         </tr>
                         <tr>
                             <td style="text-align:left;"><strong>Positivo</strong></td>
                             <td>81.8%</td>
-                            <td class="ce-destacado">71.04 kNm</td>
+                            <td>71.04 kNm</td>
+                            <td class="ce-destacado">10.66 kNm</td>
                             <td>15.79 kNm</td>
                         </tr>
                         <tr>
                             <td style="text-align:left;"><strong>Negativo Exterior</strong></td>
                             <td>82.0%</td>
-                            <td class="ce-destacado">20.00 kNm</td>
-                            <td>4.37 kNm</td>
+                            <td>20.00 kNm</td>
+                            <td class="ce-destacado">3.00 kNm</td>
+                            <td>4.38 kNm</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
             <div class="w3-panel ce-panel-gris w3-padding w3-round w3-small">
-                <strong>Nota sobre Interpolación:</strong> Con \( L_2/L_1 = 0.77 \), \( \alpha_{f1} = 2.57 \) y \( \alpha_{f1} L_2/L_1 = 1.99 \), se interpoló entre los valores de la norma (0.5 y 1.0) para obtener los porcentajes de 81.8% y 82.0% respectivamente.
-            </div>
-
-            <div class="w3-panel ce-panel-gris w3-padding w3-round w3-small">
-                <strong>📌 Nota Académica:</strong> Aunque el panel sea Exterior o Interior, se han utilizado los mismos valores de \(I_b\) e \(I_s\) para calcular \(\alpha_{f1}\). Esto se debe a que la <strong>Viga en Y</strong> se analiza como una sección <strong>T-Interior</strong> (con losa a lado y lado) constante a lo largo de todo el eje, garantizando una distribución de rigideces uniforme en la dirección del análisis.
+                <strong>Nota sobre Interpolación:</strong> Con \( L_2/L_1 = 0.77 \), \( \alpha_{f1} = 2.57 \) y \( \alpha_{f1} L_2/L_1 = 1.99 \), se interpoló entre los valores de la norma (0.5 y 1.0) para obtener los porcentajes correspondientes[cite: 1].
             </div>
 
             <div class="w3-panel ce-panel-azul w3-padding w3-round">
@@ -654,9 +655,9 @@
                 </div>
                 <strong>Resultados Eje X:</strong>
                 <ul class="w3-small" style="margin-top:5px; margin-bottom:0;">
-                    <li>\( C = 2.666 \times 10^9 \text{ mm}^4 \) (Propiedad torsional de la viga en X).</li>
-                    <li>\( I_s = 5.401 \times 10^8 \text{ mm}^4 \) (Inercia de losa perpendicular a la viga en X).</li>
-                    <li><strong>\( \beta_t = \frac{E_{cb} C}{2 E_{cs} I_s} = 2.47 \)</strong></li>
+                    <li>\( C = 2.666 \times 10^9 \text{ mm}^4 \) (Propiedad torsional de la viga en X)[cite: 1].</li>
+                    <li>\( I_s = 5.401 \times 10^8 \text{ mm}^4 \) (Inercia de losa perpendicular a la viga en X)[cite: 1].</li>
+                    <li><strong>\( \beta_t = \frac{E_{cb} C}{2 E_{cs} I_s} = 2.47 \)</strong>[cite: 1]</li>
                 </ul>
                 <div class="w3-panel w3-white w3-padding-small w3-round w3-small w3-margin-top" style="border: 1px solid var(--naranja-estructural);">
                     <strong>Nota Pedagógica:</strong> Para el análisis de momentos en la dirección Y, la viga que aporta rigidez torsional (\( \beta_t \)) es la viga transversal situada en el eje X.
@@ -664,7 +665,7 @@
             </div>
 
             <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:30px;">B. Panel Interior en Y</h4>
-            <p>Para paneles internos, el Momento Estático Total \(M_o\) se distribuye con factores fijos (NSR-10 C.13.6.3.2):</p>
+            <p>Para paneles internos, el Momento Estático Total \(M_o\) se distribuye con factores fijos (NSR-10 C.13.6.3.2)[cite: 1]:</p>
 
             <div class="ce-grid ce-grid-2">
                 <div class="w3-panel ce-panel-azul w3-padding w3-round w3-center" style="margin:0;">
@@ -683,7 +684,8 @@
                         <tr>
                             <th style="text-align:left;">Tipo de Momento (Interior)</th>
                             <th>Factor F.C.</th>
-                            <th>Franja Columna</th>
+                            <th>Franja Columna (Total)</th>
+                            <th>Franja Col. (SLAB 15%)</th>
                             <th>Franja Central</th>
                         </tr>
                     </thead>
@@ -691,33 +693,167 @@
                         <tr>
                             <td style="text-align:left;"><strong>Negativo Mayorado</strong></td>
                             <td>81.8%</td>
-                            <td class="ce-destacado">81.01 kNm</td>
+                            <td>81.01 kNm</td>
+                            <td class="ce-destacado">12.15 kNm</td>
                             <td>18.00 kNm</td>
                         </tr>
                         <tr>
                             <td style="text-align:left;"><strong>Positivo Mayorado</strong></td>
                             <td>81.8%</td>
-                            <td class="ce-destacado">43.62 kNm</td>
+                            <td>43.62 kNm</td>
+                            <td class="ce-destacado">6.54 kNm</td>
                             <td>9.69 kNm</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
+            <!-- EXPLICACIÓN CRÍTICA DEL 85/15 -->
+            <div class="w3-panel w3-padding-large w3-round w3-margin-top" style="background-color: var(--naranja-suave); border-left: 5px solid var(--naranja-estructural);">
+                <h3 style="color: var(--azul-profundo); margin-top: 0; font-weight: bold;">
+                    💡 Nota Pedagógica Crítica: El mito del 15% en la Franja de Columna
+                </h3>
+                
+                <p><strong>El problema real: ¿qué significa "la losa toma el 15%"?</strong></p>
+                
+                <p>Cuando la NSR-10 (C.13.6.4.2) dice que cuando hay vigas entre apoyos, la viga toma el 85% del momento negativo interior y la losa el 15%, <strong>no está diciendo:</strong></p>
+                <ul class="w3-ul w3-border-0" style="margin-top:0;">
+                    <li><i class="fa fa-times" style="color:red;"></i> "Reste el ancho de la viga y diseñe la losa en lo que queda"</li>
+                    <li><i class="fa fa-times" style="color:red;"></i> "Calcule un ancho efectivo de T y eso es lo que toma la viga"</li>
+                    <li><i class="fa fa-times" style="color:red;"></i> "Divida la franja en dos pedazos geométricos"</li>
+                </ul>
+
+                <p>Está diciendo: <strong>Del momento total asignado a la franja de columna, el sistema viga absorbe 85% y el sistema losa absorbe 15%, trabajando en conjunto.</strong></p>
+
+                <h5 style="font-weight: bold; color: var(--naranja-estructural);">1. La distribución 85/15 es entre SISTEMAS, no entre anchos</h5>
+                <p style="margin-bottom: 5px;">La franja de columna sigue siendo una franja completa, con ancho \( b_{\text{franja}} = \frac{L_2}{2} \) (típicamente). Esa franja contiene una viga (si la hay) y losa a ambos lados de la viga. Toda esa zona trabaja en conjunto. El 85/15 es una partición de responsabilidad estructural, no geométrica.</p>
+
+                <h5 style="font-weight: bold; color: var(--naranja-estructural);">2. ¿Sobre qué ancho diseño el 15% de la losa?</h5>
+                <p style="margin-bottom: 5px;"><strong>Usas el ancho completo de la franja de columna.</strong> No restas el ancho de la viga ni el ancho efectivo de la T. Ese 15% ya está asignado a la losa como sistema, y la losa ocupa todo el ancho de la franja.</p>
+
+                <h5 style="font-weight: bold; color: var(--naranja-estructural);">3. ¿Y el ancho efectivo de la T?</h5>
+                <p style="margin-bottom: 5px;">El ancho efectivo de la viga T es un concepto diferente. Se usa para diseñar la viga (calcular su resistencia a flexión considerando que la losa participa), pero no se usa para restar de la losa al calcular el refuerzo correspondiente al 15%.</p>
+
+                <h5 style="font-weight: bold; color: var(--naranja-estructural);">4. ¿Por qué no restar el alma de la viga?</h5>
+                <p style="margin-bottom: 5px;">Porque inflarías artificialmente el momento por metro de losa, asumiendo que la losa no existe en la zona de la viga. La losa sí existe ahí (forma parte de la sección T). El 85% del momento ya fue asignado a la viga, y el 15% restante se distribuye sobre <strong>toda</strong> la losa de la franja, incluyendo la zona sobre la viga.</p>
+
+                <h5 style="font-weight: bold; color: var(--naranja-estructural);">5. Resumen Ejecutivo (FEM vs MDD)</h5>
+                <table class="w3-table w3-bordered w3-white w3-small" style="margin-top: 10px;">
+                    <tr class="w3-light-grey">
+                        <th>Concepto</th>
+                        <th>¿Qué significa?</th>
+                    </tr>
+                    <tr>
+                        <td><strong>85% a la viga</strong></td>
+                        <td>Momento que diseña la viga (sección T, acero superior concentrado)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>15% a la losa</strong></td>
+                        <td>Momento que diseña el refuerzo de losa en <em>toda</em> la franja de columna</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ancho de diseño de losa</strong></td>
+                        <td>Ancho completo de la franja, no se resta la viga</td>
+                    </tr>
+                    <tr>
+                        <td><strong>FEM vs MDD</strong></td>
+                        <td>El FEM muestra distribución continua; el MDD la simplifica en 85/15</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- CUADRO COMPLETO DESPLEGABLE -->
+            <details class="w3-panel w3-round ce-panel-gris" style="margin-top: 30px; border: 1px solid var(--gris-borde);">
+                <summary style="font-weight: bold; cursor: pointer; padding: 15px; font-size: 1.1em; color: var(--azul-profundo);">
+                    <i class="fa fa-table"></i> Memoria Adicional: Cuadro Completo de Franjas (X e Y)
+                </summary>
+                <div style="padding: 15px; overflow-x: auto;">
+                    <p class="w3-small">Desglose de cálculo para vanos interiores y exteriores en ambas direcciones (X e Y), integrando la regla de distribución del 15% a la losa[cite: 1].</p>
+                    <table class="tabla-traslapos tabla-small w3-white">
+                        <thead>
+                            <tr>
+                                <th>Variable</th>
+                                <th>Vano Ady. Y</th>
+                                <th>Vano Típico Y</th>
+                                <th>Vano Ady. X</th>
+                                <th>Vano Típico X</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="text-align: left;"><strong>$L_n$ (m)</strong></td>
+                                <td>5.10</td><td>5.10</td><td>3.85</td><td>3.85</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left;"><strong>$L_2$ (m)</strong></td>
+                                <td>2.33</td><td>4.25</td><td>2.95</td><td>5.50</td>
+                            </tr>
+                            <tr class="w3-light-grey"><td colspan="5" style="text-align: center; font-weight: bold;">Momento Estático Mayorado $M_0$ (kNm)</td></tr>
+                            <tr>
+                                <td style="text-align: left;"><strong>$M_0$</strong></td>
+                                <td class="ce-destacado">83.33</td><td class="ce-destacado">152.33</td><td class="ce-destacado">60.25</td><td class="ce-destacado">112.34</td>
+                            </tr>
+                            <tr class="w3-light-grey"><td colspan="5" style="text-align: center; font-weight: bold;">Momentos en Franja de Columna (SÓLO LOSA 15%) (kNm)</td></tr>
+                            <tr>
+                                <td style="text-align: left;">Vano Final Neg. Interior</td>
+                                <td>7.87</td><td>13.09</td><td>5.33</td><td>7.81</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left;">Vano Final Neg. Exterior</td>
+                                <td>1.80</td><td>3.00</td><td>1.22</td><td>1.78</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left;">Vano Final Positivo</td>
+                                <td>6.41</td><td>10.66</td><td>4.34</td><td>6.36</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left;">Vano Interior Negativo</td>
+                                <td>7.31</td><td>12.15</td><td>4.95</td><td>7.25</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left;">Vano Interior Positivo</td>
+                                <td>3.94</td><td>6.54</td><td>2.66</td><td>3.90</td>
+                            </tr>
+                            <tr class="w3-light-grey"><td colspan="5" style="text-align: center; font-weight: bold;">Momentos en Franja Central (100%) (kNm)</td></tr>
+                            <tr>
+                                <td style="text-align: left;">Vano Final Neg. Interior</td>
+                                <td>5.83</td><td>19.39</td><td>6.67</td><td>26.60</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left;">Vano Final Neg. Exterior</td>
+                                <td>1.32</td><td>4.38</td><td>1.53</td><td>6.08</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left;">Vano Final Positivo</td>
+                                <td>4.75</td><td>15.79</td><td>5.43</td><td>21.66</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left;">Vano Interior Negativo</td>
+                                <td>5.42</td><td>18.00</td><td>6.20</td><td>24.70</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left;">Vano Interior Positivo</td>
+                                <td>2.92</td><td>9.69</td><td>3.34</td><td>13.30</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </details>
+
             <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:30px;">C. Mapa de Momentos de Diseño</h4>
 
             <div class="w3-center w3-margin-top w3-padding w3-round ce-panel-gris" style="border: 1px dashed var(--azul-profundo); border-left: none;">
                 <img src="../assets/MomentosYlosa2d2.png" alt="Diagrama de Momentos en Planta Eje Y" style="max-width: 100%; height: auto; border-radius: 5px; background-color: white;">
-                <p class="w3-small w3-margin-top" style="opacity: 0.7;"><i><strong>Figura 3:</strong> Diagrama de Momentos en Planta: Franja de Columna y Central Interior (Eje Y). No se incluye franja de borde lateral.</i></p>
+                <p class="w3-small w3-margin-top" style="opacity: 0.7;"><i><strong>Figura 3:</strong> Diagrama de Momentos en Planta: Franja de Columna y Central Interior (Eje Y).</i></p>
                 
                 <div class="ce-grid ce-grid-2 w3-margin-top">
                     <div class="w3-panel w3-white w3-padding w3-round w3-left-align" style="border-left: 4px solid var(--naranja-estructural);">
-                        <strong>Franja Columna (Y):</strong><br>
-                        Momento Crítico: <strong>87.24 kNm</strong>
+                        <strong>Franja Columna Losa (Y):</strong><br>
+                        Momento Crítico Diseño Losa: <strong>13.09 kNm</strong>
                     </div>
                     <div class="w3-panel w3-white w3-padding w3-round w3-left-align" style="border-left: 4px solid var(--azul-profundo);">
                         <strong>Franja Central (Y):</strong><br>
-                        Momento Crítico: <strong>19.39 kNm</strong>
+                        Momento Crítico Diseño Losa: <strong>19.39 kNm</strong>
                     </div>
                 </div>
             </div>
@@ -726,17 +862,12 @@
                 <img src="../assets/M22losa2d.png" alt="Distribución de Momentos M22 modelo de elementos finitos" style="max-width: 100%; height: auto; border-radius: 5px; background-color: white;">
                 <p class="w3-small w3-margin-top" style="opacity: 0.7;"><i><strong>Figura 4:</strong> Distribución de Momentos M22 para Cálculo de Refuerzo en Franjas (Eje Y). Modelo de elementos finitos. Rango (-20 kNm/m, +10 kNm/m).</i></p>
             </div>
-
-            <div class="w3-center w3-margin-top w3-padding w3-round ce-panel-gris" style="border: 1px dashed var(--azul-profundo); border-left: none;">
-                <img src="../assets/Momentoslosa2d.png" alt="Diagrama de Momentos en Planta" style="max-width: 100%; height: auto; border-radius: 5px; background-color: white;">
-                <p class="w3-small w3-margin-top" style="opacity: 0.7;"><i><strong>Figura 5:</strong> Diagrama de Momentos en Planta (Eje X e Y). Se incluye franja perimetral e interior.</i></p>
-            </div>
         </div>
 
         <!-- CARD 6: REFUERZO -->
         <div class="panel-control" id="refuerzo">
             <h2 class="panel-titulo">6. Especificaciones de Refuerzo y Límites</h2>
-            <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Parámetros de diseño: \(f'_c = 28 \text{ MPa}\) | \(f_y = 420 \text{ MPa}\) | \(d_{prom} = 97.3 \text{ mm}\)</p>
+            <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Parámetros: \(f'_c = 28 \text{ MPa}\) | \(f_y = 420 \text{ MPa}\) | \(d_{refY} = 105.24 \text{ mm}\) | \(d_{refX} = 95.71 \text{ mm}\)[cite: 1]</p>
 
             <div class="ce-grid ce-grid-2">
                 <div class="w3-panel ce-panel-azul w3-padding w3-round" style="margin:0;">
@@ -746,8 +877,8 @@
                         \( A_{s,min} = 0.0018 \cdot 1000 \cdot 130 = 234 \text{ mm}^2/\text{m} \)
                     </div>
                     <div class="w3-small w3-margin-top">
-                        En barras No. 4 (\(129 \text{ mm}^2\)):<br>
-                        \( s = \frac{129 \cdot 1000}{234} = \mathbf{550 \text{ mm}} \) (Pero rige \(s_{max}\))
+                        En barras No. 3 (\(71.3 \text{ mm}^2\)):<br>
+                        \( s_{max,\rho} = \frac{71.3 \cdot 1000}{234} = \mathbf{304 \text{ mm}} \)
                     </div>
                 </div>
 
@@ -758,111 +889,103 @@
                         • \( 2h = 2 \cdot 130 = \mathbf{260 \text{ mm}} \) <br>
                         • \( 450 \text{ mm} \)
                     </div>
-                    <div class="w3-panel w3-white w3-padding-small w3-round w3-center w3-margin-top" style="border: 1px solid var(--gris-borde); font-weight: bold;">
-                        Rige: \( s \leq 260 \text{ mm} \)
+                    <div class="w3-panel w3-white w3-padding-small w3-round w3-center w3-margin-top" style="border: 1px solid var(--naranja-estructural); font-weight: bold; color: var(--naranja-estructural);">
+                        Rige en toda la losa: \( s \leq 260 \text{ mm} \)
                     </div>
                 </div>
             </div>
 
-            <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:30px;">Diseño de Refuerzo: Franja de Columna de 2.125 m de ancho (No. 4)</h4>
+            <div class="w3-panel ce-panel-azul w3-padding w3-round w3-small">
+                <strong>📌 Nota sobre Áreas en las Tablas:</strong> El \(A_s\) requerido mostrado en las tablas corresponde al <strong>área total necesaria en todo el ancho de la franja</strong>. Las separaciones calculadas internamente toman en cuenta este ancho completo antes de compararse con el límite máximo de 260 mm[cite: 1].
+            </div>
+
+            <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:30px;">Diseño de Refuerzo: Franja de Columna Típica Y (Ancho = 2.125 m) (Barra No. 3)</h4>
             <div class="tabla-container">
                 <table class="tabla-traslapos">
                     <thead>
                         <tr>
                             <th style="text-align:left;">Ubicación / Momento</th>
-                            <th>\(M_u\) (kNm)</th>
-                            <th>\(A_s\) req (\(\text{mm}^2\))</th>
-                            <th>\(s\) calculado</th>
-                            <th>\(s\) Suministrada</th>
+                            <th>\(M_u\) Losa (kNm)</th>
+                            <th>\(A_s\) req Total (\(\text{mm}^2\))</th>
+                            <th>\(s\) Suministrada (Límite 2h)</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td style="text-align:left;">Ext. Negativo (Exterior)</td>
-                            <td>20.00</td>
-                            <td>556.9</td>
-                            <td>483.3 mm</td>
-                            <td class="ce-destacado">260 mm (2h)</td>
+                            <td style="text-align:left;">Vano Final Neg. Interior</td>
+                            <td>13.09</td>
+                            <td>333.4</td>
+                            <td class="ce-destacado">260 mm</td>
                         </tr>
                         <tr>
-                            <td style="text-align:left;">Ext. Positivo (Vano)</td>
-                            <td>71.04</td>
-                            <td>2124.0</td>
-                            <td>126.7 mm</td>
-                            <td><strong>125 mm</strong></td>
+                            <td style="text-align:left;">Vano Final Neg. Exterior</td>
+                            <td>3.00</td>
+                            <td>75.6</td>
+                            <td class="ce-destacado">260 mm</td>
                         </tr>
                         <tr>
-                            <td style="text-align:left;">Ext. Negativo (Interior)</td>
-                            <td>87.24</td>
-                            <td>2678.1</td>
-                            <td>100.5 mm</td>
-                            <td><strong>100 mm</strong></td>
+                            <td style="text-align:left;">Vano Final Positivo</td>
+                            <td>10.66</td>
+                            <td>270.8</td>
+                            <td class="ce-destacado">260 mm</td>
                         </tr>
                         <tr>
-                            <td style="text-align:left;">Int. Negativo (Interior)</td>
-                            <td>81.01</td>
-                            <td>2461.1</td>
-                            <td>109.4 mm</td>
-                            <td><strong>100 mm</strong></td>
+                            <td style="text-align:left;">Vano Interior Negativo</td>
+                            <td>12.15</td>
+                            <td>309.2</td>
+                            <td class="ce-destacado">260 mm</td>
                         </tr>
                         <tr>
-                            <td style="text-align:left;">Int. Positivo (Vano)</td>
-                            <td>43.62</td>
-                            <td>1253.0</td>
-                            <td>214.8 mm</td>
-                            <td><strong>200 mm</strong></td>
+                            <td style="text-align:left;">Vano Interior Positivo</td>
+                            <td>6.54</td>
+                            <td>165.6</td>
+                            <td class="ce-destacado">260 mm</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
-            <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:30px;">Diseño de Refuerzo: Franja Central de 2.125 m de ancho (No. 3)</h4>
+            <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:30px;">Diseño de Refuerzo: Franja Central Típica Y (Ancho = 2.125 m) (Barra No. 3)</h4>
             <div class="tabla-container">
                 <table class="tabla-traslapos">
                     <thead>
                         <tr>
                             <th style="text-align:left;">Ubicación / Momento</th>
                             <th>\(M_u\) (kNm)</th>
-                            <th>\(A_s\) req (\(\text{mm}^2\))</th>
-                            <th>\(s\) calculado</th>
-                            <th>\(s\) Suministrada</th>
+                            <th>\(A_s\) req Total (\(\text{mm}^2\))</th>
+                            <th>\(s\) Suministrada (Límite 2h)</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td style="text-align:left;">Ext. Negativo (Exterior)</td>
-                            <td>4.4</td>
-                            <td>115.8</td>
-                            <td>1308.0 mm</td>
-                            <td class="ce-destacado">260 mm (2h)</td>
+                            <td style="text-align:left;">Vano Final Neg. Interior</td>
+                            <td>19.39</td>
+                            <td>497.1</td>
+                            <td class="ce-destacado">260 mm</td>
                         </tr>
                         <tr>
-                            <td style="text-align:left;">Ext. Positivo (Vano)</td>
-                            <td>15.8</td>
-                            <td>423.1</td>
-                            <td>357.9 mm</td>
-                            <td class="ce-destacado">260 mm (2h)</td>
+                            <td style="text-align:left;">Vano Final Neg. Exterior</td>
+                            <td>4.38</td>
+                            <td>110.5</td>
+                            <td class="ce-destacado">260 mm</td>
                         </tr>
                         <tr>
-                            <td style="text-align:left;">Ext. Negativo (Interior)</td>
-                            <td>19.4</td>
-                            <td>521.7</td>
-                            <td>290.2 mm</td>
-                            <td class="ce-destacado">260 mm (2h)</td>
+                            <td style="text-align:left;">Vano Final Positivo</td>
+                            <td>15.79</td>
+                            <td>403.3</td>
+                            <td class="ce-destacado">260 mm</td>
                         </tr>
                         <tr>
-                            <td style="text-align:left;">Int. Negativo (Interior)</td>
-                            <td>18.0</td>
-                            <td>483.7</td>
-                            <td>313.1 mm</td>
-                            <td class="ce-destacado">260 mm (2h)</td>
+                            <td style="text-align:left;">Vano Interior Negativo</td>
+                            <td>18.00</td>
+                            <td>460.9</td>
+                            <td class="ce-destacado">260 mm</td>
                         </tr>
                         <tr>
-                            <td style="text-align:left;">Int. Positivo (Vano)</td>
-                            <td>9.7</td>
-                            <td>258.0</td>
-                            <td>586.9 mm</td>
-                            <td class="ce-destacado">260 mm (2h)</td>
+                            <td style="text-align:left;">Vano Interior Positivo</td>
+                            <td>9.69</td>
+                            <td>246.1</td>
+                            <td class="ce-destacado">260 mm</td>
                         </tr>
                     </tbody>
                 </table>
@@ -874,7 +997,7 @@
                 <div class="math-scroll w3-center">
                     \[ M_u = \phi A_s f_y \left( d - \frac{a}{2} \right) \]
                 </div>
-                Noten que en el momento negativo exterior, el cálculo arrojaría una separación alta, pero el <strong>límite de integridad de la losa (\(2h\))</strong> nos obliga a cerrar la malla a 260 mm.
+                Noten que al emplear el 15% del momento en la Franja de Columna, el área requerida se reduce sustancialmente, y el <strong>límite de integridad de la losa (\(2h\))</strong> nos obliga a cerrar la malla a 260 mm en casi todas las secciones.
             </div>
         </div>
 
@@ -887,26 +1010,26 @@
             
             <div class="ce-grid ce-grid-2">
                 <div class="w3-padding" style="margin:0;">
-                    <strong>Sección Crítica:</strong> A una distancia \(d = 103.7 \text{ mm}\) de la cara de la viga.<br><br>
+                    <strong>Sección Crítica:</strong> A una distancia \(d = 105.24 \text{ mm}\) de la cara de la viga.<br><br>
                     <strong>Carga de Diseño:</strong><br>
                     Franja unitaria de losa (\(b = 1.0 \text{ m}\)):<br>
                     \( w_u = 11.02 \, \text{kN/m}^2 \Rightarrow 11.02 \, \text{kN/m} \)<br><br>
                     <strong>Cortante actuante:</strong><br>
                     \( V_u = \frac{w_u L}{2} = \frac{11.02 \cdot 5.50}{2} = 30.3 \, \text{kN} \)<br>
-                    \( V_u(d) = 30.3 - (11.02 \cdot (0.2 + 0.1037)) = \mathbf{27.0 \, \text{kN}} \)
+                    \( V_u(d) = 30.3 - (11.02 \cdot (0.2 + 0.1052)) = \mathbf{26.9 \, \text{kN}} \)
                 </div>
                 
                 <div class="w3-panel ce-panel-azul w3-padding w3-round" style="margin:0;">
                     <strong>Capacidad del Concreto (\(\phi V_c\)):</strong>
                     <div class="math-scroll w3-center w3-small w3-margin-top">
                         \[ \phi V_c = 0.75 \cdot 0.17 \sqrt{f'_c} \cdot b \cdot d \]
-                        \[ \phi V_c = 0.75 \cdot 0.17 \sqrt{28} \cdot 1000 \cdot 103.7 \]
+                        \[ \phi V_c = 0.75 \cdot 0.17 \sqrt{28} \cdot 1000 \cdot 105.24 \]
                     </div>
                     <div class="w3-center w3-large w3-margin-top">
-                        <strong>\(\phi V_c = 69.9 \, \text{kN}\)</strong>
+                        <strong>\(\phi V_c = 70.9 \, \text{kN}\)</strong>
                     </div>
                     <div class="w3-center w3-margin-top w3-padding w3-round w3-white" style="border: 1px solid var(--gris-borde);">
-                        <strong>\( V_u = 27.0 \, \text{kN} \; < \; \phi V_c \;\; \Rightarrow \;\; \text{CUMPLE} \)</strong>
+                        <strong>\( V_u = 26.9 \, \text{kN} \; < \; \phi V_c \;\; \Rightarrow \;\; \text{CUMPLE} \)</strong>
                     </div>
                 </div>
             </div>
@@ -919,16 +1042,16 @@
                         <strong>1. Geometría Crítica:</strong>
                         <ul class="w3-small" style="margin-top:5px;">
                             <li>Columna: \(400 \times 400 \text{ mm}\) (\(\beta = 1.0\))</li>
-                            <li>Peralte prom. (\(d\)): \(103.7 \text{ mm}\)</li>
-                            <li>Perímetro (\(b_o\)): \(4 \cdot (c + d) = \mathbf{2.0146 \text{ m}}\)</li>
-                            <li>Área Crítica (\(A_c\)): \((c+d)^2 = \mathbf{0.2537 \text{ m}^2}\)</li>
+                            <li>Peralte prom. (\(d\)): \(105.24 \text{ mm}\)</li>
+                            <li>Perímetro (\(b_o\)): \(4 \cdot (c + d) = \mathbf{2.021 \text{ m}}\)</li>
+                            <li>Área Crítica (\(A_c\)): \((c+d)^2 = \mathbf{0.255 \text{ m}^2}\)</li>
                         </ul>
                     </div>
                     <div class="w3-panel w3-white w3-padding w3-round" style="margin:0; border: 1px solid var(--gris-borde);">
                         <strong>2. Carga Actuante (\(V_u\)):</strong>
                         <p class="w3-small" style="margin:5px 0;">Restando el área dentro del perímetro crítico:</p>
                         <div class="w3-center ce-destacado">
-                            \( V_u = 11.02 \cdot (23.375 - 0.2537) \) <br>
+                            \( V_u = 11.02 \cdot (23.375 - 0.255) \) <br>
                             <strong>\( V_u = \mathbf{254.8 \text{ kN}} \)</strong>
                         </div>
                     </div>
@@ -939,19 +1062,15 @@
                     <p class="w3-small" style="margin:5px 0;">Evaluación de las tres condiciones de la NSR-10 C.11.11.2.1:</p>
                     
                     <div class="w3-panel w3-white w3-padding w3-round math-scroll w3-small" style="border: 1px solid var(--gris-borde);">
-                        <strong>(a)</strong> \( \phi 0.17 \left(1 + \frac{2}{1.0}\right) \sqrt{28} \cdot b_o d = \mathbf{422.4 \text{ kN}} \) <br><br>
-                        <strong>(b)</strong> \( \phi 0.083 \left(\frac{40 \cdot 103.7}{2014.6} + 2\right) \sqrt{28} \cdot b_o d = \mathbf{278.8 \text{ kN}} \) <br><br>
-                        <strong>(c)</strong> \( \phi 0.33 \sqrt{28} \cdot b_o \cdot d = \mathbf{273.8 \text{ kN}} \) (Controla)
+                        <strong>(a)</strong> \( \phi 0.17 \left(1 + \frac{2}{1.0}\right) \sqrt{28} \cdot b_o d = \mathbf{430.4 \text{ kN}} \) <br><br>
+                        <strong>(b)</strong> \( \phi 0.083 \left(\frac{40 \cdot 105.24}{2021} + 2\right) \sqrt{28} \cdot b_o d = \mathbf{287.7 \text{ kN}} \) <br><br>
+                        <strong>(c)</strong> \( \phi 0.33 \sqrt{28} \cdot b_o \cdot d = \mathbf{278.5 \text{ kN}} \) (Controla)
                     </div>
 
                     <div class="w3-panel w3-white w3-padding w3-round w3-center" style="border: 1px solid var(--azul-profundo);">
-                        <strong>\( V_u = 254.8 \text{ kN} < \phi V_{c,min} = 273.8 \text{ kN} \Rightarrow \text{CUMPLE} \)</strong>
+                        <strong>\( V_u = 254.8 \text{ kN} < \phi V_{c,min} = 278.5 \text{ kN} \Rightarrow \text{CUMPLE} \)</strong>
                     </div>
                 </div>
-            </div>
-
-            <div class="w3-panel ce-panel-azul w3-padding w3-round w3-small">
-                <strong>📌 Nota Académica:</strong> Observen que la ecuación (c) es la más exigente para columnas cuadradas. El perímetro crítico \(b_o\) se mide a \(d/2\) de la cara de la columna en todas las direcciones.
             </div>
 
             <div class="w3-panel ce-panel-naranja w3-padding w3-round">
@@ -972,11 +1091,7 @@
                     \[ l_d = \frac{f_y \psi_t \psi_e}{1.1 \lambda \sqrt{f'_c}} \frac{A_b}{(c_b + K_{tr})/d_b} \]
                 </div>
                 
-                <div class="ce-grid ce-grid-3 w3-margin-top">
-                    <div class="w3-white w3-padding-small w3-round w3-center" style="border: 1px solid var(--gris-borde);">
-                        <strong>Barra No. 4:</strong><br>
-                        \( d_b = 12.7 \text{ mm} \)
-                    </div>
+                <div class="ce-grid ce-grid-2 w3-margin-top">
                     <div class="w3-white w3-padding-small w3-round w3-center" style="border: 1px solid var(--gris-borde);">
                         <strong>Barra No. 3:</strong><br>
                         \( d_b = 9.5 \text{ mm} \)
@@ -1000,12 +1115,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td style="text-align:left;"><strong>No. 4 (φ12.7mm)</strong></td>
-                            <td>380 mm</td>
-                            <td>300 mm</td>
-                            <td class="ce-destacado">400 mm</td>
-                        </tr>
                         <tr>
                             <td style="text-align:left;"><strong>No. 3 (φ9.5mm)</strong></td>
                             <td>285 mm</td>
@@ -1040,14 +1149,14 @@
                         <tr>
                             <td style="text-align:left;"><strong>Zonas de Momento Positivo</strong></td>
                             <td>Clase A</td>
-                            <td>\(1.0 \times 400 = 400 \text{ mm}\)</td>
-                            <td class="ce-destacado">500 mm</td>
+                            <td>\(1.0 \times 300 = 300 \text{ mm}\)</td>
+                            <td class="ce-destacado">400 mm</td>
                         </tr>
                         <tr>
                             <td style="text-align:left;"><strong>Zonas de Momento Negativo</strong></td>
                             <td>Clase B</td>
-                            <td>\(1.3 \times 400 = 520 \text{ mm}\)</td>
-                            <td class="ce-destacado">600 mm</td>
+                            <td>\(1.3 \times 300 = 390 \text{ mm}\)</td>
+                            <td class="ce-destacado">400 mm</td>
                         </tr>
                     </tbody>
                 </table>
@@ -1125,7 +1234,7 @@
                     <tbody>
                         <tr>
                             <td><strong>L1</strong></td>
-                            <td>No. 4</td>
+                            <td>No. 3</td>
                             <td>42</td>
                             <td>4.50</td>
                             <td>189.0</td>
@@ -1133,7 +1242,7 @@
                         </tr>
                         <tr>
                             <td><strong>L2</strong></td>
-                            <td>No. 4</td>
+                            <td>No. 3</td>
                             <td>21</td>
                             <td>2.80</td>
                             <td>58.8</td>
@@ -1141,7 +1250,7 @@
                         </tr>
                         <tr>
                             <td><strong>L3</strong></td>
-                            <td>No. 4</td>
+                            <td>No. 3</td>
                             <td>42</td>
                             <td>3.45</td>
                             <td>144.9</td>
@@ -1207,11 +1316,11 @@
                 theme="github-light"
                 crossorigin="anonymous"
                 async>
-            </script>                                        
+            </script>                                       
         </div>
                         
     </div>
-       
+        
     <!-- FOOTER INTACTO -->
     <footer class="w3-container w3-padding-32 w3-center w3-margin-top no-print" style="color: var(--azul-profundo); background-color: var(--gris-claro);">
         <div class="w3-border-top w3-padding-24" style="max-width: 500px; margin: auto; border-color: var(--gris-borde)!important;">
