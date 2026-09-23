@@ -1279,13 +1279,17 @@
 
         <!-- PERSPECTIVA NORMATIVA Y EVOLUCIÓN (REEMPLAZA MDD VS MPE COMPARISON) -->
         <div class="panel-control" id="perspectiva-normativa" style="border: 2px solid var(--azul-profundo);">
-            <h2 class="panel-titulo" style="border-bottom: 2px solid var(--azul-profundo);"><i class="fa fa-book"></i> Evolución Normativa: El futuro del Método Directo</h2>
+            <h2 class="panel-titulo" style="border-bottom: 2px solid var(--azul-profundo);"><i class="fa fa-book"></i> Evolución Normativa: Del Procedimiento Prescrito al Criterio de Análisis</h2>
             
             <p>En el estudio del diseño estructural, es vital entender la evolución del código. El Título C de la <strong>NSR-10 está basado en el ACI 318S-11</strong> (con adaptaciones al contexto colombiano). Sin embargo, la ingeniería avanza y es natural observar hacia dónde apuntan códigos más recientes como el ACI 318-19 y la actualización del AIS 100-24.</p>
 
             <div class="w3-panel ce-panel-azul w3-padding w3-round">
                 <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:0;">¿El ACI 318-19 prohibió el Método Directo?</h4>
-                <p><strong>No.</strong> El ACI 318-19 eliminó las disposiciones detalladas (el "paso a paso") del Método de Diseño Directo y del Pórtico Equivalente porque ya no reflejan la práctica predominante de análisis, la cual ha sido ampliamente reemplazada por software de elementos finitos. Sin embargo, <strong>los métodos siguen siendo aplicables y permitidos</strong>. El código dejó de ser un manual de procedimientos de análisis de losas (teoría que pertenece a los libros de texto), para concentrarse en los requisitos de diseño y detallado.</p>
+                <p><strong>No.</strong> El ACI 318-19 retiró del cuerpo del código las disposiciones detalladas del Método de Diseño Directo y del Método del Pórtico Equivalente. Esto no significa que la teoría o los procedimientos hayan dejado de existir ni que su uso como herramienta de análisis racional esté prohibido; significa que dejaron de formar parte del conjunto de procedimientos de análisis prescritos por el código.<br>
+                    El cambio refleja una tendencia hacia códigos menos dependientes de procedimientos específicos de análisis, dejando al ingeniero mayor libertad para seleccionar un modelo estructural apropiado —incluyendo métodos clásicos, marcos esquivalentes o modelos de elementos finitos— siempre que las demandas obtenidas sean técnicamente justificadas y permitan satisfacer los requisitos de diseño.</p>
+                <p style="margin-top:8px; font-style:italic; color: var(--gris-texto);">
+                    > "El código dejó de desarrollar estos procedimientos como un manual de análisis de losas y concentró sus disposiciones en los requisitos que debe satisfacer el diseño. La teoría y los procedimientos de análisis continúan siendo parte del conocimiento de ingeniería y de la literatura técnica especializada."
+                </p>
             </div>
 
             <div class="w3-panel w3-padding-large w3-round w3-margin-top" style="background-color: var(--naranja-suave); border-left: 5px solid var(--naranja-estructural);">
@@ -1329,21 +1333,23 @@
             
             <div class="ce-grid ce-grid-3 w3-margin-top w3-small">
                 <div class="w3-white w3-padding w3-round" style="border: 1px solid var(--gris-borde);">
-                    <strong style="color: var(--naranja-estructural);">1. Método Clásico (MDD)</strong><br>
-                    <div class="w3-margin-top">Carga → \(M_0\) → \(M_x, M_y\) → Franjas → \(A_s\)</div>
+                    <strong style="color: var(--naranja-estructural);">1. MDD — Método Directo: Procedimiento Clásico</strong><br>
+                    <div class="w3-margin-top">Carga → \(M_0\) → Distribución → Franjas → \(A_s\)</div>
                 </div>
                 <div class="w3-white w3-padding w3-round" style="border: 1px solid var(--gris-borde);">
-                    <strong style="color: var(--naranja-estructural);">2. Pórtico Equivalente (MPE)</strong><br>
+                    <strong style="color: var(--naranja-estructural);">2. MPE — Idealización Mediante Pórtico Equivalente</strong><br>
                     <div class="w3-margin-top">Carga → Marco equivalente → \(M\) → Franjas → \(A_s\)</div>
                 </div>
                 <div class="w3-white w3-padding w3-round" style="border: 1px solid var(--gris-borde);">
-                    <strong style="color: var(--naranja-estructural);">3. Modelo FEM</strong><br>
-                    <div class="w3-margin-top">Carga → Modelo 3D → \(M_x, M_y, M_{xy}\) → Interpretación → \(A_s\)</div>
+                    <strong style="color: var(--naranja-estructural);">3. FEM Modelo Numérico</strong><br>
+                    <div class="w3-margin-top">Carga → Modelo Estructural → \(M_x, M_y, M_{xy}\) → <strong>Interpretación</strong> → \(A_s\)</div>
                 </div>
             </div>
 
             <div class="w3-panel ce-panel-gris w3-padding w3-round w3-center" style="margin-bottom:0;">
                 <strong>La verdadera pregunta de la ingeniería:</strong> ¿Por qué los tres métodos no necesariamente producen exactamente el mismo momento en cada punto? <em>Entender esa diferencia geométrica y de rigidez es lo que separa a un operador de software de un ingeniero estructural.</em>
+                La diferencia no implica automáticamente que uno de los métodos esté equivocado: cada enfoque representa la estructura mediante hipótesis, idealizaciones y grados de libertad diferentes.
+                Entender qué representa cada resultado —y cuándo es comparable con otro— es lo que separa un resultado numérico de una decisión de ingeniería.
             </div>
         </div>
 
