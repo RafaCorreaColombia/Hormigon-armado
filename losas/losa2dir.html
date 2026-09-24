@@ -401,8 +401,8 @@
                         Continuo en todos sus bordes. Se simplifica a <strong>2 momentos críticos</strong>:
                     </p>
                     <ul style="margin: 4px 0 0 18px; padding: 0; font-size: 0.88em; color: var(--azul-profundo);">
-                        <li><strong>\( M_u^- \) Interior:</strong> Momentos negativos en apoyos (\( 0.65 M_0 \)).</li>
-                        <li><strong>\( M_u^+ \):</strong> Momento positivo de tramo (\( 0.35 M_0 \)).</li>
+                        <li><strong>\( M_u^- \):</strong> Momentos negativos en apoyos. Es un momento interior por definición.</li>
+                        <li><strong>\( M_u^+ \):</strong> Momento positivo de tramo.</li>
                     </ul>
                 </div>
             </div>
@@ -941,10 +941,12 @@
                 <img src="../assets/M22losa2d.png" alt="Distribución de Momentos M22 modelo de elementos finitos" style="max-width: 100%; height: auto; border-radius: 5px; background-color: white;">
                 <p class="w3-small w3-margin-top" style="opacity: 0.7;"><i><strong>Figura 4:</strong> Distribución de Momentos M22 para Cálculo de Refuerzo en Franjas (Eje Y). Modelo de elementos finitos. Rango (-20 kNm/m, +10 kNm/m).</i></p>
             </div>
-            <div class="w3-center w3-margin-top w3-padding w3-round ce-panel-gris" style="border: 1px dashed var(--azul-profundo); border-left: none;">
-                <img src="../assets/Momentoslosa2d2.png" alt="Diagrama de Momentos" style="max-width: 100%; height: auto; border-radius: 5px; background-color: white;">
-                <p class="w3-small w3-margin-top" style="opacity: 0.7;"><i><strong>Figura 5:</strong> Diagrama de Momentos de Losa Método Directo (Eje X e Y). Se incluye franja perimetral e interior.</i></p>
-            </div>
+<div class="w3-center w3-margin-top w3-padding w3-round ce-panel-gris" style="border: 1px dashed var(--azul-profundo); border-left: none;">
+    <img src="../assets/Momentoslosa2d2.png" alt="Diagrama de Momentos en Franja de Columna" style="max-width: 100%; height: auto; border-radius: 5px; background-color: white;">
+    <p class="w3-small w3-margin-top" style="color: var(--gris-texto); margin-bottom: 0;">
+        <i><strong>Figura 5:</strong> Diagrama de momento total de la Franja de Columna (\(M_{\text{FC}}\)) mediante el Método de Diseño Directo (Ejes X e Y). Representa la contribución combinada asignada a la viga y a la losa (\(M_{\text{FC}} = M_{\text{viga}} + M_{\text{losa}}\)), considerando franjas perimetrales e interiores.</i>
+    </p>
+</div>
             
         </div>
 
