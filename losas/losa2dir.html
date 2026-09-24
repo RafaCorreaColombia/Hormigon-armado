@@ -1315,9 +1315,29 @@
             
             <div class="w3-center w3-margin-top w3-padding w3-round ce-panel-gris" style="border: 1px solid var(--gris-borde); border-left: none;">
                 <img src="../assets/losas2dCortes2.png" alt="Diagrama de corte y extensión mínima de barras de refuerzo según norma NSR-10" style="max-width: 90%; height: auto; border-radius: 5px;">
-                <p class="w3-small w3-margin-top" style="color: var(--azul-profundo); opacity: 0.7;">
+                <p class="w3-small w3-margin-top" style="color: var(--azul-profundo); opacity: 0.8; margin-bottom: 10px;">
                     <i><strong>Figura 6:</strong> Extensión mínima de refuerzo según NSR-10 C.13.3.8 para losas con vigas.</i>
                 </p>
+
+                <!-- NOTA SOBRE LÍNEAS AMARILLAS Y CIAN (PUNTOS DE INFLEXIÓN) -->
+                <div class="w3-panel w3-white w3-padding w3-round w3-left-align" style="border-left: 4px solid var(--naranja-estructural); margin: 10px 10px 5px 10px; font-size: 0.9em; line-height: 1.5;">
+                    <strong style="color: var(--azul-profundo); display: flex; align-items: center; gap: 8px;">
+                        <i class="fa fa-line-chart" style="color: var(--naranja-estructural);"></i> 
+                        Nota de interpretación gráfica (Líneas de Momento Nulo):
+                    </strong>
+                    
+                    <p style="margin: 6px 0 8px 0; color: var(--gris-texto);">
+                        Las <strong>líneas amarillas y cian</strong> mostradas en este esquema <em>ya no representan límites geométicos de franjas</em> (columna o central). Indican la ubicación donde los diagramas de momentos de las franjas analizadas previamente (en ambas direcciones) <strong>cruzan el eje cero (puntos de inflexión)</strong>.
+                    </p>
+
+                    <div style="background-color: #f8fafc; padding: 10px 12px; border-radius: 6px; border: 1px solid #e2e8f0; color: var(--azul-profundo);">
+                        <strong style="color: var(--naranja-estructural);">💡 Criterio de aplicación para el despiece en obra:</strong>
+                        <ul style="margin: 4px 0 0 18px; padding: 0; font-size: 0.95em;">
+                            <li><strong>Interrupción de acero superior:</strong> Sirve como punto de partida para medir la extensión normativa (\(d\) ó \(12d_b\)) más allá del punto donde la tracción teórica por momento negativo deja de existir.</li>
+                            <li><strong>Localización de traslapos:</strong> Muestra visualmente las zonas de bajo momento positivo, ideal para ubicar empalmes de barras inferiores y evitar traslapar en zonas críticas de máxima demanda.</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
 
