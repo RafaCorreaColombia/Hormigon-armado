@@ -923,16 +923,28 @@
 
             <div class="w3-center w3-margin-top w3-padding w3-round ce-panel-gris" style="border: 1px dashed var(--azul-profundo); border-left: none;">
                 <img src="../assets/MomentosYlosa2d2.png" alt="Diagrama de Momentos en Planta Eje Y" style="max-width: 100%; height: auto; border-radius: 5px; background-color: white;">
-                <p class="w3-small w3-margin-top" style="opacity: 0.7;"><i><strong>Figura 3:</strong> Diagrama de Momentos en Planta: Franja de Columna y Central Interior (Eje Y).</i></p>
                 
-                <div class="ce-grid ce-grid-2 w3-margin-top">
-                    <div class="w3-panel w3-white w3-padding w3-round w3-left-align" style="border-left: 4px solid var(--naranja-estructural);">
-                        <strong>Franja Columna Losa (Y):</strong><br>
-                        Momento Crítico Diseño Losa: <strong>13.09 kNm</strong>
+                <p class="w3-small w3-margin-top" style="color: var(--gris-texto); margin-bottom: 0;">
+                    <i><strong>Figura 3:</strong> Diagrama de momentos en planta (Eje Y). Ilustra el <strong>momento total actuante en la Franja de Columna</strong> (\(M_{\text{FC}} = M_{\text{viga}} + M_{\text{losa}}\)) y el <strong>momento total de la Franja Central</strong>.</i>
+                </p>
+                
+                <div class="ce-grid ce-grid-2 w3-margin-top" style="gap: 10px;">
+                    <!-- Franja de Columna -->
+                    <div class="w3-panel w3-white w3-padding w3-round w3-left-align" style="border-left: 4px solid var(--naranja-estructural); margin:0;">
+                        <strong style="color: var(--naranja-estructural);">Franja de Columna (Y):</strong><br>
+                        <div style="margin-top: 4px; font-size: 0.9em;">
+                            • Momento Total Franja (Gráfico 3): <strong>87.27 kNm</strong><br>
+                            • Momento Crítico Losa (\(15\% M_{\text{FC}}\)): <strong style="color: var(--naranja-estructural);">13.09 kNm</strong>
+                        </div>
                     </div>
-                    <div class="w3-panel w3-white w3-padding w3-round w3-left-align" style="border-left: 4px solid var(--azul-profundo);">
-                        <strong>Franja Central (Y):</strong><br>
-                        Momento Crítico Diseño Losa: <strong>19.39 kNm</strong>
+                    
+                    <!-- Franja Central -->
+                    <div class="w3-panel w3-white w3-padding w3-round w3-left-align" style="border-left: 4px solid var(--azul-profundo); margin:0;">
+                        <strong style="color: var(--azul-profundo);">Franja Central (Y):</strong><br>
+                        <div style="margin-top: 4px; font-size: 0.9em;">
+                            • Momento Total Franja (Gráfico 3): <strong>19.39 kNm</strong><br>
+                            • Momento Crítico Losa (\(100\% M_{\text{FCentral}}\)): <strong style="color: var(--azul-profundo);">19.39 kNm</strong>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -941,12 +953,12 @@
                 <img src="../assets/M22losa2d.png" alt="Distribución de Momentos M22 modelo de elementos finitos" style="max-width: 100%; height: auto; border-radius: 5px; background-color: white;">
                 <p class="w3-small w3-margin-top" style="opacity: 0.7;"><i><strong>Figura 4:</strong> Distribución de Momentos M22 para Cálculo de Refuerzo en Franjas (Eje Y). Modelo de elementos finitos. Rango (-20 kNm/m, +10 kNm/m).</i></p>
             </div>
-<div class="w3-center w3-margin-top w3-padding w3-round ce-panel-gris" style="border: 1px dashed var(--azul-profundo); border-left: none;">
-    <img src="../assets/Momentoslosa2d2.png" alt="Diagrama de Momentos en Franja de Columna" style="max-width: 100%; height: auto; border-radius: 5px; background-color: white;">
-    <p class="w3-small w3-margin-top" style="color: var(--gris-texto); margin-bottom: 0;">
-        <i><strong>Figura 5:</strong> Diagrama de momento total de la Franja de Columna (\(M_{\text{FC}}\)) mediante el Método de Diseño Directo (Ejes X e Y). Representa la contribución combinada asignada a la viga y a la losa (\(M_{\text{FC}} = M_{\text{viga}} + M_{\text{losa}}\)), considerando franjas perimetrales e interiores.</i>
-    </p>
-</div>
+            <div class="w3-center w3-margin-top w3-padding w3-round ce-panel-gris" style="border: 1px dashed var(--azul-profundo); border-left: none;">
+                <img src="../assets/Momentoslosa2d2.png" alt="Diagrama de Momentos en Franja de Columna" style="max-width: 100%; height: auto; border-radius: 5px; background-color: white;">
+                <p class="w3-small w3-margin-top" style="color: var(--gris-texto); margin-bottom: 0;">
+                    <i><strong>Figura 5:</strong> Diagrama de momento total de la Franja de Columna (\(M_{\text{FC}}\)) mediante el Método de Diseño Directo (Ejes X e Y). Representa la contribución combinada asignada a la viga y a la losa (\(M_{\text{FC}} = M_{\text{viga}} + M_{\text{losa}}\)), considerando franjas perimetrales e interiores.</i>
+                </p>
+            </div>
             
         </div>
 
