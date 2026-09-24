@@ -358,6 +358,56 @@
                 <strong>Nota de orientación:</strong> Esta definición es clave para la asignación de luces libres \( L_n \) y anchos de franja \( L_2 \) en el cálculo de momentos.
             </div>
 
+            <!-- DEFINICIÓN DE FRANJAS DE DISEÑO -->
+        <div class="w3-panel ce-panel-gris w3-padding w3-round">
+            <strong>🧭 Definición de Franjas de Diseño:</strong>
+            <div class="ce-grid ce-grid-2" style="margin-top: 8px; gap: 10px;">
+                <div style="background: rgba(255,255,255,0.85); padding: 10px; border-radius: 6px; border-left: 4px solid var(--azul-profundo);">
+                    <strong style="color: var(--azul-profundo);">Franja Perimetral (de Borde):</strong><br>
+                    Alineada con un eje exterior. Su ancho \( L_2 \) toma la mitad de la luz adyacente interior más la distancia al borde no continuo.
+                </div>
+                <div style="background: rgba(255,255,255,0.85); padding: 10px; border-radius: 6px; border-left: 4px solid var(--naranja-estructural);">
+                    <strong style="color: var(--naranja-estructural);">Franja Interior:</strong><br>
+                    Ubicada entre ejes interiores. Su ancho \( L_2 \) se extiende hasta la mitad de los vanos adyacentes a cada lado.
+                </div>
+            </div>
+            <div class="w3-small w3-margin-top" style="color: var(--gris-texto); font-style: italic;">
+                📌 Esta asignación determina directamente el ancho de franja \( L_2 \), la inercia de losa \( I_s \) y el valor de \( \alpha_f \).
+            </div>
+        </div>
+
+        <!-- PANELES Y SECCIONES CRÍTICAS DE MOMENTO -->
+        <div class="w3-panel ce-panel-gris w3-padding w3-round">
+            <strong>📦 Tipo de Panel y Secciones Críticas de Momento:</strong>
+            <p style="margin-top:4px; margin-bottom:10px; font-size: 0.95em;">
+                La ubicación del panel condiciona cómo se distribuye el momento estático total \( M_0 \):
+            </p>
+            <div class="ce-grid ce-grid-2" style="gap: 10px;">
+                <div style="background: rgba(255,255,255,0.85); padding: 10px; border-radius: 6px; border: 1px solid #e2e8f0;">
+                    <strong style="color: var(--naranja-estructural);">Panel Exterior (Vano Extremo):</strong>
+                    <p style="margin: 4px 0; font-size: 0.9em; color: var(--gris-texto);">
+                        Tiene un borde discontinuo. Requiere evaluar <strong>3 momentos críticos</strong>:
+                    </p>
+                    <ul style="margin: 4px 0 0 18px; padding: 0; font-size: 0.88em; color: var(--azul-profundo);">
+                        <li><strong>\( M_u^- \) Exterior:</strong> En el apoyo perimetral.</li>
+                        <li><strong>\( M_u^+ \):</strong> En el tramo / centro del vano.</li>
+                        <li><strong>\( M_u^- \) Interior:</strong> En el primer apoyo continuo.</li>
+                    </ul>
+                </div>
+                
+                <div style="background: rgba(255,255,255,0.85); padding: 10px; border-radius: 6px; border: 1px solid #e2e8f0;">
+                    <strong style="color: var(--azul-profundo);">Panel Interior (Vano Continuo):</strong>
+                    <p style="margin: 4px 0; font-size: 0.9em; color: var(--gris-texto);">
+                        Continuo en todos sus bordes. Se simplifica a <strong>2 momentos críticos</strong>:
+                    </p>
+                    <ul style="margin: 4px 0 0 18px; padding: 0; font-size: 0.88em; color: var(--azul-profundo);">
+                        <li><strong>\( M_u^- \) Interior:</strong> Momentos negativos en apoyos (\( 0.65 M_0 \)).</li>
+                        <li><strong>\( M_u^+ \):</strong> Momento positivo de tramo (\( 0.35 M_0 \)).</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
             <div class="ce-grid ce-grid-2">
                 <div class="w3-panel ce-panel-gris w3-padding w3-round" style="margin:0;">
                     <strong>Vanos en dirección X:</strong><br>
@@ -481,7 +531,7 @@
             <!-- NOTA DE IDEALIZACIÓN (NUEVA) -->
             <div class="w3-panel ce-panel-gris w3-padding w3-round w3-small">
                 <strong>📌 Nota sobre la idealización de rigidez:</strong><br>
-                Para el análisis de un eje determinado, en la dirección Y por ejemplo, tanto la sección de la viga \(I_b\) como el ancho de la losa asociado \(I_s\) se mantienen constantes a lo largo de toda la franja. Sin embargo, dado que la geometría de la viga (sección T/L según C.13.2.4) y el ancho tributario de la losa dependen de si la franja es perimetral o interior, los valores de \(\I_b\), \(\I_s\) y \(\alpha_f\) se evalúan de forma independiente para cada condición.
+                Para el análisis de un eje determinado, en la dirección Y por ejemplo, tanto la sección de la viga \(I_b\) como el ancho de la losa asociado \(I_s\) se mantienen constantes a lo largo de toda la franja. Sin embargo, dado que la geometría de la viga (sección T/L según C.13.2.4) y el ancho tributario de la losa dependen de si la franja es perimetral o interior, los valores de \(I_b\), \(I_s\) y \(\alpha_f\) se evalúan de forma independiente para cada condición.
             </div>
 
             <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:30px;">Predimensionamiento (NSR-10 C.9.5.3.3)</h4>
@@ -747,6 +797,9 @@
                     M_{\text{losa}}=0.15M_{\text{FC}}
                     \]
                 </div>
+                <p class="w3-center w3-small" style="color: var(--gris-texto); margin-top: 4px; font-style: italic;">
+                    Donde \(M_{\text{FC}}\) es el momento total de la <strong>Franja de Columna</strong> (FC).
+                </p>
                 
                 <p style="margin-top: 15px;">La franja de columna <strong>incluye la viga</strong>. El 85/15 representa una distribución de momento entre la viga y la porción de losa de la franja; no una división geométrica de la franja.</p>
 
@@ -954,31 +1007,31 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td style="text-align:left;">Negativo Interior</td>
+                            <td style="text-align:left;">Panel Exterior: Negativo Interior</td>
                             <td>13.09</td>
                             <td>333.4</td>
                             <td class="ce-destacado">260 mm</td>
                         </tr>
                         <tr>
-                            <td style="text-align:left;">Negativo Exterior</td>
+                            <td style="text-align:left;">Panel Exterior: Negativo Exterior</td>
                             <td>3.00</td>
                             <td>75.6</td>
                             <td class="ce-destacado">260 mm</td>
                         </tr>
                         <tr>
-                            <td style="text-align:left;">Positivo</td>
+                            <td style="text-align:left;">Panel Exterior: Positivo</td>
                             <td>10.66</td>
                             <td>270.8</td>
                             <td class="ce-destacado">260 mm</td>
                         </tr>
                         <tr>
-                            <td style="text-align:left;">Interior Negativo</td>
+                            <td style="text-align:left;">Panel Interior: Negativo</td>
                             <td>12.15</td>
                             <td>309.2</td>
                             <td class="ce-destacado">260 mm</td>
                         </tr>
                         <tr>
-                            <td style="text-align:left;">Interior Positivo</td>
+                            <td style="text-align:left;">Panel Interior: Positivo</td>
                             <td>6.54</td>
                             <td>165.6</td>
                             <td class="ce-destacado">260 mm</td>
@@ -1000,31 +1053,31 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td style="text-align:left;">Negativo Interior</td>
+                            <td style="text-align:left;">Panel Exterior: Negativo Interior</td>
                             <td>19.39</td>
                             <td>497.1</td>
                             <td class="ce-destacado">260 mm</td>
                         </tr>
                         <tr>
-                            <td style="text-align:left;">Negativo Exterior</td>
+                            <td style="text-align:left;">Panel Exterior: Negativo Exterior</td>
                             <td>4.38</td>
                             <td>110.5</td>
                             <td class="ce-destacado">260 mm</td>
                         </tr>
                         <tr>
-                            <td style="text-align:left;">Positivo</td>
+                            <td style="text-align:left;">Panel Exterior: Positivo</td>
                             <td>15.79</td>
                             <td>403.3</td>
                             <td class="ce-destacado">260 mm</td>
                         </tr>
                         <tr>
-                            <td style="text-align:left;">Interior Negativo</td>
+                            <td style="text-align:left;">Panel Interior: Negativo</td>
                             <td>18.00</td>
                             <td>460.9</td>
                             <td class="ce-destacado">260 mm</td>
                         </tr>
                         <tr>
-                            <td style="text-align:left;">Interior Positivo</td>
+                            <td style="text-align:left;">Panel Interior: Positivo</td>
                             <td>9.69</td>
                             <td>246.1</td>
                             <td class="ce-destacado">260 mm</td>
