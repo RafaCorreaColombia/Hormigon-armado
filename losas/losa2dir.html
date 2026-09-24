@@ -156,11 +156,38 @@
 
     <div class="contenido-body">
 
-        <!-- BRÚJULA DEL EJEMPLO -->
+        <!-- BRÚJULA DEL EJEMPLO (TOTALMENTE RESPONSIVA) -->
+        <style>
+            /* Ajustes responsivos específicos para dispositivos móviles */
+            @media (max-width: 600px) {
+                #brujula {
+                    padding: 12px !important;
+                }
+                .ce-mapa-flujo {
+                    font-size: 0.9em !important;
+                    padding: 12px 8px !important;
+                }
+                .ce-flujo-doble {
+                    flex-direction: column !important;
+                    gap: 15px !important;
+                }
+                .ce-flujo-col {
+                    width: 100% !important;
+                }
+                .ce-ocultar-movil {
+                    display: none !important;
+                }
+                .tabla-traslapos th, .tabla-traslapos td {
+                    padding: 8px 6px !important;
+                    font-size: 0.85em !important;
+                }
+            }
+        </style>
+
         <div class="panel-control no-print" id="brujula" style="border: 2px solid var(--naranja-estructural); box-shadow: 0 4px 15px rgba(230,126,34,0.1);">
             <h2 class="panel-titulo" style="border-bottom: none; margin-bottom: 5px; font-size: 1.4em;">🧭 BRÚJULA — ¿Qué estamos diseñando?</h2>
             
-            <div style="border-left: 4px solid var(--naranja-estructural); padding-left: 15px; margin-bottom: 25px;">
+            <div style="border-left: 4px solid var(--naranja-estructural); padding-left: 15px; margin-bottom: 20px;">
                 <p class="w3-large" style="color: var(--gris-texto); font-style: italic; margin-top: 0;">
                     El objetivo no es obtener un diagrama bonito ni completar una serie de ecuaciones.
                 </p>
@@ -169,11 +196,11 @@
                 </p>
             </div>
             
-            <div class="tabla-container">
+            <div class="tabla-container" style="overflow-x: auto;">
                 <table class="tabla-traslapos">
                     <thead>
                         <tr>
-                            <th style="text-align:left; background-color: var(--azul-suave)!important; color: var(--azul-profundo)!important; width: 40%;">Pregunta</th>
+                            <th style="text-align:left; background-color: var(--azul-suave)!important; color: var(--azul-profundo)!important; width: 45%;">Pregunta</th>
                             <th style="text-align:left; background-color: var(--azul-suave)!important; color: var(--azul-profundo)!important;">Lo que necesitamos obtener</th>
                         </tr>
                     </thead>
@@ -214,29 +241,44 @@
                 </table>
             </div>
 
-            <!-- Mapa Visual -->
-            <div class="w3-center w3-margin-top w3-padding-24 w3-round ce-panel-gris" style="font-family: monospace; font-size: 1.15em; line-height: 1.8; color: var(--azul-profundo);">
+            <!-- Mapa Visual Responsivo -->
+            <div class="w3-center w3-margin-top w3-padding-16 w3-round ce-panel-gris ce-mapa-flujo" style="font-size: 1.05em; line-height: 1.6; color: var(--azul-profundo);">
                 <strong>GEOMETRÍA</strong><br>
-                <i class="fa fa-arrow-down" style="color: var(--gris-texto); font-size: 0.8em;"></i><br>
+                <i class="fa fa-arrow-down" style="color: var(--gris-texto); font-size: 0.8em; margin: 4px 0;"></i><br>
                 <strong>¿QUÉ ESPESOR NECESITO?</strong><br>
-                <i class="fa fa-arrow-down" style="color: var(--gris-texto); font-size: 0.8em;"></i><br>
-                <strong>FLEXIÓN ─────────────── CORTANTE</strong><br>
-                <i class="fa fa-arrow-down" style="color: var(--gris-texto); font-size: 0.8em;"></i> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <i class="fa fa-arrow-down" style="color: var(--gris-texto); font-size: 0.8em;"></i><br>
-                <strong>¿CUÁNTO MOMENTO? &nbsp; &nbsp; &nbsp; &nbsp; ¿CUÁNTO \(V_u\)?</strong><br>
-                <i class="fa fa-arrow-down" style="color: var(--gris-texto); font-size: 0.8em;"></i> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <i class="fa fa-arrow-down" style="color: var(--gris-texto); font-size: 0.8em;"></i><br>
-                <strong>¿CUÁNTO ACERO? &nbsp; &nbsp; &nbsp; &nbsp; \(\phi V_c \ge V_u\)</strong><br>
-                <i class="fa fa-arrow-down" style="color: var(--gris-texto); font-size: 0.8em;"></i><br>
+                <i class="fa fa-arrow-down" style="color: var(--gris-texto); font-size: 0.8em; margin: 4px 0;"></i>
+
+                <!-- Bifurcación Flexión / Cortante -->
+                <div class="ce-flujo-doble" style="display: flex; justify-content: space-around; margin: 10px 0; gap: 10px;">
+                    <div class="ce-flujo-col" style="flex: 1; background: rgba(255,255,255,0.6); padding: 8px; border-radius: 6px;">
+                        <strong style="color: var(--naranja-estructural);">FLEXIÓN</strong><br>
+                        <i class="fa fa-arrow-down" style="color: var(--gris-texto); font-size: 0.8em;"></i><br>
+                        <span>¿CUÁNTO MOMENTO?</span><br>
+                        <i class="fa fa-arrow-down" style="color: var(--gris-texto); font-size: 0.8em;"></i><br>
+                        <span>¿CUÁNTO ACERO?</span>
+                    </div>
+                    <div class="ce-flujo-col" style="flex: 1; background: rgba(255,255,255,0.6); padding: 8px; border-radius: 6px;">
+                        <strong style="color: var(--azul-profundo);">CORTANTE</strong><br>
+                        <i class="fa fa-arrow-down" style="color: var(--gris-texto); font-size: 0.8em;"></i><br>
+                        <span>¿CUÁNTO \(V_u\)?</span><br>
+                        <i class="fa fa-arrow-down" style="color: var(--gris-texto); font-size: 0.8em;"></i><br>
+                        <span>\(\phi V_c \ge V_u\)</span>
+                    </div>
+                </div>
+
+                <i class="fa fa-arrow-down" style="color: var(--gris-texto); font-size: 0.8em; margin: 4px 0;"></i><br>
                 <strong>DETALLAMIENTO</strong><br>
-                <i class="fa fa-arrow-down" style="color: var(--gris-texto); font-size: 0.8em;"></i><br>
-                <strong>TRASLAPOS · DESARROLLO · ANCLAJE · SEPARACIONES</strong><br>
-                <i class="fa fa-arrow-down" style="color: var(--naranja-estructural); font-size: 0.8em;"></i><br>
-                <strong class="w3-xlarge ce-destacado">DESPIECE</strong><br>
-                <i class="fa fa-arrow-down" style="color: var(--naranja-estructural); font-size: 0.8em;"></i><br>
-                <strong class="w3-xxlarge" style="color: var(--azul-profundo);">OBRA</strong>
+                <span style="font-size: 0.85em; display: inline-block; padding: 2px 8px; color: var(--gris-texto);">
+                    Traslapos · Desarrollo · Anclaje · Separaciones
+                </span><br>
+                <i class="fa fa-arrow-down" style="color: var(--naranja-estructural); font-size: 0.8em; margin: 4px 0;"></i><br>
+                <strong class="w3-large ce-destacado" style="display: inline-block; padding: 2px 10px; border-radius: 4px;">DESPIECE</strong><br>
+                <i class="fa fa-arrow-down" style="color: var(--naranja-estructural); font-size: 0.8em; margin: 4px 0;"></i><br>
+                <strong class="w3-xlarge" style="color: var(--azul-profundo);">OBRA</strong>
             </div>
 
             <!-- Ecuaciones Base -->
-            <div class="math-scroll w3-center w3-margin-top w3-padding w3-xlarge">
+            <div class="math-scroll w3-center w3-margin-top w3-padding" style="font-size: 1.2em; overflow-x: auto;">
                 \[
                 \boxed{\phi M_n \ge M_u}
                 \qquad\qquad
@@ -244,11 +286,11 @@
                 \]
             </div>
             
-            <div class="w3-center w3-large w3-margin-bottom" style="font-style: italic; color: var(--gris-texto);">
-                > Ese es el piso del problema.
+            <div class="w3-center w3-medium w3-margin-bottom" style="font-style: italic; color: var(--gris-texto);">
+                <i class="fa fa-quote-left w3-tiny w3-opacity" style="margin-right: 4px;"></i>Ese es el piso del problema.
             </div>
             
-            <p class="w3-center w3-padding" style="margin-top: 0;">
+            <p class="w3-center w3-padding" style="margin-top: 0; padding-left: 5px; padding-right: 5px;">
                 Todo lo que ocurre entre la geometría y el despiece existe para poder llegar a esas verificaciones y convertirlas en acero que realmente pueda construirse.
             </p>
 
@@ -257,12 +299,12 @@
                 <strong class="w3-large" style="color: var(--azul-profundo);">PIES EN LA TIERRA</strong>
                 
                 <p style="margin-top:8px; font-style:italic; color: var(--gris-texto);">
-                    > El Método de Diseño Directo es el camino que utilizaremos para obtener \(M_u\). No es el objetivo final.
+                    <i class="fa fa-angle-right" style="color: var(--naranja-estructural); margin-right: 6px;"></i>El Método de Diseño Directo es el camino que utilizaremos para obtener \(M_u\). No es el objetivo final.
                 </p>
                 
                 <p>Una vez obtenido el momento, el problema vuelve a ser el de siempre:</p>
                 
-                <div class="w3-center w3-margin-top w3-margin-bottom ce-destacado w3-large" style="letter-spacing: 1px;">
+                <div class="w3-center w3-margin-top w3-margin-bottom ce-destacado" style="letter-spacing: 0.5px; font-weight: bold; font-size: 0.95em; overflow-x: auto; padding: 4px 0;">
                     \(M_u \rightarrow A_s \rightarrow \text{detallamiento} \rightarrow \text{despiece} \rightarrow \text{obra}\)
                 </div>
                 
@@ -275,38 +317,17 @@
                 <strong class="w3-large" style="color: var(--azul-profundo);">🔎 Una segunda mirada</strong>
                 
                 <p style="margin-top:8px; font-style:italic; color: var(--gris-texto);">
-                    > En algunos puntos del ejemplo utilizaremos un modelo de elementos finitos como herramienta de contraste.
+                    <i class="fa fa-angle-right" style="color: var(--azul-profundo); margin-right: 6px;"></i>En algunos puntos del ejemplo utilizaremos un modelo de elementos finitos como herramienta de contraste.
                 </p>
                 
                 <p>No vamos a diseñar la losa "para que coincida con SAP/ETABS". El modelo FEM responde a otra pregunta: <strong>¿Cómo se distribuye espacialmente la respuesta cuando representamos explícitamente la losa, las vigas y los apoyos?</strong></p>
                 
-                <ul>
+                <ul style="padding-left: 20px;">
                     <li>El método manual nos permite <strong>entender y diseñar</strong>.</li>
                     <li>El FEM nos permite <strong>observar y contrastar</strong>.</li>
                 </ul>
                 
                 <p style="margin-bottom: 0;">Si ambos entregan exactamente el mismo diagrama, probablemente no estamos entendiendo qué representa cada modelo. Si vemos diferencias radicales, debemos auditar qué estamos leyendo (¿Mismo ancho de franja? ¿Misma sección? ¿Momento de diseño vs resultante local? ¿La viga absorbió la respuesta?).</p>
-            </div>
-        </div>
-
-        <!-- ÍNDICE DE CONTENIDO -->
-        <div class="panel-control no-print" style="background-color: var(--azul-suave); border-left: 4px solid var(--azul-profundo); padding: 20px;">
-            <h3 style="margin-top:0; color: var(--azul-profundo); font-weight: bold;"><i class="fa fa-list"></i> Índice de Contenido</h3>
-            <div class="ce-grid ce-grid-2" style="margin-bottom:0;">
-                <ul class="w3-ul" style="border:none; margin:0; padding:0;">
-                    <li><a href="#geometria" style="text-decoration: none; font-weight: 500;">1. Geometría General y Planta</a></li>
-                    <li><a href="#rigidez" style="text-decoration: none; font-weight: 500;">2. Rigidez Relativa de Vigas</a></li>
-                    <li><a href="#requisitos" style="text-decoration: none; font-weight: 500;">3. Requisitos para MDD</a></li>
-                    <li><a href="#cargas" style="text-decoration: none; font-weight: 500;">4. Análisis de Cargas y \( M_0 \)</a></li>
-                    <li><a href="#momentos" style="text-decoration: none; font-weight: 500;">5. Distribución de Momentos</a></li>
-                </ul>
-                <ul class="w3-ul" style="border:none; margin:0; padding:0;">
-                    <li><a href="#refuerzo" style="text-decoration: none; font-weight: 500;">6. Especificaciones de Refuerzo</a></li>
-                    <li><a href="#cortante" style="text-decoration: none; font-weight: 500;">7. Verificación de Cortante</a></li>
-                    <li><a href="#detallamiento" style="text-decoration: none; font-weight: 500;">8. Detallamiento y Traslapos</a></li>
-                    <li><a href="#despiece" style="text-decoration: none; font-weight: 500;">9. Despiece Final y B.O.M.</a></li>
-                    <li><a href="#referencias" style="text-decoration: none; font-weight: 500;">10. Referencias Normativas</a></li>
-                </ul>
             </div>
         </div>
 
