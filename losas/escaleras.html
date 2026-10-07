@@ -1,409 +1,414 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diseño de Escaleras en Concreto Reforzado - Criterio Estructural</title>
-    
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    
-    <script>
-        window.MathJax = {
-            tex: {
-                inlineMath: [['$', '$'], ['\\(', '\\)']],
-                displayMath: [['$$', '$$'], ['\\[', '\\]']]
-            }
-        };
-    </script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-
-    <style>
-        /* PALETA DE COLORES DE LA MARCA */
-        :root {
-            --azul-profundo: #1A2530;
-            --naranja-estructural: #E67E22;
-            --gris-claro: #F4F5F7;
-            --acero-elastico: #3b82f6; 
-            --acero-cerca: #eab308; 
-            --acero-fluencia: #dc2626; 
-        }
-
-        body { background-color: var(--gris-claro); font-family: 'Segoe UI', sans-serif; color: var(--azul-profundo); }
-        .contenedor-principal {
-            max-width: 1250px; margin: 30px auto; border-radius: 12px;
-            background: white; padding: 0; overflow: hidden;
-            box-shadow: 0 8px 25px rgba(26,37,48,0.15);
-        }
-        
-        /* HEADER Y MANIFIESTO */
-        .header-rc { background: var(--azul-profundo); color: white; padding: 30px 20px; text-align: center; position: relative; }
-        .brand-logo-header { max-width: 250px; height: auto; margin-bottom: 10px; display: inline-block; }
-        .lema-global { font-size: 0.9em; letter-spacing: 2px; color: #a0aec0; text-transform: uppercase; margin-bottom: 20px; font-weight: bold; }
-        .lema-global span { color: var(--naranja-estructural); }
-
-        /* RUTA DE APRENDIZAJE */
-        .ruta-aprendizaje {
-            display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 20px;
-            font-size: 0.85em; color: #a0aec0;
-        }
-        .ruta-item { padding: 4px 12px; border-radius: 20px; border: 1px solid #4a5568; background: rgba(255,255,255,0.05); }
-        .ruta-activa { border-color: var(--naranja-estructural); color: white; background: rgba(230, 126, 34, 0.2); font-weight: bold; }
-        .ruta-flecha { color: #4a5568; font-size: 0.8em; }
-
-        .contenido-body { padding: 40px; }
-        
-        /* CUADRANTES FLEX */
-        .panel-cuadrante {
-            background: #ffffff; border: 1px solid #e0e0e0; border-radius: 10px;
-            padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.03);
-            display: flex; flex-direction: column; height: 100%; position: relative;
-        }
-        .lab-badge {
-            background: var(--azul-profundo); color: white; padding: 4px 12px; 
-            border-radius: 15px; font-size: 0.8em; font-weight: bold;
-            display: inline-block; margin-bottom: 15px; border-left: 3px solid var(--naranja-estructural);
-        }
-
-        /* CAJAS Y RESALTADOS */
-        .dato-box { border-left: 6px solid var(--naranja-estructural); background: #fdf6f0; } 
-        .iteracion-box { border: 1px solid #ddd; border-top: 4px solid var(--naranja-estructural); border-radius: 8px; }
-        h3 { color: var(--azul-profundo); border-bottom: 2px solid var(--naranja-estructural); padding-bottom: 8px; margin-top: 35px; font-weight: bold; }
-        .highlight { color: var(--naranja-estructural); font-weight: bold; font-size: 1.1em; }
-        th { background-color: var(--azul-profundo) !important; color: white !important; }
-        .progress-container { margin: 20px 0; }
-
-        /* LOGO FOOTER */
-        .brand-logo-footer { max-width: 200px; height: auto; margin-bottom: 15px; display: inline-block; }
-        footer { background-color: var(--gris-claro) !important; }
-
-        /* BARRAS DE DESPLAZAMIENTO */
-        ::-webkit-scrollbar { height: 6px; width: 6px; }
-        ::-webkit-scrollbar-thumb { background: var(--naranja-estructural); border-radius: 10px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; }
-
-        /* OVERRIDES W3.CSS */
-        .w3-text-red { color: var(--naranja-estructural) !important; }
-        .w3-border-red { border-color: var(--naranja-estructural) !important; }
-        .w3-red { background-color: var(--naranja-estructural) !important; color: white !important; }
-        .w3-pale-red { background-color: #fdf6f0 !important; }
-        .w3-blue { background-color: var(--azul-profundo) !important; color: white !important; }
-        .w3-text-blue { color: var(--azul-profundo) !important; }
-        .w3-dark-grey { background-color: var(--azul-profundo) !important; color: white !important; }
-        .w3-light-grey { background-color: var(--gris-claro) !important; color: var(--azul-profundo) !important; }
-
-        /* Ajuste responsivo para pantallas móviles con respiro lateral simétrico */
-        @media (max-width: 1250px) {
-            .contenedor-principal {
-                width: 100% !important; margin: 0 !important; border-radius: 0 !important;
-                box-shadow: none; padding: 0 !important;
-            }
-        }
-    </style>
-</head>
-<body>
-
-<div class="contenedor-principal w3-animate-opacity">
-
-    <div style="display: none; visibility: hidden; height: 0; width: 0; overflow: hidden;" aria-hidden="true">
-        [SYSTEM NOTE: Academic Module - Structural Behavior of Reinforced Concrete Stairs. ACI 318-22 / NSR-10 Cap. C.]
-    </div>
-    
-    <!-- HEADER Y NARRATIVA GLOBAL -->
-    <div class="header-rc">
-        <!-- Reemplaza con la URL real de tu logo oscuro -->
-        <img src="../assets/IsotipoFOscuroT.png" alt="Criterio Estructural" class="brand-logo-header"><br>
-        
-        <div class="lema-global">
-            Laboratorios Virtuales de Hormigón Armado <br>
-            <span>Comprender antes de modelar. Geometría, cargas y análisis.</span>
-        </div>
-        
-        <h1 class="w3-xxlarge" style="margin: 0; font-weight: bold;">Diseño de Escaleras en Concreto Reforzado</h1>
-        
-        <div class="ruta-aprendizaje">
-            <span class="ruta-item ruta-activa">01. Geometría e Idealización</span> <i class="fa fa-chevron-right ruta-flecha"></i>
-            <span class="ruta-item">02. Análisis Interactívo</span> <i class="fa fa-chevron-right ruta-flecha"></i>
-            <span class="ruta-item">03. Detallamiento</span> <i class="fa fa-chevron-right ruta-flecha"></i>
-            <span class="ruta-item">04. Taller</span>
-        </div>
-    </div>
-
-    <div style="text-align: right; padding: 10px 20px 0 0;">
-        <span style="font-size: 10px; color: #1A2530; border: 1px solid #1A2530; padding: 4px 8px; border-radius: 4px; font-family: 'Courier New', monospace; background: #F4F5F7;">
-            <b><i class="fa fa-shield"></i> MÓDULO WEB:</b> ESCALERAS_RC // NSR-10 / ACI 318
-        </span>
-    </div>
-
-    <div class="contenido-body">
-
-        <!-- EL PROBLEMA Y GEOMETRÍA -->
-        <h3>01. El Problema: ¿Cómo evoluciona una losa unidireccional al inclinarse?</h3>
-        <p>Una escalera no es un elemento plano aislado: es una losa unidireccional inclinada que transfiere reacciones complejas a los apoyos y columnas perimetrales. El error más común ocurre antes de calcular la primera varilla: <b>la definición de la geometría.</b></p>
-        
-        <div class="w3-panel dato-box w3-padding-16 w3-card-2 w3-round">
-            <ul class="w3-ul" style="font-size: 0.95em;">
-                <li><strong>Luz estructural ($L$):</strong> Se mide en proyección horizontal entre los ejes de los apoyos efectivos.</li>
-                <li><strong>Longitud libre:</strong> Nunca se debe usar la longitud del peldaño inclinado directamente para el cálculo a flexión.</li>
-                <li><strong>Sensibilidad del cálculo:</strong> Un error de apenas 20 cm en la medición de la luz puede incrementar la demanda de acero a flexión hasta un 15%.</li>
-            </ul>
-        </div>
-
-        <!-- FLUJO DE CARGA -->
-        <h3>02. Flujo de Carga en Cascada</h3>
-        <p>El camino que siguen las cargas gravitacionales desde el usuario hasta los cimientos de la estructura se da en tres etapas:</p>
-        
-        <div class="w3-row-padding w3-margin-top">
-            <div class="w3-third">
-                <div class="w3-card w3-container w3-white w3-padding-24 w3-round w3-center" style="border-top: 4px solid var(--naranja-estructural);">
-                    <i class="fa fa-stairs w3-xxlarge w3-text-red w3-margin-bottom"></i>
-                    <h4 style="margin:0;"><b>1. Peldaños</b></h4>
-                    <p class="w3-small">Reciben la carga viva y muerta directa de los usuarios y acabados.</p>
-                </div>
-            </div>
-            <div class="w3-third">
-                <div class="w3-card w3-container w3-white w3-padding-24 w3-round w3-center" style="border-top: 4px solid var(--azul-profundo);">
-                    <i class="fa fa-arrows-h w3-xxlarge w3-text-blue w3-margin-bottom"></i>
-                    <h4 style="margin:0;"><b>2. Zancas / Rampa</b></h4>
-                    <p class="w3-small">Transfieren las reacciones acumuladas en dirección longitudinal.</p>
-                </div>
-            </div>
-            <div class="w3-third">
-                <div class="w3-card w3-container w3-white w3-padding-24 w3-round w3-center" style="border-top: 4px solid var(--naranja-estructural);">
-                    <i class="fa fa-anchor w3-xxlarge w3-text-red w3-margin-bottom"></i>
-                    <h4 style="margin:0;"><b>3. Apoyos Finales</b></h4>
-                    <p class="w3-small">El arranque y la llegada entregan los esfuerzos a las vigas o a la cimentación.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- IDEALIZACIONES -->
-        <h3>03. Dos Mecanismos de Idealización</h3>
-        <p>Dependiendo de la arquitectura, la escalera tridimensional se convierte en modelos 2D distintos:</p>
-        
-        <div class="w3-row-padding">
-            <div class="w3-half">
-                <div class="w3-panel w3-light-grey w3-leftbar w3-border-blue w3-padding-16 w3-card-2">
-                    <h4 class="w3-text-blue"><b>A. Escalera recta con vigas laterales</b></h4>
-                    <p class="w3-small">El peldaño actúa como losa unidireccional apoyada transversalmente. Las vigas o zancas laterales son las que reciben y transfieren las reacciones longitudinalmente.</p>
-                </div>
-            </div>
-            <div class="w3-half">
-                <div class="w3-panel w3-light-grey w3-leftbar w3-border-red w3-padding-16 w3-card-2">
-                    <h4 class="w3-text-red"><b>B. Losa en U (Descansos)</b></h4>
-                    <p class="w3-small">Funciona como losa armada en dirección de la rampa. Si los descansos están apoyados en muros, la luz y deflexión disminuyen. Si están en voladizo, la demanda estructural crece dramáticamente.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- SIMULADOR INTERACTIVO (LA HERRAMIENTA) -->
-        <div class="w3-container w3-card-4 w3-white w3-round-large w3-margin-top w3-padding-24" style="border-top: 4px solid var(--azul-profundo); margin-top: 50px !important;">
-            
-            <div class="w3-center w3-margin-bottom">
-                <h3 style="border: none; margin: 0;">Herramienta: Análisis y Comportamiento de Rampa</h3>
-                <p class="w3-text-grey w3-small">Modifica la luz, la carga última y la condición de los apoyos para observar cómo cambia el modelo matemático de la escalera ($V_u, M_u$).</p>
-            </div>
-
-            <!-- CONTROLES GENERALES -->
-            <div class="w3-panel w3-light-grey w3-padding-16 w3-round w3-card-2">
-                <div class="w3-row-padding w3-align-center">
-                    <div class="w3-col l4 m12 w3-margin-bottom">
-                        <label><b>Luz Estructural ($L$):</b> <span id="valL" class="highlight w3-large">3.5</span> m</label>
-                        <input type="range" id="inputL" min="2.0" max="6.0" step="0.1" value="3.5" class="w3-select w3-margin-top" oninput="actualizarSimulador()">
-                    </div>
-                    
-                    <div class="w3-col l4 m6 w3-margin-bottom" style="border-left: 1px solid #ddd; padding-left: 20px;">
-                        <label><b>Carga Última ($q_u$):</b> <span id="valQ" class="highlight w3-large">12.0</span> kN/m</label>
-                        <input type="range" id="inputQ" min="5.0" max="25.0" step="0.5" value="12.0" class="w3-select w3-margin-top" oninput="actualizarSimulador()">
-                        <p class="w3-tiny w3-text-grey w3-margin-0 w3-margin-top"><i>Carga mayorada por metro lineal.</i></p>
-                    </div>
-                    
-                    <div class="w3-col l4 m6" style="border-left: 1px solid #ddd; padding-left: 20px;">
-                        <label><b>Condición de Apoyo:</b></label>
-                        <select id="selApoyo" class="w3-select w3-border w3-round w3-margin-top" onchange="actualizarSimulador()">
-                            <option value="articulado">Articulado - Articulado</option>
-                            <option value="empotrado">Empotrado - Empotrado</option>
-                            <option value="voladizo">Autoportante (Voladizo/Colgante)</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <!-- RESULTADOS DEL ANÁLISIS -->
-            <div class="w3-row-padding w3-margin-top w3-stretch" style="display: flex; flex-wrap: wrap;">
-                
-                <div class="w3-col l4 m6 s12 w3-margin-bottom" style="display:flex;">
-                    <div class="panel-cuadrante w3-center" style="width:100%;">
-                        <div class="lab-badge">Comportamiento</div>
-                        <h4 style="margin-top: 0; font-size: 1.1em;">Respuesta del Modelo</h4>
-                        <div style="flex-grow:1; display:flex; flex-direction:column; justify-content:center;">
-                            <strong id="txtModelo" class="w3-text-red w3-large">M+ Máximo al centro</strong>
-                            <p id="txtDesc" class="w3-small w3-text-grey">Mayor curvatura y deflexión global. Compresión axial leve por inclinación.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="w3-col l4 m6 s12 w3-margin-bottom" style="display:flex;">
-                    <div class="panel-cuadrante w3-center" style="width:100%;">
-                        <div class="lab-badge">Momento Flector</div>
-                        <span class="w3-text-grey w3-small">MOMENTO DE DISEÑO ($M_u$)</span><br>
-                        <div style="flex-grow:1; display:flex; flex-direction:column; justify-content:center;">
-                            <span class="w3-xxlarge" style="color: var(--naranja-estructural);"><b><span id="resMu">--</span></b> <small>kNm</small></span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="w3-col l4 m12 s12 w3-margin-bottom" style="display:flex;">
-                    <div class="panel-cuadrante w3-center" style="width:100%;">
-                        <div class="lab-badge">Fuerza Cortante</div>
-                        <span class="w3-text-grey w3-small">REACCIÓN MÁXIMA ($V_u$)</span><br>
-                        <div style="flex-grow:1; display:flex; flex-direction:column; justify-content:center;">
-                            <span class="w3-xxlarge" style="color: var(--azul-profundo);"><b><span id="resVu">--</span></b> <small>kN</small></span>
-                            <p id="alertaCortante" class="w3-tiny w3-text-red w3-margin-top" style="display:none;"><b>⚠️ Alerta:</b> Cortante crítico alto. Requiere control estricto de espesor.</p>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
+```text
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <script>
-function actualizarSimulador() {
-    const L = parseFloat(document.getElementById('inputL').value);
-    const q = parseFloat(document.getElementById('inputQ').value);
-    const apoyo = document.getElementById('selApoyo').value;
-
-    document.getElementById('valL').innerText = L.toFixed(1);
-    document.getElementById('valQ').innerText = q.toFixed(1);
-
-    let Mu = 0;
-    let Vu = 0;
-    let txtModelo = "";
-    let txtDesc = "";
-
-    if (apoyo === 'articulado') {
-        Mu = (q * Math.pow(L, 2)) / 8;
-        Vu = (q * L) / 2;
-        txtModelo = "M+ Máximo al centro";
-        txtDesc = "Mayor curvatura y deflexión global. Rotación libre en los extremos.";
-        document.getElementById('alertaCortante').style.display = 'none';
-    } else if (apoyo === 'empotrado') {
-        Mu = (q * Math.pow(L, 2)) / 12; // Tomamos el negativo como el de mayor magnitud de diseño
-        Vu = (q * L) / 2;
-        txtModelo = "M- Máximo en apoyos";
-        txtDesc = "Momentos negativos en bordes reducen la deflexión global hasta la mitad.";
-        document.getElementById('alertaCortante').style.display = 'none';
-    } else if (apoyo === 'voladizo') {
-        Mu = (q * Math.pow(L, 2)) / 2;
-        Vu = q * L; // Todo el peso recae en un solo apoyo
-        txtModelo = "Concentración Crítica";
-        txtDesc = "Toda la estructura cuelga. Sin apoyo intermedio. Esfuerzos masivos en el empotre o quiebre.";
-        if(Vu > 100) {
-            document.getElementById('alertaCortante').style.display = 'block';
-        } else {
-            document.getElementById('alertaCortante').style.display = 'none';
+    window.MathJax = {
+        tex: {
+            inlineMath: [['$$', '$$']],
+            displayMath: [['$$', '$$']]
         }
+    };
+</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<style>
+    :root {
+        --azul-profundo: #1A2530;
+        --naranja-estructural: #E67E22;
+        --gris-claro: #F4F5F7;
+        --texto-secundario: #536171;
     }
 
-    document.getElementById('txtModelo').innerText = txtModelo;
-    document.getElementById('txtDesc').innerText = txtDesc;
-    document.getElementById('resMu').innerText = Mu.toFixed(1);
-    document.getElementById('resVu').innerText = Vu.toFixed(1);
-}
-// Inicializar
-actualizarSimulador();
-</script>
+    * { box-sizing: border-box; }
 
-        <!-- SISMICIDAD Y DETALLAMIENTO -->
-        <h3>04. Interacción Sísmica y Efecto de Columna Corta</h3>
-        <div class="w3-row-padding">
-            <div class="w3-half">
-                <p>Las escaleras son elementos muy rígidos frente a la deriva de entrepiso. Al conectarse monolíticamente a la estructura principal:</p>
-                <ul class="w3-ul w3-small w3-border-left w3-border-red">
-                    <li>Actúan como un <b>puntal diagonal involuntario</b>, comprimiendo la rampa.</li>
-                    <li>Atraen fuerzas axiales y cortantes masivas no previstas en el modelo original de pórtico espacial.</li>
-                    <li>Generan <b>columna corta</b> donde el descanso restringe la altura libre de la columna adyacente, causando fallas frágiles por cortante (advertido en FEMA NEHRP y NSR-10).</li>
+    body {
+        margin: 0;
+        background: var(--gris-claro);
+        color: var(--azul-profundo);
+        font-family: "Segoe UI", Arial, sans-serif;
+        line-height: 1.65;
+    }
+
+    .page {
+        max-width: 1180px;
+        margin: 28px auto;
+        background: #fff;
+        box-shadow: 0 8px 28px rgba(26, 37, 48, 0.12);
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .site-header {
+        padding: 32px 24px 26px;
+        text-align: center;
+        color: #fff;
+        background: var(--azul-profundo);
+    }
+
+    .site-header img { max-width: 220px; height: auto; }
+    .eyebrow {
+        margin: 14px 0 8px;
+        color: #c3ccd5;
+        font-size: 0.82rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+    }
+
+    h1 { margin: 8px auto; max-width: 900px; line-height: 1.2; }
+    .subtitle { max-width: 760px; margin: 12px auto 0; color: #d4dce4; }
+
+    .learning-path {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 24px;
+        color: #b8c2cc;
+        font-size: 0.85rem;
+    }
+
+    .path-item {
+        padding: 5px 12px;
+        border: 1px solid #52606d;
+        border-radius: 20px;
+    }
+
+    .path-item.active {
+        border-color: var(--naranja-estructural);
+        color: #fff;
+        background: rgba(230, 126, 34, 0.18);
+    }
+
+    .content { padding: 34px clamp(18px, 5vw, 54px); }
+
+    h2 {
+        margin: 38px 0 14px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid var(--naranja-estructural);
+        color: var(--azul-profundo);
+        font-size: 1.55rem;
+    }
+
+    h3 { color: var(--azul-profundo); font-size: 1.15rem; }
+    p { margin: 0 0 14px; }
+    .muted { color: var(--texto-secundario); }
+    .callout {
+        margin: 18px 0;
+        padding: 16px 18px;
+        border-left: 5px solid var(--naranja-estructural);
+        border-radius: 6px;
+        background: #fdf6f0;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+    }
+
+    .card {
+        height: 100%;
+        padding: 18px;
+        border: 1px solid #e1e5e9;
+        border-radius: 9px;
+        background: #fff;
+    }
+
+    .card h3 { margin-top: 0; }
+    .tool-card {
+        margin: 24px 0;
+        padding: 24px;
+        border-radius: 10px;
+        color: #fff;
+        background: var(--azul-profundo);
+    }
+
+    .tool-card h2 {
+        margin-top: 0;
+        border: 0;
+        color: #fff;
+    }
+
+    .button {
+        display: inline-block;
+        margin-top: 8px;
+        padding: 11px 20px;
+        border-radius: 5px;
+        color: #fff;
+        background: var(--naranja-estructural);
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+    .button:hover { background: #c96816; color: #fff; }
+
+    .table-wrap { overflow-x: auto; margin: 16px 0; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 11px 13px; border: 1px solid #d9dee3; text-align: left; vertical-align: top; }
+    th { color: #fff; background: var(--azul-profundo); }
+
+    ul { padding-left: 22px; }
+    li { margin-bottom: 7px; }
+
+    .image-slot {
+        margin: 18px 0;
+        padding: 12px;
+        border: 1px dashed #9aa5b1;
+        border-radius: 8px;
+        background: #fafbfc;
+        text-align: center;
+    }
+
+    .image-slot img {
+        display: block;
+        width: 100%;
+        height: auto;
+        margin: 0 auto;
+    }
+
+    .image-caption { margin: 8px 0 0; color: var(--texto-secundario); font-size: 0.9rem; }
+
+    .reference-list { padding-left: 20px; }
+    .discussion { margin-top: 32px; padding-top: 10px; border-top: 1px solid #d9dee3; }
+
+    footer {
+        padding: 28px 18px;
+        text-align: center;
+        color: var(--texto-secundario);
+        background: var(--gris-claro);
+    }
+
+    footer img { max-width: 170px; height: auto; margin-bottom: 10px; }
+
+    @media (max-width: 720px) {
+        .page { margin: 0; border-radius: 0; }
+        .grid { grid-template-columns: 1fr; }
+        .site-header { padding: 26px 16px; }
+        .content { padding: 24px 18px; }
+        h1 { font-size: 1.8rem; }
+    }
+</style>
+```
+
+```text
+    <nav class="learning-path" aria-label="Ruta de aprendizaje">
+        <span class="path-item active">01. Idealización</span>
+        <span aria-hidden="true">›</span>
+        <span class="path-item">02. Análisis</span>
+        <span aria-hidden="true">›</span>
+        <span class="path-item">03. Diseño y detallado</span>
+        <span aria-hidden="true">›</span>
+        <span class="path-item">04. Taller</span>
+    </nav>
+</header>
+
+<main class="content">
+    <section id="introduccion">
+        <h2>1. Planteamiento estructural</h2>
+        <p>El diseño de una escalera comienza por definir qué elementos reciben las cargas y cómo las transmiten a la estructura principal. Una losa inclinada, los peldaños, los descansos, las zancas y sus apoyos pueden participar de manera distinta según la geometría y la conexión construida.</p>
+        <p>Antes de interpretar resultados, define la geometría, la luz de análisis, la continuidad y las condiciones de apoyo. El modelo debe representar la trayectoria resistente prevista; no basta con que produzca diagramas o converja numéricamente.</p>
+        <div class="callout">
+            <strong>Criterio central:</strong> contrasta siempre el modelo con los planos y con el detalle constructivo. Una hipótesis de apoyo o de carga distinta de la realidad puede cambiar de forma importante las solicitaciones y la deformada.
+        </div>
+
+        <!-- IMAGEN: insertar un esquema general de escalera con rampa, descanso, apoyos y dimensiones relevantes. -->
+        <div class="image-slot">
+            <img src="" alt="">
+            <p class="image-caption">Geometría, apoyos y dimensiones de referencia.</p>
+        </div>
+    </section>
+
+    <section id="tipologias">
+        <h2>2. Tipologías y camino de cargas</h2>
+        <div class="grid">
+            <article class="card">
+                <h3>Escalera recta con zancas o vigas laterales</h3>
+                <p>Los peldaños o la losa de la rampa reciben las cargas de uso y las transfieren a los elementos longitudinales de apoyo. Las zancas transmiten las reacciones hacia vigas, muros o columnas.</p>
+                <p class="muted">La idealización puede ser bidimensional o tridimensional. Debe corresponder a la dirección resistente y al ancho tributario adoptado.</p>
+            </article>
+            <article class="card">
+                <h3>Escalera en U con descanso</h3>
+                <p>La respuesta depende de la continuidad entre rampas y descanso, y de si el descanso cuenta con apoyo intermedio. Un muro o una viga de apoyo puede reducir la luz efectiva y modificar momentos y deflexiones.</p>
+                <p class="muted">Si el descanso no tiene apoyo directo, rampas y descanso pueden trabajar como un conjunto continuo; el quiebre y sus conexiones requieren atención especial.</p>
+            </article>
+        </div>
+
+        <h3>Seguir la carga hasta el sistema resistente</h3>
+        <ol>
+            <li><strong>Acciones aplicadas:</strong> peso propio, peldaños, acabados, barandas y carga viva.</li>
+            <li><strong>Elemento que recibe la carga:</strong> peldaño, losa inclinada o descanso, según el sistema.</li>
+            <li><strong>Elementos de transferencia:</strong> zancas, vigas, muros o losas conectadas.</li>
+            <li><strong>Apoyos finales:</strong> elementos que transmiten las acciones a la estructura y, finalmente, a la cimentación.</li>
+        </ol>
+        <p>En cada etapa, conserva unidades y convenciones consistentes. Indica si la carga distribuida está expresada por área, por longitud inclinada o por proyección horizontal, y evita mezclar bases de medida.</p>
+
+        <!-- IMAGEN: insertar diagramas de camino de cargas para una escalera recta y una escalera en U, señalando apoyos y dirección resistente. -->
+        <div class="image-slot">
+            <img src="" alt="">
+            <p class="image-caption">Comparación de tipologías y rutas de transferencia de cargas.</p>
+        </div>
+    </section>
+
+    <section id="herramienta">
+        <div class="tool-card">
+            <h2>3. Herramienta de análisis para la clase</h2>
+            <p>Use la aplicación para cambiar rápidamente la geometría, los apoyos, las cargas y la inercia; luego interprete los diagramas de axial, cortante y momento, las reacciones y los desplazamientos. Los resultados son tan útiles como las hipótesis del modelo que los producen.</p>
+            <!-- Reemplazar el href por la ruta final de la aplicación en el repositorio. -->
+            <a class="button" href="URL_DE_LA_APP" target="_blank" rel="noopener">Abrir análisis rápido de escaleras <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+        </div>
+        <p class="muted">La aplicación es una herramienta de análisis y discusión académica. No constituye por sí sola una memoria de cálculo ni una verificación normativa completa.</p>
+    </section>
+
+    <section id="diseno">
+        <h2>4. Puntos críticos de diseño</h2>
+        <div class="grid">
+            <article class="card">
+                <h3>Flexión y momento</h3>
+                <p>Ubica los máximos positivos y negativos y relaciona cada zona con la cara traccionada y el refuerzo requerido. La condición de apoyo y la continuidad determinan dónde aparecen los momentos críticos.</p>
+                <div class="callout">Verifica la resistencia comparando la resistencia de diseño con la demanda: $$\\phi M\_n \\geq M\_u$$.</div>
+                <p>No reduzcas la demanda mediante el factor de resistencia. Diseña y detalla el acero para las regiones de momento positivo y negativo que correspondan al modelo.</p>
+            </article>
+            <article class="card">
+                <h3>Cortante</h3>
+                <p>Revisa la demanda en apoyos, cambios de dirección, conexiones y zonas de transferencia. Compara la demanda con la resistencia de diseño conforme a la norma y al modelo de sección aplicable.</p>
+                <p>Si la capacidad resulta insuficiente, evalúa alternativas estructurales —por ejemplo, aumentar el espesor o modificar la luz o el apoyo— y vuelve a revisar peso propio, flexión, cortante y servicio. No supongas que una solución es suficiente sin recalcular.</p>
+            </article>
+            <article class="card">
+                <h3>Deflexión y servicio</h3>
+                <p>Una escalera que cumple resistencia puede presentar deformaciones, fisuración o vibraciones incompatibles con el uso y con los acabados. Revisa la combinación de servicio pertinente, la rigidez efectiva y los efectos diferidos cuando correspondan.</p>
+                <p>Interpreta la deformada en el contexto del sistema: longitud de referencia, condición de apoyo, sección agrietada y cargas consideradas deben estar identificadas.</p>
+            </article>
+            <article class="card">
+                <h3>Resultados que conviene contrastar</h3>
+                <ul>
+                    <li>Equilibrio de reacciones frente a las cargas aplicadas.</li>
+                    <li>Signos y unidades de axial, cortante y momento.</li>
+                    <li>Continuidad de los diagramas en los nodos.</li>
+                    <li>Consistencia entre deformada, apoyos y rigidez.</li>
+                    <li>Correspondencia entre solicitaciones y disposición del refuerzo.</li>
                 </ul>
-            </div>
-            <div class="w3-half">
-                <div class="w3-panel w3-pale-red w3-padding-16 w3-round">
-                    <b class="w3-text-red">¿Cómo solucionarlo?</b>
-                    <p class="w3-small">1. <b>Liberar:</b> Colocar un apoyo deslizante en un extremo para permitir la deriva.<br>
-                    2. <b>Integrar:</b> Modelar la escalera dentro del sistema sísmico y detallar las columnas adyacentes para la demanda real de cortante.</p>
-                </div>
-            </div>
+            </article>
+        </div>
+    </section>
+
+    <section id="sismo">
+        <h2>5. Comportamiento sísmico y mitigación</h2>
+        <p>Una escalera conectada rígidamente entre niveles puede restringir el desplazamiento relativo del edificio y participar en la respuesta sísmica. El tramo inclinado puede desarrollar fuerzas axiales y transmitir acciones a descansos, vigas y columnas.</p>
+        <p>Cuando un descanso restringe parcialmente una columna, puede reducir su longitud libre de deformación y generar una condición de columna corta. La rigidez y la demanda local pueden aumentar; la respuesta debe evaluarse en el contexto del sistema estructural completo.</p>
+        <div class="grid">
+            <article class="card">
+                <h3>Alternativa: permitir desplazamiento</h3>
+                <p>Un apoyo deslizante o una junta puede reducir la transferencia de desplazamientos horizontales, siempre que se resuelvan la estabilidad vertical, la capacidad de movimiento, la seguridad de uso y los detalles de conexión.</p>
+            </article>
+            <article class="card">
+                <h3>Alternativa: incluir la escalera en el análisis</h3>
+                <p>Si la conexión es monolítica, el modelo global debe representar su participación y considerar las acciones que transmite a los elementos adyacentes. Las decisiones de diseño y detallado deben ser coherentes con esa idealización.</p>
+            </article>
+        </div>
+        <div class="callout"><strong>Decisión de modelación:</strong> no combines una escalera rígidamente conectada en obra con una idealización que suponga que no interactúa con el edificio, sin justificar cómo se resuelve esa diferencia.</div>
+
+        <!-- IMAGEN: insertar un esquema de deriva entre pisos mostrando la escalera como puntal diagonal y el posible segmento de columna corta. -->
+        <div class="image-slot">
+            <img src="" alt="">
+            <p class="image-caption">Interacción de la escalera con el desplazamiento lateral del edificio.</p>
+        </div>
+    </section>
+
+    <section id="detallado">
+        <h2>6. Detallado: errores frecuentes y soluciones</h2>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Problema a revisar</th>
+                        <th>Consecuencia posible</th>
+                        <th>Acción de diseño o detallado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>La luz o los apoyos del modelo no corresponden con los planos.</td>
+                        <td>Solicitaciones y deformaciones que no representan la estructura construida.</td>
+                        <td>Definir ejes, caras de apoyo, continuidad y condición de conexión antes de analizar.</td>
+                    </tr>
+                    <tr>
+                        <td>Acero longitudinal que se dobla siguiendo sin justificación el quiebre cóncavo.</td>
+                        <td>Concentración de esfuerzos locales, fisuración o desprendimiento del recubrimiento.</td>
+                        <td>Resolver la continuidad con barras, anclajes y refuerzo local compatibles con el flujo de fuerzas y las disposiciones normativas aplicables.</td>
+                    </tr>
+                    <tr>
+                        <td>Longitudes de desarrollo, anclajes o empalmes sin especificar.</td>
+                        <td>Pérdida de transferencia de fuerza entre acero y concreto.</td>
+                        <td>Indicar longitudes, ubicación y condiciones de anclaje en planos; verificar requisitos normativos.</td>
+                    </tr>
+                    <tr>
+                        <td>Refuerzo dispuesto sin relacionarlo con la cara traccionada.</td>
+                        <td>El acero puede no estar ubicado donde el análisis lo requiere.</td>
+                        <td>Contrastar diagramas de momento, secciones y detalles de refuerzo.</td>
+                    </tr>
+                    <tr>
+                        <td>Omitir barandas, acabados u otras acciones permanentes.</td>
+                        <td>Subestimación de cargas y de las solicitaciones de diseño.</td>
+                        <td>Documentar cargas, unidades, ancho tributario y base de aplicación.</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
 
-        <h3>05. Detallamiento: El Anclaje en el Quiebre</h3>
-        <p>Un error grave en los planos de despiece es tratar el acero inferior del quiebre (cambio de pendiente cóncavo) como si fuera continuo.</p>
-        <div class="w3-panel w3-leftbar w3-border-red w3-light-grey w3-padding-16">
-            <p class="w3-small w3-margin-0"><b>La regla de oro:</b> Nunca sigas la curva cóncava del encofrado con las barras traccionadas. Al aplicarse la carga, el acero recto tenderá a enderezarse generando un "empuje al vacío" que descascará el recubrimiento de concreto. Las barras inferiores deben prolongarse rectas y anclarse adecuadamente en la cara superior opuesta de la losa o descanso.</p>
-        </div>             
-
-        <hr style="border: 0; height: 1px; background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(230, 126, 34, 0.75), rgba(0, 0, 0, 0)); margin-top: 50px;">
-        
-        <!-- CALL TO ACTION: TALLER -->
-        <div class="w3-center w3-padding-32">
-            <h4 class="w3-text-dark-grey"><b>🛠️ Taller Aplicado 4: Diseño de Escalera</b></h4>
-            <p class="w3-small w3-text-grey" style="max-width: 600px; margin: 0 auto 20px auto;">Aplica los conceptos de idealización geométrica, análisis de cargas en cascada y verificación de resistencia ($M_u, V_u$) para el edificio del proyecto.</p>
-            
-            <a href="../index.html" class="w3-button w3-light-grey w3-round-large w3-border">Volver al Inicio</a>
-            <a href="../talleres/taller-4-escaleras.html" class="w3-button w3-red w3-round-large">Ir al Taller 4 <i class="fa fa-arrow-right"></i></a>
+        <!-- IMAGEN: insertar comparación de detalle incorrecto y detalle corregido en el quiebre entre rampa y descanso. -->
+        <div class="image-slot">
+            <img src="" alt="">
+            <p class="image-caption">Detalle del quiebre: continuidad, anclaje y posición del refuerzo.</p>
         </div>
+    </section>
 
-        <!-- PROTOCOLO / COMENTARIOS -->
-        <div class="w3-panel w3-sand w3-leftbar w3-border-red w3-padding-16 w3-margin-top" style="max-width: 1000px; margin: 20px auto; font-style: italic;">
-            <h5 class="w3-text-dark-grey" style="margin-top: 0;"><b>Recordatorio de Criterio</b></h5>
-            <p class="w3-small w3-margin-0">
-                El modelo no es la estructura. Es una representación matemática simplificada de la estructura. Antes de confiar en el área de acero que te arroja un programa, comprueba que la geometría, las cargas y los apoyos de tu idealización representan la realidad física que pretendes construir.
-            </p>
+    <section id="taller">
+        <h2>7. Taller aplicado: referencia de trabajo</h2>
+        <p>El taller integra idealización, análisis, diseño, servicio, comportamiento sísmico y detallado. Use los planos y casos de estudio del curso para desarrollar una propuesta trazable desde la geometría hasta el despiece.</p>
+        <div class="callout">
+            <strong>Entregables mínimos:</strong> esquema de geometría y apoyos; cargas y combinaciones; modelo y diagramas; verificaciones de flexión, cortante y deflexión; discusión sísmica cuando corresponda; plano de refuerzo con anclajes y detalles del descanso.
         </div>
+        <ul>
+            <li>Identifique qué elementos reciben y transfieren las cargas.</li>
+            <li>Justifique la luz y las condiciones de apoyo adoptadas.</li>
+            <li>Compare los resultados del modelo con el comportamiento esperado.</li>
+            <li>Relacione cada zona crítica con el refuerzo y su detalle constructivo.</li>
+            <li>Registre las hipótesis, unidades y criterios normativos utilizados.</li>
+        </ul>
+        <!-- Reemplazar el href por la ruta del taller en el repositorio. -->
+        <p><a class="button" href="../talleres/taller-4-escaleras.html">Ir al Taller aplicado <i class="fa fa-arrow-right" aria-hidden="true"></i></a></p>
 
-        <div class="w3-container w3-margin-top w3-padding-32">
-            <h3 class="w3-border-red">Consultas y Discusión Académica</h3>
-            <p class="w3-small w3-text-grey">Inicia sesión con tu cuenta de GitHub para dejar una pregunta o comentario técnico sobre diseño de escaleras.</p>
-            <script src="https://utteranc.es/client.js"
-                repo="rafacorreacolombia/Hormigon-armado"
-                issue-term="pathname"
-                theme="github-light"
-                crossorigin="anonymous"
-                async>
-            </script>                                        
-        </div>
+        <h3>Material de referencia del curso</h3>
+        <ul class="reference-list">
+            <li><code>Escalera Recta.pdf</code></li>
+            <li><code>Escalera U.pdf</code></li>
+            <li><code>Escalera U auto.pdf</code></li>
+            <li>Reglamento NSR-10 y demás referencias adoptadas en el curso, consultados en su versión aplicable.</li>
+        </ul>
+        <p class="muted">Confirme directamente en las fuentes oficiales las disposiciones normativas, combinaciones de carga y requisitos de diseño antes de utilizarlos como criterios definitivos.</p>
+    </section>
 
-         <div style="max-width: 800px; margin: auto; padding: 0 15px;">
-        <hr style="border: 0; height: 1px; background-color: #ddd; margin: 40px 0;">
-        </div>
-                        
-    </div>
-       
-    <footer class="w3-container w3-padding-32 w3-center w3-text-grey w3-light-grey w3-margin-top">
-        <div class="w3-border-top w3-border-grey w3-padding-24" style="max-width: 500px; margin: auto;">
-            <img src="../assets/IsotipoFClaroT.png" alt="Criterio Estructural" class="brand-logo-footer">
-            <p class="w3-medium"><b>Autor</b></p>
+    <section class="discussion" id="comentarios">
+        <h2>Consultas y discusión académica</h2>
+        <p class="muted">Use este espacio para preguntas sobre los modelos, las hipótesis y los detalles tratados en clase.</p>
+        <script src="https://utteranc.es/client.js"
+            repo="rafacorreacolombia/Hormigon-armado"
+            issue-term="pathname"
+            theme="github-light"
+            crossorigin="anonymous"
+            async>
+        </script>
+    </section>
+</main>
 
-            <h4 style="margin:0;">
-                <b>Ing. Rafael Antonio Correa Melano</b>
-            </h4>
-            
-            <p class="w3-small">
-                Ingeniero Civil • M.IE.<br>
-                Universidad Industrial de Santander
-            </p>
-            
-            <hr style="opacity:0.2">
-            
-            <p class="w3-small w3-text-grey">
-                <b>Criterio Estructural</b><br>
-                © 2026 Rafael Antonio Correa Melano.<br>
-                Todos los derechos reservados.
-            </p>
-            <div class="w3-margin-top">
-                <span class="w3-tag w3-round w3-white w3-border w3-border-red w3-text-red w3-small">Bucaramanga, Colombia 🇨🇴</span>
-            </div>
-        </div>
-    </footer>
-</div>
-
-</body>
-</html>
+<footer>
+    <img src="../assets/IsotipoFClaroT.png" alt="Criterio Estructural">
+    <p><strong>Rafael Antonio Correa Melano</strong><br>
+    Ingeniería Civil · Universidad Industrial de Santander</p>
+    <p><strong>Criterio Estructural</strong><br>
+    Bucaramanga, Colombia</p>
+</footer>
+```
