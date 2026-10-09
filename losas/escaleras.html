@@ -2,10 +2,10 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <script>
-    window.MathJax = {
+    MathJax = {
         tex: {
-            inlineMath: [['\\(', '\\)']],
-            displayMath: [['$$', '$$']]
+            inlineMath: [['\\(', '\\)'], ['$', '$']],
+            displayMath: [['$$', '$$'], ['\\[', '\\]']]
         }
     };
 </script>
@@ -191,6 +191,7 @@
     }
 </style>
 
+<header>
     <nav class="learning-path" aria-label="Ruta de aprendizaje">
         <span class="path-item active">01. Idealización</span>
         <span aria-hidden="true">›</span>
@@ -211,7 +212,6 @@
             <strong>Criterio central:</strong> contrasta siempre el modelo con los planos y con el detalle constructivo. Una hipótesis de apoyo o de carga distinta de la realidad puede cambiar de forma importante las solicitaciones y la deformada.
         </div>
 
-        <!-- IMAGEN: insertar un esquema general de escalera con rampa, descanso, apoyos y dimensiones relevantes. -->
         <div class="image-slot">
             <img src="../assets/Esc01.png" alt="">
             <p class="image-caption">Geometría, apoyos y dimensiones de referencia.</p>
@@ -242,7 +242,6 @@
         </ol>
         <p>En cada etapa, conserva unidades y convenciones consistentes. Indica si la carga distribuida está expresada por área, por longitud inclinada o por proyección horizontal, y evita mezclar bases de medida.</p>
 
-        <!-- IMAGEN: insertar diagramas de camino de cargas para una escalera recta y una escalera en U, señalando apoyos y dirección resistente. -->
         <div class="image-slot">
             <img src="../assets/Esc02.jpg" alt="">
             <p class="image-caption">Comparación de tipologías y rutas de transferencia de cargas.</p>
@@ -253,7 +252,6 @@
         <div class="tool-card">
             <h2>3. Herramienta de análisis para la clase</h2>
             <p>Use la aplicación para cambiar rápidamente la geometría, los apoyos, las cargas y la inercia; luego interprete los diagramas de axial, cortante y momento, las reacciones y los desplazamientos. Los resultados son tan útiles como las hipótesis del modelo que los producen.</p>
-            <!-- Reemplazar el href por la ruta final de la aplicación en el repositorio. -->
             <a class="button" href="https://gqo2qxdgw7wxriaugbg8xp.streamlit.app/#ing-rafael-antonio-correa-melano" target="_blank" rel="noopener">Abrir análisis rápido de escaleras <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
         </div>
         <p class="muted">La aplicación es una herramienta de análisis y discusión académica. No constituye por sí sola una memoria de cálculo ni una verificación normativa completa.</p>
@@ -265,7 +263,7 @@
             <article class="card">
                 <h3>Flexión y momento</h3>
                 <p>Ubica los máximos positivos y negativos y relaciona cada zona con la cara traccionada y el refuerzo requerido. La condición de apoyo y la continuidad determinan dónde aparecen los momentos críticos.</p>
-                <div class="callout">Verifica la resistencia comparando la resistencia de diseño con la demanda: $$\phi M_{n} \geq M_{u}$$</div>
+                <div class="callout">Verifica la resistencia comparando la resistencia de diseño con la demanda: \(\phi M_{n} \geq M_{u}\).</div>
                 <p>No reduzcas la demanda mediante el factor de resistencia. Diseña y detalla el acero para las regiones de momento positivo y negativo que correspondan al modelo.</p>
             </article>
             <article class="card">
@@ -312,7 +310,6 @@
         </div>
         <div class="callout"><strong>Decisión de modelación:</strong> no combines una escalera rígidamente conectada en obra con una idealización que suponga que no interactúa con el edificio, sin justificar cómo se resuelve esa diferencia.</div>
 
-        <!-- IMAGEN: insertar un esquema de deriva entre pisos mostrando la escalera como puntal diagonal y el posible segmento de columna corta. -->
         <div class="image-slot">
             <img src="../assets/Esc03.jpg" alt="">
             <p class="image-caption">Interacción de la escalera con el desplazamiento lateral del edificio.</p>
@@ -360,7 +357,6 @@
             </table>
         </div>
 
-        <!-- IMAGEN: insertar comparación de detalle incorrecto y detalle corregido en el quiebre entre rampa y descanso. -->
         <div class="image-slot">
             <img src="../assets/Esc04.png" alt="">
             <p class="image-caption">Detalle del quiebre: continuidad, anclaje y posición del refuerzo.</p>
@@ -381,7 +377,6 @@
             <li>Registre las hipótesis, unidades y criterios normativos utilizados.</li>
         </ul>
         
-
         <h3>Material de referencia del curso</h3>
         <ul class="reference-list">
             <li><code>Escalera Recta.pdf</code></li>
