@@ -438,16 +438,29 @@
             <article class="card">
                 <h3>Flexión y momento</h3>
                 <p>Identifica la cara traccionada y detalla el acero en consecuencia. La condición de apoyo y la continuidad determinan la ubicación de los momentos máximos positivos y negativos.</p>
-                <div class="callout">Resistencia requerida: \(\phi M_{n} \geq M_{u}\)</div>
+                <div class="callout" style="text-align: center;">\(\phi M_{n} \geq M_{u}\)</div>
+                <p><strong>El mensaje central:</strong> no se diseña una escalera aplicando una colección de fórmulas aisladas. Antes de calcular, se identifica el sistema resistente y se establece su comportamiento.</p>
+                <ul class="muted" style="font-size: 0.9rem; margin-top: 5px; margin-bottom: 15px;">
+                    <li>No basta con llamarlo «losa» o «viga»; la norma aplicable depende de si trabaja en una o dos direcciones y de su función estructural, no solo de su geometría.</li>
+                    <li>Las ecuaciones de \(M_n\) no son universales. Requieren que el diseñador aplique los criterios específicos de acero mínimo, separación máxima de barras y recubrimiento correspondientes al caso.</li>
+                </ul>
             </article>
             <article class="card">
                 <h3>Cortante y efecto axial</h3>
-                <p>La inclinación genera fuerzas axiales que interactúan con la capacidad a cortante (\(V_{c}\)). <strong>Cuidado:</strong> la tracción reduce la resistencia; en ese caso, \(N_{u}\) debe ingresar negativo en la fórmula.</p>
-                <ul class="muted" style="font-size: 0.9rem; margin-top: 5px; margin-bottom: 15px;">
-                    <li>Ecuación clásica: $$V_{c} = 0.17\sqrt{f'_{c}}bd$$</li>
-                    <li>Con efecto axial: $$V_{c} = 0.17\sqrt{f'_{c}}bd\left(1+\frac{0.29N_{u}}{A_{g}}\right)$$</li>
+                <p>La fuerza axial modifica la contribución del concreto a la resistencia a cortante (\(V_c\)):</p>
+                <ul>
+                    <li><strong>Compresión axial:</strong> puede incrementar \(V_c\). Para mantener un criterio conservador, se suele emplear la expresión clásica sin el incremento.</li>
+                    <li><strong>Tensión axial:</strong> reduce la resistencia. Debe usarse la expresión que penaliza la capacidad.</li>
                 </ul>
-                <p style="font-size: 0.9rem;">Si \(V_{u} > \phi V_{c}\), la solución constructiva típica en losas es aumentar el espesor (\(h\)), obligando a recalcular el peso propio.</p>
+                <p>Para un cálculo seguro, se sugiere comparar ambas estimaciones y adoptar la menor:</p>
+                <div class="callout" style="text-align: center;">
+                    \[ V_c = \min(V_{c,1}, V_{c,2}) \]
+                </div>
+                <ul class="muted" style="font-size: 0.9rem; margin-top: 5px; margin-bottom: 15px;">
+                    <li>\(V_{c,1}\) (clásica): $$V_c = 0.17\sqrt{f'_c}bd$$</li>
+                    <li>\(V_{c,2}\) (con axial): $$V_c = 0.17\sqrt{f'_c}bd\left(1+\frac{0.29N_u}{A_g}\right)$$</li>
+                </ul>
+                <p style="font-size: 0.9rem;"><strong>Importante:</strong> Esta comparación es una pauta de diseño conservadora; no exime de verificar el numeral aplicable de la NSR-10. Asegúrate de usar el signo negativo para la tracción en \(N_u\).</p>
             </article>
             <article class="card">
                 <h3>Deflexión y servicio</h3>
