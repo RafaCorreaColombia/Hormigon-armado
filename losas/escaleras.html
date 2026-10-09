@@ -265,13 +265,18 @@
             <article class="card">
                 <h3>Flexión y momento</h3>
                 <p>Ubica los máximos positivos y negativos y relaciona cada zona con la cara traccionada y el refuerzo requerido. La condición de apoyo y la continuidad determinan dónde aparecen los momentos críticos.</p>
-                <div class="callout">Verifica la resistencia comparando la resistencia de diseño con la demanda: $$\\phi M\_n \\geq M\_u$$.</div>
+                <div class="callout">Verifica la resistencia comparando la resistencia de diseño con la demanda: $$\phi M\_n \geq M\_u$$.</div>
                 <p>No reduzcas la demanda mediante el factor de resistencia. Diseña y detalla el acero para las regiones de momento positivo y negativo que correspondan al modelo.</p>
             </article>
             <article class="card">
-                <h3>Cortante</h3>
-                <p>Revisa la demanda en apoyos, cambios de dirección, conexiones y zonas de transferencia. Compara la demanda con la resistencia de diseño conforme a la norma y al modelo de sección aplicable.</p>
-                <p>Si la capacidad resulta insuficiente, evalúa alternativas estructurales —por ejemplo, aumentar el espesor o modificar la luz o el apoyo— y vuelve a revisar peso propio, flexión, cortante y servicio. No supongas que una solución es suficiente sin recalcular.</p>
+                <h3>Cortante y efecto axial</h3>
+                <p>Revisa la demanda en los apoyos y quiebres. A diferencia de una losa plana, la inclinación de la escalera genera fuerzas axiales que interactúan directamente con la capacidad a cortante del concreto ($V_c$).</p>
+                <p>Verifica siempre la menor capacidad entre la ecuación clásica y la que incluye interacción. <strong>Cuidado con el signo:</strong> la tracción reduce la resistencia. Si el elemento está traccionado, el valor de $N_u$ debe ingresar negativo en la fórmula normativa para castigar el resultado.</p>
+                <ul class="muted" style="font-size: 0.9rem; margin-top: 5px; margin-bottom: 15px;">
+                    <li>Ecuación clásica: $$V_c = 0.17\sqrt{f'_c}bd$$</li>
+                    <li>Con efecto axial: $$V_c = 0.17\sqrt{f'_c}bd\left(1+\frac{0.29N_u}{A_g}\right)$$</li>
+                </ul>
+                <p style="font-size: 0.9rem;">Si $V_u > \phi V_c$, la solución más constructiva en losas es aumentar el espesor ($h$), no detallar estribos. Recuerda que modificar la sección te obliga a iterar nuevamente el peso propio y la flexión.</p>
             </article>
             <article class="card">
                 <h3>Deflexión y servicio</h3>
