@@ -5,7 +5,7 @@
     MathJax = {
         tex: {
             inlineMath: [['\\(', '\\)'], ['$', '$']],
-            displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            displayMath: [['$$', '$$'], ['[', ']']]
         }
     };
 </script>
@@ -15,8 +15,7 @@
     /* --- ESTILOS DEL BANNER DE ESCALERAS --- */
     .hero-banner {
         position: relative;
-        /* Asegúrate de que la ruta coincida con tu estructura de carpetas */
-        background: url('../assets/Esc00.png') no-repeat center center; 
+        background: url('../assets/Esc00.jpg') no-repeat center center; 
         background-size: cover;
         border-radius: 12px 12px 0 0;
     }
@@ -92,18 +91,9 @@
     }
 
     .site-header img { max-width: 220px; height: auto; }
-    .eyebrow {
-        margin: 14px 0 8px;
-        color: #c3ccd5;
-        font-size: 0.82rem;
-        font-weight: 700;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-    }
-
+    
     h1 { margin: 8px auto; max-width: 900px; line-height: 1.2; }
-    .subtitle { max-width: 760px; margin: 12px auto 0; color: #d4dce4; }
-
+    
     .learning-path {
         display: flex;
         justify-content: center;
@@ -140,6 +130,7 @@
     h3 { color: var(--azul-profundo); font-size: 1.15rem; }
     p { margin: 0 0 14px; }
     .muted { color: var(--texto-secundario); }
+    
     .callout {
         margin: 18px 0;
         padding: 16px 18px;
@@ -163,6 +154,7 @@
     }
 
     .card h3 { margin-top: 0; }
+    
     .tool-card {
         margin: 24px 0;
         padding: 24px;
@@ -190,10 +182,51 @@
 
     .button:hover { background: #c96816; color: #fff; }
 
-    .table-wrap { overflow-x: auto; margin: 16px 0; }
-    table { width: 100%; border-collapse: collapse; }
-    th, td { padding: 11px 13px; border: 1px solid #d9dee3; text-align: left; vertical-align: top; }
-    th { color: #fff; background: var(--azul-profundo); }
+    /* --- ESTILOS MEJORADOS PARA LA TABLA DE DIAGNÓSTICO --- */
+    .table-wrap {
+        overflow-x: auto;
+        margin: 22px 0;
+        border: 1px solid #d9dee3;
+        border-radius: 10px;
+        box-shadow: 0 5px 16px rgba(26, 37, 48, 0.07);
+    }
+
+    .table-wrap table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        font-size: 0.94rem;
+    }
+
+    .table-wrap th {
+        background: #1A2530;
+        color: #fff;
+        padding: 15px 14px;
+        border: 0;
+        border-bottom: 3px solid #E67E22;
+        text-align: left;
+    }
+
+    .table-wrap td {
+        padding: 14px;
+        border: 0;
+        border-bottom: 1px solid #e1e5e9;
+        vertical-align: top;
+    }
+
+    .table-wrap tbody tr:nth-child(even) {
+        background: #F4F5F7;
+    }
+
+    .table-wrap tbody td:first-child {
+        font-weight: 650;
+        color: #1A2530;
+        border-left: 4px solid #E67E22;
+    }
+
+    .table-wrap tbody tr:last-child td {
+        border-bottom: 0;
+    }
 
     ul { padding-left: 22px; }
     li { margin-bottom: 7px; }
@@ -262,10 +295,11 @@
 <main class="content">
     <section id="introduccion">
         <h2>1. Planteamiento estructural</h2>
-        <p>El diseño de una escalera comienza por definir qué elementos reciben las cargas y cómo las transmiten a la estructura principal. Una losa inclinada, los peldaños, los descansos, las zancas y sus apoyos pueden participar de manera distinta según la geometría y la conexión construida.</p>
-        <p>Antes de interpretar resultados, define la geometría, la luz de análisis, la continuity y las condiciones de apoyo. El modelo debe representar la trayectoria resistente prevista; no basta con que produzca diagramas o converja numéricamente.</p>
+        <p>El diseño de una escalera comienza por definir qué elementos reciben las cargas y cómo las transmiten a la estructura principal. Antes de interpretar resultados, define la geometría, la luz de análisis, la continuidad y las condiciones de apoyo.</p>
+        <p>El modelo debe representar la trayectoria resistente prevista; no basta con que produzca diagramas o converja numéricamente.</p>
+        
         <div class="callout">
-            <strong>Criterio central:</strong> contrasta siempre el modelo con los planos y con el detalle constructivo. Una hipótesis de apoyo o de carga distinta de la realidad puede cambiar de forma importante las solicitaciones y la deformada.
+            <strong>Decisión de ingeniería:</strong> Contrasta siempre el modelo con los planos y con el detalle constructivo. Una hipótesis de apoyo o de carga distinta a la realidad cambiará drásticamente las solicitaciones.
         </div>
 
         <div class="image-slot">
@@ -278,25 +312,26 @@
         <h2>2. Tipologías y camino de cargas</h2>
         <div class="grid">
             <article class="card">
-                <h3>Escalera recta con zancas o vigas laterales</h3>
-                <p>Los peldaños o la losa de la rampa reciben las cargas de uso y las transfieren a los elementos longitudinales de apoyo. Las zancas transmiten las reacciones hacia vigas, muros o columnas.</p>
-                <p class="muted">La idealización puede ser bidimensional o tridimensional. Debe corresponder a la dirección resistente y al ancho tributario adoptado.</p>
+                <h3>Escalera recta apoyada lateralmente</h3>
+                <p>Los peldaños reciben las cargas y las transfieren a los elementos de apoyo. Las zancas (vigas inclinadas laterales) transmiten luego esas reacciones hacia vigas, muros o columnas del sistema estructural.</p>
             </article>
             <article class="card">
                 <h3>Escalera en U con descanso</h3>
-                <p>La respuesta depende de la continuidad entre rampas y descanso, y de si el descanso cuenta con apoyo intermedio. Un muro o una viga de apoyo puede reducir la luz efectiva y modificar momentos y deflexiones.</p>
-                <p class="muted">Si el descanso no tiene apoyo directo, rampas y descanso pueden trabajar como un conjunto continuo; el quiebre y sus conexiones requieren atención especial.</p>
+                <p>La respuesta depende de si el descanso cuenta con un apoyo intermedio directo. Si no lo tiene, rampas y descanso trabajan como un conjunto continuo; el quiebre y sus conexiones requieren atención especial.</p>
             </article>
         </div>
 
-        <h3>Seguir la carga hasta el sistema resistente</h3>
+        <h3>Seguir la carga hasta el apoyo</h3>
         <ol>
-            <li><strong>Acciones aplicadas:</strong> peso propio, peldaños, acabados, barandas y carga viva.</li>
-            <li><strong>Elemento que recibe la carga:</strong> peldaño, losa inclinada o descanso, según el sistema.</li>
-            <li><strong>Elementos de transferencia:</strong> zancas, vigas, muros o losas conectadas.</li>
-            <li><strong>Apoyos finales:</strong> elementos que transmiten las acciones a la estructura y, finalmente, a la cimentación.</li>
+            <li><strong>Acciones aplicadas:</strong> peso propio, acabados, barandas y carga viva.</li>
+            <li><strong>Elemento receptor:</strong> peldaño, losa inclinada o descanso.</li>
+            <li><strong>Elementos de transferencia:</strong> zancas, vigas o muros.</li>
+            <li><strong>Apoyos finales:</strong> elementos que entregan las fuerzas a la cimentación.</li>
         </ol>
-        <p>En cada etapa, conserva unidades y convenciones consistentes. Indica si la carga distribuida está expresada por área, por longitud inclinada o por proyección horizontal, y evita mezclar bases de medida.</p>
+
+        <div class="callout" style="background: #eef2f5; border-left-color: #536171; color: var(--azul-profundo);">
+            <strong>Control de Cargas:</strong> Distingue claramente si la carga está distribuida por unidad de área, por longitud inclinada o por proyección horizontal. Un error en la base de medida distorsiona todo el análisis.
+        </div>
 
         <div class="image-slot">
             <img src="../assets/Esc02.jpg" alt="">
@@ -307,10 +342,10 @@
     <section id="herramienta">
         <div class="tool-card">
             <h2>3. Herramienta de análisis para la clase</h2>
-            <p>Use la aplicación para cambiar rápidamente la geometría, los apoyos, las cargas y la inercia; luego interprete los diagramas de axial, cortante y momento, las reacciones y los desplazamientos. Los resultados son tan útiles como las hipótesis del modelo que los producen.</p>
+            <p><strong>Instrucción:</strong> Modifica la geometría y los apoyos. Antes de interpretar los diagramas, predice qué debería cambiar en la estructura y por qué.</p>
             <a class="button" href="https://gqo2qxdgw7wxriaugbg8xp.streamlit.app/#ing-rafael-antonio-correa-melano" target="_blank" rel="noopener">Abrir análisis rápido de escaleras <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
         </div>
-        <p class="muted">La aplicación es una herramienta de análisis y discusión académica. No constituye por sí sola una memoria de cálculo ni una verificación normativa completa.</p>
+        <p class="muted">La aplicación es una herramienta de exploración académica. No sustituye una verificación normativa completa ni la memoria de cálculo.</p>
     </section>
 
     <section id="diseno">
@@ -318,33 +353,28 @@
         <div class="grid">
             <article class="card">
                 <h3>Flexión y momento</h3>
-                <p>Ubica los máximos positivos y negativos y relaciona cada zona con la cara traccionada y el refuerzo requerido. La condición de apoyo y la continuidad determinan dónde aparecen los momentos críticos.</p>
-                <div class="callout">Verifica la resistencia comparando la resistencia de diseño con la demanda: \(\phi M_{n} \geq M_{u}\).</div>
-                <p>No reduzcas la demanda mediante el factor de resistencia. Diseña y detalla el acero para las regiones de momento positivo y negativo que correspondan al modelo.</p>
+                <p>Identifica la cara traccionada y detalla el acero en consecuencia. La condición de apoyo y la continuidad determinan la ubicación de los momentos máximos positivos y negativos.</p>
+                <div class="callout">Resistencia requerida: \(\phi M_{n} \geq M_{u}\)</div>
             </article>
             <article class="card">
                 <h3>Cortante y efecto axial</h3>
-                <p>Revisa la demanda en los apoyos y quiebres. A diferencia de una losa plana, la inclinación de la escalera genera fuerzas axiales que interactúan directamente con la capacidad a cortante del concreto (\(V_{c}\)).</p>
-                <p>Verifica siempre la menor capacidad entre la ecuación clásica y la que incluye interacción. <strong>Cuidado con el signo:</strong> la tracción reduce la resistencia. Si el elemento está traccionado, el valor de \(N_{u}\) debe ingresar negativo en la fórmula normativa para castigar el resultado.</p>
+                <p>La inclinación genera fuerzas axiales que interactúan con la capacidad a cortante (\(V_{c}\)). <strong>Cuidado:</strong> la tracción reduce la resistencia; en ese caso, \(N_{u}\) debe ingresar negativo en la fórmula.</p>
                 <ul class="muted" style="font-size: 0.9rem; margin-top: 5px; margin-bottom: 15px;">
                     <li>Ecuación clásica: $$V_{c} = 0.17\sqrt{f'_{c}}bd$$</li>
                     <li>Con efecto axial: $$V_{c} = 0.17\sqrt{f'_{c}}bd\left(1+\frac{0.29N_{u}}{A_{g}}\right)$$</li>
                 </ul>
-                <p style="font-size: 0.9rem;">Si \(V_{u} > \phi V_{c}\), la solución más constructiva en losas es aumentar el espesor (\(h\)), no detallar estribos. Recuerda que modificar la sección te obliga a iterar nuevamente el peso propio y la flexión.</p>
+                <p style="font-size: 0.9rem;">Si \(V_{u} > \phi V_{c}\), la solución constructiva típica en losas es aumentar el espesor (\(h\)), obligando a recalcular el peso propio.</p>
             </article>
             <article class="card">
                 <h3>Deflexión y servicio</h3>
-                <p>Una escalera que cumple resistencia puede presentar deformaciones, fisuración o vibraciones incompatibles con el uso y con los acabados. Revisa la combinación de servicio pertinente, la rigidez efectiva y los efectos diferidos cuando correspondan.</p>
-                <p>Interpreta la deformada en el contexto del sistema: longitud de referencia, condición de apoyo, sección agrietada y cargas consideradas deben estar identificadas.</p>
+                <p>Revisa la combinación de servicio aplicable, la rigidez efectiva y los efectos diferidos para evitar deformaciones, fisuración excesiva o vibraciones intolerables.</p>
             </article>
             <article class="card">
-                <h3>Resultados que conviene contrastar</h3>
+                <h3>Verificaciones de control</h3>
                 <ul>
-                    <li>Equilibrio de reacciones frente a las cargas aplicadas.</li>
-                    <li>Signos y unidades de axial, cortante y momento.</li>
-                    <li>Continuidad de los diagramas en los nodos.</li>
-                    <li>Consistencia entre deformada, apoyos y rigidez.</li>
-                    <li>Correspondencia entre solicitaciones y disposición del refuerzo.</li>
+                    <li>Equilibrio entre reacciones y cargas aplicadas.</li>
+                    <li>Signos y unidades de cada diagrama.</li>
+                    <li>Consistencia lógica de la deformada según los apoyos.</li>
                 </ul>
             </article>
         </div>
@@ -352,62 +382,61 @@
 
     <section id="sismo">
         <h2>5. Comportamiento sísmico y mitigación</h2>
-        <p>Una escalera conectada rígidamente entre niveles puede restringir el desplazamiento relativo del edificio y participar en la respuesta sísmica. El tramo inclinado puede desarrollar fuerzas axiales y transmitir acciones a descansos, vigas y columnas.</p>
-        <p>Cuando un descanso restringe parcialmente una columna, puede reducir su longitud libre de deformación y generar una condición de columna corta. La rigidez y la demanda local pueden aumentar; la respuesta debe evaluarse en el contexto del sistema estructural completo.</p>
+        <p>Una escalera conectada rígidamente puede comportarse como un puntal diagonal, restringiendo el desplazamiento relativo entre pisos y alterando la respuesta global del edificio.</p>
+        
         <div class="grid">
             <article class="card">
-                <h3>Alternativa: permitir desplazamiento</h3>
-                <p>Un apoyo deslizante o una junta puede reducir la transferencia de desplazamientos horizontales, siempre que se resuelvan la estabilidad vertical, la capacidad de movimiento, la seguridad de uso y los detalles de conexión.</p>
+                <h3>La condición de columna corta</h3>
+                <p>Si un descanso restringe rígidamente una columna, existe la posibilidad de reducir su longitud libre, aumentando drásticamente su demanda local. Esto depende de la geometría y debe comprobarse en el modelo global.</p>
             </article>
             <article class="card">
-                <h3>Alternativa: incluir la escalera en el análisis</h3>
-                <p>Si la conexión es monolítica, el modelo global debe representar su participación y considerar las acciones que transmite a los elementos adyacentes. Las decisiones de diseño y detallado deben ser coherentes con esa idealización.</p>
+                <h3>Alternativas de mitigación</h3>
+                <p>Puedes incluir la escalera en el modelo global para diseñar con la fuerza real que transmite, o utilizar juntas y apoyos deslizantes para aislar sus desplazamientos sin comprometer la estabilidad vertical.</p>
             </article>
         </div>
-        <div class="callout"><strong>Decisión de modelación:</strong> no combines una escalera rígidamente conectada en obra con una idealización que suponga que no interactúa con el edificio, sin justificar cómo se resuelve esa diferencia.</div>
 
         <div class="image-slot">
             <img src="../assets/Esc03.jpg" alt="">
-            <p class="image-caption">Interacción de la escalera con el desplazamiento lateral del edificio.</p>
+            <p class="image-caption">Mecanismo de interacción de la escalera con el desplazamiento lateral del edificio.</p>
         </div>
     </section>
 
     <section id="detallado">
-        <h2>6. Detallado: errores frecuentes y soluciones</h2>
+        <h2>6. Tarjetas de diagnóstico: Errores y soluciones</h2>
         <div class="table-wrap">
             <table>
                 <thead>
                     <tr>
-                        <th>Problema a revisar</th>
+                        <th>Diagnóstico a revisar</th>
                         <th>Consecuencia posible</th>
-                        <th>Acción de diseño o detallado</th>
+                        <th>Acción requerida de diseño</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>La luz o los apoyos del modelo no corresponden con los planos.</td>
-                        <td>Solicitaciones y deformaciones que no representan la estructura construida.</td>
-                        <td>Definir ejes, caras de apoyo, continuidad y condición de conexión antes de analizar.</td>
+                        <td>01 · Geometría y apoyos</td>
+                        <td>El modelo produce solicitaciones y deformaciones que no representan la estructura construida.</td>
+                        <td>Comprobar y definir ejes, luces de análisis, caras de apoyo y continuidad antes de analizar.</td>
                     </tr>
                     <tr>
-                        <td>Acero longitudinal que se dobla siguiendo sin justificación el quiebre cóncavo.</td>
-                        <td>Concentración de esfuerzos locales, fisuración o desprendimiento del recubrimiento.</td>
-                        <td>Resolver la continuidad con barras, anclajes y refuerzo local compatibles con el flujo de fuerzas y las disposiciones normativas aplicables.</td>
+                        <td>02 · Quiebre del tramo</td>
+                        <td>Concentración de esfuerzos, fisuración o desprendimiento local del recubrimiento en la zona cóncava.</td>
+                        <td>Resolver la continuidad cruzando el acero, detallando anclajes y refuerzo local según normativa.</td>
                     </tr>
                     <tr>
-                        <td>Longitudes de desarrollo, anclajes o empalmes sin especificar.</td>
-                        <td>Pérdida de transferencia de fuerza entre acero y concreto.</td>
-                        <td>Indicar longitudes, ubicación y condiciones de anclaje en planos; verificar requisitos normativos.</td>
+                        <td>03 · Anclajes y empalmes</td>
+                        <td>Incapacidad de transferir y desarrollar la fuerza de tracción requerida entre acero y concreto.</td>
+                        <td>Especificar longitudes, ubicación y condiciones de anclaje precisas en los planos estructurales.</td>
                     </tr>
                     <tr>
-                        <td>Refuerzo dispuesto sin relacionarlo con la cara traccionada.</td>
-                        <td>El acero puede no estar ubicado donde el análisis lo requiere.</td>
-                        <td>Contrastar diagramas de momento, secciones y detalles de refuerzo.</td>
+                        <td>04 · Posición del refuerzo</td>
+                        <td>El acero queda ubicado fuera de la zona traccionada, dejando la sección vulnerable al colapso.</td>
+                        <td>Relacionar rigurosamente los diagramas de momento con las secciones y el despiece final.</td>
                     </tr>
                     <tr>
-                        <td>Omitir barandas, acabados u otras acciones permanentes.</td>
-                        <td>Subestimación de cargas y de las solicitaciones de diseño.</td>
-                        <td>Documentar cargas, unidades, ancho tributario y base de aplicación.</td>
+                        <td>05 · Cargas omitidas</td>
+                        <td>Subestimación grave de las solicitaciones reales de servicio y diseño último.</td>
+                        <td>Incluir y documentar rigurosamente acabados, peldaños, barandas y demás cargas permanentes.</td>
                     </tr>
                 </tbody>
             </table>
@@ -415,7 +444,7 @@
 
         <div class="image-slot">
             <img src="../assets/Esc04.png" alt="">
-            <p class="image-caption">Detalle del quiebre: continuidad, anclaje y posición del refuerzo.</p>
+            <p class="image-caption">Detalle constructivo del quiebre: continuidad geométrica, anclaje y posición correcta del refuerzo.</p>
         </div>
     </section>
 
@@ -425,41 +454,18 @@
         <div class="callout">
             <strong>Entregables mínimos:</strong> esquema de geometría y apoyos; cargas y combinaciones; modelo y diagramas; verificaciones de flexión, cortante y deflexión; discusión sísmica cuando corresponda; plano de refuerzo con anclajes y detalles del descanso.
         </div>
-        <ul>
-            <li>Identifique qué elementos reciben y transfieren las cargas.</li>
-            <li>Justifique la luz y las condiciones de apoyo adoptadas.</li>
-            <li>Compare los resultados del modelo con el comportamiento esperado.</li>
-            <li>Relacione cada zona crítica con el refuerzo y su detalle constructivo.</li>
-            <li>Registre las hipótesis, unidades y criterios normativos utilizados.</li>
-        </ul>
         
         <h3>Material de referencia del curso</h3>
         <ul class="reference-list">
             <li><code>Escalera Recta.pdf</code></li>
             <li><code>Escalera U.pdf</code></li>
             <li><code>Escalera U auto.pdf</code></li>
-            <li>Reglamento NSR-10 y demás referencias adoptadas en el curso, consultados en su versión aplicable.</li>
+            <li>Reglamento NSR-10 y referencias vigentes adoptadas en el curso.</li>
         </ul>
-        <p class="muted">Confirme directamente en las fuentes oficiales las disposiciones normativas, combinaciones de carga y requisitos de diseño antes de utilizarlos como criterios definitivos.</p>
     </section>
 
     <section class="discussion" id="comentarios">
         <h2>Consultas y discusión académica</h2>
         <p class="muted">Use este espacio para preguntas sobre los modelos, las hipótesis y los detalles tratados en clase.</p>
         <script src="https://utteranc.es/client.js"
-            repo="rafacorreacolombia/Hormigon-armado"
-            issue-term="pathname"
-            theme="github-light"
-            crossorigin="anonymous"
-            async>
-        </script>
-    </section>
-</main>
-
-<footer>
-    <img src="../assets/IsotipoFClaroT.png" alt="Criterio Estructural">
-    <p><strong>Rafael Antonio Correa Melano</strong><br>
-    Ingeniería Civil · Universidad Industrial de Santander</p>
-    <p><strong>Criterio Estructural</strong><br>
-    Bucaramanga, Colombia</p>
-</footer>
+            repo="rafacorreacolombia/Hormigon-armado
