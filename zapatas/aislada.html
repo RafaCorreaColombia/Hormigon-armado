@@ -171,7 +171,7 @@
                     <strong>📥 Columna</strong>
                     <ul class="w3-small" style="margin: 6px 0 0 0; padding-left: 18px;">
                         <li>Carga axial \( P \)</li>
-                        <li>Momento \( M \)</li>
+                        <li>Momento \( M \): no es opcional; si el apoyo del modelo es empotrado o hay excentricidad, la zapata debe equilibrarlo</li>
                     </ul>
                 </div>
                 <div class="w3-panel ce-panel-gris w3-padding w3-round" style="margin:0;">
@@ -184,8 +184,8 @@
                 <div class="w3-panel ce-panel-gris w3-padding w3-round" style="margin:0; border-left-color: #22c55e;">
                     <strong style="color:#15803d;">🌱 Suelo</strong>
                     <ul class="w3-small" style="margin: 6px 0 0 0; padding-left: 18px;">
-                        <li>Resiste compresión</li>
-                        <li><strong>No resiste tracción</strong></li>
+                        <li>Solo empuja (compresión), nunca "jala"</li>
+                        <li><strong>No resiste tracción</strong>: si la resultante sale del núcleo central, parte de la base se despega y la presión se redistribuye</li>
                     </ul>
                 </div>
             </div>
@@ -259,23 +259,6 @@
                     \( M_x \) es el momento alrededor del eje \( x \) y hace variar la presión a lo largo de \( y \), es decir, de \( B \).
                 </p>
 
-            </div>
-
-
-            <div class="ce-grid ce-grid-2" style="margin-top: 20px;">
-                <div class="w3-panel ce-panel-azul w3-padding w3-round" style="margin: 0;">
-                    <strong class="w3-large" style="color: var(--azul-profundo);">📥 El Origen (Columna)</strong>
-                    <p style="margin-top: 8px; font-size: 0.95em;">
-                        La columna entrega una carga axial \( P \) y momentos \( M \). El momento no es "opcional"; si el apoyo del modelo es <strong>empotrado</strong> o existe <strong>excentricidad</strong>, la zapata debe equilibrarlo obligatoriamente.
-                    </p>
-                </div>
-
-                <div class="w3-panel ce-panel-gris w3-padding w3-round" style="margin: 0; border-left-color: #22c55e;">
-                    <strong class="w3-large" style="color: #15803d;">🌱 La Respuesta (Suelo)</strong>
-                    <p style="margin-top: 8px; font-size: 0.95em;">
-                        El suelo <strong>solo empuja</strong>, nunca "jala". Si el momento es muy grande (\( e > B/6 \)), una parte de la zapata se despega y la presión de contacto se redistribuye para mantener \( \sum F = 0 \) y \( \sum M = 0 \).
-                    </p>
-                </div>
             </div>
 
             <div class="w3-panel w3-padding-large w3-round w3-margin-top" style="background-color: #f8fafc; border-left: 5px solid #94a3b8;">
