@@ -247,6 +247,7 @@
                     <span class="w3-small">\( q_{adm} = 200 \text{ kN/m}^2 \) (Servicio - Valor de referencia)</span><br>
                     <span class="w3-small">\( q_{lp} = 292 \text{ kN/m}^2 \) (Dato específico para el ejemplo*)</span><br>
                     <span class="w3-small">Profundidad de desplante: \( 0.50 \text{ m} \)</span>
+                    
                     <p class="w3-small" style="margin-top: 8px; margin-bottom: 0; color: var(--gris-texto); font-style: italic; border-top: 1px solid var(--gris-borde); padding-top: 5px;">
                         *Nota: \( q_{adm} \) es el valor base. El uso de un límite mayor (\( q_{lp} \)) para eventos extremos (ej. sismo) se incluye en este ejemplo para enriquecer el proceso de diseño, en la práctica depende del estudio geotécnico.
                     </p>
@@ -342,21 +343,27 @@
             <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Verificación en Servicio y Evaluación de Volteo para Zapata de \( 1.6 \times 1.6 \text{ m} \)</p>
 
             <div class="w3-panel ce-panel-gris w3-padding w3-round">
-                <strong>📋 Capacidad Neta del Suelo:</strong><br>
+                <strong>📋 Capacidad Neta del Suelo:</strong>
+            
+                <p class="w3-small" style="margin-top: 8px; margin-bottom: 0;">
+                    <strong>Enfoque de presiones netas:</strong> \( q_{adm} \) y \( q_{lp} \) del estudio son valores brutos. Las cargas de la tabla no incluyen el peso de la zapata, por eso se les resta \( \gamma_c H \) y se comparan presiones netas. Así no hay que recalcular el peso propio cada vez que cambian \( B \), \( L \) o \( H \) durante el diseño.
+                </p>
+            
                 <div class="w3-margin-top w3-small">
                     <strong>Servicio (control principal):</strong><br>
-                    Descontando el peso propio de la zapata (espesor \( 0.50 \text{ m} \), \(\gamma = 24 \text{ kN/m}^3\)):<br>
                     <span class="w3-large ce-destacado">\( q_{adm,neto} = 200 - (24 \times 0.50) = \mathbf{188 \text{ kPa}} \)</span>
                 </div>
-                
+            
                 <div class="w3-margin-top w3-small">
-                    <strong>Capacidad Límite (Eventos sísmicos de corta duración):</strong><br>
+                    <strong>Capacidad límite (sismo, corta duración):</strong><br>
                     <span class="w3-large" style="color: var(--azul-profundo);">\( q_{lp,neto} = 292 - (24 \times 0.50) = \mathbf{280 \text{ kPa}} \)</span><br>
-                    Se adopta un límite plástico avalado por un estudio de suelos particular para este ejemplo: \( q_{lp} \). Este valor no corresponde a una capacidad normativa directa, sino a una aproximación del estado límite del suelo (plastificación).<br>
-                    <i style="color: var(--gris-texto);"><strong>Atención:</strong> No existe un incremento universal automático para eventos sísmicos. Si se excede \( q_{adm} \), la aceptación de una presión mayor, ejemplo (\( q_{lp} \)), requiere la comprobación del geotecnista sobre criterios de capacidad portante, asentamientos y estabilidad.</i><br>
-                    <i style="color: var(--gris-texto);"><strong>Nota:</strong> En este ejemplo \( q_{adm} \) controla en servicio. \( q_{lp} \) representa un estado cercano a la plastificación del suelo y solo se usa para evaluar estabilidad en combinaciones extremas (ej. sismo).</i>
+                    Dato asumido para este ejemplo; no es una capacidad normativa, sino una aproximación del estado límite del suelo (plastificación).<br>
+                    <i style="color: var(--gris-texto);">
+                        <strong>Atención:</strong> no existe un incremento universal automático para sismo. Si se excede \( q_{adm} \), aceptar una presión mayor (ej. \( q_{lp} \)) requiere el aval del geotecnista sobre capacidad portante, asentamientos y estabilidad. En este ejemplo \( q_{adm} \) controla en servicio y \( q_{lp} \) solo se usa para evaluar combinaciones extremas.
+                    </i>
                 </div>
             </div>
+
 
             <div class="w3-panel w3-white w3-padding w3-round w3-center" style="border: 1px solid var(--gris-borde); margin: 15px 0;">
                 <strong>Formulación inicial aplicada (Análisis Unidireccional):</strong>
