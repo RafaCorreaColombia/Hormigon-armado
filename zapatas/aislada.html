@@ -172,16 +172,22 @@
             </div>
 
             <div class="w3-panel ce-panel-naranja w3-padding w3-round w3-margin-top">
-                <strong>📌 Regla de uso inmediato:</strong><br>
-                Si hay momento \( M \), SIEMPRE se debe verificar la excentricidad \( e = M/P \):
+                <strong>📌 Regla de uso inmediato: excentricidad y pérdida de contacto</strong><br>
+                Si hay momento, SIEMPRE se verifica la excentricidad en la dirección en que actúa:
                 <ul style="margin-top: 5px; margin-bottom: 5px;">
-                    <li>\( e \leq B/6 \) → Toda la base en compresión (Modelo lineal).</li>
-                    <li>\( e > B/6 \) → Hay pérdida de contacto → Redistribución (Presión triangular).</li>
+                    <li>\( M_y \) (presión varía a lo largo de \( L \)): \( e_L = M_y/P \leq L/6 \)</li>
+                    <li>\( M_x \) (presión varía a lo largo de \( B \)): \( e_B = M_x/P \leq B/6 \)</li>
+                    <li>Momentos en ambos ejes: \( \dfrac{e_L}{L} + \dfrac{e_B}{B} \leq \dfrac{1}{6} \)</li>
+                </ul>
+                <ul style="margin-top: 5px; margin-bottom: 5px;">
+                    <li><strong>Se cumple</strong> → toda la base en compresión (distribución lineal).</li>
+                    <li><strong>No se cumple</strong> → hay pérdida de contacto: el suelo no resiste tracción y la presión debe redistribuirse sobre un área efectiva, de modo que se mantengan \( \sum F = 0 \) y \( \sum M = 0 \) (Anexo B).</li>
                 </ul>
                 <span class="w3-small" style="color: var(--gris-texto); font-style: italic;">
                     Esto no es un simple cambio de ecuación, es un cambio en el modelo de comportamiento del sistema suelo–estructura.
                 </span>
             </div>
+
 
             <div class="ce-grid ce-grid-2" style="margin-top: 20px;">
                 <div class="w3-panel ce-panel-azul w3-padding w3-round" style="margin: 0;">
