@@ -238,13 +238,33 @@
 
             <div class="w3-panel w3-padding w3-round" style="background-color: #fff4e5; border-left: 6px solid #ff9800; margin-bottom: 20px;">
                 <strong style="color: #e65100;">⚠️ FILTRO DE SEGURIDAD (Lección Crítica):</strong><br>
-                Antes de dimensionar por cortante, verificamos la <strong>Longitud de Desarrollo (\( l_d \))</strong> de las barras de la columna (N°6 @ 420 MPa):
-                <ul style="margin: 5px 0;">
-                    <li>\( l_d \) requerida (compresión): <strong>420 mm</strong></li>
-                    <li>Recubrimiento inferior libre: <strong>75 mm</strong></li>
-                    <li><strong>Espesor mínimo constructivo (\( H \)):</strong> \( 420 + 75 = 495 \text{ mm} \)</li>
+                Antes de dimensionar por cortante, debemos verificar el anclaje a compresión de las barras longitudinales de la columna en el interior de la zapata. Para este caso, tenemos barras <strong>N°5</strong> (\( d_b = 15.9 \text{ mm} \)), \( f_y = 420 \text{ MPa} \) y \( f'_c = 21 \text{ MPa} \) (concreto de peso normal).
+                
+                <p style="margin: 10px 0 5px 0;">Según <strong>NSR-10 C.12.3.2</strong>, la longitud de desarrollo a compresión \( l_{dc} \) debe tomarse como el mayor valor entre:</p>
+                <ul style="margin: 0 0 10px 20px;">
+                    <li>\( \left( \frac{0.24 f_y}{\sqrt{f'_c}} \right) d_b = \left( \frac{0.24 \cdot 420}{\sqrt{21}} \right) 15.9 = 350 \text{ mm} \)</li>
+                    <li>\( (0.043 f_y) d_b = (0.043 \cdot 420) \cdot 15.9 = 287 \text{ mm} \)</li>
                 </ul>
-                <p style="margin: 5px 0 0 0; font-weight: bold; color: #d32f2f;">✅ Se define \( H = 500 \text{ mm} \). Cualquier valor inferior invalidaría estructuralmente el anclaje de la columna.</p>
+                
+                <p style="margin: 5px 0;">Por lo tanto, requerimos <strong>\( l_{dc} = 350 \text{ mm} \)</strong>.</p>
+            
+                <p style="margin: 10px 0 5px 0;">Asumiendo un espesor preliminar \( H = 500 \text{ mm} \) y que las barras de la columna terminan apoyadas <em>sobre</em> la parrilla inferior de la zapata (armada con barras N°5 en ambas direcciones), calculamos la longitud disponible real:</p>
+                <ul style="margin: 5px 0 10px 20px;">
+                    <li>Espesor de la zapata (\( H \)): <strong>500 mm</strong></li>
+                    <li>Recubrimiento inferior libre: <strong>75 mm</strong></li>
+                    <li>Dos capas de acero de la zapata (N°5): \( 2 \times 15.9 = 31.8 \text{ mm} \)</li>
+                    <li><strong>Longitud disponible real:</strong> \( 500 - 75 - 31.8 = \mathbf{393 \text{ mm}} \)</li>
+                </ul>
+                
+                <p style="margin: 10px 0; font-weight: bold; color: #2e7d32; font-size: 1.1em;">
+                    ✅ \( 393 \text{ mm} > 350 \text{ mm} \). El espesor \( H = 500 \text{ mm} \) es adecuado para el anclaje.
+                </p>
+            
+                <div style="font-size: 0.85em; background: rgba(255,152,0,0.1); padding: 8px 12px; border-radius: 4px; border: 1px dashed #ff9800; margin-top: 15px;">
+                    <b>💡 Nota Normativa (C.12.3.3):</b> La norma permite reducciones en la longitud calculada \( l_{dc} \) siempre y cuando: <br>
+                    <b>(a)</b> El refuerzo proporcionado exceda lo requerido por el análisis, o <br>
+                    <b>(b)</b> El refuerzo esté confinado por espirales o estribos que cumplan con ciertos requisitos específicos de confinamiento dentro de la cimentación.
+                </div>
             </div>
 
             <div class="ce-grid ce-grid-2">
