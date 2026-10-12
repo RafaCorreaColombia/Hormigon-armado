@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Ejemplo práctico de diseño de zapatas aisladas. Geometría, interacción suelo-estructura, presiones, cortante, flexión y detallamiento.">
+    <meta name="author" content="Ing. Rafael Antonio Correa Melano">
+    
+    <title>Diseño Zapata Aislada - Criterio Estructural</title>
+    
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <!-- Librerías Asíncronas (MathJax) -->
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']] }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        /* PALETA DE COLORES DE LA MARCA */
+        :root {
+            --azul-profundo: #1A2530;
+            --naranja-estructural: #E67E22;
+            --gris-claro: #F4F5F7;
+            
+            /* Variantes suaves para fondos */
+            --azul-suave: #E8ECF1; 
+            --naranja-suave: #FDF2E9; 
+            --gris-borde: #CBD5E1;
+            --gris-texto: #64748b;
+        }
+
+        html { scroll-behavior: smooth; }
+        body { background-color: var(--gris-claro); font-family: 'Segoe UI', sans-serif; color: var(--azul-profundo); }
+        
+        .contenedor-principal {
+            max-width: 1250px; margin: 30px auto; border-radius: 12px;
+            background: white; padding: 0; overflow: hidden;
+            box-shadow: 0 8px 25px rgba(26,37,48,0.15);
+        }
+        
+        /* HEADER Y MANIFIESTO */
+        .header-rc { background: var(--azul-profundo); color: white; padding: 30px 20px; text-align: center; position: relative; }
+        .brand-logo-header { max-width: 250px; height: auto; margin-bottom: 10px; display: inline-block; }
+        .lema-global { font-size: 0.9em; letter-spacing: 2px; color: #a0aec0; text-transform: uppercase; margin-bottom: 20px; font-weight: bold; }
+        .lema-global span { color: var(--naranja-estructural); }
+
+        /* RUTA DE APRENDIZAJE */
+        .ruta-aprendizaje {
+            display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 20px;
+            font-size: 0.85em; color: #a0aec0;
+        }
+        .ruta-item { padding: 4px 12px; border-radius: 20px; border: 1px solid #4a5568; background: rgba(255,255,255,0.05); }
+        .ruta-activa { border-color: var(--naranja-estructural); color: white; background: rgba(230, 126, 34, 0.2); font-weight: bold; }
+        .ruta-flecha { color: #4a5568; font-size: 0.8em; }
+
+        .contenido-body { padding: 40px; }
+        
+        /* CAJAS Y RESALTADOS (Paneles de Criterio Estructural) */
+        .panel-control { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 25px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); margin-bottom: 25px; }
+        .panel-titulo { margin-top: 0; font-weight: bold; color: var(--azul-profundo); border-bottom: 2px solid var(--naranja-estructural); padding-bottom: 8px; margin-bottom: 20px; font-size: 1.2em; }
+        
+        /* CLASES COHESIVAS DE LA MARCA */
+        .ce-panel-azul { background-color: var(--azul-suave); border-left: 4px solid var(--azul-profundo); color: var(--azul-profundo); }
+        .ce-panel-naranja { background-color: var(--naranja-suave); border-left: 4px solid var(--naranja-estructural); color: var(--azul-profundo); }
+        .ce-panel-gris { background-color: var(--gris-claro); border-left: 4px solid var(--gris-borde); color: var(--azul-profundo); }
+        .ce-destacado { color: var(--naranja-estructural); font-weight: bold; }
+        .ce-alerta { color: #c62828; font-weight: bold; }
+
+        /* SISTEMA GRID */
+        .ce-grid { display: grid; gap: 15px; margin-bottom: 15px; margin-top: 10px; }
+        .ce-grid-2 { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+        .ce-grid-3 { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+        .ce-grid-4 { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+
+        .ce-grid > div { min-width: 0; }
+
+        /* TABLAS ESTANDARIZADAS */
+        .tabla-container { overflow-x: auto; width: 100%; border-radius: 6px; box-shadow: 0 0 5px rgba(0,0,0,0.05); margin: 15px 0; }
+        .tabla-traslapos { width: 100%; border-collapse: collapse; font-size: 0.95em; min-width: 600px; }
+        .tabla-traslapos th { background-color: var(--azul-profundo) !important; color: white !important; padding: 14px; text-align: center; transition: background-color 0.3s; }
+        .tabla-traslapos td { padding: 12px; text-align: center; border-bottom: 1px solid #e2e8f0; }
+        .tabla-traslapos tr:hover { background-color: var(--gris-claro); }
+        .tabla-small td, .tabla-small th { padding: 8px; font-size: 0.85em; }
+
+        /* BANNERS DE TABLA RESPONSIVOS */
+        @media (max-width: 768px) {
+            .tabla-traslapos th {
+                background-color: var(--naranja-estructural) !important;
+                padding: 8px 6px !important;
+                font-size: 0.85em;
+            }
+            .tabla-traslapos td {
+                padding: 8px 6px !important;
+                font-size: 0.85em;
+            }
+        }
+
+        /* LOGO FOOTER */
+        .brand-logo-footer { max-width: 200px; height: auto; margin-bottom: 15px; display: inline-block; }
+        footer { background-color: var(--gris-claro) !important; }
+
+        summary:focus { outline: none; }
+        .math-scroll { overflow-x: auto; padding: 10px 0; }
+
+        @media (max-width: 1250px) {
+            .contenedor-principal { width: 100% !important; margin: 0 !important; border-radius: 0 !important; box-shadow: none; padding: 0 !important; }
+            .contenido-body { padding: 20px; }
+        }
+
+        /* OPTIMIZACIÓN DE IMPRESIÓN */
+        @media print {
+            .no-print { display: none !important; }
+            .contenedor-principal { box-shadow: none !important; margin: 0 !important; width: 100% !important; border-radius: 0 !important;}
+            .panel-control { page-break-inside: avoid; border: 1px solid #e2e8f0; margin-bottom: 15px; box-shadow: none; }
+            body { background: white !important; color: black !important; }
+            .tabla-traslapos { font-size: 0.85em; }
+            .tabla-traslapos th { color: black !important; background-color: #f0f0f0 !important; border: 1px solid #ccc; }
+            .tabla-traslapos td { border: 1px solid #ccc; }
+            a { text-decoration: none; color: black; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Botón Volver Arriba -->
+<button onclick="topFunction()" id="btnTop" class="w3-button w3-circle w3-xlarge no-print" 
+        style="display:none; position:fixed; bottom:30px; right:30px; z-index:99; background-color:var(--naranja-estructural); color:white; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
+    <i class="fa fa-arrow-up"></i>
+</button>
+
+<div class="contenedor-principal w3-animate-opacity">
+    
+    <!-- HEADER Y NARRATIVA GLOBAL -->
+    <div class="header-rc no-print">
+        <img src="../assets/IsotipoFOscuroT.png" alt="Logotipo Criterio Estructural" class="brand-logo-header" onerror="this.src='https://via.placeholder.com/250x80/1A2530/FFFFFF?text=CRITERIO+ESTRUCTURAL'"><br>
+        
+        <div class="lema-global">
+            Guía de Detallamiento Estructural <br>
+            <span>Aprender haciendo. Comprender antes de detallar.</span>
+        </div>
+        
+        <h1 class="w3-xxlarge" style="margin: 0; font-weight: bold;">Diseño de Zapata Aislada</h1>
+        <div style="font-size: 1.1em; color: #cbd5e1; margin-top: 5px;">Ejemplo Práctico: Interacción Suelo-Estructura y Flujo de Cargas</div>
+
+        <div class="ruta-aprendizaje">
+            <span class="ruta-item">1. Geometría y Presiones</span> <i class="fa fa-chevron-right ruta-flecha"></i>
+            <span class="ruta-item ruta-activa">📐 2. Estabilidad y Cortante</span> <i class="fa fa-chevron-right ruta-flecha"></i>
+            <span class="ruta-item">3. Diseño por Flexión</span> <i class="fa fa-chevron-right ruta-flecha"></i>
+            <span class="ruta-item">4. Detallamiento Final</span>
+        </div>
+    </div>
+
+    <div class="contenido-body">
+
+        <!-- BRÚJULA DEL EJEMPLO -->
+        <div class="panel-control no-print" id="brujula" style="border: 2px solid var(--naranja-estructural); box-shadow: 0 4px 15px rgba(230,126,34,0.1);">
+            <h2 class="panel-titulo" style="border-bottom: none; margin-bottom: 5px; font-size: 1.4em;">🧭 Mapa Mental — Comportamiento de la Zapata</h2>
+            
+            <div style="border-left: 4px solid var(--naranja-estructural); padding-left: 15px; margin-bottom: 20px;">
+                <p class="w3-large" style="color: var(--gris-texto); font-style: italic; margin-top: 0;">
+                    El objetivo no es memorizar ecuaciones, sino comprender el flujo de cargas y la interacción suelo-estructura.
+                </p>
+            </div>
+            
+            <div class="w3-center w3-margin-top w3-padding w3-round ce-panel-gris" style="border: 1px solid var(--gris-borde); border-left: none;">
+                <img src="https://lms.uis.edu.co/ava/draftfile.php/610615/user/draft/235333269/Mapa%20Mental_%20Comportamiento%20de%20Zapatas%20Aisladas%20en%20Ingenier%C3%ADa%20Estructural%20-%20visual%20selection.png" alt="Mapa Mental Zapatas Aisladas" style="max-width:100%; height:auto; border-radius:5px;">
+                <p class="w3-small w3-margin-top" style="color: var(--azul-profundo); opacity: 0.7;"><i><strong>Figura 1:</strong> Diagrama conceptual del sistema Columna - Zapata - Suelo.</i></p>
+            </div>
+
+            <div class="w3-panel ce-panel-naranja w3-padding w3-round w3-margin-top">
+                <strong>📌 Regla de uso inmediato:</strong><br>
+                Si hay momento \( M \), SIEMPRE se debe verificar la excentricidad \( e = M/P \):
+                <ul style="margin-top: 5px; margin-bottom: 5px;">
+                    <li>\( e \leq B/6 \) → Toda la base en compresión (Modelo lineal).</li>
+                    <li>\( e > B/6 \) → Hay pérdida de contacto → Redistribución (Presión triangular).</li>
+                </ul>
+                <span class="w3-small" style="color: var(--gris-texto); font-style: italic;">
+                    Esto no es un simple cambio de ecuación, es un cambio en el modelo de comportamiento del sistema suelo–estructura.
+                </span>
+            </div>
+
+            <div class="ce-grid ce-grid-2" style="margin-top: 20px;">
+                <div class="w3-panel ce-panel-azul w3-padding w3-round" style="margin: 0;">
+                    <strong class="w3-large" style="color: var(--azul-profundo);">📥 El Origen (Columna)</strong>
+                    <p style="margin-top: 8px; font-size: 0.95em;">
+                        La columna entrega una carga axial \( P \) y momentos \( M \). El momento no es "opcional"; si el apoyo del modelo es <strong>empotrado</strong> o existe <strong>excentricidad</strong>, la zapata debe equilibrarlo obligatoriamente.
+                    </p>
+                </div>
+
+                <div class="w3-panel ce-panel-gris w3-padding w3-round" style="margin: 0; border-left-color: #22c55e;">
+                    <strong class="w3-large" style="color: #15803d;">🌱 La Respuesta (Suelo)</strong>
+                    <p style="margin-top: 8px; font-size: 0.95em;">
+                        El suelo <strong>solo empuja</strong>, nunca "jala". Si el momento es muy grande (\( e > B/6 \)), una parte de la zapata se despega y la presión de contacto se redistribuye para mantener \( \sum F = 0 \) y \( \sum M = 0 \).
+                    </p>
+                </div>
+            </div>
+
+            <div class="w3-panel w3-padding-large w3-round w3-margin-top" style="background-color: #f8fafc; border-left: 5px solid #94a3b8;">
+                <strong class="w3-large" style="color: var(--azul-profundo);">🎯 Objetivo de Diseño</strong>
+                <p style="margin-top:8px; font-style:italic; color: var(--gris-texto);">
+                    Aprender a <strong>transformar \( P \) y \( M \) en presiones compatibles con el comportamiento real del suelo</strong> y diseñar el concreto para resistirlas.<br>
+                    <span class="w3-small">Nota: Reconocemos que nuestros diagramas (lineales, triangulares) son idealizaciones matemáticas compatibles con el equilibrio estático.</span>
+                </p>
+            </div>
+        </div>
+
+        <!-- ÍNDICE DE CONTENIDO -->
+        <div class="panel-control no-print" style="background-color: var(--azul-suave); border-left: 4px solid var(--azul-profundo); padding: 20px;">
+            <h3 style="margin-top:0; color: var(--azul-profundo); font-weight: bold;"><i class="fa fa-list"></i> Índice de Contenido</h3>
+            <div class="ce-grid ce-grid-2" style="margin-bottom:0;">
+                <ul class="w3-ul" style="border:none; margin:0; padding:0;">
+                    <li><a href="#geometria" style="text-decoration: none; font-weight: 500;">1. Geometría Preliminar y Anclaje</a></li>
+                    <li><a href="#reacciones" style="text-decoration: none; font-weight: 500;">1.1 Reacciones del Modelo Estructural</a></li>
+                    <li><a href="#estabilidad" style="text-decoration: none; font-weight: 500;">2. Distribución de Presiones y Estabilidad</a></li>
+                </ul>
+                <ul class="w3-ul" style="border:none; margin:0; padding:0;">
+                    <li><a href="#cortante" style="text-decoration: none; font-weight: 500;">3. Verificaciones de Cortante</a></li>
+                    <li><a href="#flexion" style="text-decoration: none; font-weight: 500;">4. Diseño de Refuerzo por Flexión</a></li>
+                    <li><a href="#aplastamiento" style="text-decoration: none; font-weight: 500;">5. Transferencia de Esfuerzos (Aplastamiento)</a></li>
+                    <li><a href="#anexos" style="text-decoration: none; font-weight: 500;">6. Anexos y Profundización</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- CARD 1: GEOMETRÍA -->
+        <div class="panel-control" id="geometria">
+            <h2 class="panel-titulo">1. Geometría Preliminar y Control de Anclaje</h2>
+            <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Definición del elemento y verificación de viabilidad constructiva (NSR-10 C.12 y C.15)</p>
+
+            <div class="w3-center w3-margin-top w3-padding w3-round ce-panel-gris" style="border: 1px dashed var(--azul-profundo); border-left: none;">
+                <img src="https://lms.uis.edu.co/ava/draftfile.php/610615/user/draft/235333269/Zapata%20Aislada.png" alt="Interfaz Columna-Zapata" style="max-width: 100%; height: auto; border-radius: 5px;">
+                <p class="w3-small w3-margin-top" style="color: var(--azul-profundo); opacity: 0.7;"><i><strong>Figura 2:</strong> Interfaz Columna-Zapata. El espesor \( H \) debe alojar el anclaje del refuerzo vertical.</i></p>
+            </div>
+
+            <div class="w3-panel w3-padding w3-round" style="background-color: #fff4e5; border-left: 6px solid #ff9800; margin-bottom: 20px;">
+                <strong style="color: #e65100;">⚠️ FILTRO DE SEGURIDAD (Lección Crítica):</strong><br>
+                Antes de dimensionar por cortante, verificamos la <strong>Longitud de Desarrollo (\( l_d \))</strong> de las barras de la columna (N°6 @ 420 MPa):
+                <ul style="margin: 5px 0;">
+                    <li>\( l_d \) requerida (compresión): <strong>420 mm</strong></li>
+                    <li>Recubrimiento inferior libre: <strong>75 mm</strong></li>
+                    <li><strong>Espesor mínimo constructivo (\( H \)):</strong> \( 420 + 75 = 495 \text{ mm} \)</li>
+                </ul>
+                <p style="margin: 5px 0 0 0; font-weight: bold; color: #d32f2f;">✅ Se define \( H = 500 \text{ mm} \). Cualquier valor inferior invalidaría estructuralmente el anclaje de la columna.</p>
+            </div>
+
+            <div class="ce-grid ce-grid-2">
+                <div class="w3-panel ce-panel-azul w3-padding w3-round" style="margin:0;">
+                    <strong style="color: var(--azul-profundo);">Datos de Columna:</strong><br>
+                    <span class="w3-small">Sección: \( 400 \times 400 \text{ mm} \)</span><br>
+                    <span class="w3-small">Refuerzo: 8 Varillas N°6</span>
+                </div>
+                <div class="w3-panel ce-panel-gris w3-padding w3-round" style="margin:0;">
+                    <strong style="color: var(--azul-profundo);">Datos del Suelo (Estudio Geotécnico):</strong><br>
+                    <span class="w3-small">\( q_{adm} = 200 \text{ kN/m}^2 \) (Servicio)</span><br>
+                    <span class="w3-small">\( q_{lp} = 280 \text{ kN/m}^2 \) (Límite plástico aproximado)</span><br>
+                    <span class="w3-small">Profundidad de desplante: \( 0.50 \text{ m} \)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD 1.1: REACCIONES -->
+        <div class="panel-control" id="reacciones">
+            <h2 class="panel-titulo">1.1 Reacciones del Modelo Estructural</h2>
+            <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Valores nominales obtenidos del análisis global en la base de la columna (Service Loads)</p>
+
+            <p>Las siguientes fuerzas y momentos corresponden a las reacciones sin mayorar que la superestructura transmite a la cimentación:</p>
+
+            <div class="tabla-container">
+                <table class="tabla-traslapos">
+                    <thead>
+                        <tr>
+                            <th style="text-align:left;">Tipo de Carga</th>
+                            <th>Carga Axial \( P \) (kN)</th>
+                            <th>Momento \( M_y \) (kNm)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="text-align:left;"><strong>Muerta (D)</strong></td>
+                            <td>290</td>
+                            <td>10</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;"><strong>Viva (L)</strong></td>
+                            <td>70</td>
+                            <td>10</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;"><strong>Sismo (E)</strong></td>
+                            <td>45</td>
+                            <td>85</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="ce-grid ce-grid-2">
+                <div class="w3-panel w3-padding w3-round" style="margin:0; background:#fdf2f2; border:1px solid #fecaca;">
+                    <strong style="color:#991b1b;">⚙️ Propiedades de los Materiales:</strong><br>
+                    <span class="w3-small">Concreto (\( f'_c \)): \( 21 \text{ MPa} \)</span><br>
+                    <span class="w3-small">Acero de refuerzo (\( f_y \)): \( 420 \text{ MPa} \)</span>
+                </div>
+                <div class="w3-panel ce-panel-azul w3-padding w3-round" style="margin:0;">
+                    <strong style="color: var(--azul-profundo);">📐 Geometría Preliminar Adoptada:</strong><br>
+                    <span class="w3-small">Planta (B x L): <strong>\( 1.60 \times 1.60 \text{ m} \)</strong></span><br>
+                    <span class="w3-small">Espesor (\( H \)): <strong>\( 0.50 \text{ m} \)</strong></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD 2: PRESIONES Y ESTABILIDAD -->
+        <div class="panel-control" id="estabilidad">
+            <h2 class="panel-titulo">2. Distribución de Presiones y Estabilidad</h2>
+            <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Verificación en Servicio y Evaluación de Volteo para Zapata de \( 1.6 \times 1.6 \text{ m} \)</p>
+
+            <div class="w3-panel ce-panel-gris w3-padding w3-round">
+                <strong>📋 Capacidad Neta del Suelo:</strong><br>
+                <div class="w3-margin-top w3-small">
+                    <strong>Servicio (control principal):</strong><br>
+                    Descontando el peso propio de la zapata (espesor \( 0.50 \text{ m} \), \(\gamma = 24 \text{ kN/m}^3\)):<br>
+                    <span class="w3-large ce-destacado">\( q_{adm,neto} = 200 - (24 \times 0.50) = \mathbf{188 \text{ kPa}} \)</span>
+                </div>
+                
+                <div class="w3-margin-top w3-small">
+                    <strong>Capacidad límite (eventos extremos de corta duración):</strong><br>
+                    <span class="w3-large" style="color: var(--azul-profundo);">\( q_{lp} = \mathbf{280 \text{ kPa}} \)</span><br>
+                    <i style="color: var(--gris-texto);">Nota: \( q_{lp} \) es una aproximación del estado límite del suelo. Se usa para evaluar combinaciones sísmicas donde se permite sobrepasar \( q_{adm} \). Requiere aval geotécnico.</i>
+                </div>
+            </div>
+
+            <div class="w3-panel w3-white w3-padding w3-round w3-center" style="border: 1px solid var(--gris-borde); margin: 15px 0;">
+                <strong>Formulación inicial aplicada (Análisis Unidireccional):</strong>
+                <div class="math-scroll">
+                    \[ q_{max} = \frac{P}{A} \left( 1 + \frac{6e}{L} \right) \]
+                </div>
+                <p class="w3-small" style="color: var(--gris-texto); font-style: italic; margin-bottom: 0;">
+                    *Nota: En este ejemplo se asume \( M_x \approx 0 \) por simplicidad. En presencia de momentos en ambos ejes (sismo ortogonal), debe evaluarse la presión de contacto biaxial en las esquinas.
+                </p>
+            </div>
+
+            <div class="tabla-container">
+                <table class="tabla-traslapos">
+                    <thead>
+                        <tr>
+                            <th style="text-align:left;">Combinación</th>
+                            <th>\( P \) (kN)</th>
+                            <th>\( M_y \) (kNm)</th>
+                            <th>Excentricidad \( e \) (m)</th>
+                            <th>Régimen Base</th>
+                            <th>Presión \( q_{max} \) (kPa)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="text-align:left;">Serv1: D + L</td>
+                            <td>360</td>
+                            <td>20</td>
+                            <td>0.06</td>
+                            <td>Elástico (Completo)</td>
+                            <td>169.9 <span style="color:green; font-weight:bold;">&lt; \( q_{adm} \)</span></td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">Serv2: D + 0.75L + 0.525E</td>
+                            <td>366</td>
+                            <td>62</td>
+                            <td>0.17</td>
+                            <td>Elástico (Lím. Plástico)</td>
+                            <td>234.0 <span style="color:green; font-weight:bold;">&lt; \( q_{lp} \)</span></td>
+                        </tr>
+                        <tr style="background-color: #fff5f5;">
+                            <td style="text-align:left;">Serv3: 0.6D − 0.7E</td>
+                            <td>142</td>
+                            <td>53.5</td>
+                            <td class="ce-alerta">0.38</td>
+                            <td class="ce-alerta">Despegue</td>
+                            <td>139.9 (Efectiva)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="ce-grid ce-grid-2">
+                <div class="w3-panel w3-white w3-padding w3-round w3-center" style="border: 1px solid var(--gris-borde); margin:0;">
+                    <strong>Límite del Núcleo Central (\( L = 1.6 \text{ m} \)):</strong><br>
+                    <span class="w3-large" style="color: var(--azul-profundo);">\( L/6 = \mathbf{0.267 \text{ m}} \)</span><br>
+                    <div class="w3-small w3-margin-top w3-left-align" style="color: var(--gris-texto);">
+                        • Si \( e \leq 0.267 \) → Distribución Lineal Completa.<br>
+                        • Si \( e > 0.267 \) → Pérdida de contacto (Distribución Triangular, Área Efectiva).
+                    </div>
+                </div>
+                <div class="w3-panel ce-panel-azul w3-padding w3-round" style="margin:0;">
+                    <strong>📌 Origen del momento y despegue:</strong><br>
+                    <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
+                        Los momentos provienen de idealizar la base de la columna como un empotramiento en el software de análisis. Nótese que en la combinación Serv3, la fuerza gravitacional baja tanto (\(0.6D\)) frente al sismo, que la excentricidad se dispara (\( e = 0.38 \)), forzando el despegue de la zapata.
+                    </p>
+                </div>
+            </div>
+
+            <div class="w3-panel w3-padding w3-round w3-margin-top" style="background-color:#ffebee; border-left:6px solid #c62828;">
+                <strong style="color: #b71c1c;">⚠️ REGLA FUNDAMENTAL DE INTERACCIÓN:</strong><br>
+                El suelo no resiste esfuerzos de tracción. Aunque el modelo estructural lineal (SAP2000/ETABS) entregue resultados matemáticos, el ingeniero debe garantizar que el equilibrio físico se logre <strong>solo con presiones de compresión</strong>, recalculando la distribución triangular y el área efectiva de contacto si ocurre despegue.
+            </div>
+
+            <div class="w3-panel w3-padding-large w3-round w3-margin-top" style="background-color: var(--gris-claro); border-left: 6px solid var(--naranja-estructural);">
+                <strong class="w3-large" style="color: var(--azul-profundo);">💡 Lectura de Diseño (Justificación de Dimensiones):</strong>
+                <p style="margin-top: 8px;">La zapata de \( 1.6 \times 1.6 \text{ m} \) se considera viable bajo los siguientes criterios técnicos:</p>
+                
+                <ul class="w3-ul" style="border: none; font-size: 0.95em;">
+                    <li><span class="ce-destacado">a. Estado de Servicio:</span> La presión \( q_{max} \) (169.9 kPa) es menor a la admisible neta (188 kPa).</li>
+                    <li><span class="ce-destacado">b. Evento Sísmico:</span> La presión sube a 234 kPa, pero cumple al no superar el límite plástico (\( q_{lp} = 280 \text{ kPa} \)) o el clásico incremento del 30% normativo.</li>
+                    <li><span class="ce-destacado">c. Estabilidad por Volteo:</span> Pese al despegue en sismo extremo, la presión máxima de la cuña de contacto (139.9 kPa) es moderada y la zapata se mantiene estable sobre una longitud efectiva de \( 1.27 \text{ m} \).</li>
+                </ul>
+
+                <div class="w3-padding-small w3-round w3-white w3-margin-top" style="border: 1px dashed var(--naranja-estructural); font-size: 0.85em;">
+                    <strong>Nota Crítica:</strong> La optimización dimensional asumiendo modelos triangulares solo es válida si se asegura el equilibrio estático integral y se verifica que no existan tracciones teóricas en ninguna dirección. El ahorro de material nunca debe comprometer la estabilidad al volcamiento.
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD 3: CORTANTE -->
+        <div class="panel-control" id="cortante">
+            <h2 class="panel-titulo">3. Verificaciones de Cortante (NSR-10 C.11)</h2>
+            <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Análisis de esfuerzos bajo Combinaciones de Diseño Mayoradas (Estado Límite Último)</p>
+
+            <p>Calculamos las presiones de contacto últimas (\(q_u\)) requeridas para el diseño estructural del concreto:</p>
+
+            <div class="tabla-container">
+                <table class="tabla-traslapos">
+                    <thead>
+                        <tr>
+                            <th style="text-align:left;">Combinación Última</th>
+                            <th>\( P_u \) (kN)</th>
+                            <th>\( M_u \) (kNm)</th>
+                            <th>\( e \) (m)</th>
+                            <th>\( q_{min} \) (kPa)</th>
+                            <th>\( q_{max} \) (kPa)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="text-align:left;">1.2D + 1.6L</td>
+                            <td>460.0</td>
+                            <td>28.0</td>
+                            <td>0.06</td>
+                            <td>138.7</td>
+                            <td class="ce-destacado">220.7</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">1.2D + E + L</td>
+                            <td>463.0</td>
+                            <td>107.0</td>
+                            <td>0.23</td>
+                            <td>24.1</td>
+                            <td class="ce-destacado">337.6</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:30px;">3.1 Cortante Unidireccional (Comportamiento como Viga Ancha)</h4>
+            <p class="w3-small" style="margin-top: -5px; color: var(--gris-texto);">Sección crítica evaluada a una distancia \( d = 417.1 \text{ mm} \) de la cara de la columna.</p>
+
+            <div class="tabla-container">
+                <table class="tabla-traslapos tabla-small">
+                    <thead>
+                        <tr>
+                            <th style="text-align:left;">Combinación</th>
+                            <th>Presión \( q(d) \) [kPa]</th>
+                            <th>Demanda \( V_u \) [kN/m]</th>
+                            <th>Capacidad \( \phi V_c \) [kN/m]</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="text-align:left;">1.2D + 1.6L</td>
+                            <td>211.3</td>
+                            <td>39.5</td>
+                            <td>243.7</td>
+                            <td style="color: green; font-weight: bold;">✅ OK</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">1.2D + E + L</td>
+                            <td>301.8</td>
+                            <td>58.5</td>
+                            <td>243.7</td>
+                            <td style="color: green; font-weight: bold;">✅ OK</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:30px;">3.2 Cortante Bidireccional (Punzonamiento)</h4>
+
+            <div class="ce-grid ce-grid-2">
+                <div class="w3-panel ce-panel-gris w3-padding w3-round" style="margin:0;">
+                    <strong style="color: var(--azul-profundo);">📏 Parámetros Geométricos Críticos:</strong>
+                    <ul class="w3-small" style="margin: 5px 0;">
+                        <li>Perímetro crítico (\( b_o \)): <strong>3268 mm</strong></li>
+                        <li>Área crítica (\( A_{crit} \)): <strong>0.668 m²</strong></li>
+                        <li>Capacidad (\( \phi V_{c,punz} \)): <strong>1546.0 kN</strong> (Gobierna ec. C.11-33)</li>
+                    </ul>
+                </div>
+                <div class="w3-panel ce-panel-gris w3-padding w3-round" style="margin:0;">
+                    <strong style="color: var(--azul-profundo);">⚖️ Equilibrio de Fuerzas:</strong>
+                    <div class="math-scroll w3-center w3-small" style="margin: 5px 0;">
+                        \[ V_{u,punz} = P_{u,col} - (A_{crit} \cdot q_{u,eje\_ac}) \]
+                    </div>
+                    <p class="w3-small" style="margin-bottom: 0;">
+                        La carga de la columna se reduce por la reacción del suelo que empuja hacia arriba <em>dentro</em> de la base del prisma de falla (\(A_{crit}\)).
+                    </p>
+                </div>
+            </div>
+
+            <div class="tabla-container">
+                <table class="tabla-traslapos tabla-small">
+                    <thead>
+                        <tr>
+                            <th style="text-align:left;">Combinación</th>
+                            <th>Presión en el eje \( q_{u,eje\_ac} \) [kPa]</th>
+                            <th>Cortante Actuante \( V_u \) [kN]</th>
+                            <th>Capacidad \( \phi V_c \) [kN]</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="text-align:left;">1.2D + 1.6L</td>
+                            <td>179.7</td>
+                            <td>340.0</td>
+                            <td>1546.0</td>
+                            <td style="color: green; font-weight: bold;">✅ OK</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">1.2D + E + L</td>
+                            <td>180.9</td>
+                            <td>342.3</td>
+                            <td>1546.0</td>
+                            <td style="color: green; font-weight: bold;">✅ OK</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- CARD 4: FLEXIÓN -->
+        <div class="panel-control" id="flexion">
+            <h2 class="panel-titulo">4. Diseño de Refuerzo por Flexión</h2>
+            <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Cálculo de acero y verificación de cuantías mínimas (NSR-10 C.15.4)</p>
+
+            <div class="w3-panel ce-panel-naranja w3-padding w3-round">
+                <strong>📌 Nota de consistencia bidireccional:</strong>
+                <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
+                    El momento flexionante \( M_u \) de la zapata depende integralmente de la distribución del prisma de presiones del suelo. En este caso se simplifica a un análisis en una dirección dominante (\( M_x \approx 0 \)). En rigor biaxial, la flexión debe calcularse independientemente para las franjas ortogonales considerando las presiones variables en los cuatro cuadrantes.
+                </p>
+            </div>
+
+            <p>El momento último \( M_u \) se calcula integrando las presiones desde el borde hasta la <strong>cara de la columna</strong> (\( L_{voladizo} = 0.60 \text{ m} \)). Para un ancho unitario de \( 1.0 \text{ m} \):</p>
+
+            <ul class="w3-ul w3-border w3-round ce-panel-gris" style="border-left:none;">
+                <li><strong>Comb. 1.2D+1.6L:</strong> \( q_{cara} = 189.9 \text{ kPa} \) \(\rightarrow\) \( M_u = 37.9 \text{ kNm/m} \)</li>
+                <li><strong>Comb. 1.2D+E+L:</strong> \( q_{cara} = 220.0 \text{ kPa} \) \(\rightarrow\) \( M_u = 53.7 \text{ kNm/m} \) (Crítico)</li>
+            </ul>
+
+            <div class="w3-center w3-margin-top w3-margin-bottom ce-destacado w3-xlarge">
+                \( M_{u,max} = \mathbf{53.7 \text{ kNm/m}} \)
+            </div>
+
+            <div class="ce-grid ce-grid-2">
+                <div class="w3-panel w3-white w3-padding w3-round w3-center" style="border: 1px solid var(--gris-borde); margin:0;">
+                    <strong style="color: var(--naranja-estructural);">📐 Acero Requerido por Análisis</strong>
+                    <div class="math-scroll w3-large" style="margin: 5px 0;">
+                        \( A_{s,req} = \mathbf{344 \text{ mm}^2/m} \)
+                    </div>
+                </div>
+                <div class="w3-panel ce-panel-azul w3-padding w3-round w3-center" style="margin:0;">
+                    <strong style="color: var(--azul-profundo);">📏 Cuantía Mínima de Retracción</strong>
+                    <div class="math-scroll w3-large" style="margin: 5px 0;">
+                        \( A_{s,min} = \mathbf{900 \text{ mm}^2/m} \)
+                    </div>
+                    <span class="w3-small ce-alerta">Gobierna la cuantía mínima</span>
+                </div>
+            </div>
+
+            <div class="w3-panel ce-panel-gris w3-padding w3-round w3-margin-top">
+                <strong>🛠️ Decisión de Diseño y Constructibilidad:</strong>
+                <p class="w3-small" style="margin-top: 5px;">
+                    Dado que la cuantía mínima rige en ambos sentidos, se estandariza el acero inferior para simplificar el armado en obra, evitar cortes erróneos y agilizar la inspección:
+                </p>
+                <ul class="w3-small">
+                    <li>Separación calculada para barras N°5 (\(A_b = 199 \text{ mm}^2\)): \( S = (199 / 900) \times 1000 = 221 \text{ mm} \).</li>
+                    <li><strong style="color: var(--azul-profundo);">Disposición Final:</strong> Parrilla ortogonal simétrica de <strong>Barras N°5 @ 200 mm</strong> (8 barras por cada lado).</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- CARD 5: APLASTAMIENTO -->
+        <div class="panel-control" id="aplastamiento">
+            <h2 class="panel-titulo">5. Transferencia de Esfuerzos (Aplastamiento)</h2>
+            <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Resistencia del concreto en la interfaz de apoyo (NSR-10 C.15.8 y C.10.14)</p>
+
+            <p>Se verifica que el concreto masivo de la zapata sea capaz de soportar la elevada compresión local inducida por la columna:</p>
+
+            <div class="w3-panel w3-white w3-padding w3-round w3-center" style="border: 1px dashed var(--gris-borde);">
+                <div class="math-scroll">
+                    \[ \phi P_{n} = \phi (0.85 f'_c A_1) \sqrt{\frac{A_2}{A_1}} \]
+                </div>
+                <span class="w3-small" style="color: var(--gris-texto);">Donde el factor de confinamiento \( \sqrt{A_2/A_1} \) está limitado normativamente a un máximo de 2.0.</span>
+            </div>
+
+            <div class="ce-grid ce-grid-2">
+                <div class="w3-panel ce-panel-gris w3-padding w3-round w3-center" style="margin:0;">
+                    <strong>Factor de Confinamiento:</strong><br>
+                    <span class="w3-large" style="color: var(--azul-profundo);">\( \sqrt{2.56 / 0.16} = 4.0 \)</span><br>
+                    <span class="ce-alerta w3-small">Se restringe al límite normativo = 2.0</span>
+                </div>
+                <div class="w3-panel ce-panel-azul w3-padding w3-round w3-center" style="margin:0;">
+                    <strong>Capacidad de la Zapata:</strong><br>
+                    <span class="w3-large ce-destacado">\( \phi P_n = \mathbf{3712.8 \text{ kN}} \)</span><br>
+                    <span style="color: green; font-weight: bold;">\( P_u \) (463 kN) &lt; \( \phi P_n \) ✅</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD 6: ANEXOS Y PROFUNDIZACIÓN -->
+        <div class="panel-control" id="anexos">
+            <h2 class="panel-titulo">6. Anexos y Profundización Académica</h2>
+
+            <!-- ANEXO A -->
+            <details class="w3-panel w3-round ce-panel-gris" style="margin-top: 15px; border: 1px solid var(--gris-borde);" open>
+                <summary style="font-weight: bold; cursor: pointer; padding: 15px; font-size: 1.1em; color: var(--azul-profundo);">
+                    <i class="fa fa-check-square-o"></i> Anexo A: Checklist de Detallamiento en Planos
+                </summary>
+                <div style="padding: 15px; border-top: 1px solid var(--gris-borde); background: white;">
+                    <ul class="w3-ul" style="border: none;">
+                        <li>✅ <strong>Recubrimiento Protector:</strong> Garantizar mínimo 75 mm (concreto vaciado contra suelo natural).</li>
+                        <li>✅ <strong>Confinamiento en Base:</strong> Los estribos de la columna deben continuar confinando las dovelas dentro del núcleo de la zapata.</li>
+                        <li>✅ <strong>Anclaje a Fondo:</strong> Las barras longitudinales de la columna deben bajar hasta el acero de la zapata (respetando el recubrimiento).</li>
+                        <li>✅ <strong>Cotas Topográficas:</strong> Indicar claramente el Nivel de Fundación o Cimentación (N.F.C.).</li>
+                        <li>✅ <strong>Vigas de Enlace:</strong> Modelar e indicar el despiece completo de riostras y sus ganchos de anclaje.</li>
+                    </ul>
+                </div>
+            </details>
+
+            <!-- ANEXO B -->
+            <details class="w3-panel w3-round ce-panel-azul" style="margin-top: 15px; border: 1px solid var(--gris-borde);">
+                <summary style="font-weight: bold; cursor: pointer; padding: 15px; font-size: 1.1em; color: var(--azul-profundo);">
+                    <i class="fa fa-book"></i> Anexo B: Modelos de Presión de Contacto
+                </summary>
+                <div style="padding: 15px; border-top: 1px solid var(--gris-borde); background: white;">
+                    <p class="w3-small" style="margin-top:0;">Los diagramas de esfuerzos son idealizaciones racionales que obedecen al equilibrio estático, dependiendo de la excentricidad \( e = M/P \):</p>
+                    
+                    <div class="ce-grid ce-grid-2">
+                        <div class="w3-panel ce-panel-gris w3-padding w3-round w3-small" style="margin:0;">
+                            <strong>1. Régimen Elástico Total</strong> (\( e \le L/6 \)):
+                            <div class="math-scroll w3-center">\[ q_{max,min} = \frac{P}{BL} \left( 1 \pm \frac{6e}{L} \right) \]</div>
+                        </div>
+                        <div class="w3-panel ce-panel-gris w3-padding w3-round w3-small" style="margin:0;">
+                            <strong>2. Despegue Parcial</strong> (\( L/6 < e < L/2 \)):
+                            <div class="math-scroll w3-center">\[ q_{max} = \frac{2P}{3B \left( \frac{L}{2} - e \right)} \]</div>
+                        </div>
+                    </div>
+                    <div class="w3-panel ce-panel-naranja w3-padding-small w3-round w3-small w3-margin-top">
+                        <strong>Comportamiento No Lineal:</strong> Cuando la presión demanda la fluencia del suelo (\(q_{lp}\)), la distribución elástica deja de ser representativa y se emplean modelos de bloques equivalentes para mantener el equilibrio sin subestimar asentamientos.
+                    </div>
+                </div>
+            </details>
+
+            <!-- ANEXO C -->
+            <details class="w3-panel w3-round ce-panel-gris" style="margin-top: 15px; border: 1px solid var(--gris-borde);">
+                <summary style="font-weight: bold; cursor: pointer; padding: 15px; font-size: 1.1em; color: var(--azul-profundo);">
+                    <i class="fa fa-anchor"></i> Anexo C: Verificación de Anclaje a Flexión (NSR-10 C.12)
+                </summary>
+                <div style="padding: 15px; border-top: 1px solid var(--gris-borde); background: white;">
+                    <p class="w3-small">El acero inferior debe desarrollar su fluencia (\( f_y \)) antes de la sección crítica (cara de la columna). Analizando la barra N°5 seleccionada:</p>
+                    
+                    <div class="ce-grid ce-grid-2">
+                        <div class="w3-panel w3-white w3-padding w3-round w3-small" style="border: 1px solid var(--gris-borde); margin:0;">
+                            <strong>📏 Demanda Normativa:</strong><br>
+                            • \( L_d \) (Longitud de desarrollo en tracción recta): ~700 mm<br>
+                            • \( l_{dh} \) (Desarrollo con gancho estándar a 90°): <strong>346 mm</strong>
+                        </div>
+                        <div class="w3-panel w3-white w3-padding w3-round w3-small" style="border: 1px solid var(--gris-borde); margin:0;">
+                            <strong>📐 Geometría Disponible:</strong><br>
+                            • Voladizo de la zapata: 600 mm<br>
+                            • Longitud útil (descontando recubrimiento): <strong>525 mm</strong>
+                        </div>
+                    </div>
+                    
+                    <div class="w3-panel ce-panel-azul w3-padding-small w3-round w3-small w3-margin-top w3-center" style="border-left-color: green;">
+                        <strong style="color: green;">Conclusión:</strong> \( L_d > L_{disponible} \). El refuerzo <strong>debe terminar en gancho estándar a 90°</strong> orientado hacia arriba. Así, el \(l_{dh}\) exigido (346 mm) cabe perfectamente en el voladizo disponible (525 mm).
+                    </div>
+                </div>
+            </details>
+
+        </div>
+
+        <!-- BOTONES DE NAVEGACIÓN -->
+        <div class="w3-center w3-padding-32 no-print">
+            <a href="../index.html" class="w3-button w3-light-grey w3-round-large w3-border">Inicio</a>
+            <a href="muro-contencion.html" class="w3-button w3-light-grey w3-round-large w3-border">Siguiente: Muro de Contención</a>
+        </div>
+        
+        <!-- SECCIÓN DE COMENTARIOS INFERIOR -->
+        <div class="w3-container w3-margin-top w3-padding-32 no-print">
+            <h3 style="border-bottom: 2px solid var(--naranja-estructural); color: var(--azul-profundo); padding-bottom: 8px;">Consultas y Discusión Académica</h3>
+            <p class="w3-small" style="opacity: 0.8;">Inicia sesión con tu cuenta de GitHub para dejar una pregunta o comentario técnico sobre este ejemplo.</p>
+            <script src="https://utteranc.es/client.js"
+                repo="rafacorreacolombia/Hormigon-armado"
+                issue-term="pathname"
+                theme="github-light"
+                crossorigin="anonymous"
+                async>
+            </script>                                        
+        </div>
+                        
+    </div>
+        
+    <!-- FOOTER INTACTO -->
+    <footer class="w3-container w3-padding-32 w3-center w3-margin-top no-print" style="color: var(--azul-profundo); background-color: var(--gris-claro);">
+        <div class="w3-border-top w3-padding-24" style="max-width: 500px; margin: auto; border-color: var(--gris-borde)!important;">
+            <img src="../assets/IsotipoFClaroT.png" alt="Logotipo Criterio Estructural - Pie de página" class="brand-logo-footer" onerror="this.src='https://via.placeholder.com/200x60/F4F5F7/1A2530?text=CRITERIO+ESTRUCTURAL'">
+            <p class="w3-medium"><b>Autor</b></p>
+
+            <h4 style="margin:0;">
+                <b>Ing. Rafael Antonio Correa Melano</b>
+            </h4>
+            
+            <p class="w3-small">
+                Ingeniero Civil • M.IE.<br>
+                Universidad Industrial de Santander
+            </p>
+            
+            <hr style="opacity:0.2; border-top: 1px solid var(--azul-profundo);">
+            
+            <p class="w3-small" style="opacity: 0.8;">
+                <b>Criterio Estructural</b><br>
+                © 2026 Rafael Antonio Correa Melano.<br>
+                Todos los derechos reservados.
+            </p>
+            <div class="w3-margin-top">
+                <span class="w3-tag w3-round w3-white w3-border w3-small" style="border-color: var(--naranja-estructural)!important; color: var(--naranja-estructural)!important;">Bucaramanga, Colombia 🇨🇴</span>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<script>
+    let btnTop = document.getElementById("btnTop");
+    window.onscroll = function() {
+        if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+            btnTop.style.display = "block";
+        } else {
+            btnTop.style.display = "none";
+        }
+    };
+    function topFunction() {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }
+</script>
+
+</body>
+</html>
