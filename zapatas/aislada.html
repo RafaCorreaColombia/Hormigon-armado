@@ -728,34 +728,92 @@
             <!-- ANEXO D -->
             <details class="w3-panel w3-round ce-panel-azul" style="margin-top: 15px; border: 1px solid var(--gris-borde);">
                 <summary style="font-weight: bold; cursor: pointer; padding: 15px; font-size: 1.1em; color: var(--azul-profundo);">
-                    <i class="fa fa-graduation-cap"></i> Anexo D: Estado del Arte en Punzonamiento y Parámetros \( J_c \)
+                    <i class="fa fa-graduation-cap"></i> Anexo D: Punzonamiento con Momento — Parámetros y Criterio para \( \gamma_v \)
                 </summary>
                 <div style="padding: 15px; border-top: 1px solid var(--gris-borde); background: white;">
-                    
-                    <h5 style="color: var(--azul-profundo); font-weight: bold; margin-top: 0;">1. Parámetros Geométricos Rigurosos</h5>
+            
+                    <h5 style="color: var(--azul-profundo); font-weight: bold; margin-top: 0;">1. Parámetros de la sección crítica</h5>
                     <ul class="w3-small" style="margin-top: 5px;">
-                        <li><strong>Área en planta del perímetro (\( A_{int} \)):</strong> \( 0.668 \text{ m}^2 \) (Se usa para restar la reacción del suelo).</li>
-                        <li><strong>Área de cortante resistente (\( A_v = b_o d \)):</strong> \( 1,363,064.5 \text{ mm}^2 \) (\( 1.363 \text{ m}^2 \)).</li>
-                        <li><strong>Inercia polar análoga (\( J_c \)):</strong> Calculada considerando las caras paralelas y perpendiculares al eje de flexión. Para esta columna centrada: \( 1.616 \times 10^{11} \text{ mm}^4 \).</li>
+                        <li><strong>Área en planta del perímetro (\( A_{int} \)):</strong> \( 0.668 \text{ m}^2 \). Se usa para descontar la reacción del suelo: \( V_u = P_u - A_{int}\, q_u \).</li>
+                        <li><strong>Área resistente al cortante (\( A_v = b_o d \)):</strong> \( 1.363 \text{ m}^2 \) (\( 1{,}363{,}064 \text{ mm}^2 \)).</li>
+                        <li><strong>Propiedad polar análoga (\( J_c \)):</strong> \( 1.616 \times 10^{11} \text{ mm}^4 \), para columna cuadrada centrada con \( d = 417.1 \text{ mm} \).</li>
                         <li><strong>Distancia al centroide (\( c \)):</strong> \( 408.5 \text{ mm} \).</li>
                     </ul>
-
-                    <h5 style="color: var(--azul-profundo); font-weight: bold; margin-top: 20px;">2. Discusión sobre el factor \( \gamma_v \) en Zapatas</h5>
-                    <p class="w3-small">
-                        La formulación para distribuir el esfuerzo cortante por transferencia de momento (\( \gamma_v = 1 - \gamma_f \)) está ampliamente documentada y calibrada para conexiones <strong>losa-columna</strong> (ACI 318 §8.4.4.2). En columnas cuadradas, este enfoque asigna un \( \gamma_v \approx 0.40 \). Si aplicáramos este valor de losas a nuestra zapata en la combinación sísmica, el esfuerzo resultante sería de <strong>0.359 MPa</strong>.
-                    </p>
-                    <p class="w3-small">
-                        Sin embargo, investigaciones recientes advierten que el comportamiento de las zapatas difiere del de las losas de entrepiso debido al soporte continuo del suelo y a la diferencia de rigidez flexionante:
-                    </p>
-                    <ul class="w3-small" style="color: var(--gris-texto);">
-                        <li><em>Ungermann, Kalus y Hegger (2023): "Influence of Unbalanced Moment on Punching Shear Behavior of Footings".</em></li>
-                        <li><em>Alexander, Ospina y Lantsoght (2023): "Punching Capacity of Spread Footings Using ACI 318-19 and the Strip Model".</em></li>
+            
+                    <h5 style="color: var(--azul-profundo); font-weight: bold; margin-top: 20px;">2. Hipótesis de la verificación</h5>
+                    <ul class="w3-small" style="margin-top: 5px;">
+                        <li>Zapata interior con columna centrada: el eje del perímetro crítico coincide con el eje de la columna.</li>
+                        <li>Presión del suelo lineal y sin despegue (en <em>1.2D + E + L</em>, \( q_{min} = 24.1 \text{ kPa} > 0 \)).</li>
+                        <li>Con estas condiciones, el momento de la reacción del suelo sobre el área encerrada por el perímetro se anula por simetría, y el \( M_u \) de la columna es el momento que actúa en el centroide de la sección crítica.</li>
                     </ul>
-                    <p class="w3-small" style="margin-bottom: 0;">
-                        Ante la necesidad de interpretar cuidadosamente si las disposiciones del ACI 318 para losas son un mandato directo aplicable a cimentaciones, en <em>Criterio Estructural</em> se adopta <strong>\( \gamma_v = 1.0 \)</strong> como un criterio de diseño conservador. Es una decisión de ingeniería que asume la máxima excentricidad de cortante posible mientras el marco normativo específico para cimentaciones continúa evolucionando.
+                    <p class="w3-small" style="color: var(--gris-texto);">
+                        Si hubiera despegue o la columna fuera excéntrica, esta simplificación deja de aplicar y se debe calcular el momento resultante en el centroide del perímetro.
                     </p>
+            
+                    <h5 style="color: var(--azul-profundo); font-weight: bold; margin-top: 20px;">3. El factor \( \gamma_v \) en zapatas</h5>
+                    <p class="w3-small">
+                        Para conexiones <strong>losa-columna</strong>, ACI 318-19 (§8.4.2.2 y §8.4.4.2) reparte el momento no balanceado entre flexión y excentricidad del cortante:
+                    </p>
+                    <div class="math-scroll w3-center w3-small">
+                        \[ \gamma_f = \frac{1}{1 + \tfrac{2}{3}\sqrt{b_1/b_2}}, \qquad \gamma_v = 1 - \gamma_f \]
+                    </div>
+                    <p class="w3-small">
+                        Para una columna cuadrada resulta \( \gamma_f = 0.60 \) y \( \gamma_v = 0.40 \). En el material consultado no se identificó una disposición que exija trasladar esta expresión, tal cual, a zapatas aisladas.
+                    </p>
+            
+                    <div class="tabla-container">
+                        <table class="tabla-traslapos tabla-small">
+                            <thead>
+                                <tr>
+                                    <th style="text-align:left;">Criterio</th>
+                                    <th>\( \gamma_v \)</th>
+                                    <th>\( 1.2D + 1.6L \)</th>
+                                    <th>\( 1.2D + E + L \)</th>
+                                    <th>\( \phi v_c \)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="text-align:left;">Analogía con losas</td>
+                                    <td>0.40</td>
+                                    <td>0.277 MPa</td>
+                                    <td>0.359 MPa</td>
+                                    <td>1.134 MPa</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:left;"><strong>Criterio adoptado (conservador)</strong></td>
+                                    <td><strong>1.00</strong></td>
+                                    <td class="ce-destacado">0.320 MPa</td>
+                                    <td class="ce-destacado">0.521 MPa</td>
+                                    <td>1.134 MPa</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+            
+                    <h5 style="color: var(--azul-profundo); font-weight: bold; margin-top: 20px;">4. Qué dice la literatura</h5>
+                    <ul class="w3-small">
+                        <li>
+                            <strong>Ungermann, Kalus y Hegger (2023)</strong> señalan que el efecto de los momentos no balanceados en zapatas ha sido casi inexplorado, aunque esos momentos también se transfieren por cortante. Ensayaron 4 zapatas con carga centrada y 14 con carga excéntrica, y observaron que el anillo de compresión se desarrolla en menor medida al aumentar la excentricidad. Proponen un método propio y lo comparan con ACI 318-19 y Eurocode 2.
+                        </li>
+                        <li>
+                            <strong>Lantsoght, Ospina y Alexander (2023)</strong> estudian zapatas con carga <em>concéntrica</em> (sin momento). Indican que el espesor de las zapatas suele regirse por las disposiciones de punzonamiento, derivadas principalmente de ensayos losa-columna, y que el comportamiento de las zapatas difiere del de esas conexiones.
+                        </li>
+                    </ul>
+            
+                    <p class="w3-small" style="margin-bottom: 0;">
+                        <strong>Decisión en este ejemplo:</strong> dada la escasez de una regla específica para el reparto del momento en zapatas, en <em>Criterio Estructural</em> se adopta \( \gamma_v = 1.0 \), es decir, el momento se transmite íntegramente por excentricidad del cortante. Es un criterio de diseño conservador, <strong>no un requisito literal de ACI 318 ni de la NSR-10</strong>. El resultado máximo es \( 0.521 / 1.134 = 0.46 \).
+                    </p>
+            
+                    <h5 style="color: var(--azul-profundo); font-weight: bold; margin-top: 20px;">Referencias</h5>
+                    <ul class="w3-small" style="color: var(--gris-texto); margin-bottom: 0;">
+                        <li>Ungermann, J., Kalus, M., &amp; Hegger, J. (2023). Influence of unbalanced moment on punching shear behavior of footings. <em>ACI Symposium Paper SP-357</em>, 240–255. <a href="https://doi.org/10.14359/51738768" target="_blank" rel="noopener">doi:10.14359/51738768</a></li>
+                        <li>Lantsoght, E. O. L., Ospina, C. E., &amp; Alexander, S. D. B. (2023). Punching capacity of spread footings using ACI 318-19 and the Strip Model. En A. Genikomsou, T. Hrynyk &amp; E. Lantsoght (Eds.), <em>Punching Shear of Concrete Slabs: Insights from New Materials, Tests, and Analysis Methods</em> (pp. 19–40). American Concrete Institute.</li>
+                        <li>American Concrete Institute. (2019). <em>Building Code Requirements for Structural Concrete (ACI 318-19)</em>, §8.4.2.2 y §8.4.4.2.</li>
+                    </ul>
                 </div>
             </details>
+
 
         </div>
 
