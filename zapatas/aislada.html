@@ -686,54 +686,35 @@
             <!-- ANEXO B -->
             <details class="w3-panel w3-round ce-panel-azul" style="margin-top: 15px; border: 1px solid var(--gris-borde);">
                 <summary style="font-weight: bold; cursor: pointer; padding: 15px; font-size: 1.1em; color: var(--azul-profundo);">
-                    <i class="fa fa-book"></i> Anexo B: Modelos de Presión de Contacto y el "Mito del 30%"
+                    <i class="fa fa-book"></i> Anexo B: Modelos de Presión de Contacto
                 </summary>
                 <div style="padding: 15px; border-top: 1px solid var(--gris-borde); background: white;">
-                    <p class="w3-small" style="margin-top:0;">Los diagramas de esfuerzos son idealizaciones racionales que obedecen al equilibrio estático, dependiendo de la excentricidad \( e = M/P \):</p>
+                    <p class="w3-small" style="margin-top:0;">Los diagramas utilizados en el análisis corresponden a idealizaciones basadas en equilibrio estático. Dependiendo de la excentricidad \( e = M/P \), la zapata puede trabajar en diferentes regímenes:</p>
                     
                     <div class="ce-grid ce-grid-2">
                         <div class="w3-panel ce-panel-gris w3-padding w3-round w3-small" style="margin:0;">
-                            <strong>1. Régimen Elástico Total</strong> (\( e \le L/6 \)):
+                            <strong>1. Régimen Elástico (Contacto Total)</strong> (\( e \le L/6 \)):
                             <div class="math-scroll w3-center">\[ q_{max,min} = \frac{P}{BL} \left( 1 \pm \frac{6e}{L} \right) \]</div>
                         </div>
                         <div class="w3-panel ce-panel-gris w3-padding w3-round w3-small" style="margin:0;">
-                            <strong>2. Despegue Parcial</strong> (\( L/6 < e < L/2 \)):
+                            <strong>2. Despegue Parcial (Triangular)</strong> (\( L/6 < e < L/2 \)):
                             <div class="math-scroll w3-center">\[ q_{max} = \frac{2P}{3B \left( \frac{L}{2} - e \right)} \]</div>
                         </div>
                     </div>
-                    
-                    <div class="w3-panel ce-panel-naranja w3-padding w3-round w3-small w3-margin-top">
-                        <strong style="font-size: 1.1em; color: var(--azul-profundo);">Comportamiento No Lineal y el "Mito del 30%"</strong>
+                    <div class="w3-panel ce-panel-naranja w3-padding-small w3-round w3-small w3-margin-top">
+                        <strong>3. Comportamiento No Lineal:</strong>
                         <p style="margin-top: 5px; margin-bottom: 8px;">
-                            Cuando la presión demanda la fluencia local del suelo (\(q_{lp}\)), se suelen emplear modelos de bloques de compresión equivalentes. Es vital desmitificar una mala práctica en la ingeniería estructural: <strong>no existe una autorización automática normativa para incrementar \( q_{adm} \) en un 30% (o 33%) ante eventos sísmicos.</strong>
+                            Cuando la presión excede el límite admisible, el suelo no sigue un modelo elástico. En estos casos se utilizan modelos equivalentes (bloque o distribución híbrida) para garantizar equilibrio.
                         </p>
                         <p style="margin-top: 0; margin-bottom: 0;">
                             La pregunta correcta que un estudiante de diseño debe hacerse no es <em>"¿se permite el 30%?"</em>, sino: <strong>"Si una combinación sísmica produce una presión superior a la admisible reportada, ¿qué información necesitamos del geotecnista para decidir si la cimentación es aceptable?"</strong> (Rigidez dinámica, control de asentamientos diferenciales y verificación de capacidad portante última).
                         </p>
                     </div>
-                </div>
-            </details>
-
-            <!-- ANEXO B -->
-            <details class="w3-panel w3-round ce-panel-azul" style="margin-top: 15px; border: 1px solid var(--gris-borde);">
-                <summary style="font-weight: bold; cursor: pointer; padding: 15px; font-size: 1.1em; color: var(--azul-profundo);">
-                    <i class="fa fa-book"></i> Anexo B: Modelos de Presión de Contacto
-                </summary>
-                <div style="padding: 15px; border-top: 1px solid var(--gris-borde); background: white;">
-                    <p class="w3-small" style="margin-top:0;">Los diagramas de esfuerzos son idealizaciones racionales que obedecen al equilibrio estático, dependiendo de la excentricidad \( e = M/P \):</p>
-                    
-                    <div class="ce-grid ce-grid-2">
-                        <div class="w3-panel ce-panel-gris w3-padding w3-round w3-small" style="margin:0;">
-                            <strong>1. Régimen Elástico Total</strong> (\( e \le L/6 \)):
-                            <div class="math-scroll w3-center">\[ q_{max,min} = \frac{P}{BL} \left( 1 \pm \frac{6e}{L} \right) \]</div>
-                        </div>
-                        <div class="w3-panel ce-panel-gris w3-padding w3-round w3-small" style="margin:0;">
-                            <strong>2. Despegue Parcial</strong> (\( L/6 < e < L/2 \)):
-                            <div class="math-scroll w3-center">\[ q_{max} = \frac{2P}{3B \left( \frac{L}{2} - e \right)} \]</div>
-                        </div>
-                    </div>
-                    <div class="w3-panel ce-panel-naranja w3-padding-small w3-round w3-small w3-margin-top">
-                        <strong>Comportamiento No Lineal:</strong> Cuando la presión demanda la fluencia del suelo (\(q_{lp}\)), la distribución elástica deja de ser representativa y se emplean modelos de bloques equivalentes para mantener el equilibrio sin subestimar asentamientos.
+                    <div class="w3-panel ce-panel-azul w3-padding-small w3-round w3-small w3-margin-top w3-center" style="border-left-color: green;">
+                        <strong style="color: green;">⚠️Importante:</strong> Estos modelos no describen el suelo real, sino representaciones compatibles con:<br>
+                            • Equilibrio estático<br>
+                            • No tracción en el suelo<br>
+                            • Capacidad portante limitada
                     </div>
                 </div>
             </details>
