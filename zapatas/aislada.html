@@ -165,6 +165,81 @@
                     El objetivo no es memorizar ecuaciones, sino comprender el flujo de cargas y la interacción suelo-estructura.
                 </p>
             </div>
+
+            <div class="ce-grid ce-grid-3" style="margin-top: 10px;">
+                <div class="w3-panel ce-panel-azul w3-padding w3-round" style="margin:0;">
+                    <strong>📥 Columna</strong>
+                    <ul class="w3-small" style="margin: 6px 0 0 0; padding-left: 18px;">
+                        <li>Carga axial \( P \)</li>
+                        <li>Momento \( M \)</li>
+                    </ul>
+                </div>
+                <div class="w3-panel ce-panel-gris w3-padding w3-round" style="margin:0;">
+                    <strong>🧱 Zapata</strong>
+                    <ul class="w3-small" style="margin: 6px 0 0 0; padding-left: 18px;">
+                        <li>Dimensiones \( B \times L \), espesor \( H \)</li>
+                        <li>Rigidez: reparte las cargas al suelo</li>
+                    </ul>
+                </div>
+                <div class="w3-panel ce-panel-gris w3-padding w3-round" style="margin:0; border-left-color: #22c55e;">
+                    <strong style="color:#15803d;">🌱 Suelo</strong>
+                    <ul class="w3-small" style="margin: 6px 0 0 0; padding-left: 18px;">
+                        <li>Resiste compresión</li>
+                        <li><strong>No resiste tracción</strong></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="w3-center" style="color: var(--naranja-estructural); font-size: 1.4em; line-height: 1;">↓</div>
+            
+            <strong class="w3-medium">Distribución de presiones según la excentricidad</strong>
+            <div class="ce-grid ce-grid-3" style="margin-top: 8px;">
+            
+                <div class="w3-panel w3-white w3-padding w3-round w3-center" style="margin:0; border: 1px solid var(--gris-borde);">
+                    <svg viewBox="0 0 120 70" width="100%" style="max-width:180px;" role="img" aria-label="Presión uniforme">
+                        <rect x="10" y="8" width="100" height="10" fill="#94a3b8"/>
+                        <rect x="10" y="18" width="100" height="30" fill="#E67E22" opacity="0.55"/>
+                    </svg>
+                    <div class="w3-small"><strong>\( M = 0 \)</strong><br>Presión uniforme</div>
+                </div>
+            
+                <div class="w3-panel w3-white w3-padding w3-round w3-center" style="margin:0; border: 1px solid var(--gris-borde);">
+                    <svg viewBox="0 0 120 70" width="100%" style="max-width:180px;" role="img" aria-label="Presión trapezoidal">
+                        <rect x="10" y="8" width="100" height="10" fill="#94a3b8"/>
+                        <polygon points="10,18 110,18 110,32 10,58" fill="#E67E22" opacity="0.55"/>
+                    </svg>
+                    <div class="w3-small"><strong>\( M \neq 0,\; e \leq L/6 \)</strong><br>Trapezoidal, contacto total</div>
+                </div>
+            
+                <div class="w3-panel w3-white w3-padding w3-round w3-center" style="margin:0; border: 1px solid #c62828;">
+                    <svg viewBox="0 0 120 70" width="100%" style="max-width:180px;" role="img" aria-label="Presión triangular con pérdida de contacto">
+                        <rect x="10" y="8" width="100" height="10" fill="#94a3b8"/>
+                        <polygon points="10,18 75,18 10,62" fill="#E67E22" opacity="0.55"/>
+                        <line x1="75" y1="18" x2="110" y2="18" stroke="#c62828" stroke-dasharray="3,2"/>
+                    </svg>
+                    <div class="w3-small"><strong>\( e > L/6 \)</strong><br><span class="ce-alerta">Pérdida de contacto</span>, triangular sobre \( L' \)</div>
+                </div>
+            </div>
+            
+            <div class="w3-center" style="color: var(--naranja-estructural); font-size: 1.4em; line-height: 1;">↓</div>
+            
+            <div class="ce-grid ce-grid-2">
+                <div class="w3-panel ce-panel-naranja w3-padding w3-round" style="margin:0;">
+                    <strong>⚖️ Condiciones de equilibrio</strong>
+                    <p class="w3-small" style="margin: 6px 0 0 0;">\( \sum F = 0 \) y \( \sum M = 0 \) en todos los regímenes, con presiones solo de compresión.</p>
+                </div>
+                <div class="w3-panel ce-panel-azul w3-padding w3-round" style="margin:0;">
+                    <strong>🎯 Consecuencias de diseño</strong>
+                    <ul class="w3-small" style="margin: 6px 0 0 0; padding-left: 18px;">
+                        <li>Verificar la excentricidad</li>
+                        <li>Optimizar \( B \times L \)</li>
+                        <li>Verificar presiones, cortante y flexión</li>
+                    </ul>
+                </div>
+            </div>
+
+
+
             
             <div class="w3-center w3-margin-top w3-padding w3-round ce-panel-gris" style="border: 1px solid var(--gris-borde); border-left: none;">
                 <img src="https://lms.uis.edu.co/ava/draftfile.php/610615/user/draft/235333269/Mapa%20Mental_%20Comportamiento%20de%20Zapatas%20Aisladas%20en%20Ingenier%C3%ADa%20Estructural%20-%20visual%20selection.png" alt="Mapa Mental Zapatas Aisladas" style="max-width:100%; height:auto; border-radius:5px;">
