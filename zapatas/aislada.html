@@ -514,58 +514,99 @@
                     </tbody>
                 </table>
             </div>
-
             <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:30px;">3.2 Cortante Bidireccional (Punzonamiento)</h4>
-
+            <p class="w3-small" style="margin-top: -5px; color: var(--gris-texto);">Verificación de esfuerzos locales y transferencia de momento no balanceado (NSR-10 C.11.11.7).</p>
+    
+            <!-- 1. NOTA PEDAGÓGICA -->
+            <div class="w3-panel ce-panel-naranja w3-padding w3-round">
+                <strong style="font-size: 1.1em;">📌 Nota Pedagógica: Equilibrio Global vs. Distribución Local</strong>
+                <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
+                    Considerar la distribución variable de la presión del suelo (\(q_u\)) es indispensable porque el suelo que empuja hacia arriba <em>dentro</em> del perímetro crítico reduce la <strong>fuerza cortante neta (\(V_u\))</strong>. Sin embargo, esto no exime de verificar el <strong>momento (\(M_u\))</strong>. El momento impone una concentración asimétrica de esfuerzos cortantes sobre el perímetro que debe sumarse al esfuerzo promedio. <strong>Ambos efectos coexisten:</strong> la reacción del suelo alivia la fuerza total, pero el momento concentra el esfuerzo localmente.
+                </p>
+            </div>
+    
+            <!-- 2. PARÁMETROS Y ECUACIÓN -->
             <div class="ce-grid ce-grid-2">
                 <div class="w3-panel ce-panel-gris w3-padding w3-round" style="margin:0;">
-                    <strong style="color: var(--azul-profundo);">📏 Parámetros Geométricos Críticos:</strong>
-                    <ul class="w3-small" style="margin: 5px 0;">
-                        <li>Perímetro crítico (\( b_o \)): <strong>3268 mm</strong></li>
-                        <li>Área crítica (\( A_{crit} \)): <strong>0.668 m²</strong></li>
-                        <li>Capacidad (\( \phi V_{c,punz} \)): <strong>1546.0 kN</strong> (Gobierna ec. C.11-33)</li>
+                    <strong style="color: var(--azul-profundo);">📏 Parámetros de la Sección Crítica:</strong>
+                    <ul class="w3-small" style="margin: 5px 0; color: var(--azul-profundo);">
+                        <li>Perímetro (\( b_o \)): <strong>3268 mm</strong> | Peralte (\( d \)): <strong>417.1 mm</strong></li>
+                        <li>Área de cortante (\( A_c = b_o d \)): <strong>1,363,064.5 mm²</strong></li>
+                        <li>Inercia polar análoga (\( J_c \)): <strong>\(1.615 \times 10^{11} \text{ mm}^4\)</strong></li>
+                        <li>Distancia al eje neutro (\( c \)): <strong>408.5 mm</strong></li>
                     </ul>
                 </div>
+                
                 <div class="w3-panel ce-panel-gris w3-padding w3-round" style="margin:0;">
-                    <strong style="color: var(--azul-profundo);">⚖️ Equilibrio de Fuerzas:</strong>
+                    <strong style="color: var(--azul-profundo);">⚖️ Ecuación de Esfuerzos (C.11.11.7.2):</strong>
                     <div class="math-scroll w3-center w3-small" style="margin: 5px 0;">
-                        \[ V_{u,punz} = P_{u,col} - (A_{crit} \cdot q_{u,eje\_ac}) \]
+                        \[ v_{u,max} = \frac{V_u}{A_c} + \frac{\gamma_v M_u c}{J_c} \]
                     </div>
-                    <p class="w3-small" style="margin-bottom: 0;">
-                        La carga de la columna se reduce por la reacción del suelo que empuja hacia arriba <em>dentro</em> de la base del prisma de falla (\(A_{crit}\)).
+                    <p class="w3-small" style="margin-bottom: 0; color: var(--gris-texto); line-height: 1.3;">
+                        <em>Simplificación de Momento:</em> Al estar el perímetro crítico centrado y la zapata 100% en compresión, el momento de la reacción del suelo se anula por simetría. Por tanto, el \(M_u\) de la columna actúa íntegramente sobre el perímetro.
                     </p>
                 </div>
             </div>
-
+    
+            <p class="w3-small" style="color: var(--gris-texto); font-style: italic; margin-bottom: 5px; margin-top: 15px;">
+                *La capacidad nominal a punzonamiento del concreto arroja \( \phi V_{c} = 1546 \text{ kN} \). Convertido a esfuerzo límite (\( \phi V_c / A_c \)) equivale a <strong>\( \phi v_c = 1.134 \text{ MPa} \)</strong>.
+            </p>
+    
+            <!-- 3. TABLA DE RESULTADOS CON LA COMPARATIVA -->
             <div class="tabla-container">
                 <table class="tabla-traslapos tabla-small">
                     <thead>
                         <tr>
-                            <th style="text-align:left;">Combinación</th>
-                            <th>Presión en el eje \( q_{u,eje\_ac} \) [kPa]</th>
-                            <th>Cortante Actuante \( V_u \) [kN]</th>
-                            <th>Capacidad \( \phi V_c \) [kN]</th>
+                            <th style="text-align:left;">Combinación Última</th>
+                            <th>\( V_u \) Neto [kN]</th>
+                            <th>\( M_u \) Col. [kNm]</th>
+                            <th>Esfuerzo Promedio<br>\( v_u = V_u / A_c \)</th>
+                            <th style="background-color: rgba(255,255,255,0.1);">Diseño Losa (Ref)<br>\( v_{max} \) (\( \gamma_v = 0.4 \))</th>
+                            <th>Criterio Zapata<br>\( v_{max} \) (\( \gamma_v = 1.0 \))</th>
+                            <th>Capacidad<br>\( \phi v_c \)</th>
                             <th>Estado</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td style="text-align:left;">1.2D + 1.6L</td>
-                            <td>179.7</td>
                             <td>340.0</td>
-                            <td>1546.0</td>
+                            <td>28.0</td>
+                            <td>0.249 MPa</td>
+                            <td style="color: var(--gris-texto);">0.277 MPa</td>
+                            <td class="ce-destacado">0.320 MPa</td>
+                            <td>1.134 MPa</td>
                             <td style="color: green; font-weight: bold;">✅ OK</td>
                         </tr>
                         <tr>
                             <td style="text-align:left;">1.2D + E + L</td>
-                            <td>180.9</td>
                             <td>342.3</td>
-                            <td>1546.0</td>
+                            <td>107.0</td>
+                            <td>0.251 MPa</td>
+                            <td style="color: var(--gris-texto);">0.359 MPa</td>
+                            <td class="ce-alerta">0.521 MPa</td>
+                            <td>1.134 MPa</td>
                             <td style="color: green; font-weight: bold;">✅ OK</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
+    
+            <!-- 4. CAJA DE DISCUSIÓN ACADÉMICA / ESTADO DEL ARTE -->
+            <div class="w3-panel ce-panel-azul w3-padding w3-round w3-margin-top" style="border-width: 1px; border-style: solid; border-right-color: var(--gris-borde); border-top-color: var(--gris-borde); border-bottom-color: var(--gris-borde);">
+                <strong style="color: var(--azul-profundo);"><i class="fa fa-search"></i> Criterio Estructural y Estado del Arte: El factor \( \gamma_v \) en Zapatas</strong>
+                <p class="w3-small" style="margin-top: 8px; margin-bottom: 8px; line-height: 1.5; color: var(--azul-profundo);">
+                    La NSR-10 (y ACI 318) define explícitamente el factor \( \gamma_v = 1 - \gamma_f \) (fracción del momento transferida por cortante) para conexiones <strong>losa-columna</strong>, arrojando usualmente un valor de \( \gamma_v = 0.40 \) para columnas cuadradas. Sin embargo, no existe una disposición específica que obligue a usar este mismo factor de alivio en <strong>zapatas aisladas</strong>.
+                </p>
+                <p class="w3-small" style="margin-top: 0; margin-bottom: 8px; line-height: 1.5; color: var(--azul-profundo);">
+                    Investigaciones recientes <em>(Ungermann et al., 2023; Alexander et al., 2023)</em> han demostrado que el comportamiento a punzonamiento de las zapatas presenta diferencias mecánicas relevantes frente a las losas de entrepiso, concluyendo que la calibración experimental de losas no es directamente transferible a cimentaciones sin estudios adicionales.
+                </p>
+                <div class="w3-padding-small w3-round w3-white" style="border: 1px dashed var(--azul-profundo); font-size: 0.9em; margin-top: 10px;">
+                    <strong>💡 Decisión de Diseño:</strong> En este ejemplo, se adopta conservadoramente <strong>\( \gamma_v = 1.0 \)</strong> (suponiendo que el 100% del momento no balanceado se transfiere por excentricidad del cortante). Como se observa en la tabla, el esfuerzo máximo por sismo salta de 0.251 MPa a 0.521 MPa. Aún con este castigo del 100% al modelo, la relación demanda/capacidad máxima es de \( 0.521 / 1.134 = 0.46 \), demostrando que el espesor de 50 cm es altamente seguro.
+                </div>
+            </div>
+
+            
         </div>
 
         <!-- CARD 4: FLEXIÓN -->
