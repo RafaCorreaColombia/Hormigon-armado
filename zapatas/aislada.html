@@ -514,55 +514,35 @@
                     </tbody>
                 </table>
             </div>
+
             <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:30px;">3.2 Cortante Bidireccional (Punzonamiento)</h4>
-            <p class="w3-small" style="margin-top: -5px; color: var(--gris-texto);">Verificación de esfuerzos locales y transferencia de momento no balanceado (NSR-10 C.11.11.7).</p>
+            <p class="w3-small" style="margin-top: -5px; color: var(--gris-texto);">Verificación local de esfuerzos incluyendo transferencia de momento (NSR-10 C.11.11.7).</p>
     
-            <!-- 1. NOTA PEDAGÓGICA -->
-            <div class="w3-panel ce-panel-naranja w3-padding w3-round">
-                <strong style="font-size: 1.1em;">📌 Nota Pedagógica: Equilibrio Global vs. Distribución Local</strong>
-                <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
-                    Considerar la distribución variable de la presión del suelo (\(q_u\)) es indispensable porque el suelo que empuja hacia arriba <em>dentro</em> del perímetro crítico reduce la <strong>fuerza cortante neta (\(V_u\))</strong>. Sin embargo, esto no exime de verificar el <strong>momento (\(M_u\))</strong>. El momento impone una concentración asimétrica de esfuerzos cortantes sobre el perímetro que debe sumarse al esfuerzo promedio. <strong>Ambos efectos coexisten:</strong> la reacción del suelo alivia la fuerza total, pero el momento concentra el esfuerzo localmente.
+            <!-- 1. NOTA PEDAGÓGICA (Simplificada en 3 líneas) -->
+            <div class="w3-panel ce-panel-gris w3-padding w3-round" style="border-left-color: var(--naranja-estructural);">
+                <strong style="color: var(--azul-profundo);">📌 Lógica del Cálculo en 3 Pasos:</strong>
+                <ol class="w3-small" style="margin-top: 5px; margin-bottom: 0; padding-left: 20px;">
+                    <li style="margin-bottom: 4px;"><strong>El suelo alivia el cortante:</strong> La presión dentro del área en planta del perímetro (\( A_{int} \)) reduce la fuerza neta: \( V_u = P_u - (A_{int} \cdot q_u) \).</li>
+                    <li style="margin-bottom: 4px;"><strong>El momento concentra el esfuerzo:</strong> Se incrementa localmente el esfuerzo sobre la sección resistente (\( A_v = b_o d \)): \( v_{u,max} = \frac{V_u}{A_v} + \frac{\gamma_v M_u c}{J_c} \).</li>
+                    <li><strong>Criterio conservador:</strong> Se adopta \( \gamma_v = 1.0 \) asumiendo que el 100% del momento se transfiere por excentricidad del cortante.</li>
+                </ol>
+                <p class="w3-small" style="margin-top: 8px; margin-bottom: 0; color: var(--gris-texto); font-style: italic;">
+                    *Nota: La simplificación de anular el momento de la reacción del suelo por simetría aplica solo mientras la presión sea lineal y <strong>sin despegue</strong>. Por esta razón aquí no se revisa la combinación 0.9D+E.
                 </p>
             </div>
     
-            <!-- 2. PARÁMETROS Y ECUACIÓN -->
-            <div class="ce-grid ce-grid-2">
-                <div class="w3-panel ce-panel-gris w3-padding w3-round" style="margin:0;">
-                    <strong style="color: var(--azul-profundo);">📏 Parámetros de la Sección Crítica:</strong>
-                    <ul class="w3-small" style="margin: 5px 0; color: var(--azul-profundo);">
-                        <li>Perímetro (\( b_o \)): <strong>3268 mm</strong> | Peralte (\( d \)): <strong>417.1 mm</strong></li>
-                        <li>Área de cortante (\( A_c = b_o d \)): <strong>1,363,064.5 mm²</strong></li>
-                        <li>Inercia polar análoga (\( J_c \)): <strong>\(1.615 \times 10^{11} \text{ mm}^4\)</strong></li>
-                        <li>Distancia al eje neutro (\( c \)): <strong>408.5 mm</strong></li>
-                    </ul>
-                </div>
-                
-                <div class="w3-panel ce-panel-gris w3-padding w3-round" style="margin:0;">
-                    <strong style="color: var(--azul-profundo);">⚖️ Ecuación de Esfuerzos (C.11.11.7.2):</strong>
-                    <div class="math-scroll w3-center w3-small" style="margin: 5px 0;">
-                        \[ v_{u,max} = \frac{V_u}{A_c} + \frac{\gamma_v M_u c}{J_c} \]
-                    </div>
-                    <p class="w3-small" style="margin-bottom: 0; color: var(--gris-texto); line-height: 1.3;">
-                        <em>Simplificación de Momento:</em> Al estar el perímetro crítico centrado y la zapata 100% en compresión, el momento de la reacción del suelo se anula por simetría. Por tanto, el \(M_u\) de la columna actúa íntegramente sobre el perímetro.
-                    </p>
-                </div>
-            </div>
-    
             <p class="w3-small" style="color: var(--gris-texto); font-style: italic; margin-bottom: 5px; margin-top: 15px;">
-                *La capacidad nominal a punzonamiento del concreto arroja \( \phi V_{c} = 1546 \text{ kN} \). Convertido a esfuerzo límite (\( \phi V_c / A_c \)) equivale a <strong>\( \phi v_c = 1.134 \text{ MPa} \)</strong>.
+                *Parámetros: \( A_v = 1.363 \text{ m}^2 \). Capacidad \( \phi v_c = 1.134 \text{ MPa} \). (Ver cálculo de \( J_c \) y discusión sobre \( \gamma_v \) en el Anexo D).
             </p>
     
-            <!-- 3. TABLA DE RESULTADOS CON LA COMPARATIVA -->
+            <!-- 2. TABLA DE RESULTADOS (Depurada) -->
             <div class="tabla-container">
                 <table class="tabla-traslapos tabla-small">
                     <thead>
                         <tr>
                             <th style="text-align:left;">Combinación Última</th>
-                            <th>\( V_u \) Neto [kN]</th>
-                            <th>\( M_u \) Col. [kNm]</th>
-                            <th>Esfuerzo Promedio<br>\( v_u = V_u / A_c \)</th>
-                            <th style="background-color: rgba(255,255,255,0.1);">Diseño Losa (Ref)<br>\( v_{max} \) (\( \gamma_v = 0.4 \))</th>
-                            <th>Criterio Zapata<br>\( v_{max} \) (\( \gamma_v = 1.0 \))</th>
+                            <th>Esfuerzo Medio<br>\( V_u / A_v \)</th>
+                            <th>Esfuerzo Máximo<br>\( v_{u,max} \) (\( \gamma_v = 1.0 \))</th>
                             <th>Capacidad<br>\( \phi v_c \)</th>
                             <th>Estado</th>
                         </tr>
@@ -570,20 +550,14 @@
                     <tbody>
                         <tr>
                             <td style="text-align:left;">1.2D + 1.6L</td>
-                            <td>340.0</td>
-                            <td>28.0</td>
                             <td>0.249 MPa</td>
-                            <td style="color: var(--gris-texto);">0.277 MPa</td>
                             <td class="ce-destacado">0.320 MPa</td>
                             <td>1.134 MPa</td>
                             <td style="color: green; font-weight: bold;">✅ OK</td>
                         </tr>
                         <tr>
                             <td style="text-align:left;">1.2D + E + L</td>
-                            <td>342.3</td>
-                            <td>107.0</td>
                             <td>0.251 MPa</td>
-                            <td style="color: var(--gris-texto);">0.359 MPa</td>
                             <td class="ce-alerta">0.521 MPa</td>
                             <td>1.134 MPa</td>
                             <td style="color: green; font-weight: bold;">✅ OK</td>
@@ -592,20 +566,10 @@
                 </table>
             </div>
     
-            <!-- 4. CAJA DE DISCUSIÓN ACADÉMICA / ESTADO DEL ARTE -->
-            <div class="w3-panel ce-panel-azul w3-padding w3-round w3-margin-top" style="border-width: 1px; border-style: solid; border-right-color: var(--gris-borde); border-top-color: var(--gris-borde); border-bottom-color: var(--gris-borde);">
-                <strong style="color: var(--azul-profundo);"><i class="fa fa-search"></i> Criterio Estructural y Estado del Arte: El factor \( \gamma_v \) en Zapatas</strong>
-                <p class="w3-small" style="margin-top: 8px; margin-bottom: 8px; line-height: 1.5; color: var(--azul-profundo);">
-                    La NSR-10 (y ACI 318) define explícitamente el factor \( \gamma_v = 1 - \gamma_f \) (fracción del momento transferida por cortante) para conexiones <strong>losa-columna</strong>, arrojando usualmente un valor de \( \gamma_v = 0.40 \) para columnas cuadradas. Sin embargo, no existe una disposición específica que obligue a usar este mismo factor de alivio en <strong>zapatas aisladas</strong>.
-                </p>
-                <p class="w3-small" style="margin-top: 0; margin-bottom: 8px; line-height: 1.5; color: var(--azul-profundo);">
-                    Investigaciones recientes <em>(Ungermann et al., 2023; Alexander et al., 2023)</em> han demostrado que el comportamiento a punzonamiento de las zapatas presenta diferencias mecánicas relevantes frente a las losas de entrepiso, concluyendo que la calibración experimental de losas no es directamente transferible a cimentaciones sin estudios adicionales.
-                </p>
-                <div class="w3-padding-small w3-round w3-white" style="border: 1px dashed var(--azul-profundo); font-size: 0.9em; margin-top: 10px;">
-                    <strong>💡 Decisión de Diseño:</strong> En este ejemplo, se adopta conservadoramente <strong>\( \gamma_v = 1.0 \)</strong> (suponiendo que el 100% del momento no balanceado se transfiere por excentricidad del cortante). Como se observa en la tabla, el esfuerzo máximo por sismo salta de 0.251 MPa a 0.521 MPa. Aún con este castigo del 100% al modelo, la relación demanda/capacidad máxima es de \( 0.521 / 1.134 = 0.46 \), demostrando que el espesor de 50 cm es altamente seguro.
-                </div>
-            </div>
-
+            <!-- 3. CONCLUSIÓN EJECUTIVA PARA CLASE -->
+            <div class="w3-panel w3-padding-small w3-round w3-white w3-margin-top" style="border: 1px dashed var(--naranja-estructural); font-size: 0.85em; color: var(--azul-profundo);">
+                <strong>💡 Conclusión en Clase:</strong> El momento flexionante sube el esfuerzo local de 0.25 a 0.52 MPa. Aun así, la demanda máxima es menos de la mitad de la capacidad (\( 1.13 \text{ MPa} \)). <strong>El punzonamiento no gobierna; el espesor \( H \) lo define el control de anclaje de la columna.</strong>
+            </div>            
             
         </div>
 
@@ -756,6 +720,37 @@
                     <div class="w3-panel ce-panel-azul w3-padding-small w3-round w3-small w3-margin-top w3-center" style="border-left-color: green;">
                         <strong style="color: green;">Conclusión:</strong> \( L_d > L_{disponible} \). El refuerzo <strong>debe terminar en gancho estándar a 90°</strong> orientado hacia arriba. Así, el \(l_{dh}\) exigido (346 mm) cabe perfectamente en el voladizo disponible (525 mm).
                     </div>
+                </div>
+            </details>
+            <!-- ANEXO D -->
+            <details class="w3-panel w3-round ce-panel-azul" style="margin-top: 15px; border: 1px solid var(--gris-borde);">
+                <summary style="font-weight: bold; cursor: pointer; padding: 15px; font-size: 1.1em; color: var(--azul-profundo);">
+                    <i class="fa fa-graduation-cap"></i> Anexo D: Estado del Arte en Punzonamiento y Parámetros \( J_c \)
+                </summary>
+                <div style="padding: 15px; border-top: 1px solid var(--gris-borde); background: white;">
+                    
+                    <h5 style="color: var(--azul-profundo); font-weight: bold; margin-top: 0;">1. Parámetros Geométricos Rigurosos</h5>
+                    <ul class="w3-small" style="margin-top: 5px;">
+                        <li><strong>Área en planta del perímetro (\( A_{int} \)):</strong> \( 0.668 \text{ m}^2 \) (Se usa para restar la reacción del suelo).</li>
+                        <li><strong>Área de cortante resistente (\( A_v = b_o d \)):</strong> \( 1,363,064.5 \text{ mm}^2 \) (\( 1.363 \text{ m}^2 \)).</li>
+                        <li><strong>Inercia polar análoga (\( J_c \)):</strong> Calculada considerando las caras paralelas y perpendiculares al eje de flexión. Para esta columna centrada: \( 1.616 \times 10^{11} \text{ mm}^4 \).</li>
+                        <li><strong>Distancia al centroide (\( c \)):</strong> \( 408.5 \text{ mm} \).</li>
+                    </ul>
+
+                    <h5 style="color: var(--azul-profundo); font-weight: bold; margin-top: 20px;">2. Discusión sobre el factor \( \gamma_v \) en Zapatas</h5>
+                    <p class="w3-small">
+                        La formulación para distribuir el esfuerzo cortante por transferencia de momento (\( \gamma_v = 1 - \gamma_f \)) está ampliamente documentada y calibrada para conexiones <strong>losa-columna</strong> (ACI 318 §8.4.4.2). En columnas cuadradas, este enfoque asigna un \( \gamma_v \approx 0.40 \). Si aplicáramos este valor de losas a nuestra zapata en la combinación sísmica, el esfuerzo resultante sería de <strong>0.359 MPa</strong>.
+                    </p>
+                    <p class="w3-small">
+                        Sin embargo, investigaciones recientes advierten que el comportamiento de las zapatas difiere del de las losas de entrepiso debido al soporte continuo del suelo y a la diferencia de rigidez flexionante:
+                    </p>
+                    <ul class="w3-small" style="color: var(--gris-texto);">
+                        <li><em>Ungermann, Kalus y Hegger (2023): "Influence of Unbalanced Moment on Punching Shear Behavior of Footings".</em></li>
+                        <li><em>Alexander, Ospina y Lantsoght (2023): "Punching Capacity of Spread Footings Using ACI 318-19 and the Strip Model".</em></li>
+                    </ul>
+                    <p class="w3-small" style="margin-bottom: 0;">
+                        Ante la necesidad de interpretar cuidadosamente si las disposiciones del ACI 318 para losas son un mandato directo aplicable a cimentaciones, en <em>Criterio Estructural</em> se adopta <strong>\( \gamma_v = 1.0 \)</strong> como un criterio de diseño conservador. Es una decisión de ingeniería que asume la máxima excentricidad de cortante posible mientras el marco normativo específico para cimentaciones continúa evolucionando.
+                    </p>
                 </div>
             </details>
 
