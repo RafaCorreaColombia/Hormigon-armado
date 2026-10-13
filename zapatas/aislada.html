@@ -618,7 +618,17 @@
 
         <!-- CARD 5: CORTANTE -->
         <div class="panel-control" id="cortante">
-            <h2 class="panel-titulo">5. Verificaciones de Cortante (NSR-10 C.11)</h2>     
+            <h2 class="panel-titulo">5. Verificaciones de Cortante (NSR-10 C.11)</h2>
+            <!-- CAJITA: CÁLCULO DEL PERALTE EFECTIVO -->
+            <div class="w3-panel ce-panel-gris w3-padding w3-round" style="margin-bottom: 20px;">
+                <strong style="color: var(--azul-profundo);">📏 Definición del Peralte Efectivo (\( d \))</strong>
+                <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
+                    Antes de evaluar el cortante, calculamos la altura útil descontando al espesor total (\( H = 500 \text{ mm} \)) el recubrimiento libre inferior normativo para concreto vaciado contra el suelo (75 mm) y el radio de la barra de refuerzo a tracción (asumiendo preliminarmente barra N°5, \( d_b = 15.9 \text{ mm} \)):
+                </p>
+                <div class="math-scroll w3-center w3-small" style="margin: 8px 0 0 0;">
+                    \[ d = 500 - 75 - \frac{15.9}{2} = \mathbf{417.1 \text{ mm}} \]
+                </div>
+            </div>
 
             <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:30px;">5.1 Cortante Unidireccional (Comportamiento como Viga Ancha)</h4>
             <p class="w3-small" style="margin-top: -5px; color: var(--gris-texto);">Sección crítica evaluada a una distancia \( d = 417.1 \text{ mm} \) de la cara de la columna.</p>
@@ -728,12 +738,11 @@
             </div>
 
             <p>
-            Para el diseño por flexión, la zapata se idealiza como una <strong>viga en voladizo empotrada en la cara de la columna</strong> (sección crítica). El momento último \( M_u \) se determina aplicando el diagrama variable de presiones del suelo como una carga distribuida sobre este tramo (\( L_{voladizo} = 0.60 \text{ m} \)), calculando la fuerza resultante y multiplicándola por su respectivo brazo de palanca respecto a la sección crítica.
+            Para el diseño por flexión, la zapata se idealiza como una <strong>viga en voladizo empotrada en la cara de la columna</strong> (sección crítica). El momento último \( M_u \) se determina aplicando el diagrama variable de presiones del suelo como una carga distribuida sobre este tramo (\( L_{voladizo} = 0.60 \text{ m} \)), calculando la fuerza resultante y multiplicándola por su respectivo brazo de palanca respecto a la sección crítica.</p>
             
-            <div class="w3-panel w3-padding-small w3-round w3-white w3-margin-top" style="border: 1px dashed var(--naranja-estructural); font-size: 0.85em; color: var(--azul-profundo);">   
+            <div class="w3-panel w3-padding-small w3-round w3-white w3-margin-top" style="border: 1px dashed var(--azul-profundo); font-size: 0.85em; color: var(--azul-profundo);">   
                 Análisis para una franja de diseño unitaria de \( 1.0 \text{ m} \):
-                </p>
-    
+                
                 <ul class="w3-ul w3-border w3-round ce-panel-gris" style="border-left:none;">
                     <li><strong>Comb. 1.2D+1.6L:</strong> \( q_{cara} = 189.9 \text{ kPa} \) \(\rightarrow\) \( M_u = 37.9 \text{ kNm/m} \)</li>
                     <li><strong>Comb. 1.2D+E+L:</strong> \( q_{cara} = 220.0 \text{ kPa} \) \(\rightarrow\) \( M_u = 53.7 \text{ kNm/m} \) (Crítico)</li>
@@ -750,6 +759,7 @@
                     <div class="math-scroll w3-large" style="margin: 5px 0;">
                         \( A_{s,req} = \mathbf{344 \text{ mm}^2/m} \)
                     </div>
+                    <p> class="w3-small" style="margin-top: -5px; color: var(--gris-texto);">\( d = 417.1 \text{ mm} \), \( b = 1000 \text{ mm} \), (\( f'_c \)): \( 21 \text{ MPa} \), (\( f_y \)): \( 420 \text{ MPa} \).</p>
                 </div>
                 <div class="w3-panel ce-panel-azul w3-padding w3-round w3-center" style="margin:0;">
                     <strong style="color: var(--azul-profundo);">📏 Cuantía Mínima de Retracción</strong>
