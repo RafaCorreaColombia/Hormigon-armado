@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Revisión Parcial - Corte 2</title>
+    <title>Revisión Parcial - Corte 2 - Criterio Estructural</title>
+    
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     
     <!-- Script para renderizar las fórmulas matemáticas (LaTeX) -->
     <script>
@@ -30,8 +33,11 @@
             --success-color: #d4edda;
             --success-border: #c3e6cb;
             --success-text: #155724;
+            --warning-color: #fff3cd;
+            --warning-border: #ffeeba;
+            --warning-text: #856404;
         }
-    
+
         body { 
             background-color: var(--gris-claro); 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
@@ -40,9 +46,9 @@
             padding: 0;
             line-height: 1.6;
         }
-    
+
         .contenedor-principal {
-            max-width: 1000px; 
+            max-width: 1250px; 
             margin: 30px auto; 
             border-radius: 12px;
             background: white; 
@@ -51,23 +57,26 @@
             box-shadow: 0 8px 25px rgba(26,37,48,0.15);
         }
         
-        /* HEADER */
+        /* HEADER Y MANIFIESTO */
         .header-rc { 
             background: var(--azul-profundo); 
             color: white; 
             padding: 30px 20px; 
             text-align: center; 
+            position: relative; 
         }
+        .brand-logo-header { max-width: 250px; height: auto; margin-bottom: 10px; display: inline-block; }
         .lema-global { 
             font-size: 0.9em; 
             letter-spacing: 2px; 
             color: #a0aec0; 
             text-transform: uppercase; 
-            margin-bottom: 10px; 
+            margin-bottom: 20px; 
             font-weight: bold; 
         }
         .lema-global span { color: var(--naranja-estructural); }
-    
+
+        /* RUTA DE APRENDIZAJE */
         .ruta-aprendizaje {
             display: flex; 
             justify-content: center; 
@@ -76,26 +85,27 @@
             gap: 8px; 
             margin-top: 20px;
             font-size: 0.85em; 
+            color: #a0aec0;
         }
         .ruta-item { 
-            padding: 6px 14px; 
+            padding: 4px 12px; 
             border-radius: 20px; 
             border: 1px solid #4a5568; 
             background: rgba(255,255,255,0.05); 
-            text-decoration: none; 
-            color: #cbd5e1;
-            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
         }
         .ruta-item:hover { background: rgba(255,255,255,0.1); color: white; }
         .ruta-activa { 
             border-color: var(--naranja-estructural); 
             color: white; 
-            background: rgba(230, 126, 34, 0.25); 
+            background: rgba(230, 126, 34, 0.2); 
             font-weight: bold; 
         }
-    
+        .ruta-flecha { color: #4a5568; font-size: 0.8em; }
+
         .contenido-body { padding: 40px; }
-    
+
         /* Estilos de la tabla de resumen */
         .summary-table {
             width: 100%;
@@ -112,11 +122,11 @@
             text-align: left;
         }
         .summary-table th {
-            background-color: var(--azul-profundo);
-            color: white;
+            background-color: var(--azul-profundo) !important;
+            color: white !important;
             font-weight: 600;
         }
-    
+
         /* Estilos de las tarjetas de preguntas */
         .question-card {
             background-color: var(--card-bg);
@@ -140,7 +150,7 @@
             color: var(--azul-profundo);
         }
         .question-body { padding: 20px; }
-    
+
         .badge {
             padding: 5px 10px;
             border-radius: 4px;
@@ -157,7 +167,7 @@
             color: #383d41;
             border: 1px solid #d6d8db;
         }
-    
+
         .user-answer {
             background-color: #f1f3f5;
             padding: 10px 15px;
@@ -167,7 +177,7 @@
             font-family: monospace;
             font-size: 1.05rem;
         }
-    
+
         .feedback {
             background-color: var(--success-color);
             border: 1px solid var(--success-border);
@@ -182,29 +192,44 @@
             color: var(--success-text);
             font-size: 1.05rem;
         }
-    
-        @media (max-width: 768px) {
-            .contenedor-principal { margin: 0; border-radius: 0; width: 100%; }
-            .contenido-body { padding: 20px; }
+        .feedback p { margin-bottom: 8px; }
+        .feedback ul { margin-top: 0; padding-left: 20px; }
+
+        /* LOGO FOOTER */
+        .brand-logo-footer { max-width: 200px; height: auto; margin-bottom: 15px; display: inline-block; }
+        footer { background-color: var(--gris-claro) !important; }
+
+        /* Ajuste responsivo para pantallas móviles */
+        @media (max-width: 1250px) {
+            .contenedor-principal {
+                width: 100% !important;
+                margin: 0 !important;
+                border-radius: 0 !important;
+                box-shadow: none;
+                padding: 0 !important;
+            }
         }
     </style>
 </head>
 <body>
     <div class="contenedor-principal w3-animate-opacity">
     
-    <!-- HEADER -->
+    <!-- HEADER Y NARRATIVA GLOBAL -->
     <div class="header-rc">
+        <img src="../assets/IsotipoFOscuroT.png" alt="Criterio Estructural" class="brand-logo-header"><br>
+        
         <div class="lema-global">
             Banco de Evaluaciones <br>
             <span>Diseño de Hormigón Armado II</span>
         </div>
-        <h1 class="w3-xlarge" style="margin: 0; font-weight: bold;">Revisión de Intento: Parcial Corte 2</h1>
         
-        <!-- NAVEGACIÓN DE CORTES -->
+        <h1 class="w3-xxlarge" style="margin: 0; font-weight: bold;">Revisión de Intento: Parcial Corte 2</h1>
+        
+        <!-- RUTA DE APRENDIZAJE -->
         <div class="ruta-aprendizaje">
-            <a href="corte-1.html" class="ruta-item">Corte 1: Conceptos y Flexión</a>
-            <span class="ruta-item ruta-activa">Corte 2: Cortante y Columnas P-M</span>
-            <a href="corte-3.html" class="ruta-item">Corte 3: Nudos y Sistemas PRM</a>
+            <a href="corte-1.html" class="ruta-item">Corte 1: Flexión</a> <i class="fa fa-chevron-right ruta-flecha"></i>
+            <span class="ruta-item ruta-activa">Corte 2: Cortante y Losa</span> <i class="fa fa-chevron-right ruta-flecha"></i>
+            <span class="ruta-item" href="corte-3.html">Corte 3: Nudos y PRM</span>
         </div>
     </div>
 
@@ -532,10 +557,30 @@
 
         <!-- FOOTER -->
         <footer class="w3-container w3-padding-32 w3-center w3-text-grey w3-light-grey w3-margin-top">
-            <p class="w3-small">
-                <b>Criterio Estructural</b><br>
-                © 2026. Todos los derechos reservados.
-            </p>
+            <div class="w3-border-top w3-border-grey w3-padding-24" style="max-width: 500px; margin: auto;">
+                <img src="../assets/IsotipoFClaroT.png" alt="Criterio Estructural" class="brand-logo-footer">
+                <p class="w3-medium"><b>Autor</b></p>
+    
+                <h4 style="margin:0;">
+                    <b>Ing. Rafael Antonio Correa Melano</b>
+                </h4>
+                
+                <p class="w3-small">
+                    Ingeniero Civil • M.IE.<br>
+                    Universidad Industrial de Santander
+                </p>
+                
+                <hr style="opacity:0.2">
+                
+                <p class="w3-small w3-text-grey">
+                    <b>Criterio Estructural</b><br>
+                    © 2026 Rafael Antonio Correa Melano.<br>
+                    Todos los derechos reservados.
+                </p>
+                <div class="w3-margin-top">
+                    <span class="w3-tag w3-round w3-white w3-border w3-border-red w3-text-red w3-small">Bucaramanga, Colombia 🇨🇴</span>
+                </div>
+            </div>
         </footer>
         
     </div> <!-- Aquí cierra correctamente .contenedor-principal -->
