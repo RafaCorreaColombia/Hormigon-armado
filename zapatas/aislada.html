@@ -318,17 +318,32 @@
 
             <div class="w3-panel w3-padding w3-round" style="background-color: #fff4e5; border-left: 6px solid #ff9800; margin-bottom: 20px;">
                 <strong style="color: #e65100;">⚠️ FILTRO DE SEGURIDAD (Lección Crítica):</strong><br>
-                Antes de dimensionar por cortante, debemos verificar el anclaje a compresión de las barras longitudinales de la columna en el interior de la zapata. Para este caso, tenemos barras <strong>N°5</strong> (\( d_b = 15.9 \text{ mm} \)), \( f_y = 420 \text{ MPa} \) y \( f'_c = 21 \text{ MPa} \) (concreto de peso normal).
+                Antes de dimensionar por cortante, debemos verificar el anclaje a tensión y a compresión de las barras longitudinales de la columna en el interior de la zapata. Para este caso, tenemos barras <strong>N°5</strong> (\( d_b = 15.9 \text{ mm} \)), \( f_y = 420 \text{ MPa} \) y \( f'_c = 21 \text{ MPa} \) (concreto de peso normal).
                 
-                <p style="margin: 10px 0 5px 0;">Según <strong>NSR-10 C.12.3.2</strong>, la longitud de desarrollo a compresión \( l_{dc} \) debe tomarse como el mayor valor entre:</p>
-                <ul style="margin: 0 0 10px 20px;">
-                    <li>\( \left( \frac{0.24 f_y}{\sqrt{f'_c}} \right) d_b = \left( \frac{0.24 \cdot 420}{\sqrt{21}} \right) 15.9 = 350 \text{ mm} \)</li>
-                    <li>\( (0.043 f_y) d_b = (0.043 \cdot 420) \cdot 15.9 = 287 \text{ mm} \)</li>
-                </ul>
+                <p style="margin: 10px 0 5px 0;">Dado que la columna transfiere momento, algunas barras estarán traccionadas e intentarán "arrancarse" de la zapata (<strong>NSR-10 C.15.8.2.2</strong>). Se evalúa tanto el anclaje a compresión recta como el de tracción (asumiendo un remate con gancho a 90° en el fondo):</p>
                 
-                <p style="margin: 5px 0;">Por lo tanto, requerimos <strong>\( l_{dc} = 350 \text{ mm} \)</strong>.</p>
+                <div class="ce-grid ce-grid-2" style="margin-top: 10px; margin-bottom: 10px;">
+                    <div style="background: rgba(255,255,255,0.6); padding: 10px; border-radius: 6px; border: 1px solid rgba(255,152,0,0.3); margin:0;">
+                        <strong style="color: #e65100; font-size: 0.95em;">1. A Compresión (\( l_{dc} \)) - C.12.3.2:</strong><br>
+                        <span style="font-size: 0.85em;">El mayor valor entre:</span>
+                        <ul style="margin: 2px 0 0 15px; font-size: 0.85em;">
+                            <li>\( \frac{0.24 f_y}{\sqrt{f'_c}} d_b = \frac{0.24 \cdot 420}{\sqrt{21}} 15.9 = \mathbf{350 \text{ mm}} \)</li>
+                            <li>\( (0.043 f_y) d_b = (0.043 \cdot 420) 15.9 = 287 \text{ mm} \)</li>
+                        </ul>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.6); padding: 10px; border-radius: 6px; border: 1px solid rgba(255,152,0,0.3); margin:0;">
+                        <strong style="color: #e65100; font-size: 0.95em;">2. A Tracción con Gancho (\( l_{dh} \)) - C.12.5.2:</strong><br>
+                        <span style="font-size: 0.85em;">Para gancho estándar a 90°:</span>
+                        <ul style="margin: 2px 0 0 15px; font-size: 0.85em;">
+                            <li>\( l_{dh} = \frac{0.24 f_y}{\sqrt{f'_c}} d_b = \frac{0.24 \cdot 420}{\sqrt{21}} 15.9 = \mathbf{350 \text{ mm}} \)</li>
+                            <li style="color:var(--gris-texto);">(Asumiendo factores de modificación de recubrimiento y confinamiento = 1.0)</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <p style="margin: 5px 0;">Por lo tanto, ambas condiciones exigen alojar una longitud recta de <strong>350 mm</strong> dentro del concreto masivo de la zapata.</p>
             
-                <p style="margin: 10px 0 5px 0;">Asumiendo un espesor preliminar \( H = 500 \text{ mm} \) y que las barras de la columna terminan apoyadas <em>sobre</em> la parrilla inferior de la zapata (armada con barras N°5 en ambas direcciones), calculamos la longitud disponible real:</p>
+                <p style="margin: 10px 0 5px 0;">Asumiendo un espesor preliminar \( H = 500 \text{ mm} \) y que el gancho de la columna termina apoyado <em>sobre</em> la parrilla inferior de la zapata (armada con barras N°5 en ambas direcciones), calculamos la longitud disponible real:</p>
                 <ul style="margin: 5px 0 10px 20px;">
                     <li>Espesor de la zapata (\( H \)): <strong>500 mm</strong></li>
                     <li>Recubrimiento inferior libre: <strong>75 mm</strong></li>
@@ -337,13 +352,11 @@
                 </ul>
                 
                 <p style="margin: 10px 0; font-weight: bold; color: #2e7d32; font-size: 1.1em;">
-                    ✅ \( 393 \text{ mm} > 350 \text{ mm} \). El espesor \( H = 500 \text{ mm} \) es adecuado para el anclaje.
+                    ✅ \( 393 \text{ mm} > 350 \text{ mm} \). El espesor \( H = 500 \text{ mm} \) es adecuado para el anclaje a tracción y a compresión.
                 </p>
             
                 <div style="font-size: 0.85em; background: rgba(255,152,0,0.1); padding: 8px 12px; border-radius: 4px; border: 1px dashed #ff9800; margin-top: 15px;">
-                    <b>💡 Nota Normativa (C.12.3.3):</b> La norma permite reducciones en la longitud calculada \( l_{dc} \) siempre y cuando: <br>
-                    <b>(a)</b> El refuerzo proporcionado exceda lo requerido por el análisis, o <br>
-                    <b>(b)</b> El refuerzo esté confinado por espirales o estribos que cumplan con ciertos requisitos específicos de confinamiento dentro de la cimentación.
+                    <b>💡 Nota Normativa:</b> La norma permite reducciones en las longitudes calculadas siempre y cuando el refuerzo proporcionado en la columna exceda lo requerido por el análisis estructural (C.12.3.3 para \( l_{dc} \); C.12.5.3 para \( l_{dh} \)), o si el gancho cuenta con confinamiento adicional mediante estribos.
                 </div>
             </div>
 
@@ -834,7 +847,7 @@
                     De acuerdo con <strong>C.15.8.2</strong>, este requisito se puede satisfacer mediante el uso de pasadores (dovelas independientes) <strong>o extendiendo las barras longitudinales</strong> de la columna directamente dentro de la zapata.
                 </p>
                 <div class="w3-padding-small w3-round w3-white" style="border: 1px dashed var(--azul-profundo); font-size: 0.85em; color: var(--azul-profundo); margin-top: 10px;">
-                    <strong>💡 Conclusión para este diseño (Práctica local):</strong> La columna se apoya y ancla directamente en la zapata. Dado que el refuerzo principal de la columna cumple con las cuantías estructurales (mínimo \( 0.01 A_g \)) y se extiende en su totalidad hasta el fondo de la zapata cumpliendo su longitud de desarrollo a tensión, usualmente (\( l_{dh} \)), y a compresión (\( l_{dc} \)), <strong>se supera el requisito de \( 0.005 A_g \)</strong>. Por lo tanto, <strong>no se requieren pasadores ni dovelas adicionales</strong>.
+                    <strong>💡 Conclusión para este diseño (Práctica local):</strong> La columna se apoya y ancla directamente en la zapata. Dado que el refuerzo principal de la columna cumple con las cuantías estructurales (mínimo \( 0.01 A_g \)) y se extiende en su totalidad hasta el fondo de la zapata cumpliendo su longitud de desarrollo a tensión, usualmente (\( l_{dh} \)), y a compresión (\( l_{dc} \)), <strong>se supera el requisito de \( 0.005 A_g \)</strong>. Por lo tanto, <strong>no se requieren pasadores (dovelas) adicionales</strong>.
                 </div>
             </div>
         </div>
