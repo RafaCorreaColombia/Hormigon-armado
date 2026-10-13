@@ -504,23 +504,71 @@
                 El suelo no resiste tracciones en el modelo convencional de contacto suelo–zapata. Si el análisis lineal predice presiones negativas, estas indican pérdida de contacto, no una tracción que el terreno pueda resistir. El ingeniero debe determinar una distribución de presiones compatible con el equilibrio estático, limitada a la zona de contacto efectivo y con presiones de compresión o nulas.
             </div>
 
-            <div class="w3-panel w3-padding-large w3-round w3-margin-top" style="background-color: var(--gris-claro); border-left: 6px solid var(--naranja-estructural);">
-                <strong class="w3-large" style="color: var(--azul-profundo);">💡 Lectura de Diseño (Justificación de Dimensiones):</strong>
-                <p style="margin-top: 8px;">La zapata de \( 1.6 \times 1.6 \text{ m} \) se considera viable bajo los siguientes criterios técnicos:</p>
-                
+            <div class="w3-panel w3-padding-large w3-round w3-margin-top"
+                 style="background-color: var(--gris-claro); border-left: 6px solid var(--naranja-estructural);">
+            
+                <strong class="w3-large" style="color: var(--azul-profundo);">
+                    💡 Lectura de Diseño (Optimización de Dimensiones):
+                </strong>
+            
+                <p style="margin-top: 8px;">
+                    La zapata de \(1.6 \times 1.6\ \text{m}\) se adopta como solución
+                    para este ejemplo, evaluando las presiones de contacto y la estabilidad
+                    bajo las combinaciones de servicio seleccionadas. Su justificación
+                    considera tres situaciones:
+                </p>
+            
                 <ul class="w3-ul" style="border: none; font-size: 0.95em;">
-                    <li><span class="ce-destacado">a. Estado de Servicio:</span> La presión \( q_{max} \) (169.9 kPa) es menor a la admisible neta (188 kPa).</li>
-                    <li><span class="ce-destacado">b. Evento Sísmico:</span> 
-                        La presión máxima alcanza 234 kPa}, superando la admisible neta de 188 kPa. Para este ejemplo, se considera aceptable al no superar el límite plástico neto \( q_{lp,neto} \), conforme al criterio adoptado para esta verificación.</li>
-                    <li><span class="ce-destacado">c. Contacto y estabilidad ante el volcamiento:</span> 
-                        En la combinación de servicio \(0.6D-0.7E\), se presenta pérdida parcial de contacto entre el suelo y la zapata. 
-                        La distribución triangular de presiones, recalculada para satisfacer el equilibrio estático sin admitir tracciones del terreno, arroja una longitud efectiva de contacto de 1.27 m y una presión máxima de 139.9 kPa. Para esta combinación, la distribución obtenida satisface el equilibrio y permite aceptar la dimensión propuesta bajo el criterio de estabilidad por volcamiento adoptado en este ejemplo.</li>
+            
+                    <li>
+                        <span class="ce-destacado">a. Estado de Servicio:</span>
+                        La presión máxima \(q_{\max}=169.9\ \text{kPa}\) es inferior
+                        a la presión admisible neta de \(188\ \text{kPa}\).
+                        La dimensión satisface este criterio para la combinación analizada.
+                    </li>
+            
+                    <li>
+                        <span class="ce-destacado">b. Evento Sísmico (Serv2):</span>
+                        La presión máxima alcanza \(234\ \text{kPa}\), superando
+                        la admisible neta de \(188\ \text{kPa}\). Para este ejemplo,
+                        se acepta conforme al criterio geotécnico adoptado, al no superar
+                        el límite plástico neto \(q_{lp,neto}\). Esta consideración
+                        debe estar respaldada por la evaluación geotécnica correspondiente.
+                    </li>
+            
+                    <li>
+                        <span class="ce-destacado">c. Contacto y Estabilidad ante el Volcamiento (Serv3):</span>
+                        En la combinación \(0.6D-0.7E\), la baja carga axial respecto
+                        del momento actuante produce pérdida parcial de contacto.
+                        Al no admitirse tracciones del suelo, se recalcula la distribución
+                        de presiones, obteniéndose un contacto triangular sobre una longitud
+                        efectiva de \(1.27\ \text{m}\) y una presión máxima de
+                        \(139.9\ \text{kPa}\). La distribución satisface el equilibrio
+                        estático y la zapata cumple el criterio de estabilidad por
+                        volcamiento adoptado para esta combinación.
+                    </li>
+            
                 </ul>
-
-                <div class="w3-padding-small w3-round w3-white w3-margin-top" style="border: 1px dashed var(--naranja-estructural); font-size: 0.85em;">
-                    <strong>Nota Crítica:</strong> Cuando el análisis predice pérdida de contacto, la distribución de presiones debe recalcularse sin admitir tracciones del suelo y satisfaciendo el equilibrio de fuerzas y momentos. La viabilidad de la solución requiere verificar la estabilidad global y los estados límite geotécnicos y estructurales aplicables; la reducción de dimensiones no debe comprometer estas condiciones.
+            
+                <div class="w3-padding-small w3-round w3-white w3-margin-top"
+                     style="border: 1px dashed var(--naranja-estructural); font-size: 0.85em;">
+            
+                    <strong>⚠️ Alcance de la optimización:</strong>
+                    Dimensionar con \(q_{adm}\) no sustituye la evaluación de las demás
+                    condiciones de contacto y estabilidad. La aceptación de una dimensión
+                    menor requiere comprobar el equilibrio estático sin atribuir al suelo
+                    resistencia a tracción, así como los límites de capacidad portante
+                    y los demás estados límite geotécnicos y estructurales aplicables.
+            
+                    <p style="font-size: 0.95em; margin-bottom: 0;">
+                        <strong>Criterio de diseño:</strong> optimizar no significa
+                        ignorar una combinación desfavorable, sino comprobar que la
+                        solución propuesta satisface las condiciones físicas y los
+                        criterios de aceptación establecidos.
+                    </p>
                 </div>
             </div>
+            
         </div>
 
         <!-- CARD 4: CORTANTE -->
