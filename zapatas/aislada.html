@@ -570,11 +570,11 @@
             </div>
             
         </div>
-
-        <!-- CARD 4: CORTANTE -->
-        <div class="panel-control" id="cortante">
-            <h2 class="panel-titulo">4. Verificaciones de Cortante (NSR-10 C.11)</h2>
-            <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Análisis de esfuerzos bajo Combinaciones de Diseño Mayoradas (Estado Límite Último)</p>
+        
+        <!-- CARD 4: PRESIONES MAYORADAS (ELU) -->
+        <div class="panel-control" id="presiones-ultimas">
+            <h2 class="panel-titulo">4. Presiones Mayoradas para Diseño Estructural (ELU)</h2>
+            <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Cálculo de la reacción última del suelo bajo combinaciones de diseño mayoradas</p>
 
             <p>Calculamos las presiones de contacto últimas (\(q_u\)) requeridas para el diseño estructural del concreto:</p>
 
@@ -610,11 +610,17 @@
                     </tbody>
                 </table>
             </div>
-            <p class="w3-small" style="color: var(--gris-texto); margin-top: 5px; margin-bottom: 25px; line-height: 1.4;">
+            
+            <p class="w3-small" style="color: var(--gris-texto); margin-top: 5px; margin-bottom: 0; line-height: 1.4;">
                 <strong>Alcance de las combinaciones de carga:</strong> Las combinaciones presentadas corresponden a los casos seleccionados para ilustrar las verificaciones de resistencia del ejemplo. Las combinaciones con menor carga gravitacional, como \( 0.9D \pm E \) cuando resulten aplicables, también deben considerarse en un proceso de diseño completo. Una combinación que no gobierne el momento flector o el cortante mayorado puede seguir siendo relevante para otro estado límite.
             </p>
+        </div>
 
-            <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:30px;">4.1 Cortante Unidireccional (Comportamiento como Viga Ancha)</h4>
+        <!-- CARD 5: CORTANTE -->
+        <div class="panel-control" id="cortante">
+            <h2 class="panel-titulo">5. Verificaciones de Cortante (NSR-10 C.11)</h2>     
+
+            <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:30px;">5.1 Cortante Unidireccional (Comportamiento como Viga Ancha)</h4>
             <p class="w3-small" style="margin-top: -5px; color: var(--gris-texto);">Sección crítica evaluada a una distancia \( d = 417.1 \text{ mm} \) de la cara de la columna.</p>
 
             <div class="tabla-container">
@@ -647,7 +653,7 @@
                 </table>
             </div>
 
-            <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:30px;">4.2 Cortante Bidireccional (Punzonamiento)</h4>
+            <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:30px;">5.2 Cortante Bidireccional (Punzonamiento)</h4>
             <p class="w3-small" style="margin-top: -5px; color: var(--gris-texto);">Verificación local de esfuerzos incluyendo transferencia de momento (NSR-10 C.11.11.7).</p>
     
             <!-- 1. NOTA PEDAGÓGICA (Simplificada en 3 líneas) -->
@@ -705,9 +711,9 @@
             
         </div>
 
-        <!-- CARD 5: FLEXIÓN -->
+        <!-- CARD 6: FLEXIÓN -->
         <div class="panel-control" id="flexion">
-            <h2 class="panel-titulo">5. Diseño de Refuerzo por Flexión</h2>
+            <h2 class="panel-titulo">6. Diseño de Refuerzo por Flexión</h2>
             <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Cálculo de acero y verificación de cuantías mínimas (NSR-10 C.15.4)</p>
 
             <div class="w3-panel ce-panel-naranja w3-padding w3-round">
@@ -756,9 +762,9 @@
             </div>
         </div>
 
-        <!-- CARD 6: APLASTAMIENTO -->
+        <!-- CARD 7: APLASTAMIENTO -->
         <div class="panel-control" id="aplastamiento">
-            <h2 class="panel-titulo">6. Transferencia de Esfuerzos (Aplastamiento)</h2>
+            <h2 class="panel-titulo">7. Transferencia de Esfuerzos (Aplastamiento)</h2>
             <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Resistencia del concreto en la interfaz de apoyo (NSR-10 C.15.8 y C.10.14)</p>
 
             <p>Se verifica que el concreto masivo de la zapata sea capaz de soportar la elevada compresión local inducida por la columna:</p>
@@ -784,7 +790,7 @@
             </div>
         </div>
 
-        <!-- CARD 7: ANEXOS Y PROFUNDIZACIÓN -->
+        <!-- CARD 8: ANEXOS Y PROFUNDIZACIÓN -->
         <div class="panel-control" id="anexos">
             <h2 class="panel-titulo">7. Anexos y Profundización Académica</h2>
 
