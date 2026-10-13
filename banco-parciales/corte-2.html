@@ -135,6 +135,11 @@
             margin-bottom: 25px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
             overflow: hidden;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .question-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.08);
         }
         .question-header {
             background-color: #f8fafc;
@@ -148,6 +153,7 @@
             margin: 0;
             font-size: 1.1rem;
             color: var(--azul-profundo);
+            font-weight: bold;
         }
         .question-body { padding: 20px; }
 
@@ -170,36 +176,74 @@
 
         .user-answer {
             background-color: #f1f3f5;
-            padding: 10px 15px;
+            padding: 12px 15px;
             border-left: 4px solid #adb5bd;
             margin: 15px 0;
             border-radius: 0 4px 4px 0;
-            font-family: monospace;
             font-size: 1.05rem;
         }
 
         .feedback {
-            background-color: var(--success-color);
+            background-color: #f9fdfa;
             border: 1px solid var(--success-border);
+            border-left: 5px solid var(--verde-correcto);
             color: var(--text-color);
-            padding: 15px 20px;
+            padding: 18px 20px;
             border-radius: 4px;
             margin-top: 20px;
         }
         .feedback h5 {
             margin-top: 0;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             color: var(--success-text);
-            font-size: 1.05rem;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         .feedback p { margin-bottom: 8px; }
         .feedback ul { margin-top: 0; padding-left: 20px; }
+
+        /* Estilos para el texto alienígena (Protección de identidad) */
+        .nombre-confidencial {
+            filter: blur(5px);
+            transition: filter 0.4s ease, color 0.4s ease, background 0.4s ease;
+            cursor: pointer;
+            user-select: none;
+            font-family: monospace;
+            letter-spacing: 2px;
+            background: rgba(0,0,0,0.05);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        .nombre-confidencial:hover {
+            filter: blur(0px);
+            color: var(--naranja-estructural);
+            background: rgba(230, 126, 34, 0.1);
+        }
+
+        /* Recuadro para imágenes (Placeholder) */
+        .image-placeholder {
+            background-color: #f8fafc;
+            border: 2px dashed #cbd5e1;
+            border-radius: 8px;
+            padding: 40px 20px;
+            text-align: center;
+            color: #64748b;
+            margin: 20px 0;
+            transition: background-color 0.3s;
+        }
+        .image-placeholder:hover {
+            background-color: #f1f5f9;
+            border-color: var(--naranja-estructural);
+            color: var(--naranja-estructural);
+        }
 
         /* LOGO FOOTER */
         .brand-logo-footer { max-width: 200px; height: auto; margin-bottom: 15px; display: inline-block; }
         footer { background-color: var(--gris-claro) !important; }
 
-        /* Ajuste responsivo para pantallas móviles */
+        /* Ajuste responsivo */
         @media (max-width: 1250px) {
             .contenedor-principal {
                 width: 100% !important;
@@ -214,388 +258,385 @@
 <body>
     <div class="contenedor-principal w3-animate-opacity">
     
-    <!-- HEADER Y NARRATIVA GLOBAL -->
-    <div class="header-rc">
-        <img src="../assets/IsotipoFOscuroT.png" alt="Criterio Estructural" class="brand-logo-header"><br>
-        
-        <div class="lema-global">
-            Banco de Evaluaciones <br>
-            <span>Diseño de Hormigón Armado II</span>
+        <!-- HEADER Y NARRATIVA GLOBAL -->
+        <div class="header-rc">
+            <img src="../assets/IsotipoFOscuroT.png" alt="Criterio Estructural" class="brand-logo-header"><br>
+            
+            <div class="lema-global">
+                Banco de Evaluaciones <br>
+                <span>Diseño de Hormigón Armado II</span>
+            </div>
+            
+            <h1 class="w3-xxlarge" style="margin: 0; font-weight: bold;">Revisión de Intento: Parcial Corte 2</h1>
+            
+            <!-- RUTA DE APRENDIZAJE -->
+            <div class="ruta-aprendizaje">
+                <a href="corte-1.html" class="ruta-item">Corte 1: Sistemas, Carga Sísmica y Pórticos Especiales de Concreto Reforzado</a> <i class="fa fa-chevron-right ruta-flecha"></i>
+                <span class="ruta-item ruta-activa">Corte 2: Losas y Escaleras</span> <i class="fa fa-chevron-right ruta-flecha"></i>
+                <span class="ruta-item" href="corte-3.html">Corte 3: Cimentaciones y Muros de Contención</span>
+            </div>
         </div>
-        
-        <h1 class="w3-xxlarge" style="margin: 0; font-weight: bold;">Revisión de Intento: Parcial Corte 2</h1>
-        
-        <!-- RUTA DE APRENDIZAJE -->
-        <div class="ruta-aprendizaje">
-            <a href="corte-1.html" class="ruta-item">Corte 1: Sistemas, Carga Sísmica y Pórticos Especiales de Concreto Reforzado</a> <i class="fa fa-chevron-right ruta-flecha"></i>
-            <span class="ruta-item ruta-activa">Corte 2: Losas y Escaleras</span> <i class="fa fa-chevron-right ruta-flecha"></i>
-            <span class="ruta-item" href="corte-3.html">Corte 3: Cimentaciones y Muros de Contención</span>
-        </div>
-    </div>
 
-    <div class="contenido-body">
-                <!-- Aviso informativo de intento aleatorio -->
-                    <div class="w3-panel w3-pale-yellow w3-leftbar w3-border-yellow w3-padding-16 w3-margin-bottom w3-round" style="border-left: 5px solid var(--naranja-estructural) !important; background-color: #fff9db !important;">
-                        <p class="w3-small w3-margin-0" style="color: #594405;">
-                            <i class="fa fa-exclamation-triangle" style="color: var(--naranja-estructural);"></i> 
-                            <b>Nota Académica:</b> Este registro corresponde a un intento de ejemplo generado de forma aleatoria para este parcial. Las variables de diseño, cargas y geometría cambian y son diferentes en cada intento generado por la plataforma.
+        <div class="contenido-body">
+            
+            <!-- Aviso informativo de intento aleatorio -->
+            <div class="w3-panel w3-leftbar w3-padding-16 w3-margin-bottom w3-round" style="border-left: 5px solid var(--naranja-estructural) !important; background-color: #fff9db !important;">
+                <p class="w3-small w3-margin-0" style="color: #594405;">
+                    <i class="fa fa-exclamation-triangle" style="color: var(--naranja-estructural);"></i> 
+                    <b>Nota Académica:</b> Este registro corresponde a un intento de ejemplo generado de forma aleatoria para este parcial. Las variables de diseño, cargas y geometría cambian y son diferentes en cada intento generado por la plataforma.
+                </p>
+            </div>
+            
+            <h2>Resumen del Intento</h2>
+            <table class="summary-table">
+                <thead>
+                    <tr>
+                        <th>Estudiante</th>
+                        <th>Estado</th>
+                        <th>Comenzado</th>
+                        <th>Completado</th>
+                        <th>Duración</th>
+                        <th>Calificación</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <!-- Texto con efecto Blur inicial y letras alienígenas al hover -->
+                            <strong><span class="nombre-confidencial" title="Pasa el cursor para decodificar (Clasificado)">⍓⎈⍜⎈⎈⍜⋔ ⍜⎈⎎⏁⟒⍀ ⎈⎈⎈⍜</span></strong>
+                        </td>
+                        <td>Finalizado</td>
+                        <td>lunes, 12 de octubre de 2026, 11:49</td>
+                        <td>lunes, 12 de octubre de 2026, 16:53</td>
+                        <td>5 horas 4 minutos</td>
+                        <td><strong>5.0</strong> de 5.0 (<strong>100</strong>%)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Pregunta 1 -->
+            <div class="question-card">
+                <div class="question-header">
+                    <h3>Pregunta 1</h3>
+                    <span class="badge correct"><i class="fa fa-check"></i> Correcta | Puntaje: 0.7 sobre 0.7</span>
+                </div>
+                <div class="question-body">
+                    <h4>🏗️ Cuantía mínima vs requerida</h4>
+                    <p><strong>Variables de entrada:</strong> Espesor $h = 17$ cm | $f'_c = 28$ MPa | $f_y = 420$ MPa | $M_u = 14$ kN·m/m</p>
+                    <p>Determine el área de acero de diseño en mm²/m. Para ello, calcule el acero requerido por flexión ($A_{s,req}$) y compárelo con el refuerzo mínimo por retracción ($0.0018 \cdot A_g$). Adopte el valor máximo según la norma.</p>
+                    <p><strong>Consideraciones:</strong> Recubrimiento de 20 mm y barra preliminar N°3 ($\phi = 9.5$ mm).<br>
+                    Escriba solo el número, sin texto ni unidades. Use una cifra decimal (ej: 123.4).</p>
+                    
+                    <div class="user-answer"><strong>Respuesta:</strong> 306</div>
+                    
+                    <div class="feedback">
+                        <h5>Memoria de Selección de Acero</h5>
+                        <ul>
+                            <li><strong>Acero por Flexión:</strong><br>$A_{s,req} = 259.0$ mm²/m<br><em>Calculado para $M_u = 14$ kNm/m</em></li>
+                            <li><strong>Acero Mínimo (C.7.12):</strong><br>$A_{s,min} = 306.0$ mm²/m<br><em>($0.0018 \cdot 1000 \cdot 170$)</em></li>
+                        </ul>
+                        <p>Dado que <strong>$A_{s,min} > A_{s,req}$</strong>, la norma exige adoptar el refuerzo mínimo para garantizar el control de fisuración por retracción y temperatura.<br>
+                        <strong>$A_s = 306.0$ mm²/m</strong></p>
+                    </div>
+                </div>
+            </div>
+        
+            <!-- Pregunta 2 -->
+            <div class="question-card">
+                <div class="question-header">
+                    <h3>Pregunta 2</h3>
+                    <span class="badge correct"><i class="fa fa-check"></i> Correcta | Puntaje: 0.7 sobre 0.7</span>
+                </div>
+                <div class="question-body">
+                    <h4>🏗️ Despiece: Refuerzo Negativo (Eje B)</h4>
+                    <p><strong>Referencia Crítica:</strong> NSR-10 C.12.10 y Figura CR12.10.2.</p>
+                    <p>La figura muestra una losa armada en una dirección continua sobre el <strong>Apoyo Interior (Eje B)</strong>. El punto azul señala el <strong>Refuerzo Superior de Momento Negativo</strong>.</p>
+                    
+                    <!-- RECUADRO PARA IMAGEN -->
+                    <div class="image-placeholder">
+                        <i class="fa fa-image w3-jumbo"></i>
+                        <p class="w3-margin-top w3-medium">
+                            <b>[Espacio reservado para la Figura: Refuerzo superior en apoyo continuo (Eje B)]</b><br>
+                            <i>Inserta aquí la etiqueta &lt;img src="..."&gt; con la ruta de tu imagen.</i>
                         </p>
                     </div>
+
+                    <p>Según la práctica estándar de despiece y la NSR-10, ¿cuál es el <strong>criterio principal</strong> que rige la longitud de este refuerzo en los vanos adyacentes?</p>
+                    <p><em>Seleccione la opción que defina la exigencia estructural fundamental de anclaje.</em></p>
                     
-                    <!-- Estilos específicos para el texto alienígena y el blur interactivo -->
-                    <style>
-                        .nombre-confidencial {
-                            filter: blur(5px);
-                            transition: filter 0.4s ease, color 0.4s ease;
-                            cursor: pointer;
-                            user-select: none;
-                            font-family: monospace;
-                            letter-spacing: 2px;
-                            background: rgba(0,0,0,0.05);
-                            padding: 2px 6px;
-                            border-radius: 4px;
-                        }
-                        .nombre-confidencial:hover {
-                            filter: blur(0px);
-                            color: var(--naranja-estructural);
-                            background: rgba(230, 126, 34, 0.1);
-                        }
-                    </style>
+                    <ol type="a" style="line-height: 1.8;">
+                        <li>La barra debe ser recta y nunca debe tener ganchos en el apoyo interior, pues podría interferir con el momento positivo.</li>
+                        <li>La longitud de la barra es fija en 15 cm medida desde la cara de la viga en cada dirección.</li>
+                        <li>La barra debe tener una longitud mínima de $0.50l_n$ en cada lado para cumplir con la capacidad de transferencia de cortante.</li>
+                        <li><strong>La barra se debe extender a cada lado del apoyo por lo menos la distancia necesaria para cubrir el diagrama de momento negativo, además de cumplir con la longitud de desarrollo $l_d$ mínima.</strong> <em>(Respuesta seleccionada)</em></li>
+                        <li>Ninguna de las opciones es correcta.</li>
+                    </ol>
                     
-                    <h2>Resumen del Intento</h2>
-                    <table class="summary-table">
-                        <thead>
-                            <tr>
-                                <th>Estudiante</th>
-                                <th>Estado</th>
-                                <th>Comenzado</th>
-                                <th>Completado</th>
-                                <th>Duración</th>
-                                <th>Calificación</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <!-- Texto con efecto Blur inicial y letras estilo extraterrestre/Star Wars al hacer hover -->
-                                    <strong><span class="nombre-confidencial" title="Pasa el cursor para decodificar (Clasificado)">⍓⎈⍜⎈⎈⍜⋔ ⍜⎈⎎⏁⟒⍀ ⎈⎈⎈⍜</span></strong>
-                                </td>
-                                <td>Finalizado</td>
-                                <td>lunes, 12 de octubre de 2026, 11:49</td>
-                                <td>lunes, 12 de octubre de 2026, 16:53</td>
-                                <td>5 horas 4 minutos</td>
-                                <td><strong>5.0</strong> de 5.0 (<strong>100</strong>%)</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                <!-- Pregunta 1 -->
-                <div class="question-card">
-                    <div class="question-header">
-                        <h3>Pregunta 1</h3>
-                        <span class="badge correct">Estado: Correcta | Puntaje: 0.7 sobre 0.7</span>
+                    <div class="feedback">
+                        <h5>Memoria Técnica de Desarrollo</h5>
+                        <p>La obligación primaria de todo refuerzo a flexión es garantizar su anclaje. Para el refuerzo de <strong>momento negativo</strong> en el apoyo, los numerales de <strong>C.12.10</strong> exigen:<br>
+                        <strong>Extensión $\ge l_d$ desde la cara del apoyo</strong></p>
+                        <p>Aunque en la práctica se utilizan coeficientes como $L_n/3$ o $L_n/4$, estas longitudes solo son válidas si cumplen o exceden la <strong>longitud de desarrollo ($l_d$)</strong> calculada. El requisito de $l_d$ es la exigencia estructural fundamental para asegurar que la barra desarrolle su capacidad a tracción plena en la sección crítica.</p>
                     </div>
-                    <div class="question-body">
-                        <h4>🏗️ Cuantía mínima vs requerida</h4>
-                        <p><strong>Variables de entrada:</strong></p>
+                </div>
+            </div>
+        
+            <!-- Pregunta 3 -->
+            <div class="question-card">
+                <div class="question-header">
+                    <h3>Pregunta 3</h3>
+                    <span class="badge correct"><i class="fa fa-check"></i> Correcta | Puntaje: 1.7 sobre 1.7</span>
+                </div>
+                <div class="question-body">
+                    <h4>Diseño de Losa Maciza en una Dirección</h4>
+                    <p>Usted forma parte del equipo técnico de consultoría encargado del diseño estructural de una nueva institución educativa en el área metropolitana de Bucaramanga. Como parte del proyecto de infraestructura, se le ha asignado el diseño de una <strong>losa maciza continua</strong> de 3 tramos con una luz libre <strong>$l_n = 3.1$ m</strong>. La losa trabaja en una dirección. Los apoyos son vigas de ancho <strong>$b_w = 200$ mm</strong>, construidas monolíticamente con la losa.</p>
+                    <ul>
+                        <li><strong>Cargas:</strong> D = 3 kN/m² (NO incluye peso propio) y L = 4.2 kN/m².</li>
+                        <li><strong>Materiales:</strong> $f'_c = 28$ MPa, $f_y = 420$ MPa. Peso unitario concreto: $24$ kN/m³.</li>
+                    </ul>
+        
+                    <p><strong>PARTE 1: ANÁLISIS</strong><br>
+                    <span class="w3-text-grey w3-small"><i>Nota: Use luz entre ejes ($l$) para predimensionamiento y luz libre ($l_n$) para fuerzas internas.</i></span></p>
+                    <ol>
+                        <li><strong>Espesor $h$ (mm):</strong> Control de deflexiones indirecto. Use Tabla C.9.5(a), luz entre ejes ($l$) y redondee hacia arriba al múltiplo de 10 mm más cercano.</li>
+                        <li><strong>Carga última $W_u$ (kN/m²):</strong> Use Combinación C.9-2 e incluya el peso propio de la losa. Use 1 cifra decimal.</li>
+                        <li><strong>Momento negativo en la cara exterior del primer apoyo interior $M_{u,neg,max}$ (kNm/m):</strong> Use coeficientes para momentos aproximados en losas en una dirección. Use 1 cifra decimal.</li>
+                        <li><strong>Cortante en la cara del primer apoyo interior $V_{u,max}$ (kN/m):</strong> Use coeficientes para cortantes aproximados en losas en una dirección ($1.15 W_u l_n / 2$). Use 1 cifra decimal.</li>
+                    </ol>
+        
+                    <p><strong>PARTE 2: DISEÑO DE REFUERZO</strong><br>
+                    <strong>Parámetros de Diseño:</strong><br>
+                    Use refuerzo <strong>No. 4 ($d_b = 12.7$ mm)</strong> y recubrimiento neto de <strong>20 mm</strong>.</p>
+                    
+                    <div class="w3-panel w3-light-grey w3-leftbar w3-border-grey w3-padding">
+                        <p class="w3-margin-0 w3-small"><strong>4 Criterios para la Separación Final (debe cumplir simultáneamente):</strong><br>
+                        1. Resistencia: Basada en $A_{s,req}$<br>
+                        2. Retracción y temperatura: Basada en $A_{s,min}$<br>
+                        3. Flexión: Máx $3h$ o $450$ mm<br>
+                        4. Servicio: Fisuración (C.10.6.4)</p>
+                    </div>
+
+                    <ol start="5">
+                        <li><strong>Área de acero $A_{s,req}$ (mm²/m):</strong> Calculada para el momento negativo máximo $M_{u,neg,max}$. Use 1 cifra decimal.</li>
+                        <li><strong>Área de acero mínima $A_{s,min}$ (mm²/m):</strong> Control por retracción y temperatura ($0.0018 \cdot b \cdot h$). Use 1 cifra decimal.</li>
+                        <li><strong>Separación final suministrada $s$ (mm):</strong> Aplique simultáneamente los 4 criterios mencionados. Redondee hacia abajo al múltiplo de 10 mm más cercano.</li>
+                    </ol>
+        
+                    <p><strong>PARTE 3: VERIFICACIÓN DE CORTANTE</strong></p>
+                    <ol start="8">
+                        <li><strong>Índice de Capacidad ($iC = \phi V_n / V_{u,max}$):</strong> Verifique la seguridad de la sección calculando $(\phi V_n / V_{u,max})$. Considere que la losa no cuenta con refuerzo transversal, por lo cual la resistencia nominal se limita a la capacidad del concreto según NSR-10 C.11.2.1.1. Considere $\phi = 0.75$. Use 3 cifras decimales.</li>
+                    </ol>
+        
+                    <div class="user-answer">
+                        <strong>Respuestas ingresadas (evaluadas como correctas):</strong><br>
+                        1. 140 | 2. 14.4 | 3. 13.8 | 4. 25.7 <em>(Exacta: 25.6)</em><br>
+                        5. 329.7 <em>(Exacta: 329.5)</em> | 6. 252 | 7. 300 | 8. 2.997
+                    </div>
+        
+                    <div class="feedback">
+                        <h5>Retroalimentación Técnica: Memoria de Cálculo</h5>
+                        <p><strong>1. Geometría y Cargas</strong></p>
                         <ul>
-                            <li>Espesor $h$ = 17 cm</li>
-                            <li>Resistencia del concreto $f'_c$ = 28 MPa</li>
-                            <li>Fluencia del acero $f_y$ = 420 MPa</li>
-                            <li>Momento último $M_u$ = 14 kN·m/m</li>
+                            <li>Luz entre ejes ($l$): $3.1 + \frac{200}{1000} = \mathbf{3.3 \text{ m}}$</li>
+                            <li>Espesor mínimo ($l/24$): $\frac{3.3 \cdot 1000}{24} = 137.5 \text{ mm} \rightarrow \text{Redondeado a } \mathbf{140 \text{ mm}}$</li>
+                            <li>Carga última ($W_u$): $1.2 \cdot (3 + 24 \cdot \frac{140}{1000}) + 1.6 \cdot 4.2 = \mathbf{14.4 \text{ kN/m}^2}$</li>
                         </ul>
-                        <p>Determine el <strong>área de acero de diseño</strong> en mm²/m. Para ello, calcule el acero requerido por flexión ($A_{s,req}$) y compárelo con el refuerzo mínimo por retracción ($0.0018 \cdot A_g$). Adopte el valor máximo según la norma.</p>
-                        <p><strong>Consideraciones:</strong> Recubrimiento de 20 mm y barra preliminar N°3 ($\phi$ = 9.5 mm).<br>
-                        Escriba solo el número, sin texto ni unidades. Use una cifra decimal (ej: 123.4).</p>
-                        
-                        <div class="user-answer"><strong>Respuesta ingresada:</strong> 306</div>
-                        
-                        <div class="feedback">
-                            <p>✅ <strong>Respuesta correcta</strong></p>
-                            <h5>Memoria de Selección de Acero</h5>
-                            <ul>
-                                <li><strong>Acero por Flexión:</strong><br>$A_{s,req} = 259.0$ mm²/m<br><em>(Calculado para $M_u$ = 14 kN·m/m)</em></li>
-                                <li><strong>Acero Mínimo (C.7.12):</strong><br>$A_{s,min} = 306.0$ mm²/m<br><em>($0.0018 \cdot 1000 \cdot 170$)</em></li>
-                            </ul>
-                            <p>Dado que <strong>$A_{s,min} > A_{s,req}$</strong>, la norma exige adoptar el refuerzo mínimo para garantizar el control de fisuración por retracción y temperatura.<br>
-                            <strong>$A_s = 306.0$ mm²/m</strong></p>
-                        </div>
-                    </div>
-                </div>
-            
-                <!-- Pregunta 2 -->
-                <div class="question-card">
-                    <div class="question-header">
-                        <h3>Pregunta 2</h3>
-                        <span class="badge correct">Estado: Correcta | Puntaje: 0.7 sobre 0.7</span>
-                    </div>
-                    <div class="question-body">
-                        <h4>🏗️ Despiece: Refuerzo Negativo (Eje B)</h4>
-                        <p><strong>Referencia Crítica:</strong> NSR-10 C.12.10 y Figura CR12.10.2.</p>
-                        <p>La figura muestra una losa armada en una dirección continua sobre el <strong>Apoyo Interior (Eje B)</strong>. El punto azul señala el <strong>Refuerzo Superior de Momento Negativo</strong>.</p>
-                        <p>Según la práctica estándar de despiece y la NSR-10, ¿cuál es el <strong>criterio principal</strong> que rige la longitud de este refuerzo en los vanos adyacentes?</p>
-                        <p><em>Seleccione la opción que defina la exigencia estructural fundamental de anclaje.</em></p>
-                        
-                        <ol type="a">
-                            <li>La barra debe ser recta y nunca debe tener ganchos en el apoyo interior, pues podría interferir con el momento positivo.</li>
-                            <li>La longitud de la barra es fija en 15 cm medida desde la cara de la viga en cada dirección.</li>
-                            <li>La barra debe tener una longitud mínima de $0.50 l_n$ en cada lado para cumplir con la capacidad de transferencia de cortante.</li>
-                            <li><strong>La barra se debe extender a cada lado del apoyo por lo menos la distancia necesaria para cubrir el diagrama de momento negativo, además de cumplir con la longitud de desarrollo $l_d$ mínima.</strong> <em>(Respuesta seleccionada)</em></li>
-                            <li>Ninguna de las opciones es correcta.</li>
-                        </ol>
-                        
-                        <div class="feedback">
-                            <p>✅ <strong>Respuesta correcta</strong></p>
-                            <h5>Memoria Técnica de Desarrollo</h5>
-                            <p>La obligación primaria de todo refuerzo a flexión es garantizar su anclaje. Para el refuerzo de <strong>momento negativo</strong> en el apoyo, los numerales de <strong>C.12.10</strong> exigen:<br>
-                            <strong>Extensión $\ge l_d$ desde la cara del apoyo</strong></p>
-                            <p>Aunque en la práctica se utilizan coeficientes como $L_n/3$ o $L_n/4$, estas longitudes solo son válidas si cumplen o exceden la <strong>longitud de desarrollo ($l_d$)</strong> calculada. El requisito de $l_d$ es la exigencia estructural fundamental para asegurar que la barra desarrolle su capacidad a tracción plena en la sección crítica.</p>
-                        </div>
-                    </div>
-                </div>
-            
-                <!-- Pregunta 3 -->
-                <div class="question-card">
-                    <div class="question-header">
-                        <h3>Pregunta 3</h3>
-                        <span class="badge correct">Estado: Correcta | Puntaje: 1.7 sobre 1.7</span>
-                    </div>
-                    <div class="question-body">
-                        <h4>Diseño de Losa Maciza en una Dirección</h4>
-                        <p>Usted forma parte del equipo técnico de consultoría encargado del diseño estructural de una nueva institución educativa en el área metropolitana de Bucaramanga. Como parte del proyecto de infraestructura, se le ha asignado el diseño de una <strong>losa maciza continua</strong> de 3 tramos con una luz libre <strong>$l_n$ = 3.1 m</strong>. La losa trabaja en una dirección. Los apoyos son vigas de ancho <strong>$b_w$ = 200 mm</strong>, construidas monolíticamente con la losa.</p>
+                        <p><strong>2. Fuerzas de Diseño (NSR-10 C.8.3.3)</strong></p>
                         <ul>
-                            <li><strong>Cargas:</strong> D = 3 kN/m² (NO incluye peso propio) y L = 4.2 kN/m².</li>
-                            <li><strong>Materiales:</strong> $f'_c$ = 28 MPa, $f_y$ = 420 MPa. Peso unitario concreto: 24 kN/m³.</li>
+                            <li>$M_{u,neg} = \frac{W_u \cdot l_n^2}{10} = \frac{14.4 \cdot 3.1^2}{10} = \mathbf{13.79 \text{ kNm/m}}$</li>
+                            <li>$V_{u,max} = 1.15 \cdot \frac{W_u \cdot l_n}{2} = 1.15 \cdot \frac{14.4 \cdot 3.1}{2} = \mathbf{25.58 \text{ kN/m}}$</li>
                         </ul>
-            
-                        <p><strong>Parte 1: Análisis</strong></p>
-                        <ol>
-                            <li><strong>Espesor $h$ (mm):</strong> Control de deflexiones indirecto: Use Tabla C.9.5(a), luz entre ejes ($l$) y redondee hacia arriba al múltiplo de 10 mm más cercano.</li>
-                            <li><strong>Carga última $W_u$ (kN/m²):</strong> Use Combinación C.9-2 e incluya el peso propio de la losa. Use 1 cifra decimal.</li>
-                            <li><strong>Momento negativo en la cara exterior del primer apoyo interior $M_{u,neg,max}$ (kNm/m):</strong> Use coeficientes para momentos aproximados en losas en una dirección. Use 1 cifra decimal.</li>
-                            <li><strong>Cortante en la cara del primer apoyo interior $V_{u,max}$ (kN/m):</strong> Use coeficientes para cortantes aproximados en losas en una dirección: $1.15 W_u l_n / 2$. Use 1 cifra decimal.</li>
-                        </ol>
-            
-                        <p><strong>Parte 2: Diseño de Refuerzo</strong><br>
-                        <strong>Parámetros de Diseño:</strong><br>
-                        Use refuerzo <strong>No. 4 ($d_b$ = 12.7 mm)</strong> y recubrimiento neto de <strong>20 mm</strong>.</p>
-                        <ol start="5">
-                            <li><strong>Área de acero $A_{s,req}$ (mm²/m):</strong> Calculada para el momento negativo máximo $M_{u,neg,max}$. Use 1 cifra decimal.</li>
-                            <li><strong>Área de acero mínima $A_{s,min}$ (mm²/m):</strong> Control por retracción y temperatura ($0.0018 \cdot b \cdot h$). Use 1 cifra decimal.</li>
-                            <li><strong>Separación final suministrada $s$ (mm):</strong> Aplique simultáneamente los 4 criterios de diseño. Redondee hacia abajo al múltiplo de 10 mm más cercano.</li>
-                        </ol>
-            
-                        <p><strong>Parte 3: Verificación de Cortante</strong></p>
-                        <ol start="8">
-                            <li><strong>Índice de Capacidad ($iC = \phi V_n / V_{u,max}$):</strong> Verifique la seguridad de la sección. Considere $\phi$ = 0.75. Use 3 cifras decimales.</li>
-                        </ol>
-            
-                        <div class="user-answer">
-                            <strong>Respuestas ingresadas (evaluadas como correctas):</strong><br>
-                            1. 140 | 2. 14.4 | 3. 13.8 | 4. 25.7 <em>(Exacta: 25.6)</em><br>
-                            5. 329.7 <em>(Exacta: 329.5)</em> | 6. 252 | 7. 300 | 8. 2.997
-                        </div>
-            
-                        <div class="feedback">
-                            <h5>Memoria de Cálculo</h5>
-                            <p><strong>1. Geometría y Cargas</strong></p>
-                            <ul>
-                                <li>Luz entre ejes ($l$): $3.1 + \frac{200}{1000} = \mathbf{3.3 \text{ m}}$</li>
-                                <li>Espesor mínimo ($l/24$): $\frac{3.3 \cdot 1000}{24} = 137.5 \text{ mm} \rightarrow \text{Redondeado a } \mathbf{140 \text{ mm}}$</li>
-                                <li>Carga última ($W_u$): $1.2 \cdot (3 + 24 \cdot \frac{140}{1000}) + 1.6 \cdot 4.2 = \mathbf{14.4 \text{ kN/m}^2}$</li>
-                            </ul>
-                            <p><strong>2. Fuerzas de Diseño (NSR-10 C.8.3.3)</strong></p>
-                            <ul>
-                                <li>$M_{u,neg} = \frac{W_u \cdot l_n^2}{10} = \frac{14.4 \cdot 3.1^2}{10} = \mathbf{13.79 \text{ kNm/m}}$</li>
-                                <li>$V_{u,máx} = 1.15 \cdot \frac{W_u \cdot l_n}{2} = 1.15 \cdot \frac{14.4 \cdot 3.1}{2} = \mathbf{25.58 \text{ kN/m}}$</li>
-                            </ul>
-                            <p><strong>3. Refuerzo y Separación</strong></p>
-                            <ul>
-                                <li>Peralte efectivo ($d$): $140 - 20 - \frac{12.7}{2} = \mathbf{113.65 \text{ mm}}$</li>
-                                <li>$A_{s,req}$: $M_u = \phi A_s f_y (d - a/2) \rightarrow \mathbf{329.5 \text{ mm}^2/m} \rightarrow \mathbf{1N4 \text{ c/ } 384.5 \text{ mm}}$</li>
-                                <li>$A_{s,min}$: $0.0018 \cdot 1000 \cdot 140 = \mathbf{252 \text{ mm}^2/m} \rightarrow \mathbf{1N4 \text{ c/ } 502.7 \text{ mm}}$</li>
-                                <li><strong>Separación Final:</strong> $\mathbf{300 \text{ mm}}$ (Gobernada por fisuración NSR-10 C.10.6.4).</li>
-                            </ul>
-                            <p><strong>4. Verificación de Seguridad</strong></p>
-                            <ul>
-                                <li>$\phi V_c = 0.75 \cdot 0.17 \cdot \sqrt{28} \cdot 1000 \cdot 113.65 = \mathbf{76.68 \text{ kN/m}}$</li>
-                                <li>$iC = \frac{\phi V_c}{V_{u,max}} = \mathbf{2.997}$</li>
-                            </ul>
-                        </div>
+                        <p><strong>3. Refuerzo y Separación</strong></p>
+                        <ul>
+                            <li>Peralte efectivo ($d$): $140 - 20 - \frac{12.7}{2} = \mathbf{113.65 \text{ mm}}$</li>
+                            <li>$A_{s,req}$: Calculado mediante $M_u = \phi A_s f_y (d - a/2) \rightarrow \mathbf{329.5 \text{ mm}^2/m} \rightarrow \mathbf{1N4 \text{ c/ } 384.5 \text{ mm}}$</li>
+                            <li>$A_{s,min}$: $0.0018 \cdot 1000 \cdot 140 = \mathbf{252 \text{ mm}^2/m} \rightarrow \mathbf{1N4 \text{ c/ } 502.7 \text{ mm}}$</li>
+                            <li>Separación máxima ($s_{max}$): Menor entre (384.5 mm), (502.7 mm), 3h (420 mm), 450 mm, y control de fisuración NSR-10 C.10.6.4 (300 mm).</li>
+                            <li><strong>Separación Final:</strong> $\mathbf{300 \text{ mm}}$ (Redondeado a 10 mm inferior).</li>
+                        </ul>
+                        <p><strong>4. Verificación de Seguridad</strong></p>
+                        <ul>
+                            <li>$\phi V_c = 0.75 \cdot 0.17 \cdot \sqrt{28} \cdot 1000 \cdot 113.65 = \mathbf{76.68 \text{ kN/m}}$</li>
+                            <li>Índice de Capacidad: $iC = \frac{\phi V_c}{V_{u,max}} = \mathbf{2.997}$</li>
+                        </ul>
+                        <p class="w3-text-grey w3-small w3-margin-top"><em>Análisis Crítico: Recuerde que en losas macizas, si el cortante falla, la solución más eficiente probablemente no es añadir estribos (difíciles de instalar en espesores pequeños), sino aumentar el peralte h para mejorar la capacidad intrínseca del concreto.</em></p>
                     </div>
                 </div>
-            
-                <!-- Pregunta 4 -->
-                <div class="question-card">
-                    <div class="question-header">
-                        <h3>Pregunta 4</h3>
-                        <span class="badge correct">Estado: Correcta | Puntaje: 1.2 sobre 1.2</span>
+            </div>
+        
+            <!-- Pregunta 4 -->
+            <div class="question-card">
+                <div class="question-header">
+                    <h3>Pregunta 4</h3>
+                    <span class="badge correct"><i class="fa fa-check"></i> Correcta | Puntaje: 1.2 sobre 1.2</span>
+                </div>
+                <div class="question-body">
+                    <h4>Verificación de Punzonamiento: Losa Plana (Centro de Salud)</h4>
+                    <p><strong>Contexto de Diseño:</strong><br>
+                    Usted lidera el diseño de una losa maciza armada en dos direcciones para un nuevo <strong>centro de salud</strong>. El sistema se apoya directamente sobre columnas (sin ábacos ni capiteles). Para garantizar la seguridad ante fallas frágiles, debe verificar el estado límite de cortante bidireccional.</p>
+                    
+                    <p><strong>Datos Técnicos Suministrados:</strong></p>
+                    <ul>
+                        <li>Luces entre ejes: $L_1 = 5.65$ m, $L_2 = 5.65$ m.</li>
+                        <li>Columna <strong>interior</strong> cuadrada: $h_{c1} \times h_{c2} = 350 \times 350$ mm.</li>
+                        <li>Losa: $h = 170$ mm, acero de refuerzo <strong>No. 5</strong>.</li>
+                        <li>Materiales: $f'_c = 21$ MPa, $f_y = 420$ MPa.</li>
+                        <li>Carga última mayorada: $W_u = 15.4$ kN/m².</li>
+                    </ul>
+        
+                    <p><strong>Consideraciones de Análisis Estructural:</strong></p>
+                    <ul>
+                        <li><em>"El espesor estimado corresponde a criterios de deflexión. La verificación a punzonamiento puede gobernar el diseño."</em></li>
+                        <li><em>"El sistema de resistencia ante cargas laterales está conformado por muros estructurales de concreto reforzado. La losa plana hace parte únicamente del sistema gravitacional."</em></li>
+                    </ul>
+        
+                    <p><strong>Nota para el cálculo de peralte efectivo ($d$):</strong><br>
+                    Considere un peralte promedio que represente ambas capas de refuerzo mediante la expresión:<br>
+                    $d_{prom} = h - \text{recubrimiento} - d_{barra}$<br>
+                    Use un recubrimiento libre de <strong>25 mm</strong>.</p>
+        
+                    <p><strong>PARTE 1: DEMANDA DE CORTANTE</strong></p>
+                    <ol>
+                        <li><strong>Carga actuante $V_u$ (kN):</strong> Para efectos del ejercicio, la fuerza cortante se estima como la carga mayorada actuando sobre el área tributaria del panel, descontando el área dentro del perímetro crítico.</li>
+                    </ol>
+        
+                    <p><strong>PARTE 2: CAPACIDAD NOMINAL DEL CONCRETO ($V_c$)</strong><br>
+                    Evalúe las tres condiciones de la NSR-10 C.11.11.2.1. Considere el perímetro crítico ubicado a una distancia $d/2$ de la cara de la columna. Para columna interior, use $\alpha_s = 40$ (NSR-10).</p>
+                    <ol start="2">
+                        <li><strong>Condición (a) Eq. C.11-31 (kN):</strong></li>
+                        <li><strong>Condición (b) Eq. C.11-32 (kN):</strong></li>
+                        <li><strong>Condición (c) Eq. C.11-33 (kN):</strong></li>
+                    </ol>
+        
+                    <p><strong>PARTE 3: VERIFICACIÓN FINAL</strong></p>
+                    <ol start="5">
+                        <li><strong>Resistencia de diseño $\phi V_c$ (kN):</strong> Use $\phi = 0.75$ y la menor de las tres capacidades calculadas.</li>
+                        <li><strong>Índice de Capacidad ($iC$):</strong> $iC = \phi V_c / V_u$. Use tres cifras decimales.</li>
+                    </ol>
+        
+                    <div class="user-answer">
+                        <strong>Respuestas ingresadas (evaluadas como correctas):</strong><br>
+                        1. 488.07 <em>(Respuesta exacta del sistema: 488.1)</em><br>
+                        2. 578.22 <em>(Respuesta exacta del sistema: 578.4)</em><br>
+                        3. 441.78 <em>(Respuesta exacta del sistema: 441.9)</em><br>
+                        4. 374.14 <em>(Respuesta exacta del sistema: 374.2)</em><br>
+                        5. 280.61 <em>(Respuesta exacta del sistema: 280.7)</em><br>
+                        6. 0.575 <em>(Respuesta exacta del sistema: 0.5751)</em>
                     </div>
-                    <div class="question-body">
-                        <h4>Verificación de Punzonamiento: Losa Plana (Centro de Salud)</h4>
-                        <p><strong>Contexto de Diseño:</strong><br>
-                        Usted lidera el diseño de una losa maciza armada en dos direcciones para un nuevo <strong>centro de salud</strong>. El sistema se apoya directamente sobre columnas (sin ábacos ni capiteles). Para garantizar la seguridad ante fallas frágiles, debe verificar el estado límite de cortante bidireccional.</p>
+        
+                    <div class="feedback">
+                        <h5>Memoria de Cálculo: Verificación de Punzonamiento</h5>
+                        <p><strong>1. Parámetros Críticos</strong></p>
+                        <ul>
+                            <li>Peralte efectivo promedio ($d$): $170 - 25 - 15.875 = \mathbf{129.13 \text{ mm}}$</li>
+                            <li>Perímetro crítico ($b_0$): $4 \cdot (350 + 129.13) = \mathbf{1916.5 \text{ mm}}$</li>
+                            <li>Área dentro del perímetro ($A_0$): $(350 + 129.13)^2 = \mathbf{0.23 \text{ m}^2}$</li>
+                        </ul>
+        
+                        <p><strong>2. Demanda de Cortante ($V_u$)</strong></p>
+                        <ul>
+                            <li>Área aferente neta: $5.65^2 - 0.23 = \mathbf{31.7 \text{ m}^2}$</li>
+                            <li>$V_u = W_u \cdot \text{Area neta} = 15.4 \cdot 31.7 = \mathbf{488.1 \text{ kN}}$</li>
+                        </ul>
+        
+                        <p><strong>3. Resistencia del Concreto ($V_c$) - NSR-10 C.11.11.2.1</strong></p>
+                        <ul>
+                            <li>(a) Eq. C.11-31: $0.17(1 + 2/\beta)\sqrt{f'_c} \cdot b_0 \cdot d = \mathbf{578.4 \text{ kN}}$</li>
+                            <li>(b) Eq. C.11-32: $0.083(\frac{\alpha_s d}{b_0} + 2)\sqrt{f'_c} \cdot b_0 \cdot d = \mathbf{441.9 \text{ kN}}$</li>
+                            <li>(c) Eq. C.11-33: $0.33\sqrt{f'_c} \cdot b_0 \cdot d = \mathbf{374.2 \text{ kN}}$</li>
+                            <li><strong>Capacidad de Diseño ($\phi V_c$):</strong> $0.75 \cdot \min(a, b, c) = \mathbf{280.7 \text{ kN}}$</li>
+                        </ul>
+        
+                        <p><strong>4. Análisis de Integridad Estructural</strong></p>
+                        <ul>
+                            <li>Índice de Capacidad: $iC = \frac{\phi V_c}{V_u} = \mathbf{0.5751}$</li>
+                        </ul>
                         
-                        <p><strong>Datos Técnicos Suministrados:</strong></p>
+                        <p><em>Reflexión Técnica:</em> La falla por punzonamiento es de tipo <strong>frágil</strong> y ocurre sin redistribución significativa de esfuerzos. Un índice de capacidad $iC < 1.0$ indica que la losa no desarrolla la resistencia necesaria en el perímetro crítico, lo cual no es aceptable en elementos que soportan cargas gravitacionales permanentes.</p>
+                        <p>En estos casos, el diseño debe ajustarse mediante:</p>
                         <ul>
-                            <li>Luces entre ejes: $L_1 = 5.65 \text{ m}$, $L_2 = 5.65 \text{ m}$.</li>
-                            <li>Columna <strong>interior</strong> cuadrada: $h_{c1} \times h_{c2} = 350 \times 350 \text{ mm}$.</li>
-                            <li>Losa: $h$ = 170 mm, acero de refuerzo <strong>No. 5</strong>.</li>
-                            <li>Materiales: $f'_c$ = 21 MPa, $f_y$ = 420 MPa.</li>
-                            <li>Carga última mayorada: $W_u = 15.4 \text{ kN/m}^2$.</li>
+                            <li>Aumento del espesor de la losa (incremento de $d$)</li>
+                            <li>Uso de ábacos o capiteles</li>
+                            <li>Incorporación de refuerzo a cortante (pernos de punzonamiento)</li>
                         </ul>
-            
-                        <p><strong>Consideraciones de Análisis Estructural:</strong></p>
-                        <ul>
-                            <li><em>"El espesor estimado corresponde a criterios de deflexión. La verificación a punzonamiento puede gobernar el diseño."</em></li>
-                            <li><em>"El sistema de resistencia ante cargas laterales está conformado por muros estructurales de concreto reforzado. La losa plana hace parte únicamente del sistema gravitacional."</em></li>
-                        </ul>
-            
-                        <p><strong>Nota para el cálculo de peralte efectivo ($d$):</strong><br>
-                        Considere un peralte promedio que represente ambas capas de refuerzo mediante la expresión:<br>
-                        $d_{prom} = h - \text{recubrimiento} - d_{barra}$<br>
-                        Use un recubrimiento libre de <strong>25 mm</strong>.</p>
-            
-                        <p><strong>Parte 1: Demanda de Cortante</strong></p>
-                        <ol>
-                            <li><strong>Carga actuante $V_u$ (kN):</strong> Para efectos del ejercicio, la fuerza cortante se estima como la carga mayorada actuando sobre el área tributaria del panel, descontando el área dentro del perímetro crítico.</li>
-                        </ol>
-            
-                        <p><strong>Parte 2: Capacidad Nominal del Concreto ($V_c$)</strong><br>
-                        Evalúe las tres condiciones de la NSR-10 C.11.11.2.1. Considere el perímetro crítico ubicado a una distancia $d/2$ de la cara de la columna. Para columna interior, use $\alpha_s = 40$ (NSR-10).</p>
-                        <ol start="2">
-                            <li><strong>Condición (a) Eq. C.11-31 (kN):</strong></li>
-                            <li><strong>Condición (b) Eq. C.11-32 (kN):</strong></li>
-                            <li><strong>Condición (c) Eq. C.11-33 (kN):</strong></li>
-                        </ol>
-            
-                        <p><strong>Parte 3: Verificación Final</strong></p>
-                        <ol start="5">
-                            <li><strong>Resistencia de diseño $\phi V_c$ (kN):</strong> Use $\phi$ = 0.75 y la menor de las tres capacidades calculadas.</li>
-                            <li><strong>Índice de Capacidad ($iC$):</strong> $iC = \phi V_c / V_u$. Use tres cifras decimales.</li>
-                        </ol>
-            
-                        <div class="user-answer">
-                            <strong>Respuestas ingresadas (evaluadas como correctas):</strong><br>
-                            1. 488.07 <em>(Respuesta exacta del sistema: 488.1)</em><br>
-                            2. 578.22 <em>(Respuesta exacta del sistema: 578.4)</em><br>
-                            3. 441.78 <em>(Respuesta exacta del sistema: 441.9)</em><br>
-                            4. 374.14 <em>(Respuesta exacta del sistema: 374.2)</em><br>
-                            5. 280.61 <em>(Respuesta exacta del sistema: 280.7)</em><br>
-                            6. 0.575 <em>(Respuesta exacta del sistema: 0.5751)</em>
-                        </div>
-            
-                        <div class="feedback">
-                            <h5>Memoria de Cálculo: Verificación de Punzonamiento</h5>
-                            <p><strong>1. Parámetros Críticos</strong></p>
-                            <ul>
-                                <li>Peralte efectivo promedio ($d$): $170 - 25 - 15.875 = \mathbf{129.13 \text{ mm}}$</li>
-                                <li>Perímetro crítico ($b_0$): $4 \cdot (350 + 129.13) = \mathbf{1916.5 \text{ mm}}$</li>
-                                <li>Área dentro del perímetro ($A_0$): $(350 + 129.13)^2 = \mathbf{0.23 \text{ m}^2}$</li>
-                            </ul>
-            
-                            <p><strong>2. Demanda de Cortante ($V_u$)</strong></p>
-                            <ul>
-                                <li>Área aferente neta: $5.65^2 - 0.23 = \mathbf{31.7 \text{ m}^2}$</li>
-                                <li>$V_u = W_u \cdot \text{Area neta} = 15.4 \cdot 31.7 = \mathbf{488.1 \text{ kN}}$</li>
-                            </ul>
-            
-                            <p><strong>3. Resistencia del Concreto ($V_c$) - NSR-10 C.11.11.2.1</strong></p>
-                            <ul>
-                                <li>(a) Eq. C.11-31: $0.17(1 + 2/\beta)\sqrt{f'_c} \cdot b_0 \cdot d = \mathbf{578.4 \text{ kN}}$</li>
-                                <li>(b) Eq. C.11-32: $0.083(\frac{\alpha_s d}{b_0} + 2)\sqrt{f'_c} \cdot b_0 \cdot d = \mathbf{441.9 \text{ kN}}$</li>
-                                <li>(c) Eq. C.11-33: $0.33\sqrt{f'_c} \cdot b_0 \cdot d = \mathbf{374.2 \text{ kN}}$</li>
-                                <li><strong>Capacidad de Diseño ($\phi V_c$):</strong> $0.75 \cdot \min(a, b, c) = \mathbf{280.7 \text{ kN}}$</li>
-                            </ul>
-            
-                            <p><strong>4. Análisis de Integridad Estructural</strong></p>
-                            <ul>
-                                <li>Índice de Capacidad: $iC = \frac{\phi V_c}{V_u} = \mathbf{0.5751}$</li>
-                            </ul>
-                            
-                            <p><em>Reflexión Técnica:</em> La falla por punzonamiento es de tipo <strong>frágil</strong> y ocurre sin redistribución significativa de esfuerzos. Un índice de capacidad $iC < 1.0$ indica que la losa no desarrolla la resistencia necesaria en el perímetro crítico, lo cual no es aceptable en elementos que soportan cargas gravitacionales permanentes.</p>
-                            <p>En estos casos, el diseño debe ajustarse mediante:</p>
-                            <ul>
-                                <li>Aumento del espesor de la losa (incremento de $d$)</li>
-                                <li>Uso de ábacos o capiteles</li>
-                                <li>Incorporación de refuerzo a cortante (pernos de punzonamiento)</li>
-                            </ul>
-                        </div>
+                        <p class="w3-text-grey w3-small w3-margin-top"><em>En edificaciones esenciales, este chequeo cobra especial relevancia debido a la necesidad de garantizar un comportamiento estructural confiable frente a modos de falla no dúctiles.</em></p>
                     </div>
                 </div>
-            
-                <!-- Pregunta 5 -->
-                <div class="question-card">
-                    <div class="question-header">
-                        <h3>Pregunta 5</h3>
-                        <span class="badge correct">Estado: Correcta | Puntaje: 0.7 sobre 0.7</span>
-                    </div>
-                    <div class="question-body">
-                        <h4>🏗️ Refuerzo escalera</h4>
-                        <p>Una escalera recta de 1.20 m de ancho tiene una luz inclinada de 4.2 m y está apoyada en sus extremos superior e inferior. La carga última total (1.2D+1.6L incluyendo peso propio) es 14.0 kN/m².</p>
-                        <p>Calcule el momento último por metro de ancho y determine el área de acero requerida, considerando:</p>
+            </div>
+        
+            <!-- Pregunta 5 -->
+            <div class="question-card">
+                <div class="question-header">
+                    <h3>Pregunta 5</h3>
+                    <span class="badge correct"><i class="fa fa-check"></i> Correcta | Puntaje: 0.7 sobre 0.7</span>
+                </div>
+                <div class="question-body">
+                    <h4>🏗️ Refuerzo escalera</h4>
+                    <p><strong>Indicaciones:</strong> Ingrese el valor numérico con la precisión indicada.</p>
+                    <p>Una escalera recta de 1.20 m de ancho tiene una luz inclinada de 4.2 m y está apoyada en sus extremos superior e inferior. La carga última total (1.2D+1.6L incluyendo peso propio) es 14.0 kN/m².</p>
+                    <p>Calcule el momento último por metro de ancho y determine el área de acero requerida, considerando:</p>
+                    <ul>
+                        <li>Concreto <strong>$f'_c = 28$ MPa</strong>, <strong>$f_y = 420$ MPa</strong>, <strong>$\phi = 0.9$</strong></li>
+                        <li><strong>$h = 150$ mm</strong>, recubrimiento = 20 mm, use refuerzo preliminar N3</li>
+                    </ul>
+                    <p>Indique $A_s$ final en mm²/m. Escriba solo el número, sin texto adicional ni unidades. Use una sola cifra decimal.</p>
+        
+                    <div class="user-answer"><strong>Respuesta:</strong> 685 <em>(La respuesta correcta es 686)</em></div>
+        
+                    <div class="feedback">
+                        <h5>Solución Guía de Diseño</h5>
                         <ul>
-                            <li>Concreto <strong>$f'_c$ = 28 MPa</strong>, <strong>$f_y$ = 420 MPa</strong>, <strong>$\phi$ = 0.9</strong></li>
-                            <li><strong>$h$ = 150 mm</strong>, recubrimiento = 20 mm, use refuerzo preliminar N3</li>
+                            <li><strong>Carga lineal ($w_u$):</strong> 14.0 kN/m/m</li>
+                            <li><strong>Momento último ($M_u$):</strong> 30.9 kNm/m <em>[$w_u \cdot L^2/8$]</em></li>
+                            <li><strong>Peralte efectivo ($d$):</strong> $\approx 125$ mm</li>
+                            <li><strong>Área de acero ($A_s$):</strong> <strong>686.0 mm²/m</strong></li>
+                            <li><strong>Distribución:</strong> $\approx$ 1N3 @ 103 mm <strong>$\rightarrow$ Usar 1N3 @ 100 mm</strong></li>
                         </ul>
-                        <p>Indique $A_s$ final en mm²/m. Escriba solo el número, sin texto adicional ni unidades. Use una sola cifra decimal.</p>
-            
-                        <div class="user-answer"><strong>Respuesta ingresada:</strong> 685 <em>(La respuesta exacta es 686)</em></div>
-            
-                        <div class="feedback">
-                            <p>✅ <strong>Respuesta correcta</strong></p>
-                            <h5>Solución Guía de Diseño</h5>
-                            <ul>
-                                <li><strong>Carga lineal ($w_u$):</strong> 14.0 kN/m/m</li>
-                                <li><strong>Momento último ($M_u$):</strong> 30.9 kNm/m <em>[$w_u \cdot L^2/8$]</em></li>
-                                <li><strong>Peralte efectivo ($d$):</strong> $\approx$ 125 mm</li>
-                                <li><strong>Área de acero ($A_s$):</strong> <strong>686.0 mm²/m</strong></li>
-                                <li><strong>Distribución:</strong> $\approx$ 1N3 @ 103 mm <strong>$\rightarrow$ Usar 1N3 @ 100 mm</strong></li>
-                            </ul>
-                            <p><strong>💡 Análisis Estructural:</strong><br>
-                            Las escaleras se analizan como vigas simplemente apoyadas donde el refuerzo principal va en la cara inferior. <strong>Ojo:</strong> El peso propio es mayor que en una losa horizontal debido a la inclinación del tramo; omitir este factor subestima la carga real de diseño.</p>
-                        </div>
+                        <p><strong>💡 Análisis Estructural:</strong><br>
+                        Las escaleras se analizan como vigas simplemente apoyadas donde el refuerzo principal va en la cara inferior. <strong>Ojo:</strong> El peso propio es mayor que en una losa horizontal debido a la inclinación del tramo; omitir este factor subestima la carga real de diseño.</p>
                     </div>
                 </div>
-            
-                <!-- Pregunta 6 -->
-                <div class="question-card">
-                    <div class="question-header">
-                        <h3>Pregunta 6</h3>
-                        <span class="badge neutral">Estado: Finalizado | Puntaje: Sin calificar (Manual)</span>
-                    </div>
-                    <div class="question-body">
-                        <h4>Requisito de Soporte</h4>
-                        <p>Suba en un <strong>único archivo PDF</strong> todos sus cálculos detallados, apuntes y procedimientos usados en este cuestionario.</p>
-                        <p><em>⚠️ Nota: Este archivo será requisito indispensable para cualquier solicitud de revisión de nota o reclamo posterior.</em></p>
-            
-                        <div class="user-answer">
-                            <strong>Archivo subido:</strong> 📄 Evidencia parcial 2.pdf
-                        </div>
+            </div>
+        
+            <!-- Pregunta 6 -->
+            <div class="question-card">
+                <div class="question-header">
+                    <h3>Pregunta 6</h3>
+                    <span class="badge neutral"><i class="fa fa-info-circle"></i> Finalizado | Puntaje: Sin calificar (Manual)</span>
+                </div>
+                <div class="question-body">
+                    <h4>Requisito de Soporte</h4>
+                    <p>Suba en un <strong>único archivo PDF</strong> todos sus cálculos detallados, apuntes y procedimientos usados en este cuestionario.</p>
+                    <p><em>⚠️ Nota: Este archivo será requisito indispensable para cualquier solicitud de revisión de nota o reclamo posterior.</em></p>
+        
+                    <div class="user-answer">
+                        <strong>Archivo subido:</strong> <i class="fa fa-file-pdf-o w3-text-red"></i> Evidencia parcial 2.pdf
                     </div>
                 </div>
-            
-    </div> <!-- Cierra .contenido-body -->
+            </div>
+        
+        </div> <!-- Cierra .contenido-body -->
 
         <!-- NAVEGACIÓN DE RECURSOS Y EJEMPLOS -->
         <div style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 12px; margin: 40px 0 20px 0;">
             
             <!-- Botón Principal / Volver -->
-            <a href="index.html" class="w3-button w3-round-large w3-border" style="background-color: #f1f3f5; color: var(--azul-profundo); border-color: #cbd5e1 !important; font-weight: 600;">
+            <a href="index.html" class="w3-button w3-round-large w3-border" style="background-color: #f1f3f5; color: var(--azul-profundo); border-color: #cbd5e1 !important; font-weight: 600; transition: transform 0.2s;">
                 <i class="fa fa-arrow-left"></i> Índice del Banco
             </a>
         
             <!-- Botón Secundario (Ejemplo Losas 1 Dir) -->
-            <a href="../losas/losa1dir.html" class="w3-button w3-round-large" style="background-color: var(--azul-profundo); color: white; font-weight: 600;">
+            <a href="../losas/losa1dir.html" class="w3-button w3-round-large" style="background-color: var(--azul-profundo); color: white; font-weight: 600; transition: transform 0.2s;">
                 <i class="fa fa-book"></i> Losas en Una Dirección
             </a>
         
             <!-- Botón Destacado (Ejemplo Losas 2 Dir) -->
-            <a href="../losas/losa2dir.html" class="w3-button w3-round-large" style="background-color: var(--naranja-estructural); color: white; font-weight: 600;">
+            <a href="../losas/losa2dir.html" class="w3-button w3-round-large" style="background-color: var(--naranja-estructural); color: white; font-weight: 600; transition: transform 0.2s;">
                 <i class="fa fa-th"></i> Losas en Dos Direcciones
             </a>
         
             <!-- Botón de Presentación (Escaleras) -->
-            <a href="../losas/escaleras.html" class="w3-button w3-round-large" style="background-color: #4a5568; color: white; font-weight: 600;">
+            <a href="../losas/escaleras.html" class="w3-button w3-round-large" style="background-color: #4a5568; color: white; font-weight: 600; transition: transform 0.2s;">
                 <i class="fa fa-file-text-o"></i> Presentación de Escaleras
             </a>
         
@@ -607,7 +648,7 @@
                 <img src="../assets/IsotipoFClaroT.png" alt="Criterio Estructural" class="brand-logo-footer">
                 <p class="w3-medium"><b>Autor</b></p>
     
-                <h4 style="margin:0;">
+                <h4 style="margin:0; color: var(--azul-profundo);">
                     <b>Ing. Rafael Antonio Correa Melano</b>
                 </h4>
                 
@@ -629,6 +670,6 @@
             </div>
         </footer>
         
-    </div> <!-- Aquí cierra correctamente .contenedor-principal -->
+    </div> <!-- Cierra correctamente .contenedor-principal -->
 </body>
 </html>
