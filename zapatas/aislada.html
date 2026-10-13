@@ -719,11 +719,16 @@
             <div class="w3-panel ce-panel-naranja w3-padding w3-round">
                 <strong>📌 Nota de consistencia bidireccional:</strong>
                 <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
-                    El momento flexionante \( M_u \) de la zapata depende integralmente de la distribución del prisma de presiones del suelo. En este caso se simplifica a un análisis en una dirección dominante (\( M_x \approx 0 \)). En rigor biaxial, la flexión debe calcularse independientemente para las franjas ortogonales considerando las presiones variables en los cuatro cuadrantes.
+                    El momento flexionante \( M_u \) de la zapata depende integralmente de la distribución del prisma de presiones del suelo. En este caso se simplifica a un análisis en una dirección dominante (\( M_x \approx 0 \)).
+                    <div class="w3-panel w3-padding-small w3-round w3-white w3-margin-top" style="border: 1px dashed var(--naranja-estructural); font-size: 0.85em; color: var(--azul-profundo);">
+                        <strong>💡 En Rigor:</strong> Si existen momentos en ambas direcciones, la presión de contacto varía en los cuatro nodos y el diseño de refuerzo debe realizarse de forma independiente para cada sentido. En este caso se recomienda dividir la zapata en franjas.
+                    </div>    
                 </p>
             </div>
 
-            <p>El momento último \( M_u \) se calcula integrando las presiones desde el borde hasta la <strong>cara de la columna</strong> (\( L_{voladizo} = 0.60 \text{ m} \)). Para un ancho unitario de \( 1.0 \text{ m} \):</p>
+            <p>
+            Para el diseño por flexión, la zapata se idealiza como una <strong>viga en voladizo empotrada en la cara de la columna</strong> (sección crítica). El momento último \( M_u \) se determina aplicando el diagrama variable de presiones del suelo como una carga distribuida sobre este tramo (\( L_{voladizo} = 0.60 \text{ m} \)), calculando la fuerza resultante y multiplicándola por su respectivo brazo de palanca respecto al empotramiento. Análisis para una franja de diseño unitaria de \( 1.0 \text{ m} \):
+            </p>
 
             <ul class="w3-ul w3-border w3-round ce-panel-gris" style="border-left:none;">
                 <li><strong>Comb. 1.2D+1.6L:</strong> \( q_{cara} = 189.9 \text{ kPa} \) \(\rightarrow\) \( M_u = 37.9 \text{ kNm/m} \)</li>
