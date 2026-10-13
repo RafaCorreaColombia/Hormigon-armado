@@ -204,6 +204,27 @@
         .feedback p { margin-bottom: 8px; }
         .feedback ul { margin-top: 0; padding-left: 20px; }
 
+        /* NUEVO: Estilo para el recuadro del enunciado */
+        .enunciado-box {
+            background-color: #f8fafc; /* Un gris/azul muy sutil y limpio */
+            border: 1px solid #e2e8f0;
+            border-left: 4px solid var(--azul-profundo); /* Barra lateral con tu color corporativo */
+            padding: 18px 20px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        .enunciado-box h4 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: var(--azul-profundo);
+            font-weight: bold;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 10px;
+        }
+        .enunciado-box p:last-child {
+            margin-bottom: 0; /* Para que no quede espacio extra abajo */
+        }
+
         /* Estilos para el texto alienígena (Protección de identidad) */
         .nombre-confidencial {
             filter: blur(5px);
@@ -321,11 +342,13 @@
                     <span class="badge correct"><i class="fa fa-check"></i> Correcta | Puntaje: 0.7 sobre 0.7</span>
                 </div>
                 <div class="question-body">
+                    <div class="enunciado-box">
                     <h4>🏗️ Cuantía mínima vs requerida</h4>
                     <p><strong>Variables de entrada:</strong> Espesor $h = 17$ cm | $f'_c = 28$ MPa | $f_y = 420$ MPa | $M_u = 14$ kN·m/m</p>
                     <p>Determine el área de acero de diseño en mm²/m. Para ello, calcule el acero requerido por flexión ($A_{s,req}$) y compárelo con el refuerzo mínimo por retracción ($0.0018 \cdot A_g$). Adopte el valor máximo según la norma.</p>
                     <p><strong>Consideraciones:</strong> Recubrimiento de 20 mm y barra preliminar N°3 ($\phi = 9.5$ mm).<br>
                     Escriba solo el número, sin texto ni unidades. Use una cifra decimal (ej: 123.4).</p>
+                    </div>
                     
                     <div class="user-answer"><strong>Respuesta:</strong> 306</div>
                     
