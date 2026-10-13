@@ -234,30 +234,60 @@
     </div>
 
     <div class="contenido-body">
-                <h2>Resumen del Intento</h2>
-                <table class="summary-table">
-                    <thead>
-                        <tr>
-                            <th>Estudiante</th>
-                            <th>Estado</th>
-                            <th>Comenzado</th>
-                            <th>Completado</th>
-                            <th>Duración</th>
-                            <th>Calificación</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>Jonathan Fabian Gomez Serrano</strong></td>
-                            <td>Finalizado</td>
-                            <td>lunes, 12 de octubre de 2026, 11:49</td>
-                            <td>lunes, 12 de octubre de 2026, 16:53</td>
-                            <td>5 horas 4 minutos</td>
-                            <td><strong>5.0</strong> de 5.0 (<strong>100</strong>%)</td>
-                        </tr>
-                    </tbody>
-                </table>
-            
+                <!-- Aviso informativo de intento aleatorio -->
+                    <div class="w3-panel w3-pale-yellow w3-leftbar w3-border-yellow w3-padding-16 w3-margin-bottom w3-round" style="border-left: 5px solid var(--naranja-estructural) !important; background-color: #fff9db !important;">
+                        <p class="w3-small w3-margin-0" style="color: #594405;">
+                            <i class="fa fa-exclamation-triangle" style="color: var(--naranja-estructural);"></i> 
+                            <b>Nota Académica:</b> Este registro corresponde a un intento de ejemplo generado de forma aleatoria para este parcial. Las variables de diseño, cargas y geometría cambian y son diferentes en cada intento generado por la plataforma.
+                        </p>
+                    </div>
+                    
+                    <!-- Estilos específicos para el texto alienígena y el blur interactivo -->
+                    <style>
+                        .nombre-confidencial {
+                            filter: blur(5px);
+                            transition: filter 0.4s ease, color 0.4s ease;
+                            cursor: pointer;
+                            user-select: none;
+                            font-family: monospace;
+                            letter-spacing: 2px;
+                            background: rgba(0,0,0,0.05);
+                            padding: 2px 6px;
+                            border-radius: 4px;
+                        }
+                        .nombre-confidencial:hover {
+                            filter: blur(0px);
+                            color: var(--naranja-estructural);
+                            background: rgba(230, 126, 34, 0.1);
+                        }
+                    </style>
+                    
+                    <h2>Resumen del Intento</h2>
+                    <table class="summary-table">
+                        <thead>
+                            <tr>
+                                <th>Estudiante</th>
+                                <th>Estado</th>
+                                <th>Comenzado</th>
+                                <th>Completado</th>
+                                <th>Duración</th>
+                                <th>Calificación</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <!-- Texto con efecto Blur inicial y letras estilo extraterrestre/Star Wars al hacer hover -->
+                                    <strong><span class="nombre-confidencial" title="Pasa el cursor para decodificar (Clasificado)">⍓⎈⍜⎈⎈⍜⋔ ⍜⎈⎎⏁⟒⍀ ⎈⎈⎈⍜</span></strong>
+                                </td>
+                                <td>Finalizado</td>
+                                <td>lunes, 12 de octubre de 2026, 11:49</td>
+                                <td>lunes, 12 de octubre de 2026, 16:53</td>
+                                <td>5 horas 4 minutos</td>
+                                <td><strong>5.0</strong> de 5.0 (<strong>100</strong>%)</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 <!-- Pregunta 1 -->
                 <div class="question-card">
                     <div class="question-header">
