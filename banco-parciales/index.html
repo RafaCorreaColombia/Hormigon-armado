@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banco de Parciales | Criterio Estructural</title>
+    
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style>
+        /* PALETA DE COLORES DE IDENTIDAD VISUAL */
+        :root {
+            --azul-profundo: #1A2530;
+            --naranja-estructural: #E67E22;
+            --gris-claro: #F4F5F7;
+        }
+
+        body {
+            background-color: var(--gris-claro);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            color: var(--azul-profundo);
+        }
+
+        /* SOBREESCRITURA DE W3.CSS */
+        .w3-text-red { color: var(--naranja-estructural) !important; }
+        .w3-border-red { border-color: var(--naranja-estructural) !important; }
+        .w3-light-grey { background-color: var(--gris-claro) !important; }
+
+        /* HEADER DEL BANCO */
+        .banco-header {
+            background-color: var(--azul-profundo);
+            color: white;
+            padding: 60px 20px 40px 20px;
+            text-align: center;
+            border-bottom: 5px solid var(--naranja-estructural);
+        }
+
+        .lema-global {
+            font-size: 0.9em;
+            letter-spacing: 2px;
+            color: #a0aec0;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .lema-global span { color: var(--naranja-estructural); }
+
+        /* CONTENEDOR PRINCIPAL */
+        .section {
+            max-width: 1000px;
+            margin: auto;
+            padding: 40px 15px;
+        }
+
+        /* TARJETAS DE LOS CORTES */
+        .card-hover {
+            transition: all 0.3s ease;
+            height: 100%;
+            border: none !important;
+            background-color: #ffffff !important;
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(26, 37, 48, 0.15) !important;
+        }
+
+        .card-corte-header {
+            background-color: #f8fafc;
+            padding: 20px;
+            border-bottom: 1px solid #e2e8f0;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .card-corte-body {
+            padding: 20px;
+            flex-grow: 1;
+        }
+
+        .btn-red {
+            background-color: var(--naranja-estructural) !important;
+            color: white !important;
+            transition: 0.3s;
+            font-weight: bold;
+        }
+
+        .btn-red:hover {
+            background-color: var(--azul-profundo) !important;
+            color: var(--gris-claro) !important;
+        }
+
+        .tema-lista {
+            list-style-type: none;
+            padding-left: 0;
+            margin-top: 15px;
+            font-size: 0.9em;
+        }
+
+        .tema-lista li { margin-bottom: 8px; }
+        .tema-lista i { color: var(--naranja-estructural); margin-right: 8px; }
+
+    </style>
+</head>
+<body>
+
+    <!-- NAVEGACIÓN SUPERIOR / BREADCRUMB -->
+    <div class="w3-bar w3-white w3-card w3-padding-small">
+        <div style="max-width: 1000px; margin: auto;">
+            <!-- Fíjate que el enlace sube un nivel (../) para volver al inicio -->
+            <a href="../index.html" class="w3-bar-item w3-button w3-hover-none w3-text-grey w3-hover-text-red">
+                <i class="fa fa-arrow-left"></i> Volver a Herramientas
+            </a>
+        </div>
+    </div>
+
+    <!-- HEADER DE LA SECCIÓN -->
+    <header class="banco-header w3-animate-opacity">
+        <div class="lema-global">
+            Criterio Estructural <br>
+            <span>Universidad Industrial de Santander</span>
+        </div>
+        <h1 class="w3-xxlarge" style="margin: 0; font-weight: bold;">Banco de Parciales Resueltos</h1>
+        <p class="w3-large w3-opacity" style="max-width: 600px; margin: 15px auto 0 auto;">
+            Solucionarios interactivos y retroalimentación paso a paso para el curso de <b>Diseño de Hormigón Armado II</b>.
+        </p>
+    </header>
+
+    <!-- CUADRÍCULA DE EXÁMENES -->
+    <div class="section w3-animate-bottom">
+        <div class="w3-row-padding">
+
+            <!-- CORTE 1 -->
+            <div class="w3-col l4 m6 s12 w3-margin-bottom">
+                <div class="w3-card card-hover">
+                    <div class="card-corte-header w3-text-dark-grey">
+                        <i class="fa fa-file-text-o w3-text-red w3-margin-right w3-large"></i> Parcial Corte 1
+                    </div>
+                    <div class="card-corte-body">
+                        <p class="w3-small w3-text-grey">Evaluación de conceptos fundamentales y diseño sometido a flexión.</p>
+                        <ul class="tema-lista">
+                            <li><i class="fa fa-check"></i> Conceptos de normativa NSR-10</li>
+                            <li><i class="fa fa-check"></i> Diseño a flexión (Cuantías)</li>
+                            <li><i class="fa fa-check"></i> Análisis de deformaciones</li>
+                        </ul>
+                    </div>
+                    <div class="w3-padding w3-light-grey w3-center">
+                        <a href="corte-1.html" class="w3-button btn-red w3-round-large w3-block">Revisar Intento</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CORTE 2 -->
+            <div class="w3-col l4 m6 s12 w3-margin-bottom">
+                <div class="w3-card card-hover">
+                    <div class="card-corte-header w3-text-dark-grey">
+                        <i class="fa fa-calculator w3-text-red w3-margin-right w3-large"></i> Parcial Corte 2
+                    </div>
+                    <div class="card-corte-body">
+                        <p class="w3-small w3-text-grey">Evaluación de diseño por cortante y diagrama de interacción de columnas.</p>
+                        <ul class="tema-lista">
+                            <li><i class="fa fa-check"></i> Cortante probable (Sismos)</li>
+                            <li><i class="fa fa-check"></i> Espaciamiento de estribos</li>
+                            <li><i class="fa fa-check"></i> Flexocompresión uniaxia (P-M)</li>
+                        </ul>
+                    </div>
+                    <div class="w3-padding w3-light-grey w3-center">
+                        <a href="corte-2.html" class="w3-button btn-red w3-round-large w3-block">Revisar Intento</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CORTE 3 -->
+            <div class="w3-col l4 m6 s12 w3-margin-bottom">
+                <div class="w3-card card-hover">
+                    <div class="card-corte-header w3-text-dark-grey">
+                        <i class="fa fa-sitemap w3-text-red w3-margin-right w3-large"></i> Parcial Corte 3
+                    </div>
+                    <div class="card-corte-body">
+                        <p class="w3-small w3-text-grey">Evaluación integradora de nudos, anclajes y sistemas de resistencia.</p>
+                        <ul class="tema-lista">
+                            <li><i class="fa fa-check"></i> Longitudes de desarrollo</li>
+                            <li><i class="fa fa-check"></i> Cortante en nudos viga-columna</li>
+                            <li><i class="fa fa-check"></i> Requisitos DMO / DES</li>
+                        </ul>
+                    </div>
+                    <div class="w3-padding w3-light-grey w3-center">
+                        <a href="corte-3.html" class="w3-button btn-red w3-round-large w3-block">Revisar Intento</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="w3-container w3-padding-32 w3-center w3-text-grey w3-margin-top" style="background-color: #e2e8f0;">
+        <p class="w3-small">
+            <b>Criterio Estructural</b> | Universidad Industrial de Santander<br>
+            Material pedagógico desarrollado por el Ing. Rafael Correa
+        </p>
+    </footer>
+
+</body>
+</html>
