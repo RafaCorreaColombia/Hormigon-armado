@@ -511,13 +511,14 @@
                 <ul class="w3-ul" style="border: none; font-size: 0.95em;">
                     <li><span class="ce-destacado">a. Estado de Servicio:</span> La presión \( q_{max} \) (169.9 kPa) es menor a la admisible neta (188 kPa).</li>
                     <li><span class="ce-destacado">b. Evento Sísmico:</span> 
-                        La presión máxima alcanza (234\ \text{kPa}), superando la admisible neta de (188\ \text{kPa}). Para este ejemplo, se considera aceptable al no superar el límite plástico neto (q_{lp,neto}), conforme al criterio adoptado para esta verificación.</li>
+                        La presión máxima alcanza 234 kPa}, superando la admisible neta de 188 kPa. Para este ejemplo, se considera aceptable al no superar el límite plástico neto \( q_{lp,neto} \), conforme al criterio adoptado para esta verificación.</li>
                     <li><span class="ce-destacado">c. Contacto y estabilidad ante el volcamiento:</span> 
-                        En la combinación de servicio \(0.6D-0.7E\), se presenta pérdida parcial de contacto entre el suelo y la zapata. La distribución triangular resultante, recalculada para satisfacer el equilibrio estático, considera una longitud efectiva de contacto de (1.27\ \text{m}) y una presión máxima de (139.9\ \text{kPa}). La estabilidad debe evaluarse con esta distribución y las correspondientes acciones de la combinación analizada.</li>
+                        En la combinación de servicio \(0.6D-0.7E\), se presenta pérdida parcial de contacto entre el suelo y la zapata. 
+                        La distribución triangular de presiones, recalculada para satisfacer el equilibrio estático sin admitir tracciones del terreno, arroja una longitud efectiva de contacto de 1.27 m y una presión máxima de 139.9 kPa. Para esta combinación, la distribución obtenida satisface el equilibrio y permite aceptar la dimensión propuesta bajo el criterio de estabilidad por volcamiento adoptado en este ejemplo.</li>
                 </ul>
 
                 <div class="w3-padding-small w3-round w3-white w3-margin-top" style="border: 1px dashed var(--naranja-estructural); font-size: 0.85em;">
-                    <strong>Nota Crítica:</strong> La optimización dimensional asumiendo modelos triangulares solo es válida si se asegura el equilibrio estático integral y se verifica que no existan tracciones teóricas en ninguna dirección. El ahorro de material nunca debe comprometer la estabilidad al volcamiento.
+                    <strong>Nota Crítica:</strong> Cuando el análisis predice pérdida de contacto, la distribución de presiones debe recalcularse sin admitir tracciones del suelo y satisfaciendo el equilibrio de fuerzas y momentos. La viabilidad de la solución requiere verificar la estabilidad global y los estados límite geotécnicos y estructurales aplicables; la reducción de dimensiones no debe comprometer estas condiciones.
                 </div>
             </div>
         </div>
