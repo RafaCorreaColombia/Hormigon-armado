@@ -771,15 +771,28 @@
                 </div>
             </div>
 
-            <div class="w3-panel ce-panel-gris w3-padding w3-round w3-margin-top">
-                <strong>🛠️ Decisión de Diseño y Constructibilidad:</strong>
-                <p class="w3-small" style="margin-top: 5px;">
-                    Dado que la cuantía mínima rige en ambos sentidos, se estandariza el acero inferior para simplificar el armado en obra, evitar cortes erróneos y agilizar la inspección:
+            <div class="w3-panel ce-panel-naranja w3-padding w3-round w3-margin-top">
+                <strong style="color: var(--naranja-estructural); font-size: 1.1em;">🛠️ Decisión de Diseño y Constructibilidad:</strong>
+                <p class="w3-small" style="margin-top: 5px; margin-bottom: 8px;">
+                    Dado que la cuantía mínima rige en ambos sentidos, se unifica el refuerzo para facilitar el armado en obra y evitar confusiones en la colocación:
                 </p>
-                <ul class="w3-small">
-                    <li>Separación calculada para barras N°5 (\(A_b = 199 \text{ mm}^2\)): \( S = (199 / 900) \times 1000 = 221 \text{ mm} \).</li>
-                    <li><strong style="color: var(--azul-profundo);">Disposición Final:</strong> Parrilla ortogonal simétrica de <strong>Barras N°5 @ 200 mm</strong> (8 barras por cada lado).</li>
+                <ul class="w3-small" style="margin-top: 0; margin-bottom: 10px; padding-left: 20px;">
+                    <li>Separación calculada: \( S = (199 \text{ mm}^2 / 900 \text{ mm}^2) \times 1000 = 221 \text{ mm} \).</li>
+                    <li><strong>Disposición Final:</strong> Se adoptan <strong>1N5 c/200 mm</strong> (8 barras por sentido).</li>
                 </ul>
+                
+                <div class="w3-padding-small w3-round w3-white" style="border: 1px dashed var(--naranja-estructural); font-size: 0.85em; color: var(--azul-profundo); margin-bottom: 8px;">
+                    <strong>Resultado:</strong> Una parrilla ortogonal uniforme de 8 barras N°5 en cada dirección para toda la zapata de \( 1.6 \text{ m} \). Ver Anexo C para detallado.
+                </div>
+                
+                <div class="w3-padding-small w3-round w3-white" style="border: 1px dashed var(--naranja-estructural); font-size: 0.85em; color: var(--azul-profundo);">
+                    <strong>Nota:</strong> Se puede adoptar un diseño simétrico únicamente si:
+                    <ul style="margin: 5px 0 0 0; padding-left: 20px;">
+                        <li>Se opta por la estandarización (recomendado): en este caso, se debe disponer en ambos sentidos el refuerzo máximo obtenido del análisis individual.</li>
+                        <li>Las solicitaciones y dimensiones son comparables, garantizando la seguridad en el eje más crítico.</li>
+                        <li>La cuantía mínima rige el diseño en ambas direcciones.</li>
+                    </ul>
+                </div>
             </div>
         </div>
 
