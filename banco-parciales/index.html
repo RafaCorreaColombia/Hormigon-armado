@@ -3,24 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Banco de Parciales | Criterio Estructural</title>
-    
+    <title>Rafael Correa | Ingeniería Estructural</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <style>
-        /* PALETA DE COLORES DE IDENTIDAD VISUAL */
+        /* PALETA DE COLORES DE IDENTIDAD VISUAL (Unificada con Criterio Estructural) */
         :root {
             --azul-profundo: #1A2530;
             --naranja-estructural: #E67E22;
             --gris-claro: #F4F5F7;
+            --border-color: #dee2e6;
+            --text-color: #333333;
         }
 
         body {
             background-color: var(--gris-claro);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
+            margin:0;
             color: var(--azul-profundo);
+            line-height: 1.6;
         }
 
         /* SOBREESCRITURA DE W3.CSS */
@@ -28,61 +30,71 @@
         .w3-border-red { border-color: var(--naranja-estructural) !important; }
         .w3-light-grey { background-color: var(--gris-claro) !important; }
 
-        /* HEADER DEL BANCO */
-        .banco-header {
-            background-color: var(--azul-profundo);
-            color: white;
-            padding: 60px 20px 40px 20px;
-            text-align: center;
+        /* HERO SECTION */
+        .hero {
+            background: url('assets/RafaC.png') no-repeat center center;
+            background-size: cover;
+            color: white; 
+            padding: 80px 20px;
+            display: flex;
+            align-items: center;
+            min-height: 550px;
+            position: relative;
             border-bottom: 5px solid var(--naranja-estructural);
         }
 
-        .lema-global {
-            font-size: 0.9em;
-            letter-spacing: 2px;
-            color: #a0aec0;
-            text-transform: uppercase;
-            margin-bottom: 10px;
-            font-weight: bold;
+        .hero-content {
+            max-width: 1100px;
+            margin: auto;
+            width: 100%;
+            display: flex;
+            justify-content: flex-start;
         }
 
-        .lema-global span { color: var(--naranja-estructural); }
+        .hero-box {
+            background: rgba(26, 37, 48, 0.85); /* Azul profundo con transparencia elegante */
+            padding: 40px;
+            border-radius: 12px;
+            backdrop-filter: blur(8px);
+            max-width: 600px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
 
-        /* CONTENEDOR PRINCIPAL */
+        /* ESTILOS DEL ISOTIPO */
+        .brand-logo-hero {
+            max-width: 320px;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .brand-logo-footer {
+            max-width: 220px;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+
+        /* TARJETAS Y CONTENEDORES */
         .section {
-            max-width: 1000px;
+            max-width: 1100px;
             margin: auto;
             padding: 40px 15px;
         }
 
-        /* TARJETAS DE LOS CORTES */
         .card-hover {
             transition: all 0.3s ease;
             height: 100%;
-            border: none !important;
+            border: 1px solid var(--border-color) !important;
             background-color: #ffffff !important;
             border-radius: 12px;
             overflow: hidden;
-            display: flex;
-            flex-direction: column;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
 
         .card-hover:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 30px rgba(26, 37, 48, 0.15) !important;
-        }
-
-        .card-corte-header {
-            background-color: #f8fafc;
-            padding: 20px;
-            border-bottom: 1px solid #e2e8f0;
-            font-weight: bold;
-            font-size: 1.2em;
-        }
-
-        .card-corte-body {
-            padding: 20px;
-            flex-grow: 1;
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(26, 37, 48, 0.12) !important;
+            border-color: var(--naranja-estructural) !important;
         }
 
         .btn-red {
@@ -94,119 +106,231 @@
 
         .btn-red:hover {
             background-color: var(--azul-profundo) !important;
-            color: var(--gris-claro) !important;
+            color: white !important;
+            box-shadow: 0 4px 12px rgba(26, 37, 48, 0.2);
         }
 
-        .tema-lista {
-            list-style-type: none;
-            padding-left: 0;
-            margin-top: 15px;
-            font-size: 0.9em;
+        /* BLOQUE INICIATIVA CEIC */
+        .iniciativa-box {
+            background-color: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 8px 20px rgba(26, 37, 48, 0.08);
+            margin-top: -30px; /* Superposición ligera con el Hero */
+            position: relative;
+            z-index: 10;
+        }
+        
+        .iniciativa-header {
+            background-color: var(--azul-profundo);
+            color: white;
+            padding: 20px 30px;
+            border-bottom: 3px solid var(--naranja-estructural);
         }
 
-        .tema-lista li { margin-bottom: 8px; }
-        .tema-lista i { color: var(--naranja-estructural); margin-right: 8px; }
-
+        /* AJUSTES PARA MÓVILES */
+        @media (max-width: 800px) {
+            .hero { 
+                background-position: 70% center;
+                min-height: 450px;
+                padding: 40px 10px;
+            }
+            .hero-content { justify-content: center; }
+            .hero-box { 
+                text-align: center; 
+                padding: 25px;
+            }
+            .brand-logo-hero { margin: 0 auto 20px auto; }
+            .w3-col { margin-bottom: 20px; }
+            .iniciativa-box { margin-top: 20px; }
+        }
     </style>
 </head>
+
 <body>
 
-    <!-- NAVEGACIÓN SUPERIOR / BREADCRUMB -->
-    <div class="w3-bar w3-white w3-card w3-padding-small">
-        <div style="max-width: 1000px; margin: auto;">
-            <!-- Fíjate que el enlace sube un nivel (../) para volver al inicio -->
-            <a href="../index.html" class="w3-bar-item w3-button w3-hover-none w3-text-grey w3-hover-text-red">
-                <i class="fa fa-arrow-left"></i> Volver a Herramientas
-            </a>
+<!-- HERO SECTION -->
+<header class="hero w3-animate-opacity">
+    <div class="hero-content">
+        <div class="hero-box">
+            <!-- ISOTIPO EN EL HERO -->
+            <img src="assets/IsotipoFOscuroT.png" alt="Criterio Estructural" class="brand-logo-hero">
+            
+            <h1 class="w3-xxlarge" style="margin-top: 0;"><b>Herramientas para Ingeniería Estructural</b></h1>
+            <p class="w3-large w3-text-light-grey" style="margin-bottom: 30px;">Recursos interactivos y simuladores para ingeniería civil.</p>
+
+            <!-- HERRAMIENTA DESTACADA (Traslapos) -->
+            <div class="w3-card w3-white w3-round-large w3-padding" style="border-left: 4px solid var(--naranja-estructural);">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h5 class="w3-text-dark-grey" style="margin: 0;"><b>Empalmes y Traslapos</b></h5>
+                    <span class="w3-tag w3-round w3-small" style="background-color: var(--naranja-estructural); font-weight: bold;">¡NUEVO!</span>
+                </div>
+                <p class="w3-small w3-text-dark-grey" style="margin-top: 8px;">Cálculo de longitudes de desarrollo en elementos de hormigón armado.</p>
+                <a href="herramientas/traslapos.html" class="w3-button btn-red w3-round-large w3-block">
+                    <i class="fa fa-link"></i> Probar Herramienta
+                </a>
+            </div>
+
+            <p class="w3-margin-top w3-small w3-text-light-grey" style="border-top: 1px solid rgba(255,255,255,0.2); padding-top: 15px;">
+                <b>Ing. Rafael Antonio Correa Melano</b><br>
+                Ingeniero Civil • M.IE. • Docente UIS
+            </p>
         </div>
     </div>
+</header>
 
-    <!-- HEADER DE LA SECCIÓN -->
-    <header class="banco-header w3-animate-opacity">
-        <div class="lema-global">
-            Criterio Estructural <br>
-            <span>Universidad Industrial de Santander</span>
+<!-- BLOQUE DESTACADO: INICIATIVA CEIC (Banco de Parciales) -->
+<div class="section" style="padding-bottom: 10px;">
+    <div class="iniciativa-box w3-animate-bottom">
+        <div class="iniciativa-header">
+            <h2 style="margin:0; font-weight: bold; font-size: 1.5rem;">
+                <i class="fa fa-university w3-text-red" style="margin-right: 8px;"></i> Iniciativa Académica UIS
+            </h2>
         </div>
-        <h1 class="w3-xxlarge" style="margin: 0; font-weight: bold;">Banco de Parciales Resueltos</h1>
-        <p class="w3-large w3-opacity" style="max-width: 600px; margin: 15px auto 0 auto;">
-            Solucionarios interactivos y retroalimentación paso a paso para el curso de <b>Diseño de Hormigón Armado II</b>.
-        </p>
-    </header>
+        <div class="w3-row w3-padding-32 w3-padding-large">
+            <div class="w3-col l8 m12 w3-padding">
+                <h4 style="color: var(--naranja-estructural); font-weight: bold; margin-top: 0;">Diseño de Hormigón Armado II</h4>
+                <p style="text-align: justify; font-size: 1.05rem; color: var(--text-color);">
+                    A petición de la <b>Asociación Centro de Estudios de Ingeniería Civil (CEIC)</b>, me uno con entusiasmo a esta valiosa iniciativa. Mi interés principal como docente es lograr que los estudiantes se acerquen de manera real, analítica y práctica al comportamiento de las estructuras.
+                </p>
+                <p style="text-align: justify; font-size: 1.05rem; color: var(--text-color);">
+                    Por este motivo, considero que este repositorio digital y, en particular, la apertura del <b>Banco de Parciales Resueltos</b>, representa un recurso de estudio fundamental que vale la pena mantener, alimentar y compartir con las futuras generaciones de ingenieros de la Universidad Industrial de Santander.
+                </p>
+            </div>
+            <div class="w3-col l4 m12 w3-padding w3-center" style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%;">
+                <i class="fa fa-database w3-text-light-grey" style="font-size: 70px; margin-bottom: 20px; color: #cbd5e1 !important;"></i>
+                
+                <!-- ENLACE DIRECTO AL BANCO DE PARCIALES -->
+                <a href="parciales/index.html" class="w3-button btn-red w3-round-large w3-large w3-padding-large w3-block" style="box-shadow: 0 4px 15px rgba(230, 126, 34, 0.4);">
+                    <i class="fa fa-folder-open-o" style="margin-right: 8px;"></i> <b>Ir al Banco de Parciales</b>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 
-    <!-- CUADRÍCULA DE EXÁMENES -->
-    <div class="section w3-animate-bottom">
+<!-- RECURSOS ACADÉMICOS -->
+<div class="section">
+    <h2 class="w3-border-bottom w3-border-light-grey w3-padding-16" style="font-weight: bold;">
+        <i class="fa fa-wrench w3-text-red"></i> Simuladores y Laboratorios
+    </h2>
+
+    <div class="w3-row-padding w3-margin-top">
+        
+        <div class="w3-col l4 m6 s12 w3-margin-bottom">
+            <div class="w3-padding-24 w3-center card-hover">
+                <i class="fa fa-cogs w3-xxlarge w3-text-red"></i>
+                <h3 style="font-size: 1.3rem; font-weight: bold; margin-top: 15px;">Flexocompresión</h3>
+                <p class="w3-padding w3-small" style="color: var(--text-color);">Construcción interactiva del diagrama de interacción P–M para columnas de hormigón armado.</p>
+                <a href="columnas/construccion-pm.html" class="w3-button btn-red w3-round-large w3-margin-bottom">Acceder</a>
+            </div>
+        </div>
+
+        <div class="w3-col l4 m6 s12 w3-margin-bottom">
+            <div class="w3-padding-24 w3-center card-hover">
+                <i class="fa fa-line-chart w3-xxlarge w3-text-red"></i>
+                <h3 style="font-size: 1.3rem; font-weight: bold; margin-top: 15px;">Flexión de Vigas</h3>
+                <p class="w3-padding w3-small" style="color: var(--text-color);">Análisis de flexión pura, comportamiento de materiales y deformaciones en la sección transversal.</p>
+                <a href="vigas/simulador.html" class="w3-button btn-red w3-round-large w3-margin-bottom">Acceder</a>
+            </div>
+        </div>
+
+        <div class="w3-col l4 m6 s12 w3-margin-bottom">
+            <div class="w3-padding-24 w3-center card-hover">
+                <i class="fa fa-vcard-o w3-xxlarge w3-text-red"></i>
+                <h3 style="font-size: 1.3rem; font-weight: bold; margin-top: 15px;">Control de Deflexiones</h3>
+                <p class="w3-padding w3-small" style="color: var(--text-color);">Cálculo de inercia efectiva (Método de Branson) y evaluación de efectos de largo plazo (Creep).</p>
+                <a href="vigas/deflexiones.html" class="w3-button btn-red w3-round-large w3-margin-bottom">Acceder</a>
+            </div>
+        </div>
+
+        <div class="w3-col l4 m6 s12 w3-margin-bottom">
+            <div class="w3-padding-24 w3-center card-hover">
+                <i class="fa fa-cubes w3-xxlarge w3-text-red"></i>
+                <h3 style="font-size: 1.3rem; font-weight: bold; margin-top: 15px;">Presión en Cimentaciones</h3>
+                <p class="w3-padding w3-small" style="color: var(--text-color);">Zapatas aisladas y céntricas: Modelos elásticos de presión y redistribución sísmica (FEMA P-1051).</p>
+                <a href="zapatas/ZAPPresionesCentrica.html" class="w3-button btn-red w3-round-large w3-margin-bottom">Acceder</a>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+<!-- SECCIÓN DOCENCIA Y PERFIL -->
+<div style="background-color: #e2e8f0; border-top: 1px solid #cbd5e1; border-bottom: 1px solid #cbd5e1;">
+    <div class="section">
         <div class="w3-row-padding">
-
-            <!-- CORTE 1 -->
-            <div class="w3-col l4 m6 s12 w3-margin-bottom">
-                <div class="w3-card card-hover">
-                    <div class="card-corte-header w3-text-dark-grey">
-                        <i class="fa fa-file-text-o w3-text-red w3-margin-right w3-large"></i> Parcial Corte 1
-                    </div>
-                    <div class="card-corte-body">
-                        <p class="w3-small w3-text-grey">Evaluación de conceptos fundamentales y diseño sometido a flexión.</p>
-                        <ul class="tema-lista">
-                            <li><i class="fa fa-check"></i> Conceptos de normativa NSR-10</li>
-                            <li><i class="fa fa-check"></i> Diseño a flexión (Cuantías)</li>
-                            <li><i class="fa fa-check"></i> Análisis de deformaciones</li>
+            <div class="w3-col l7 m12">
+                <h3 style="font-weight: bold;"><i class="fa fa-book w3-text-red"></i> Enfoque Académico</h3>
+                <p>Material interactivo y guías de clase diseñadas para fortalecer conceptos analíticos en:</p>
+                <div class="w3-row w3-margin-top">
+                    <div class="w3-col s6">
+                        <ul class="w3-ul w3-border-0" style="padding:0;">
+                            <li><i class="fa fa-check w3-text-red"></i> Diseño de Hormigón Armado</li>
+                            <li><i class="fa fa-check w3-text-red"></i> Análisis Estructural Moderno</li>
                         </ul>
                     </div>
-                    <div class="w3-padding w3-light-grey w3-center">
-                        <a href="corte-1.html" class="w3-button btn-red w3-round-large w3-block">Revisar Intento</a>
+                    <div class="w3-col s6">
+                        <ul class="w3-ul w3-border-0" style="padding:0;">
+                            <li><i class="fa fa-check w3-text-red"></i> Dinámica de Estructuras</li>
+                            <li><i class="fa fa-check w3-text-red"></i> Diseño Sísmico (NSR-10)</li>
+                        </ul>
                     </div>
                 </div>
             </div>
-
-            <!-- CORTE 2 -->
-            <div class="w3-col l4 m6 s12 w3-margin-bottom">
-                <div class="w3-card card-hover">
-                    <div class="card-corte-header w3-text-dark-grey">
-                        <i class="fa fa-calculator w3-text-red w3-margin-right w3-large"></i> Parcial Corte 2
-                    </div>
-                    <div class="card-corte-body">
-                        <p class="w3-small w3-text-grey">Evaluación de diseño por cortante y diagrama de interacción de columnas.</p>
-                        <ul class="tema-lista">
-                            <li><i class="fa fa-check"></i> Cortante probable (Sismos)</li>
-                            <li><i class="fa fa-check"></i> Espaciamiento de estribos</li>
-                            <li><i class="fa fa-check"></i> Flexocompresión uniaxia (P-M)</li>
-                        </ul>
-                    </div>
-                    <div class="w3-padding w3-light-grey w3-center">
-                        <a href="corte-2.html" class="w3-button btn-red w3-round-large w3-block">Revisar Intento</a>
-                    </div>
-                </div>
+            <div class="w3-col l5 m12">
+                <h3 style="font-weight: bold;"><i class="fa fa-user w3-text-red"></i> Perfil Profesional</h3>
+                <p class="w3-small" style="text-align: justify; color: var(--text-color); line-height: 1.8;">
+                    Especialista en el diseño, evaluación de vulnerabilidad y reforzamiento de estructuras. Mi objetivo principal es cerrar la brecha entre la teoría analítica compleja y la aplicación práctica, desarrollando herramientas digitales abiertas que faciliten la visualización y comprensión del comportamiento de los elementos que diseñamos.
+                </p>
             </div>
-
-            <!-- CORTE 3 -->
-            <div class="w3-col l4 m6 s12 w3-margin-bottom">
-                <div class="w3-card card-hover">
-                    <div class="card-corte-header w3-text-dark-grey">
-                        <i class="fa fa-sitemap w3-text-red w3-margin-right w3-large"></i> Parcial Corte 3
-                    </div>
-                    <div class="card-corte-body">
-                        <p class="w3-small w3-text-grey">Evaluación integradora de nudos, anclajes y sistemas de resistencia.</p>
-                        <ul class="tema-lista">
-                            <li><i class="fa fa-check"></i> Longitudes de desarrollo</li>
-                            <li><i class="fa fa-check"></i> Cortante en nudos viga-columna</li>
-                            <li><i class="fa fa-check"></i> Requisitos DMO / DES</li>
-                        </ul>
-                    </div>
-                    <div class="w3-padding w3-light-grey w3-center">
-                        <a href="corte-3.html" class="w3-button btn-red w3-round-large w3-block">Revisar Intento</a>
-                    </div>
-                </div>
-            </div>
-
         </div>
     </div>
+</div>
 
-    <!-- FOOTER -->
-    <footer class="w3-container w3-padding-32 w3-center w3-text-grey w3-margin-top" style="background-color: #e2e8f0;">
-        <p class="w3-small">
-            <b>Criterio Estructural</b> | Universidad Industrial de Santander<br>
-            Material pedagógico desarrollado por el Ing. Rafael Correa
-        </p>
-    </footer>
+<!-- EXPERIENCIA EN CONSULTORÍA -->
+<div class="section w3-padding-32">
+    <h3 style="font-weight: bold; margin-bottom: 20px;"><i class="fa fa-building w3-text-red"></i> Proyectos Destacados</h3>
+    <div class="w3-row-padding">
+        <div class="w3-col l4 m4 s12">
+            <div class="w3-panel w3-leftbar w3-border-red w3-white w3-padding-16 w3-card w3-round">
+                <b class="w3-large">Sector Educación</b><br>
+                <span class="w3-small w3-text-grey">Campus UIS San Gil<br>Reforzamiento Biblioteca Central UIS</span>
+            </div>
+        </div>
+        <div class="w3-col l4 m4 s12">
+            <div class="w3-panel w3-leftbar w3-border-red w3-white w3-padding-16 w3-card w3-round">
+                <b class="w3-large">Sector Salud</b><br>
+                <span class="w3-small w3-text-grey">Fundación Cardiovascular de Colombia<br>Clínica Ciudad Verde</span>
+            </div>
+        </div>
+        <div class="w3-col l4 m4 s12">
+            <div class="w3-panel w3-leftbar w3-border-red w3-white w3-padding-16 w3-card w3-round">
+                <b class="w3-large">Sector Vivienda</b><br>
+                <span class="w3-small w3-text-grey">Proyectos Bonum de Mardel<br>Conjunto Mediterrane Royal</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="w3-container w3-padding-48 w3-center" style="background-color: var(--azul-profundo); color: white;">
+    <!-- ISOTIPO EN EL FOOTER -->
+    <img src="assets/IsotipoFClaro.png" alt="Criterio Estructural" class="brand-logo-footer">
+    
+    <p class="w3-large" style="margin-bottom: 5px;"><b>Ing. Rafael Antonio Correa Melano</b></p>
+    <div class="w3-xlarge w3-padding-16">
+        <a href="https://www.instagram.com/rafacestructural" class="w3-hover-text-red w3-margin-right" style="transition: 0.3s;"><i class="fa fa-instagram"></i></a>
+        <a href="https://wa.me/573151600480" class="w3-hover-text-green w3-margin-right" style="transition: 0.3s;"><i class="fa fa-whatsapp"></i></a>
+        <a href="mailto:rafael.correa.ing@gmail.com" class="w3-hover-text-red" style="transition: 0.3s;"><i class="fa fa-envelope-o"></i></a>
+    </div>
+    <p class="w3-small w3-text-grey" style="margin-top:10px; color: #a0aec0 !important;">
+    Copyright © 2026 <b>Rafael Antonio Correa Melano</b> • Criterio Estructural.<br>
+    Todos los derechos reservados.<br>
+    Hecho con dedicación en Bucaramanga, Colombia 🇨🇴
+    </p>
+</footer>
 
 </body>
 </html>
