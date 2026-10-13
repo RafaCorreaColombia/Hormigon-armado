@@ -433,7 +433,7 @@
                     \[ q_{max} = \frac{P}{A} \left( 1 + \frac{6e_L}{L} \right), \qquad A = BL, \quad e_L = \frac{M_y}{P} \]
                 </div>
                 <p class="w3-small" style="color: var(--gris-texto); font-style: italic; margin-bottom: 0;">
-                    *Nota: se asume \( M_x \approx 0 \) por simplicidad. Con momentos en ambos ejes (ej. sismo ortogonal) el problema es bidimensional y la presión máxima se desplaza a una esquina: \( q = \frac{P}{A}\left(1 \pm \frac{6e_L}{L} \pm \frac{6e_B}{B}\right) \), válida mientras no haya pérdida de contacto.
+                    *Nota: en este ejemplo particular se asumió \( M_x \approx 0 \) por simplicidad pedagógica, con el fin de aislar el comportamiento y explicar más fácilmente los conceptos en una dirección dominante. Con momentos en ambos ejes (ej. sismo ortogonal) el problema es bidimensional y la presión máxima se desplaza a una esquina: \( q = \frac{P}{A}\left(1 \pm \frac{6e_L}{L} \pm \frac{6e_B}{B}\right) \), válida mientras no haya pérdida de contacto.
                 </p>
             </div>
 
@@ -706,7 +706,7 @@
     
             <!-- 3. CONCLUSIÓN EJECUTIVA PARA CLASE -->
             <div class="w3-panel w3-padding-small w3-round w3-white w3-margin-top" style="border: 1px dashed var(--naranja-estructural); font-size: 0.85em; color: var(--azul-profundo);">
-                <strong>💡 Conclusión en Clase:</strong> El momento flexionante sube el esfuerzo local de 0.25 a 0.52 MPa. Aun así, la demanda máxima es menos de la mitad de la capacidad (\( 1.13 \text{ MPa} \)). <strong>El punzonamiento no gobierna; el espesor \( H \) lo define el control de anclaje de la columna.</strong>
+                <strong>💡 Conclusión en Clase:</strong> El momento que transmite la columna sube el esfuerzo local de 0.25 a 0.52 MPa. Aun así, la demanda máxima es menos de la mitad de la capacidad (\( 1.13 \text{ MPa} \)). <strong>El punzonamiento no gobierna; el espesor \( H \) lo define el control de anclaje de la columna.</strong>
             </div>            
             
         </div>
@@ -719,11 +719,12 @@
             <div class="w3-panel ce-panel-naranja w3-padding w3-round">
                 <strong>📌 Nota de consistencia bidireccional:</strong>
                 <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
-                    El momento flexionante \( M_u \) de la zapata depende integralmente de la distribución del prisma de presiones del suelo. En este caso se simplifica a un análisis en una dirección dominante (\( M_x \approx 0 \)).
-                    <div class="w3-panel w3-padding-small w3-round w3-white w3-margin-top" style="border: 1px dashed var(--naranja-estructural); font-size: 0.85em; color: var(--azul-profundo);">
-                        <strong>💡 En Rigor:</strong> Si existen momentos en ambas direcciones, la presión de contacto varía en los cuatro nodos y el diseño de refuerzo debe realizarse de forma independiente para cada sentido. En este caso se recomienda dividir la zapata en franjas.
-                    </div>    
+                    El momento último de diseño de la zapata, \( M_u \), depende integralmente de la distribución del prisma de presiones del suelo. Como se mencionó anteriormente, en este ejemplo particular se asumió \( M_x \approx 0 \) por simplicidad pedagógica, con el fin de aislar el comportamiento y explicar más fácilmente los conceptos en una dirección dominante.
                 </p>
+                <div class="w3-panel w3-padding-small w3-round w3-white w3-margin-top" style="border: 1px dashed var(--naranja-estructural); font-size: 0.85em; color: var(--azul-profundo);">
+                    <strong>⚠️ En Rigor:</strong> Si existen momentos en ambas direcciones, la presión de contacto varía en las cuatro esquinas y el diseño de refuerzo debe realizarse de forma independiente para cada sentido. En esos casos, se recomienda dividir la zapata en franjas.
+                </div>   
+                
             </div>
 
             <p>
