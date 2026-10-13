@@ -823,27 +823,17 @@
                     <span style="color: green; font-weight: bold;">\( P_u \) (463 kN) &lt; \( \phi P_n \) ✅</span>
                 </div>
             </div>
-            <div class="w3-panel ce-panel-naranja w3-padding w3-round w3-margin-top">
-                <strong style="color: var(--naranja-estructural); font-size: 1.1em;">🛠️ Decisión de Diseño y Constructibilidad:</strong>
-                <p class="w3-small" style="margin-top: 5px; margin-bottom: 8px;">
-                    Dado que la cuantía mínima rige en ambos sentidos, se unifica el refuerzo para facilitar el armado en obra y evitar confusiones en la colocación:
+            <!-- CAJA DE DOVELAS (NSR-10 C.15.8) -->
+            <div class="w3-panel ce-panel-azul w3-padding w3-round w3-margin-top" style="border: 1px solid var(--gris-borde);">
+                <strong style="color: var(--azul-profundo);"><i class="fa fa-link"></i> Transferencia por Refuerzo: ¿Se requieren dovelas? (NSR-10 C.15.8)</strong>
+                <p class="w3-small" style="margin-top: 8px; margin-bottom: 8px;">
+                    Según NSR-10 C.15.8.1, las fuerzas en la base de la columna deben transmitirse a la zapata mediante el aplastamiento del concreto y a través de refuerzo de conexión. Para columnas construidas en obra, la norma exige que el área de este refuerzo en la interfaz no sea menor a <strong>\( 0.005 A_g \)</strong> (C.15.8.2.1).
                 </p>
-                <ul class="w3-small" style="margin-top: 0; margin-bottom: 10px; padding-left: 20px;">
-                    <li>Separación calculada: \( S = (199 \text{ mm}^2 / 900 \text{ mm}^2) \times 1000 = 221 \text{ mm} \).</li>
-                    <li><strong>Disposición Final:</strong> Se adoptan <strong>1N5 c/200 mm</strong> (8 barras por sentido).</li>
-                </ul>
-                
-                <div class="w3-padding-small w3-round w3-white" style="border: 1px dashed var(--naranja-estructural); font-size: 0.85em; color: var(--azul-profundo); margin-bottom: 8px;">
-                    <strong>Resultado:</strong> Una parrilla ortogonal uniforme de 8 barras N°5 en cada dirección para toda la zapata de \( 1.6 \text{ m} \). Ver Anexo C para detallado.
-                </div>
-                
-                <div class="w3-padding-small w3-round w3-white" style="border: 1px dashed var(--naranja-estructural); font-size: 0.85em; color: var(--azul-profundo);">
-                    <strong>Nota:</strong> Se puede adoptar un diseño simétrico únicamente si:
-                    <ul style="margin: 5px 0 0 0; padding-left: 20px;">
-                        <li>Se opta por la estandarización (recomendado): en este caso, se debe disponer en ambos sentidos el refuerzo máximo obtenido del análisis individual.</li>
-                        <li>Las solicitaciones y dimensiones son comparables, garantizando la seguridad en el eje más crítico.</li>
-                        <li>La cuantía mínima rige el diseño en ambas direcciones.</li>
-                    </ul>
+                <p class="w3-small" style="margin-top: 0; margin-bottom: 8px;">
+                    De acuerdo con <strong>C.15.8.2</strong>, este requisito se puede satisfacer mediante el uso de pasadores (dovelas independientes) <strong>o extendiendo las barras longitudinales</strong> de la columna directamente dentro de la zapata.
+                </p>
+                <div class="w3-padding-small w3-round w3-white" style="border: 1px dashed var(--azul-profundo); font-size: 0.85em; color: var(--azul-profundo); margin-top: 10px;">
+                    <strong>💡 Conclusión para este diseño (Práctica local):</strong> La columna se apoya y ancla directamente en la zapata. Dado que el refuerzo principal de la columna cumple con las cuantías estructurales (mínimo \( 0.01 A_g \)) y se extiende en su totalidad hasta el fondo de la zapata cumpliendo su longitud de desarrollo a compresión (\( l_{dc} \)), <strong>se supera holgadamente el requisito de \( 0.005 A_g \)</strong>. Por lo tanto, <strong>no se requieren pasadores ni dovelas adicionales</strong>.
                 </div>
             </div>
         </div>
