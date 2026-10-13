@@ -19,7 +19,7 @@
         .contenedor-principal {
             max-width: 1200px; margin: 30px auto; border-radius: 12px;
             background: white; padding: 0; overflow: hidden;
-            box-shadow: 0 8px 25px rgba(26,37,48,0.15); /* Sombra ajustada a la marca */
+            box-shadow: 0 8px 25px rgba(26,37,48,0.15);
         }
         
         /* HEADER ACTUALIZADO */
@@ -33,12 +33,17 @@
         .slider { width:100%; accent-color: var(--naranja-estructural); cursor: pointer; }
         .label-tech { font-size: 0.85em; font-weight: 600; color: #64748b; }
         .legend-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 5px; }
-        .table-res td { padding: 8px !important; font-size: 0.85em; }
+        .table-res td { padding: 8px !important; font-size: 0.85em; vertical-align: middle; }
         .res-cumple { color:#059669; font-weight:bold; }
         .res-falla { color:#dc2626; font-weight:bold; }
         .res-alerta { color:#d97706; font-weight:bold; }
 
-        th { background-color: var(--azul-profundo) !important; color: white !important; }
+        th { background-color: var(--azul-profundo) !important; color: white !important; font-size: 0.85em; }
+
+        /* ADORNOS EXTRA PARA INPUTS */
+        .w3-input { transition: all 0.3s ease; padding: 8px; border-radius: 4px; border: 1px solid #cbd5e1; }
+        .w3-input:focus { border-color: var(--naranja-estructural) !important; box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.2); outline: none; }
+        .input-box { background: #f8fafc; padding: 12px; border-radius: 8px; border: 1px solid #e2e8f0; margin-bottom: 12px; }
 
         /* LOGO FOOTER */
         .brand-logo-footer { max-width: 240px; height: auto; margin-bottom: 15px; display: inline-block; }
@@ -61,9 +66,9 @@
             .contenedor-principal {
             width: 100% !important;
             margin: 0 !important;
-            border-radius: 0 !important; /* Opcional: quita esquinas redondeadas en móvil para máxima área útil */
+            border-radius: 0 !important;
             box-shadow: none;
-            padding: 0 !important; /* <--- ESTO CREARÁ EL MARGEN PERFECTO EN MÓVIL */
+            padding: 0 !important;
             }
         }
 
@@ -109,27 +114,33 @@
             <div class="w3-col l4 m5">
                 <div class="w3-container w3-white w3-padding dashboard-card w3-card">
                     <h5 class="w3-border-bottom w3-padding-small"><b>Entrada de Datos</b></h5>
-                    <label class="label-tech">Lado Zapata L [m]: <span id="dispL" class="w3-text-blue">2.50</span></label>
-                    <input type="range" id="valL" min="1" max="6" step="0.05" value="2.5" class="slider w3-margin-bottom">
                     
-                    <div class="w3-row-padding">
-                        <div class="w3-half"><label class="label-tech">\(q_{adm}\) [kPa]</label><input type="number" id="qadm_in" value="188" class="w3-input w3-border w3-round"></div>
-                        <div class="w3-half"><label class="label-tech">\(q_{p}\) [kPa]</label><input type="number" id="qp_in" value="280" class="w3-input w3-border w3-round"></div>
+                    <div class="input-box">
+                        <label class="label-tech">Lado Zapata L [m]: <span id="dispL" class="w3-text-blue">2.50</span></label>
+                        <input type="range" id="valL" min="1" max="6" step="0.05" value="2.5" class="slider w3-margin-top w3-margin-bottom">
+                    </div>
+                    
+                    <div class="input-box w3-row-padding" style="padding-left:0; padding-right:0;">
+                        <div class="w3-half"><label class="label-tech">\(q_{adm}\) [kPa]</label><input type="number" id="qadm_in" value="188" class="w3-input"></div>
+                        <div class="w3-half"><label class="label-tech">\(q_{lp}\) [kPa]</label><input type="number" id="qp_in" value="280" class="w3-input"></div>
                     </div>
 
-                    <hr>
-                    <h6 class="w3-small"><b>Cargas Axiales (P) [kN]</b></h6>
-                    <div class="w3-row-padding">
-                        <div class="w3-third"><label class="w3-tiny">P Muerta</label><input type="number" id="PD_in" value="290" class="w3-input w3-border"></div>
-                        <div class="w3-third"><label class="w3-tiny">P Viva</label><input type="number" id="PL_in" value="70" class="w3-input w3-border"></div>
-                        <div class="w3-third"><label class="w3-tiny">P Sismo</label><input type="number" id="PE_in" value="45" class="w3-input w3-border"></div>
+                    <div class="input-box">
+                        <h6 class="w3-small" style="margin-top:0;"><b>Cargas Axiales (P) [kN]</b></h6>
+                        <div class="w3-row-padding" style="padding-left:0; padding-right:0;">
+                            <div class="w3-third"><label class="w3-tiny">P Muerta</label><input type="number" id="PD_in" value="290" class="w3-input"></div>
+                            <div class="w3-third"><label class="w3-tiny">P Viva</label><input type="number" id="PL_in" value="70" class="w3-input"></div>
+                            <div class="w3-third"><label class="w3-tiny">P Sismo</label><input type="number" id="PE_in" value="45" class="w3-input"></div>
+                        </div>
                     </div>
                     
-                    <h6 class="w3-small w3-margin-top"><b>Momentos Flectores (M) [kN·m]</b></h6>
-                    <div class="w3-row-padding">
-                        <div class="w3-third"><label class="w3-tiny">M Muerta</label><input type="number" id="MD_in" value="10" class="w3-input w3-border"></div>
-                        <div class="w3-third"><label class="w3-tiny">M Viva</label><input type="number" id="ML_in" value="10" class="w3-input w3-border"></div>
-                        <div class="w3-third"><label class="w3-tiny">M Sismo</label><input type="number" id="ME_in" value="85" class="w3-input w3-border"></div>
+                    <div class="input-box">
+                        <h6 class="w3-small" style="margin-top:0;"><b>Momentos Flectores (M) [kN·m]</b></h6>
+                        <div class="w3-row-padding" style="padding-left:0; padding-right:0;">
+                            <div class="w3-third"><label class="w3-tiny">M Muerta</label><input type="number" id="MD_in" value="10" class="w3-input"></div>
+                            <div class="w3-third"><label class="w3-tiny">M Viva</label><input type="number" id="ML_in" value="10" class="w3-input"></div>
+                            <div class="w3-third"><label class="w3-tiny">M Sismo</label><input type="number" id="ME_in" value="85" class="w3-input"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -137,37 +148,58 @@
             <div class="w3-col l8 m7">
                 <div class="w3-container w3-white w3-padding dashboard-card w3-card">
                     <h5 class="w3-border-bottom w3-padding-small"><b>1. Análisis Geotécnico (Presiones de Servicio y Estabilidad)</b></h5>
-                    <svg viewBox="0 0 500 380" width="100%" style="background:#fafafa; border-radius:8px;">
+                    <svg viewBox="0 0 500 380" width="100%" style="background:#fafafa; border-radius:8px; border: 1px solid #e2e8f0;">
                         <defs>
                             <pattern id="hatchFalla" patternUnits="userSpaceOnUse" width="4" height="4" patternTransform="rotate(45)">
                                 <line x1="0" y1="0" x2="0" y2="4" stroke="rgba(220, 38, 38, 0.4)" stroke-width="1" />
                             </pattern>
                         </defs>
+                        
+                        <!-- CUADRÍCULA DINÁMICA -->
+                        <g id="gridGroupGeot"></g>
+
+                        <!-- EL TRUCO DEL ORDEN: Columna primero, zapata después -->
+                        <rect x="235" y="-10" width="30" height="30" fill="#64748b"/> 
                         <rect x="150" y="20" width="200" height="40" fill="#94a3b8" stroke="#1e293b" stroke-width="2"/>
-                        <rect x="235" y="-10" width="30" height="30" fill="#64748b"/>
-                        <line x1="250" y1="60" x2="250" y2="380" stroke="#e2e8f0" stroke-dasharray="4"/>
+                        
+                        <!-- Eje central -->
+                        <line x1="250" y1="60" x2="250" y2="380" stroke="#cbd5e1" stroke-dasharray="4"/>
 
                         <path id="pathC1" fill="rgba(37, 99, 235, 0.1)" stroke="#2563eb" stroke-width="2"/>
                         <path id="pathC2" fill="rgba(234, 88, 12, 0.15)" stroke="#ea580c" stroke-width="2"/>
                         <path id="pathC3" fill="rgba(124, 58, 237, 0.2)" stroke="#7c3aed" stroke-width="2.5"/>
 
                         <line id="lineQadm" x1="120" y1="0" x2="380" y2="0" stroke="#64748b" stroke-width="1.5" stroke-dasharray="5,3"/>
-                        <text x="385" id="txtQadm" font-size="10" fill="#64748b">q_adm</text>
+                        <text x="385" id="txtQadm" font-size="12" fill="#64748b">q<tspan baseline-shift="sub" font-size="9">adm</tspan></text>
+                        
                         <line id="lineQp" x1="120" y1="0" x2="380" y2="0" stroke="#dc2626" stroke-width="2" stroke-dasharray="5,3"/>
-                        <text x="385" id="txtQp" font-size="10" font-weight="bold" fill="#dc2626">q_p</text>
+                        <text x="385" id="txtQp" font-size="12" font-weight="bold" fill="#dc2626">q<tspan baseline-shift="sub" font-size="9">lp</tspan></text>
+
+                        <!-- TEXTOS DE PRESIÓN DINÁMICOS -->
+                        <text id="valC1" x="355" y="0" font-size="11" fill="#2563eb" font-weight="bold"></text>
+                        <text id="valC2" x="355" y="0" font-size="11" fill="#ea580c" font-weight="bold"></text>
+                        <text id="valC3" x="355" y="0" font-size="11" fill="#7c3aed" font-weight="bold"></text>
                     </svg>
                     <div id="resultsArea" class="w3-margin-top w3-responsive"></div>
                 </div>
 
                 <div class="w3-container w3-white w3-padding dashboard-card w3-card">
                     <h5 class="w3-border-bottom w3-padding-small"><b>2. Diseño Estructural (Presiones Últimas Mayoradas)</b></h5>
-                    <svg viewBox="0 0 500 380" width="100%" style="background:#fafafa; border-radius:8px;">
-                        <rect x="150" y="20" width="200" height="40" fill="#94a3b8" stroke="#1e293b" stroke-width="2"/>
+                    <svg viewBox="0 0 500 380" width="100%" style="background:#fafafa; border-radius:8px; border: 1px solid #e2e8f0;">
+                        <!-- CUADRÍCULA DINÁMICA -->
+                        <g id="gridGroupUlt"></g>
+
+                        <!-- Columna primero, zapata después -->
                         <rect x="235" y="-10" width="30" height="30" fill="#64748b"/>
-                        <line x1="250" y1="60" x2="250" y2="380" stroke="#e2e8f0" stroke-dasharray="4"/>
+                        <rect x="150" y="20" width="200" height="40" fill="#94a3b8" stroke="#1e293b" stroke-width="2"/>
+                        <line x1="250" y1="60" x2="250" y2="380" stroke="#cbd5e1" stroke-dasharray="4"/>
 
                         <path id="pathU1" fill="rgba(46, 204, 113, 0.1)" stroke="#27ae60" stroke-width="2"/>
                         <path id="pathU2" fill="rgba(22, 160, 133, 0.15)" stroke="#16a085" stroke-width="2.5"/>
+
+                        <!-- TEXTOS DE PRESIÓN DINÁMICOS -->
+                        <text id="valU1" x="355" y="0" font-size="11" fill="#27ae60" font-weight="bold"></text>
+                        <text id="valU2" x="355" y="0" font-size="11" fill="#16a085" font-weight="bold"></text>
                     </svg>
                     <div id="resultsAreaUlt" class="w3-margin-top w3-responsive"></div>
                 </div>
@@ -177,7 +209,6 @@
         <hr style="border: 0; height: 1px; background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(230, 126, 34, 0.75), rgba(0, 0, 0, 0)); margin-top: 50px;">
         <div class="w3-center w3-padding-32" style="margin-top: 50px; clear: both;">
             <a href="../index.html" class="w3-button w3-light-grey w3-round-large w3-border">Inicio</a>
-            <!-- Añade otros botones si es necesario -->
         </div>
 
     </div> <!-- Cierra .contenido-body -->
@@ -260,12 +291,8 @@
     
 </div> <!-- Cierra .contenedor-principal -->
 
-
-
-
-
 <script>
-// --- MOTOR FEMA (MANTENIDO IGUAL) ---
+// --- MOTOR FEMA ---
 function motorFema(P, M, L, qp) {
     let res = { d: "", qmax: 0, estado: "", isFalla: false };
     if (P <= 0) { res.estado = "Sin Axial"; res.isFalla = true; return res; }
@@ -310,12 +337,12 @@ function motorFema(P, M, L, qp) {
     return res;
 }
 
-// --- MOTOR PARA PRESIONES ULTIMAS (SIN LIMITES PLASTICOS) ---
+// --- MOTOR PARA PRESIONES ULTIMAS ---
 function motorUltimo(P, M, L) {
     let res = { d: "", qmax: 0, qmin: 0, estado: "" };
     if (P <= 0) return res;
     const B = L, e = M / P, absE = Math.abs(e), sentido = Math.sign(e) || 1;
-    const xStart = 150, xEnd = 350, yBase = 60, scale = 0.5; // Escala fija para diseño
+    const xStart = 150, xEnd = 350, yBase = 60, scale = 0.5;
 
     if (absE <= L / 6) {
         res.qmax = (P / (L * B)) * (1 + 6 * absE / L);
@@ -336,54 +363,116 @@ function motorUltimo(P, M, L) {
 }
 
 function update() {
-    const L = parseFloat(document.getElementById("valL").value), qp = parseFloat(document.getElementById("qp_in").value), qadm = parseFloat(document.getElementById("qadm_in").value);
-    const PD = parseFloat(document.getElementById("PD_in").value) || 0, PL = parseFloat(document.getElementById("PL_in").value) || 0, PE = parseFloat(document.getElementById("PE_in").value) || 0;
-    const MD = parseFloat(document.getElementById("MD_in").value) || 0, ML = parseFloat(document.getElementById("ML_in").value) || 0, ME = parseFloat(document.getElementById("ME_in").value) || 0;
+    const L = parseFloat(document.getElementById("valL").value);
+    const qp = parseFloat(document.getElementById("qp_in").value);
+    const qadm = parseFloat(document.getElementById("qadm_in").value);
+    
+    const PD = parseFloat(document.getElementById("PD_in").value) || 0;
+    const PL = parseFloat(document.getElementById("PL_in").value) || 0;
+    const PE = parseFloat(document.getElementById("PE_in").value) || 0;
+    
+    const MD = parseFloat(document.getElementById("MD_in").value) || 0;
+    const ML = parseFloat(document.getElementById("ML_in").value) || 0;
+    const ME = parseFloat(document.getElementById("ME_in").value) || 0;
 
-    // 1. ACTUALIZACIÓN MODULO GEOTÉCNICO
+    // --- RENDERIZAR CUADRICULA (Cada 0.50m) ---
+    const pixelsPerMeter = 200 / L; // Los 200px visuales representan los L metros
+    let gridHTML = "";
+    // Iteramos cada 0.50 m a lo largo de la zapata
+    for(let x_m = 0.5; x_m < L; x_m += 0.5) {
+        let px = 150 + (x_m * pixelsPerMeter);
+        gridHTML += `<line x1="${px}" y1="20" x2="${px}" y2="380" stroke="#cbd5e1" stroke-width="1.2" stroke-dasharray="3,4"/>`;
+    }
+    document.getElementById("gridGroupGeot").innerHTML = gridHTML;
+    document.getElementById("gridGroupUlt").innerHTML = gridHTML;
+
+    // --- 1. ACTUALIZACIÓN MODULO GEOTÉCNICO ---
     const combos = [
         { name: "C1: D+L", P: PD + PL, M: MD + ML, id: "pathC1", color: "#2563eb" },
         { name: "C2: D+0.75L+0.525E", P: PD + 0.75 * PL + 0.525 * PE, M: MD + 0.75 * ML + 0.525 * ME, id: "pathC2", color: "#ea580c" },
         { name: "C3: 0.6D-0.7E", P: 0.6 * PD - 0.7 * PE, M: 0.6 * MD - 0.7 * ME, id: "pathC3", color: "#7c3aed" }
     ];
 
-    let table = `<table class="w3-table w3-bordered table-res"><tr class="w3-light-grey"><th>Combo</th><th>q_max [kPa]</th><th>Modelo</th><th>Verificación</th><th>\(L_{req}\) [m]</th></tr>`;
-    combos.forEach(c => {
+    const scaleG = 250 / Math.max(qp * 1.5, 100);
+    const yBase = 60;
+
+    // Doble barra invertida (\\) para que JavaScript pase "\(" al HTML y MathJax lo detecte.
+    let table = `<table class="w3-table w3-bordered table-res"><tr class="w3-light-grey"><th>Combo</th><th>\\(q_{max}\\) [kPa]</th><th>Modelo</th><th>Verificación</th><th>\\(L_{req}\\) [m]</th></tr>`;
+    
+    combos.forEach((c, index) => {
         const res = motorFema(c.P, c.M, L, qp);
         const pathEl = document.getElementById(c.id);
+        const textValEl = document.getElementById("val" + c.id.replace("path", ""));
+        
         pathEl.setAttribute("d", res.d);
-        if (res.isFalla || res.qmax > qp) { pathEl.setAttribute("fill", "url(#hatchFalla)"); pathEl.setAttribute("stroke-dasharray", "5,3"); }
-        else { pathEl.setAttribute("stroke-dasharray", "none"); pathEl.setAttribute("fill", c.id === "pathC1" ? "rgba(37, 99, 235, 0.1)" : (c.id === "pathC2" ? "rgba(234, 88, 12, 0.15)" : "rgba(124, 58, 237, 0.2)")); }
+        if (res.isFalla || res.qmax > qp) { 
+            pathEl.setAttribute("fill", "url(#hatchFalla)"); 
+            pathEl.setAttribute("stroke-dasharray", "5,3"); 
+        } else { 
+            pathEl.setAttribute("stroke-dasharray", "none"); 
+            pathEl.setAttribute("fill", c.id === "pathC1" ? "rgba(37, 99, 235, 0.1)" : (c.id === "pathC2" ? "rgba(234, 88, 12, 0.15)" : "rgba(124, 58, 237, 0.2)")); 
+        }
+        
         let vTxt = (res.isFalla || res.qmax > qp) ? "<span class='res-falla'>FALLA</span>" : (res.qmax > qadm ? "<span class='res-alerta'>ALERTA</span>" : "<span class='res-cumple'>CUMPLE</span>");
         let L_req = c.P > 0 ? (Math.abs(c.M / c.P) + Math.sqrt(Math.pow(c.M / c.P, 2) + c.P / qp)).toFixed(2) : "---";
         table += `<tr><td style="color:${c.color}"><b>${c.name}</b></td><td>${res.qmax === Infinity ? 'Vuelco' : res.qmax.toFixed(1)}</td><td>${res.estado}</td><td>${vTxt}</td><td><b>${L_req}</b></td></tr>`;
+        
+        // Poner el valor numérico en la gráfica
+        if (res.qmax !== Infinity && res.qmax > 0) {
+            textValEl.textContent = res.qmax.toFixed(1);
+            // Separamos un poco en X por si coinciden, y calculamos la altura Y
+            textValEl.setAttribute("x", 355 + (index * 30)); 
+            textValEl.setAttribute("y", yBase + (res.qmax * scaleG) + 4);
+        } else {
+            textValEl.textContent = "";
+        }
     });
     document.getElementById("resultsArea").innerHTML = table + "</table>";
 
-    // 2. ACTUALIZACIÓN MODULO DISEÑO
+    // --- 2. ACTUALIZACIÓN MODULO DISEÑO ULTIMO ---
     const combosUlt = [
         { name: "Ultima 1: 1.2D + 1.6L", P: 1.2*PD + 1.6*PL, M: 1.2*MD + 1.6*ML, id: "pathU1", color: "#27ae60" },
         { name: "Ultima 2: 1.2D + 1.0E + 1.0L", P: 1.2*PD + 1.0*PE + 1.0*PL, M: 1.2*MD + 1.0*ME + 1.0*ML, id: "pathU2", color: "#16a085" }
     ];
 
-    let tableUlt = `<table class="w3-table w3-bordered table-res"><tr class="w3-light-grey"><th>Combo Último</th><th>q_u max [kPa]</th><th>q_u min [kPa]</th><th>Modelo</th></tr>`;
-    combosUlt.forEach(c => {
+    let tableUlt = `<table class="w3-table w3-bordered table-res"><tr class="w3-light-grey"><th>Combo Último</th><th>\\(q_{u,max}\\) [kPa]</th><th>\\(q_{u,min}\\) [kPa]</th><th>Modelo</th></tr>`;
+    
+    combosUlt.forEach((c, index) => {
         const res = motorUltimo(c.P, c.M, L);
-        document.getElementById(c.id).setAttribute("d", res.d);
+        const pathEl = document.getElementById(c.id);
+        const textValEl = document.getElementById("val" + c.id.replace("path", ""));
+        
+        pathEl.setAttribute("d", res.d);
         tableUlt += `<tr><td style="color:${c.color}"><b>${c.name}</b></td><td>${res.qmax.toFixed(1)}</td><td>${res.qmin.toFixed(1)}</td><td>${res.estado}</td></tr>`;
+        
+        // Poner el valor numérico en la gráfica
+        if (res.qmax !== Infinity && res.qmax > 0) {
+            textValEl.textContent = res.qmax.toFixed(1);
+            textValEl.setAttribute("x", 355 + (index * 35)); 
+            textValEl.setAttribute("y", yBase + (res.qmax * 0.5) + 4); // El motorUltimo usa scale = 0.5 fijo
+        } else {
+            textValEl.textContent = "";
+        }
     });
     document.getElementById("resultsAreaUlt").innerHTML = tableUlt + "</table>";
 
-    // ACTUALIZACIÓN LÍNEAS GUÍA (G)
-    const scaleG = 250 / Math.max(qp * 1.5, 100), yBase = 60;
+    // --- ACTUALIZACIÓN LÍNEAS GUÍA (Geotécnico) ---
     const yAdm = yBase + qadm * scaleG;
     document.getElementById("lineQadm").setAttribute("y1", yAdm); document.getElementById("lineQadm").setAttribute("y2", yAdm);
-    document.getElementById("txtQadm").setAttribute("y", yAdm + 3);
+    document.getElementById("txtQadm").setAttribute("y", yAdm + 4);
+    
     const yP = yBase + qp * scaleG;
     document.getElementById("lineQp").setAttribute("y1", yP); document.getElementById("lineQp").setAttribute("y2", yP);
-    document.getElementById("txtQp").setAttribute("y", yP + 3);
+    document.getElementById("txtQp").setAttribute("y", yP + 4);
 
     document.getElementById("dispL").textContent = L.toFixed(2);
+
+    // --- FORZAR RENDER DE MATHJAX ---
+    // Como inyectamos nuevo HTML en las tablas, le avisamos a MathJax que vuelva a procesarlas
+    if (window.MathJax && window.MathJax.typesetPromise) {
+        MathJax.typesetPromise([document.getElementById('resultsArea'), document.getElementById('resultsAreaUlt')])
+            .catch(function (err) { console.log(err.message); });
+    }
 }
 
 document.querySelectorAll('input').forEach(el => el.addEventListener("input", update));
