@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parcial Corte 2 - Criterio Estructural</title>
+    
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        /* PALETA DE COLORES DE LA MARCA */
+        :root {
+            --azul-profundo: #1A2530;
+            --naranja-estructural: #E67E22;
+            --gris-claro: #F4F5F7;
+            --verde-correcto: #22c55e;
+            --rojo-incorrecto: #ef4444;
+        }
+
+        body { background-color: var(--gris-claro); font-family: 'Segoe UI', sans-serif; color: var(--azul-profundo); }
+        .contenedor-principal {
+            max-width: 1000px; margin: 30px auto; border-radius: 12px;
+            background: white; padding: 0; overflow: hidden;
+            box-shadow: 0 8px 25px rgba(26,37,48,0.15);
+        }
+        
+        /* HEADER */
+        .header-rc { background: var(--azul-profundo); color: white; padding: 30px 20px; text-align: center; }
+        .lema-global { font-size: 0.9em; letter-spacing: 2px; color: #a0aec0; text-transform: uppercase; margin-bottom: 10px; font-weight: bold; }
+        .lema-global span { color: var(--naranja-estructural); }
+
+        .ruta-aprendizaje {
+            display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 20px;
+            font-size: 0.85em; color: #a0aec0;
+        }
+        .ruta-item { padding: 4px 12px; border-radius: 20px; border: 1px solid #4a5568; background: rgba(255,255,255,0.05); text-decoration: none; color: inherit;}
+        .ruta-item:hover { background: rgba(255,255,255,0.1); }
+        .ruta-activa { border-color: var(--naranja-estructural); color: white; background: rgba(230, 126, 34, 0.2); font-weight: bold; }
+
+        .contenido-body { padding: 40px; }
+
+        /* ESTILOS DE PREGUNTAS TIPO MOODLE PERO ESTÉTICAS */
+        .pregunta-container {
+            border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 30px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02); overflow: hidden;
+        }
+        .pregunta-header {
+            background-color: #f8fafc; border-bottom: 1px solid #e2e8f0;
+            padding: 12px 20px; font-weight: bold; color: var(--azul-profundo);
+            display: flex; justify-content: space-between;
+        }
+        .pregunta-body { padding: 20px; }
+        
+        .opciones-lista { list-style-type: none; padding-left: 0; }
+        .opcion-item {
+            padding: 10px 15px; margin-bottom: 8px; border: 1px solid #e2e8f0; border-radius: 6px;
+            background: #fdfdfd; display: flex; align-items: flex-start;
+        }
+        .opcion-item.correcta { border-color: var(--verde-correcto); background: #f0fdf4; }
+        .opcion-letra { font-weight: bold; margin-right: 15px; color: var(--naranja-estructural); }
+        
+        /* RETROALIMENTACIÓN */
+        .retroalimentacion {
+            background-color: #fffbeb; border-left: 4px solid var(--naranja-estructural);
+            padding: 15px 20px; margin-top: 15px; font-size: 0.9em; border-radius: 0 6px 6px 0;
+        }
+
+        @media (max-width: 768px) {
+            .contenedor-principal { margin: 0; border-radius: 0; width: 100%; }
+            .contenido-body { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="contenedor-principal w3-animate-opacity">
+    
+    <!-- HEADER -->
+    <div class="header-rc">
+        <div class="lema-global">
+            Banco de Evaluaciones <br>
+            <span>Diseño de Hormigón Armado II</span>
+        </div>
+        <h1 class="w3-xlarge" style="margin: 0; font-weight: bold;">Revisión de Intento: Parcial Corte 2</h1>
+        
+        <!-- NAVEGACIÓN DE CORTES -->
+        <div class="ruta-aprendizaje">
+            <a href="corte-1.html" class="ruta-item">Corte 1: Conceptos y Flexión</a>
+            <span class="ruta-item ruta-activa">Corte 2: Cortante y Columnas P-M</span>
+            <a href="corte-3.html" class="ruta-item">Corte 3: Nudos y Sistemas PRM</a>
+        </div>
+    </div>
+
+    <div class="contenido-body">
+        
+        <!-- PREGUNTA 1 -->
+        <div class="pregunta-container">
+            <div class="pregunta-header">
+                <span>Pregunta 1</span>
+                <span class="w3-text-grey w3-small">Valor: 1.00 punto</span>
+            </div>
+            <div class="pregunta-body">
+                <p>Una columna de hormigón armado de sección $300 \times 500$ mm está sujeta a flexocompresión. De acuerdo con las disposiciones de la NSR-10 (C.10.3), si la deformación unitaria neta a tracción en el acero extremo en tracción ($\epsilon_t$) es igual a 0.004, la sección se clasifica como:</p>
+                
+                <ul class="opciones-lista">
+                    <li class="opcion-item">
+                        <span class="opcion-letra">a.</span>
+                        <div>Controlada por compresión, con $\phi = 0.65$.</div>
+                    </li>
+                    <li class="opcion-item correcta">
+                        <span class="opcion-letra">b.</span>
+                        <div>En zona de transición, debiendo interpolar el factor $\phi$ entre 0.65 y 0.90.</div>
+                        <i class="fa fa-check" style="color: var(--verde-correcto); margin-left: auto;"></i>
+                    </li>
+                    <li class="opcion-item">
+                        <span class="opcion-letra">c.</span>
+                        <div>Controlada por tracción, garantizando comportamiento dúctil con $\phi = 0.90$.</div>
+                    </li>
+                    <li class="opcion-item">
+                        <span class="opcion-letra">d.</span>
+                        <div>Inaceptable bajo la normativa, debiendo aumentar el área de acero.</div>
+                    </li>
+                </ul>
+
+                <div class="retroalimentacion">
+                    <strong>Respuesta correcta:</strong> b.<br>
+                    <em>Justificación:</em> Para aceros con $f_y = 420$ MPa, el límite de compresión es $\epsilon_t \leq 0.002$ y el límite controlado por tracción es $\epsilon_t \geq 0.005$. Como $0.002 < 0.004 < 0.005$, la sección se encuentra en la zona de transición.
+                </div>
+            </div>
+        </div>
+
+        <!-- PREGUNTA 2 -->
+        <div class="pregunta-container">
+            <div class="pregunta-header">
+                <span>Pregunta 2</span>
+                <span class="w3-text-grey w3-small">Valor: 1.50 puntos</span>
+            </div>
+            <div class="pregunta-body">
+                <p>Determine el cortante probable $V_e$ para una viga de un pórtico con capacidad especial de disipación de energía (DES) sometida a sismo hacia la derecha, dados los siguientes momentos probables en los extremos y la carga gravitacional isostática $V_u$:</p>
+                <ul>
+                    <li>$M_{pr1}^- = 450$ kNm (Izquierda)</li>
+                    <li>$M_{pr2}^+ = 320$ kNm (Derecha)</li>
+                    <li>Luz libre $l_n = 6.0$ m</li>
+                    <li>$V_u$ por cargas de gravedad = $85$ kN</li>
+                </ul>
+                
+                <ul class="opciones-lista">
+                    <li class="opcion-item correcta">
+                        <span class="opcion-letra">a.</span>
+                        <div>$V_e = 213.33$ kN</div>
+                        <i class="fa fa-check" style="color: var(--verde-correcto); margin-left: auto;"></i>
+                    </li>
+                    <li class="opcion-item">
+                        <span class="opcion-letra">b.</span>
+                        <div>$V_e = 128.33$ kN</div>
+                    </li>
+                    <li class="opcion-item">
+                        <span class="opcion-letra">c.</span>
+                        <div>$V_e = 43.33$ kN</div>
+                    </li>
+                </ul>
+
+                <div class="retroalimentacion">
+                    <strong>Respuesta correcta:</strong> a.<br>
+                    <em>Procedimiento:</em> El cortante sísmico es $V_{sismo} = \frac{M_{pr1}^- + M_{pr2}^+}{l_n} = \frac{450 + 320}{6} = 128.33$ kN.<br>
+                    El cortante total de diseño es $V_e = V_{sismo} + V_u = 128.33 + 85 = 213.33$ kN.
+                </div>
+            </div>
+        </div>
+
+        <!-- BOTONES DE NAVEGACIÓN -->
+        <hr style="border: 0; height: 1px; background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(230, 126, 34, 0.75), rgba(0, 0, 0, 0)); margin-top: 40px;">
+        
+        <div class="w3-center w3-padding-16">
+            <a href="corte-1.html" class="w3-button w3-light-grey w3-round-large w3-border"><i class="fa fa-arrow-left"></i> Parcial Corte 1</a>
+            <a href="../index.html" class="w3-button w3-dark-grey w3-round-large">Volver al Repositorio</a>
+            <a href="corte-3.html" class="w3-button w3-red w3-round-large">Parcial Corte 3 <i class="fa fa-arrow-right"></i></a>
+        </div>
+
+    </div>
+    
+    <!-- FOOTER -->
+    <footer class="w3-container w3-padding-32 w3-center w3-text-grey w3-light-grey w3-margin-top">
+        <p class="w3-small">
+            <b>Criterio Estructural</b><br>
+            © 2026. Todos los derechos reservados.
+        </p>
+    </footer>
+</div>
+
+</body>
+</html>
