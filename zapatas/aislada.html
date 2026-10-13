@@ -427,15 +427,16 @@
             </div>
 
 
-            <div class="w3-panel w3-white w3-padding w3-round w3-center" style="border: 1px solid var(--gris-borde); margin: 15px 0;">
-                <strong>Formulación inicial aplicada (Análisis Unidireccional):</strong>
+           <div class="w3-panel w3-white w3-padding w3-round w3-center" style="border: 1px solid var(--gris-borde); margin: 15px 0;">
+                <strong>Formulación inicial aplicada (análisis unidireccional):</strong>
                 <div class="math-scroll">
-                    \[ q_{max} = \frac{P}{A} \left( 1 + \frac{6e}{L} \right) \]
+                    \[ q_{max} = \frac{P}{A} \left( 1 + \frac{6e_L}{L} \right), \qquad A = BL, \quad e_L = \frac{M_y}{P} \]
                 </div>
                 <p class="w3-small" style="color: var(--gris-texto); font-style: italic; margin-bottom: 0;">
-                    *Nota: En este ejemplo se asume \( M_x \approx 0 \) por simplicidad. En presencia de momentos en ambos ejes (sismo ortogonal), debe evaluarse la presión de contacto biaxial en las esquinas.
+                    *Nota: se asume \( M_x \approx 0 \) por simplicidad. Con momentos en ambos ejes (ej. sismo ortogonal) el problema es bidimensional y la presión máxima se desplaza a una esquina: \( q = \frac{P}{A}\left(1 \pm \frac{6e_L}{L} \pm \frac{6e_B}{B}\right) \), válida mientras no haya pérdida de contacto.
                 </p>
             </div>
+
 
             <div class="tabla-container">
                 <table class="tabla-traslapos">
