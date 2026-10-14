@@ -176,9 +176,9 @@
                         <text x="385" id="txtQp" font-size="12" font-weight="bold" fill="#dc2626">q<tspan baseline-shift="sub" font-size="9">lp</tspan></text>
 
                         <!-- TEXTOS DE PRESIÓN DINÁMICOS -->
-                        <text id="valC1" x="355" y="0" font-size="11" fill="#2563eb" font-weight="bold"></text>
-                        <text id="valC2" x="355" y="0" font-size="11" fill="#ea580c" font-weight="bold"></text>
-                        <text id="valC3" x="355" y="0" font-size="11" fill="#7c3aed" font-weight="bold"></text>
+                        <text id="valC1" x="355" y="0" font-size="09" fill="#2563eb" font-weight="bold"></text>
+                        <text id="valC2" x="355" y="0" font-size="09" fill="#ea580c" font-weight="bold"></text>
+                        <text id="valC3" x="355" y="0" font-size="09" fill="#7c3aed" font-weight="bold"></text>
                     </svg>
                     <div id="resultsArea" class="w3-margin-top w3-responsive"></div>
                 </div>
@@ -198,8 +198,8 @@
                         <path id="pathU2" fill="rgba(22, 160, 133, 0.15)" stroke="#16a085" stroke-width="2.5"/>
 
                         <!-- TEXTOS DE PRESIÓN DINÁMICOS -->
-                        <text id="valU1" x="355" y="0" font-size="11" fill="#27ae60" font-weight="bold"></text>
-                        <text id="valU2" x="355" y="0" font-size="11" fill="#16a085" font-weight="bold"></text>
+                        <text id="valU1" x="355" y="0" font-size="09" fill="#27ae60" font-weight="bold"></text>
+                        <text id="valU2" x="355" y="0" font-size="09" fill="#16a085" font-weight="bold"></text>
                     </svg>
                     <div id="resultsAreaUlt" class="w3-margin-top w3-responsive"></div>
                 </div>
@@ -375,13 +375,21 @@ function update() {
     const ML = parseFloat(document.getElementById("ML_in").value) || 0;
     const ME = parseFloat(document.getElementById("ME_in").value) || 0;
 
-    // --- RENDERIZAR CUADRICULA (Cada 0.50m) ---
-    const pixelsPerMeter = 200 / L; // Los 200px visuales representan los L metros
+    // --- RENDERIZAR CUADRICULA (Cada 0.50m desde el centro) ---
+    const pixelsPerMeter = 200 / L; 
     let gridHTML = "";
-    // Iteramos cada 0.50 m a lo largo de la zapata
-    for(let x_m = 0.5; x_m < L; x_m += 0.5) {
-        let px = 150 + (x_m * pixelsPerMeter);
-        gridHTML += `<line x1="${px}" y1="20" x2="${px}" y2="380" stroke="#cbd5e1" stroke-width="1.2" stroke-dasharray="3,4"/>`;
+    
+    // El centro de la zapata en nuestro lienzo SVG está exactamente en X = 250
+    // Iteramos desde 0.50m hasta la mitad de la longitud total (L / 2)
+    for(let x_m = 0.5; x_m <= L / 2; x_m += 0.5) {
+        let pxRight = 250 + (x_m * pixelsPerMeter); // Calcula posición hacia la derecha
+        let pxLeft  = 250 - (x_m * pixelsPerMeter); // Calcula posición hacia la izquierda
+        
+        // Atributos comunes (añadimos opacity="0.4" para hacerlas muy tenues)
+        let lineStyle = `y1="20" y2="380" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="3,4" opacity="0.4"`;
+        
+        gridHTML += `<line x1="${pxRight}" x2="${pxRight}" ${lineStyle} />`;
+        gridHTML += `<line x1="${pxLeft}" x2="${pxLeft}" ${lineStyle} />`;
     }
     document.getElementById("gridGroupGeot").innerHTML = gridHTML;
     document.getElementById("gridGroupUlt").innerHTML = gridHTML;
@@ -421,7 +429,7 @@ function update() {
         if (res.qmax !== Infinity && res.qmax > 0) {
             textValEl.textContent = res.qmax.toFixed(1);
             // Separamos un poco en X por si coinciden, y calculamos la altura Y
-            textValEl.setAttribute("x", 355 + (index * 30)); 
+            textValEl.setAttribute("x", 355 + (index * 0)); 
             textValEl.setAttribute("y", yBase + (res.qmax * scaleG) + 4);
         } else {
             textValEl.textContent = "";
@@ -448,7 +456,7 @@ function update() {
         // Poner el valor numérico en la gráfica
         if (res.qmax !== Infinity && res.qmax > 0) {
             textValEl.textContent = res.qmax.toFixed(1);
-            textValEl.setAttribute("x", 355 + (index * 35)); 
+            textValEl.setAttribute("x", 355 + (index * 0)); 
             textValEl.setAttribute("y", yBase + (res.qmax * 0.5) + 4); // El motorUltimo usa scale = 0.5 fijo
         } else {
             textValEl.textContent = "";
