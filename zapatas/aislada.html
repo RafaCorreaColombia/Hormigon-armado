@@ -1001,6 +1001,58 @@
         <div class="panel-control" id="aplastamiento">
             <h2 class="panel-titulo">7. Transferencia de Esfuerzos (Aplastamiento)</h2>
             <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Resistencia del concreto en la interfaz de apoyo (NSR-10 C.15.8 y C.10.14)</p>
+            <!-- CAJAS DE EXPLICACIÓN: DEMANDA Y CAPACIDAD AL APLASTAMIENTO -->
+            <div class="ce-grid ce-grid-2" style="margin-bottom: 15px;">
+                
+                <!-- Demanda Pu -->
+                <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid var(--gris-borde); margin:0;">
+                    <strong style="color: var(--naranja-estructural);">📉 Demanda Axial (\( P_u \))</strong>
+                    <p class="w3-small" style="margin-top: 5px; margin-bottom: 5px;">
+                        Corresponde a la máxima carga axial mayorada que la columna transmite a la cimentación. Revisando las combinaciones de diseño (Sección 4), extraemos el valor crítico que comprime la interfaz:
+                    </p>
+                    <div class="math-scroll w3-center w3-small" style="background: #f8fafc; padding: 5px; border-radius: 4px;">
+                        \[ P_u = \mathbf{463.0 \text{ kN}} \quad \text{(Comb. 1.2D+E+L)} \]
+                    </div>
+                    <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
+                        Esta es la fuerza que intenta "aplastar" el concreto justo debajo de la huella de la columna.
+                    </p>
+                </div>
+
+                <!-- Capacidad phi Pn -->
+                <div class="w3-panel ce-panel-azul w3-padding w3-round" style="margin:0;">
+                    <strong style="color: var(--azul-profundo);">🛡️ Capacidad de Aplastamiento (\( \phi P_n \))</strong>
+                    <p class="w3-small" style="margin-top: 5px; margin-bottom: 5px;">
+                        Resistencia del concreto al aplastamiento (NSR-10 C.10.14). Al apoyarse en una zapata más ancha, el concreto circundante confina el área cargada, incrementando su resistencia:
+                    </p>
+                    <div class="math-scroll w3-center w3-small" style="background: rgba(255,255,255,0.5); padding: 5px; border-radius: 4px;">
+                        \[ \phi P_n = \phi (0.85 f'_c A_1) \sqrt{\frac{A_2}{A_1}} \]
+                    </div>
+                    <p class="w3-small" style="color: var(--gris-texto); margin-top: 5px; margin-bottom: 0; line-height: 1.3;">
+                        Donde \( \phi = 0.65 \) (aplastamiento), \( A_1 \) es el área cargada y el factor de confinamiento (\( \sqrt{A_2/A_1} \)) está limitado normativamente a un máximo de 2.0.
+                    </p>
+                </div>
+            </div>
+
+            <div class="w3-panel w3-padding-small w3-round w3-white w3-margin-bottom" style="border: 1px dashed var(--azul-profundo); font-size: 0.85em; color: var(--azul-profundo);">   
+                <strong>Definición de las áreas:</strong>
+                <ul style="margin: 5px 0 0 0; padding-left: 20px;">
+                    <li>\( A_1 \): Área de apoyo de la columna (\( 0.40 \text{ m} \times 0.40 \text{ m} = 0.16 \text{ m}^2 \)).</li>
+                    <li>\( A_2 \): Área máxima de la base inferior de la pirámide de difusión (pendientes 1V:2H) contenida completamente dentro de la zapata (\( 1.60 \text{ m} \times 1.60 \text{ m} = 2.56 \text{ m}^2 \)).</li>
+                </ul>
+            </div>
+
+            <div class="ce-grid ce-grid-2">
+                <div class="w3-panel ce-panel-gris w3-padding w3-round w3-center" style="margin:0;">
+                    <strong>Factor de Confinamiento:</strong><br>
+                    <span class="w3-large" style="color: var(--azul-profundo);">\( \sqrt{2.56 / 0.16} = 4.0 \)</span><br>
+                    <span class="ce-alerta w3-small">Se restringe al límite normativo = 2.0</span>
+                </div>
+                <div class="w3-panel ce-panel-azul w3-padding w3-round w3-center" style="margin:0;">
+                    <strong>Capacidad de la Zapata:</strong><br>
+                    <span class="w3-large ce-destacado">\( \phi P_n = \mathbf{3712.8 \text{ kN}} \)</span><br>
+                    <span style="color: green; font-weight: bold;">\( P_u \) (463.0 kN) &lt; \( \phi P_n \) ✅</span>
+                </div>
+            </div>
 
             <p>Se verifica que el concreto de la zapata sea capaz de soportar la compresión local inducida por la columna:</p>
 
