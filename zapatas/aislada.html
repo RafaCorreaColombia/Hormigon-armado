@@ -726,7 +726,87 @@
                 </table>
             </div>
 
-            <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:30px;">5.2 Cortante Bidireccional (Punzonamiento)</h4>
+            <!-- ========================================== -->
+            <!-- 5.2 CORTANTE BIDIRECCIONAL (BÁSICO)        -->
+            <!-- ========================================== -->
+            <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:30px;">5.2 Cortante Bidireccional (Punzonamiento): Verificación Básica</h4>
+            <p class="w3-small" style="margin-top: -5px; color: var(--gris-texto);">Equilibrio de fuerzas verticales en el perímetro crítico (NSR-10 C.11.11).</p>
+    
+            <!-- CAJAS DE EXPLICACIÓN: DEMANDA Y CAPACIDAD 5.2 -->
+            <div class="ce-grid ce-grid-2" style="margin-bottom: 15px;">
+                
+                <!-- Demanda Vu Punzonamiento -->
+                <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid var(--gris-borde); margin:0;">
+                    <strong style="color: var(--naranja-estructural);">📉 Demanda Básica (\( V_u \))</strong>
+                    <p class="w3-small" style="margin-top: 5px; margin-bottom: 5px;">
+                        Realizamos un equilibrio de fuerzas. La carga puntual de la columna (\( P_u \)) es contrarrestada por la reacción del suelo que empuja <strong>dentro</strong> del área crítica (\( A_{crit} = 0.668 \text{ m}^2 \)) ubicada a \( d/2 \):
+                    </p>
+                    <div class="math-scroll w3-center w3-small" style="background: #f8fafc; padding: 5px; border-radius: 4px;">
+                        \[ V_u = P_u - (A_{crit} \cdot q_u) \]
+                    </div>
+                    <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
+                        Donde \( q_u \) es la presión última. En este ejemplo, al considerar una distribución lineal de presiones y una configuración centrada, esta presión se evalúa en el centroide de dicha área crítica.
+                    </p>
+                </div>
+
+                <!-- Capacidad phi Vc Punzonamiento -->
+                <div class="w3-panel ce-panel-azul w3-padding w3-round" style="margin:0;">
+                    <strong style="color: var(--azul-profundo);">🛡️ Capacidad del Concreto (\( \phi V_c \))</strong>
+                    <p class="w3-small" style="margin-top: 5px; margin-bottom: 5px;">
+                        Se rige por el menor de tres valores normativos (NSR-10 C.11.11.2.1) evaluados a lo largo del perímetro crítico \( b_o = 3268 \text{ mm} \):
+                    </p>
+                    <div class="w3-small" style="font-family: 'Courier New', monospace; color: var(--azul-profundo); background: rgba(255,255,255,0.5); padding: 5px; border-radius: 4px; margin-bottom: 5px;">
+                        • Ec. C.11-31: 3186 kN<br>
+                        • Ec. C.11-32: 3683 kN<br>
+                        <strong>• Ec. C.11-33: 2061 kN (Gobierna)</strong>
+                    </div>
+                    <div class="math-scroll w3-center w3-small" style="font-weight: bold; color: #15803d; background: rgba(21, 128, 61, 0.1); border-radius: 4px; padding: 4px;">
+                        \[ \phi V_c = 0.75 \times 2061 = \mathbf{1546.0 \text{ kN}} \]
+                    </div>
+                </div>
+            </div>
+
+            <!-- TABLA DE RESULTADOS BÁSICOS -->
+            <div class="tabla-container">
+                <table class="tabla-traslapos tabla-small">
+                    <thead>
+                        <tr>
+                            <th style="text-align:left;">Combinación Última</th>
+                            <th>\( q_{u,eje\_ac} \) [kPa]</th>
+                            <th>Demanda \( V_u \) [kN]</th>
+                            <th>Capacidad \( \phi V_c \) [kN]</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="text-align:left;">1.2D + 1.6Live</td>
+                            <td>179.7</td>
+                            <td>340.0</td>
+                            <td>1546.0</td>
+                            <td style="color: green; font-weight: bold;">✅ OK</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">1.2D + E + Live</td>
+                            <td>180.9</td>
+                            <td>342.3</td>
+                            <td>1546.0</td>
+                            <td style="color: green; font-weight: bold;">✅ OK</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+    
+            <!-- 3. TRANSICIÓN Y ADVERTENCIA PARA CLASE -->
+            <div class="w3-panel w3-padding-small w3-round w3-white w3-margin-top" style="border: 1px dashed var(--naranja-estructural); font-size: 0.85em; color: var(--azul-profundo);">
+                <strong>💡 Lectura Intuitiva:</strong> Con los valores del ejemplo, las demandas básicas de fuerza (\( \sim 342 \text{ kN} \)) son muchísimo menores que la capacidad de diseño (\( 1546 \text{ kN} \)). La comprobación básica se cumple con gran holgura.
+                
+                <p style="margin-top: 5px; margin-bottom: 0; color: #c62828;">
+                    <strong>⚠️ Precaución:</strong> Esta comparación explica el chequeo básico de fuerzas verticales, pero <strong>no sustituye la evaluación avanzada cuando existe momento flector</strong>. No debemos dar a entender que la holgura de la fuerza cortante media demuestra por sí sola que los esfuerzos locales cumplen. La transferencia del momento induce esfuerzos cortantes adicionales que se verificarán más adelante en el análisis de esfuerzos locales.
+                </p>
+            </div>
+
+            <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:30px;">5.3 Cortante Bidireccional (Punzonamiento): Verificación Avanzada</h4>
             <p class="w3-small" style="margin-top: -5px; color: var(--gris-texto);">Verificación local de esfuerzos incluyendo transferencia de momento (NSR-10 C.11.11.7).</p>
     
             <!-- 1. NOTA PEDAGÓGICA (Simplificada en 3 líneas) -->
