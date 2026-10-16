@@ -731,6 +731,22 @@
             <!-- ========================================== -->
             <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:30px;">5.2 Cortante Bidireccional (Punzonamiento): Verificación Básica</h4>
             <p class="w3-small" style="margin-top: -5px; color: var(--gris-texto);">Equilibrio de fuerzas verticales en el perímetro crítico (NSR-10 C.11.11).</p>
+            <!-- RECUADRO INTRODUCTORIO: ¿QUÉ ESTAMOS VERIFICANDO? -->
+            <div class="w3-panel w3-padding-large w3-round" style="background-color: #f8fafc; border-left: 5px solid var(--azul-profundo); margin-bottom: 20px;">
+                <strong class="w3-medium" style="color: var(--azul-profundo);">🤔 ¿Qué estamos verificando?</strong>
+                <p class="w3-small" style="margin-top: 8px; margin-bottom: 4px; color: var(--gris-texto); line-height: 1.5;">
+                    La columna transmite una carga concentrada a la zapata, que a su vez la distribuye hacia el suelo. Alrededor de la columna se define un <strong>perímetro crítico</strong> a una distancia (\(d/2\)) de sus caras. Para nuestra columna cuadrada (\(400 \times 400 \text{ mm}\)), la longitud total de este perímetro (\(b_o\)) es:
+                </p>
+                <div class="math-scroll w3-center w3-small" style="margin: 6px 0; color: var(--azul-profundo);">
+                    \[ b_o = 4 \times (c_{col} + d) = 4 \times (400 + 417.1) = \mathbf{3268 \text{ mm}} \]
+                </div>
+                <p class="w3-small" style="margin-top: 4px; margin-bottom: 8px; color: var(--gris-texto); line-height: 1.5;">
+                    El punzonamiento verifica la capacidad del concreto frente a la fuerza cortante que debe transmitirse a través de esta superficie para evitar que la columna "perfore" la zapata.
+                </p>
+                <p class="w3-small" style="margin-top: 0; margin-bottom: 0; color: var(--azul-profundo); font-style: italic; border-top: 1px dashed var(--gris-borde); padding-top: 8px;">
+                    En este <strong>nivel básico</strong>, estudiamos el equilibrio vertical y la resistencia promedio de la sección crítica. La distribución local de esfuerzos asociada a la transferencia de momento se evalúa por separado en el nivel avanzado.
+                </p>
+            </div>
     
             <!-- CAJAS DE EXPLICACIÓN: DEMANDA Y CAPACIDAD 5.2 -->
             <div class="ce-grid ce-grid-2" style="margin-bottom: 15px;">
