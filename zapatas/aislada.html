@@ -816,10 +816,11 @@
     
             <!-- 3. TRANSICIÓN Y ADVERTENCIA PARA CLASE -->
             <div class="w3-panel w3-padding-small w3-round w3-white w3-margin-top" style="border: 1px dashed var(--naranja-estructural); font-size: 0.85em; color: var(--azul-profundo);">
-                <strong>💡 Lectura Intuitiva:</strong> Con los valores del ejemplo, las demandas básicas de fuerza (\( \sim 342 \text{ kN} \)) son muchísimo menores que la capacidad de diseño (\( 1546 \text{ kN} \)). La comprobación básica se cumple con gran holgura.
+                <strong>💡 Lectura Intuitiva:</strong> En este ejemplo, la demanda básica de cortante por punzonamiento es de aproximadamente (\( 342 \text{ kN} \)),  frente a una resistencia de diseño de
+                 (\( 1546 \text{ kN} \)). La verificación por equilibrio de fuerzas verticales presenta una holgura considerable.
                 
                 <p style="margin-top: 5px; margin-bottom: 0; color: #c62828;">
-                    <strong>⚠️ Precaución:</strong> Esta comparación explica el chequeo básico de fuerzas verticales, pero <strong>no sustituye la evaluación avanzada cuando existe momento flector</strong>. No debemos dar a entender que la holgura de la fuerza cortante media demuestra por sí sola que los esfuerzos locales cumplen. La transferencia del momento induce esfuerzos cortantes adicionales que se verificarán más adelante en el análisis de esfuerzos locales.
+                    <strong>⚠️ Alcance de esta comprobación:</strong> Cuando la columna transmite un momento flector, la demanda no se describe únicamente mediante la fuerza cortante resultante. El momento puede generar una distribución no uniforme de esfuerzos a lo largo del perímetro crítico. Por ello, la verificación se complementa en el apartado siguiente con la evaluación de los esfuerzos locales asociados a la transferencia de momento.
                 </p>
             </div>
 
@@ -898,10 +899,40 @@
             </div>
 
             <p>
-            Para el diseño por flexión, la zapata se idealiza como una <strong>viga en voladizo empotrada en la cara de la columna</strong> (sección crítica). El momento último \( M_u \) se determina aplicando el diagrama variable de presiones del suelo como una carga distribuida sobre este tramo (\( L_{voladizo} = 0.60 \text{ m} \)), calculando la fuerza resultante y multiplicándola por su respectivo brazo de palanca respecto a la sección crítica.</p>
+            <!-- CAJAS DE EXPLICACIÓN: DEMANDA Y CAPACIDAD A FLEXIÓN -->
+            <div class="ce-grid ce-grid-2" style="margin-top: 15px; margin-bottom: 15px;">
+                
+                <!-- Demanda Mu -->
+                <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid var(--gris-borde); margin:0;">
+                    <strong style="color: var(--naranja-estructural);">📉 Demanda por Flexión (\( M_u \))</strong>
+                    <p class="w3-small" style="margin-top: 5px; margin-bottom: 5px;">
+                        La zapata se idealiza como una <strong>viga en voladizo empotrada en la cara de la columna</strong> (sección crítica, NSR-10 C.15.4.2). La luz de este voladizo libre se calcula como:
+                    </p>
+                    <div class="math-scroll w3-center w3-small" style="background: #f8fafc; padding: 5px; border-radius: 4px;">
+                        \[ L_{vol} = \frac{L}{2} - \frac{c_{col}}{2} = \frac{1.60}{2} - \frac{0.40}{2} = \mathbf{0.60 \text{ m}} \]
+                    </div>
+                    <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
+                        Por estática, el momento último (\( M_u \)) en una franja unitaria es la resultante del diagrama de presiones del suelo (\( q_u \)) empujando hacia arriba en esa longitud libre, multiplicada por su brazo de palanca al empotramiento.
+                    </p>
+                </div>
+
+                <!-- Capacidad phi Mn -->
+                <div class="w3-panel ce-panel-azul w3-padding w3-round" style="margin:0;">
+                    <strong style="color: var(--azul-profundo);">🛡️ Resistencia de Diseño (\( \phi M_n \))</strong>
+                    <p class="w3-small" style="margin-top: 5px; margin-bottom: 5px;">
+                        El acero se determina garantizando que la resistencia nominal ponderada (\( \phi M_n \)) iguale o supere la demanda (\( M_u \)). Asumiendo flexión controlada por tracción (\( \phi = 0.90 \)):
+                    </p>
+                    <div class="math-scroll w3-center w3-small" style="background: rgba(255,255,255,0.5); padding: 5px; border-radius: 4px;">
+                        \[ \phi M_n = \phi A_s f_y \left( d - \frac{a}{2} \right) \ge M_u \]
+                    </div>
+                    <p class="w3-small" style="color: var(--gris-texto); margin-bottom: 0; line-height: 1.4;">
+                        De aquí se despeja el <strong>acero requerido por cálculo</strong> (\( A_{s,req} \)). En zapatas convencionales, este valor suele ser tan bajo que el diseño casi siempre queda gobernado por el <strong>acero mínimo</strong> normativo.
+                    </p>
+                </div>
+            </div>
             
             <div class="w3-panel w3-padding-small w3-round w3-white w3-margin-top" style="border: 1px dashed var(--azul-profundo); font-size: 0.85em; color: var(--azul-profundo);">   
-                Análisis para una franja de diseño unitaria de \( 1.0 \text{ m} \):
+                Resultados del análisis estático para una franja de diseño unitaria de \( 1.0 \text{ m} \):
                 
                 <ul class="w3-ul w3-border w3-round ce-panel-gris" style="border-left:none;">
                     <li><strong>Comb. 1.2D+1.6Live:</strong> \( q_{cara} = 189.9 \text{ kPa} \) \(\rightarrow\) \( M_u = 37.9 \text{ kNm/m} \)</li>
