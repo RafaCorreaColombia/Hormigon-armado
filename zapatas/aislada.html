@@ -920,10 +920,11 @@
                 <div class="w3-panel ce-panel-azul w3-padding w3-round" style="margin:0;">
                     <strong style="color: var(--azul-profundo);">🛡️ Resistencia de Diseño (\( \phi M_n \))</strong>
                     <p class="w3-small" style="margin-top: 5px; margin-bottom: 5px;">
-                        El acero se determina garantizando que la resistencia nominal ponderada (\( \phi M_n \)) iguale o supere la demanda (\( M_u \)). Asumiendo flexión controlada por tracción (\( \phi = 0.90 \)):
+                        El acero se determina garantizando que la resistencia nominal ponderada (\( \phi M_n \)) iguale o supere la demanda (\( M_u \)). Verificando que se trata de una sección controlada por tracción (\( \phi = 0.90 \)):
                     </p>
                     <div class="math-scroll w3-center w3-small" style="background: rgba(255,255,255,0.5); padding: 5px; border-radius: 4px;">
-                        \[ \phi M_n = \phi A_s f_y \left( d - \frac{a}{2} \right) \ge M_u \]
+                        \[ \phi M_n = \phi A_s f_y \left( d - \frac{a}{2} \right) \ge M_u \], 
+                        \[a=\frac{A_s f_y}{0.85 f'_c b}\]
                     </div>
                     <p class="w3-small" style="color: var(--gris-texto); margin-bottom: 0; line-height: 1.4;">
                         De aquí se despeja el <strong>acero requerido por cálculo</strong> (\( A_{s,req} \)). En zapatas convencionales, este valor suele ser tan bajo que el diseño casi siempre queda gobernado por el <strong>acero mínimo</strong> normativo.
@@ -955,7 +956,8 @@
                 <div class="w3-panel ce-panel-azul w3-padding w3-round w3-center" style="margin:0;">
                     <strong style="color: var(--azul-profundo);">📏 Cuantía Mínima de Retracción</strong>
                     <div class="math-scroll w3-large" style="margin: 5px 0;">
-                        \( A_{s,min} = \mathbf{900 \text{ mm}^2/m} \)
+                        \( A_{s,min} = \mathbf{900 \text{ mm}^2/m} \),
+                        \[f_y= 420 \text{ MPa} \]
                     </div>
                     <span class="w3-small" style="margin-top: -5px; color: var(--gris-texto);">\( A_{s,min} = 0.0018 \times b \times H\)</span><br>
                     <span class="w3-small ce-alerta">Gobierna la cuantía mínima</span>
