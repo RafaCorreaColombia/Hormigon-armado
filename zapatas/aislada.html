@@ -890,10 +890,10 @@
             <div class="w3-panel ce-panel-naranja w3-padding w3-round">
                 <strong>📌 Nota de consistencia bidireccional:</strong>
                 <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
-                    El momento último de diseño de la zapata, \( M_u \), depende integralmente de la distribución del prisma de presiones del suelo. Como se mencionó anteriormente, en este ejemplo particular se asumió \( M_x \approx 0 \) por simplicidad pedagógica, con el fin de aislar el comportamiento y explicar más fácilmente los conceptos en una dirección dominante.
+                    El momento último de diseño de la zapata, \( M_u \), depende integralmente de la distribución del prisma de presiones del suelo. Para este ejemplo se idealiza la respuesta de la zapata considerando una dirección dominante de flexión, \( M_x \approx 0 \), con el propósito de explicar el procedimiento de diseño. Esta simplificación permite desarrollar el cálculo en una dirección, pero no sustituye la evaluación de los momentos y las presiones de contacto en ambas direcciones cuando las acciones del proyecto lo requieran.
                 </p>
                 <div class="w3-panel w3-padding-small w3-round w3-white w3-margin-top" style="border: 1px dashed var(--naranja-estructural); font-size: 0.85em; color: var(--azul-profundo);">
-                    <strong>⚠️ En Rigor:</strong> Si existen momentos en ambas direcciones, la presión de contacto varía en las cuatro esquinas y el diseño de refuerzo debe realizarse de forma independiente para cada sentido. En esos casos, se recomienda dividir la zapata en franjas.
+                    <strong>⚠️ En un diseño general:</strong> la distribución de presiones debe ser compatible con las cargas axiales y los momentos actuantes en ambos ejes. El refuerzo se verifica por separado en cada dirección, adoptando una disposición uniforme únicamente cuando esta satisfaga las demandas de ambas.
                 </div>   
                 
             </div>
@@ -912,7 +912,7 @@
                         \[ L_{vol} = \frac{L}{2} - \frac{c_{col}}{2} = \frac{1.60}{2} - \frac{0.40}{2} = \mathbf{0.60 \text{ m}} \]
                     </div>
                     <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
-                        Por estática, el momento último (\( M_u \)) en una franja unitaria es la resultante del diagrama de presiones del suelo (\( q_u \)) empujando hacia arriba en esa longitud libre, multiplicada por su brazo de palanca al empotramiento.
+                        Por estática, el momento último (\( M_u \)) en una franja unitaria se calcula <strong>respecto a la cara de la columna</strong>, integrando la presión del suelo (\( q_u \)) sobre el voladizo. Dado que la presión varía linealmente, la carga resultante y su brazo deben obtenerse a partir de la geometría de ese diagrama; no siempre se puede usar directamente una expresión simplificada de carga uniforme.
                     </p>
                 </div>
 
