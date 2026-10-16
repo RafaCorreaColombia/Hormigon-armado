@@ -680,7 +680,7 @@
 
                 <!-- Capacidad phi Vc -->
                 <div class="w3-panel ce-panel-azul w3-padding w3-round" style="margin:0;">
-                    <strong style="color: var(--azul-profundo);">🛡️ Capacidad del Concreto (\( \phi V_c \))</strong>
+                    <strong style="color: var(--azul-profundo);"><i class="fa fa-shield"></i> Capacidad del Concreto (\( \phi V_c \))</strong>
                     <p class="w3-small" style="margin-top: 5px; margin-bottom: 5px;">
                         Resistencia nominal al cortante del concreto no preesforzado (NSR-10 C.11.2.1.1). Se calcula para una franja unitaria de ancho \( b_w = 1000 \text{ mm} \):
                     </p>
@@ -768,7 +768,7 @@
 
                 <!-- Capacidad phi Vc Punzonamiento -->
                 <div class="w3-panel ce-panel-azul w3-padding w3-round" style="margin:0;">
-                    <strong style="color: var(--azul-profundo);">🛡️ Capacidad del Concreto (\( \phi V_c \))</strong>
+                    <strong style="color: var(--azul-profundo);"><i class="fa fa-shield"></i> Capacidad del Concreto (\( \phi V_c \))</strong>
                     <p class="w3-small" style="margin-top: 5px; margin-bottom: 5px;">
                         Se rige por el menor de tres valores normativos (NSR-10 C.11.11.2.1) evaluados a lo largo del perímetro crítico \( b_o = 3268 \text{ mm} \):
                     </p>
@@ -918,7 +918,7 @@
 
                 <!-- Capacidad phi Mn -->
                 <div class="w3-panel ce-panel-azul w3-padding w3-round" style="margin:0;">
-                    <strong style="color: var(--azul-profundo);">🛡️ Resistencia de Diseño (\( \phi M_n \))</strong>
+                    <strong style="color: var(--azul-profundo);"><i class="fa fa-shield"></i> Resistencia de Diseño (\( \phi M_n \))</strong>
                     <p class="w3-small" style="margin-top: 5px; margin-bottom: 5px;">
                         El acero se determina garantizando que la resistencia nominal ponderada (\( \phi M_n \)) iguale o supere la demanda (\( M_u \)). Verificando que se trata de una sección controlada por tracción (\( \phi = 0.90 \)):
                     </p>
@@ -1020,7 +1020,7 @@
 
                 <!-- Capacidad phi Pn -->
                 <div class="w3-panel ce-panel-azul w3-padding w3-round" style="margin:0;">
-                    <strong style="color: var(--azul-profundo);">🛡️ Capacidad de Aplastamiento (\( \phi P_n \))</strong>
+                    <strong style="color: var(--azul-profundo);"><i class="fa fa-shield"></i> Capacidad de Aplastamiento (\( \phi P_n \))</strong>
                     <p class="w3-small" style="margin-top: 5px; margin-bottom: 5px;">
                         Resistencia del concreto al aplastamiento (NSR-10 C.10.14). Al apoyarse en una zapata más ancha, el concreto circundante confina el área cargada, incrementando su resistencia:
                     </p>
@@ -1054,28 +1054,6 @@
                 </div>
             </div>
 
-            <p>Se verifica que el concreto de la zapata sea capaz de soportar la compresión local inducida por la columna:</p>
-
-            <div class="w3-panel w3-white w3-padding w3-round w3-center" style="border: 1px dashed var(--gris-borde);">
-                <div class="math-scroll">
-                    \[ \phi P_{n} = \phi (0.85 f'_c A_1) \sqrt{\frac{A_2}{A_1}} \]
-                </div>
-                <span class="w3-small" style="color: var(--gris-texto);">\( A_1 \): área cargada.<br>
-                    \( A_2 \): área de la base inferior de la pirámide contenida dentro de la zapata con base superior \( A_1 \) y pendientes laterales de 1 vertical por 2 horizontal.<br>
-                    El factor de confinamiento \( \sqrt{A_2/A_1} \) está limitado normativamente a un máximo de 2.0.</span>
-            </div>
-
-            <div class="ce-grid ce-grid-2">
-                <div class="w3-panel ce-panel-gris w3-padding w3-round w3-center" style="margin:0;">
-                    <strong>Factor de Confinamiento:</strong><br>
-                    <span class="w3-large" style="color: var(--azul-profundo);">\( \sqrt{2.56 / 0.16} = 4.0 \)</span><br>
-                    <span class="ce-alerta w3-small">Se restringe al límite normativo = 2.0</span>
-                </div>
-                <div class="w3-panel ce-panel-azul w3-padding w3-round w3-center" style="margin:0;">
-                    <strong>Capacidad de la Zapata:</strong><br>
-                    <span class="w3-large ce-destacado">\( \phi P_n = \mathbf{3712.8 \text{ kN}} \)</span><br>
-                    <span style="color: green; font-weight: bold;">\( P_u \) (463 kN) &lt; \( \phi P_n \) ✅</span>
-                </div>
             </div>
             <!-- CAJA DE DOVELAS (NSR-10 C.15.8) -->
             <div class="w3-panel ce-panel-azul w3-padding w3-round w3-margin-top" style="border: 1px solid var(--gris-borde);">
