@@ -1,0 +1,816 @@
+        <!-- INTRODUCCIÓN ZAPATA COMBINADA -->
+        <div class="panel-control" id="intro-combinada">
+            <h2 class="panel-titulo">Diseño de Zapata Combinada</h2>
+            <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Integración de Columnas 1 y 2 – Control de Presiones y Geometría</p>
+
+            <div class="w3-panel ce-panel-azul w3-padding w3-round">
+                <strong style="color: var(--azul-profundo);"><i class="fa fa-map-pin"></i> Criterio de Diseño:</strong>
+                <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
+                    A diferencia de las zapatas aisladas, donde permitimos un comportamiento no lineal (despegue) bajo sismo, en zapatas combinadas buscamos un comportamiento en el que <strong>toda la base permanezca en compresión</strong>, evitando pérdida de contacto suelo-estructura. Esto se logra dimensionando la zapata para que su centro geométrico coincida con la resultante de cargas permanentes (\( D + L \)), garantizando presiones uniformes.
+                </p>
+            </div>
+
+            <div class="ce-grid ce-grid-2">
+                <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid var(--gris-borde); margin:0;">
+                    <strong style="color: var(--gris-texto);">¿Por qué no usamos \( q_{lp} \)?</strong>
+                    <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">La geometría de una zapata combinada suele ser extensa para abarcar ambas columnas. Alargar la zapata nos permite controlar la excentricidad de forma tan efectiva que no es necesario (ni recomendable) recurrir a la plastificación del suelo. Buscamos que \( e \approx 0 \).</p>
+                </div>
+
+                <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid var(--gris-borde); margin:0;">
+                    <strong style="color: var(--gris-texto);">Uso del \( q_{neto} \)</strong>
+                    <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
+                        Se trabaja con esfuerzo admisible neto, descontando el peso propio de la zapata para comparar únicamente la carga transmitida por la superestructura:<br>
+                        <span class="math-scroll">\( q_{neto} = q_{adm} - ( \gamma_{conc} \cdot h ) \).</span><br>
+                        Este será nuestro límite estricto para evitar cualquier asentamiento diferencial excesivo entre apoyos.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- DATOS E INSUMOS -->
+        <div class="panel-control" id="insumos-combinada">
+            <h2 class="panel-titulo">Datos del Problema e Insumos</h2>
+            <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Parámetros de diseño y procedencia de cargas</p>
+
+            <div class="ce-grid ce-grid-2" style="margin-bottom: 15px;">
+                <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid var(--gris-borde); margin:0;">
+                    <strong style="color: var(--azul-profundo);"><i class="fa fa-wrench"></i> Especificaciones Técnicas:</strong>
+                    <ul class="w3-small" style="margin: 8px 0 0 0; padding-left: 20px; color: var(--gris-texto);">
+                        <li><strong>Concreto (\( f'_c \)):</strong> 21 MPa (3000 psi)</li>
+                        <li><strong>Acero (\( f_y \)):</strong> 420 MPa (Grado 60)</li>
+                        <li><strong>Distancia entre ejes (\( S \)):</strong> 3.00 m</li>
+                        <li><strong>Columnas:</strong> 40 x 40 cm (COL1 y COL2)</li>
+                        <li><strong>Esfuerzo admisible (\(q_{adm}\)):</strong> 200 kN/m²</li>
+                    </ul>
+                </div>
+
+                <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid var(--gris-borde); margin:0;">
+                    <strong style="color: var(--azul-profundo);"><i class="fa fa-ruler"></i> Criterios de Detallado:</strong>
+                    <ul class="w3-small" style="margin: 8px 0 0 0; padding-left: 20px; color: var(--gris-texto);">
+                        <li><strong>Recubrimiento Libre:</strong> 75 mm (NSR-10 C.7.7.1)</li>
+                        <li><strong>Refuerzo longitudinal en columnas:</strong> Calibre No.5.</li>
+                        <li><strong>Tipo de Apoyo:</strong> Zapata vaciada contra el suelo</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- CAJA IMAGEN 1 -->
+            <div class="w3-center w3-margin-top w3-margin-bottom w3-padding w3-round w3-white" style="border: 1px dashed var(--gris-borde);">
+                <img src="https://lms.uis.edu.co/ava/draftfile.php/610615/user/draft/504914904/Modelo.png" alt="Esquema de presiones zapata combinada" style="max-width: 100%; height: auto; border-radius: 5px; mix-blend-mode: multiply;">
+                <p class="w3-small w3-margin-top" style="color: var(--gris-texto); margin-bottom: 0;">
+                    <i><strong>Figura 1:</strong> Modelo y Equilibrio. Zapata como "Viga Invertida" sobre fundación elástica.</i>
+                </p>
+            </div>
+
+            <div class="w3-panel ce-panel-azul w3-padding w3-round">
+                <strong style="color: var(--azul-profundo);"><i class="fa fa-map-pin"></i> Criterio de Cargas:</strong>
+                <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
+                    Las fuerzas presentadas a continuación corresponden a las reacciones en la base de las columnas COL1 y COL2 (Fz, My). Se ha verificado que estas reacciones incluyan los efectos gravitacionales y sísmicos del análisis global del edificio.
+                </p>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 1: REACCIONES -->
+        <div class="panel-control" id="reacciones-combinada">
+            <h2 class="panel-titulo">1. Reacciones en la Base</h2>
+            <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Valores para Combinación de Servicio y Localización de Resultante</p>
+
+            <div class="tabla-container">
+                <table class="tabla-traslapos tabla-small">
+                    <thead>
+                        <tr>
+                            <th style="text-align:left;">Componente</th>
+                            <th>Columna COL1 (kN, kNm)</th>
+                            <th>Columna COL2 (kN, kNm)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="text-align:left;">Muerta (D)</td>
+                            <td>P=200, M=5</td>
+                            <td>P=300, M=0</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">Viva (L)</td>
+                            <td>P=40, M=0</td>
+                            <td>P=50, M=0</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">Sismo (E)</td>
+                            <td class="ce-alerta">P=30, M=30</td>
+                            <td class="ce-alerta">P=5, M=30</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 2: PREDIMENSIONAMIENTO -->
+        <div class="panel-control" id="predimensionamiento-combinada">
+            <h2 class="panel-titulo">2. Predimensionamiento</h2>
+            <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Determinación de las dimensiones de la zapata</p>
+
+            <div class="w3-panel ce-panel-naranja w3-padding w3-round">
+                <strong style="color: var(--naranja-estructural);"><i class="fa fa-exclamation-triangle"></i> Altura de Zapata:</strong>
+                <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
+                    Se garantiza que el acero de refuerzo longitudinal de las columnas puede anclarse adecuadamente en la zapata. Para barras calibre No.5 y \( f'_c \)= 21 MPa, \(l_{dh}=l_{dc}= 350 \text{ mm} \). A ese valor sumamos el recubrimiento de 75 mm y de allí obtenemos la altura mínima de la zapata \( h = 350+75=425 \text{ mm} \approx 450 \text{ mm}\).<br>
+                    Nota: <strong>se adopta h= 0.45 m</strong>, sin embargo en verificaciones posteriores (cortante unidireccional) se detecta que esta altura es insuficiente.
+                </p>
+            </div>
+
+            <div class="w3-panel ce-panel-azul w3-padding w3-round">
+                <strong style="color: var(--azul-profundo);"><i class="fa fa-ruler"></i> Geometría de la Zapata (Long y B):</strong>
+                <p class="w3-small" style="margin-top: 5px; margin-bottom: 10px;">
+                    Definimos <strong>Long</strong> como la dimensión en la dirección de las columnas, y <strong>B</strong> como el ancho perpendicular. En zapatas combinadas, cada dimensión responde a un criterio físico distinto:
+                </p>
+                
+                <div class="ce-grid ce-grid-2" style="margin-bottom: 10px;">
+                    <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid var(--gris-borde); margin:0;">
+                        <strong style="color: var(--azul-profundo);">Longitud (Long)</strong>
+                        <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">Se determina por <strong>equilibrio estático</strong>, buscando alinear el centroide de la zapata con la resultante de cargas.</p>
+                    </div>
+                    <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid var(--gris-borde); margin:0;">
+                        <strong style="color: var(--azul-profundo);">Ancho (B)</strong>
+                        <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">Se define a partir de la <strong>capacidad portante del suelo</strong> (\( q_{adm} \)).</p>
+                    </div>
+                </div>
+                <p class="w3-small" style="margin-top: 0; margin-bottom: 0;">
+                    La relación \( Long/B \) es entonces un <strong>resultado del proceso de dimensionamiento</strong>, no un parámetro de entrada. En la práctica, se verifica que esta relación sea razonable (evitando geometrías excesivamente alargadas o muy compactas).
+                </p>
+            </div>
+
+            <div class="w3-panel ce-panel-azul w3-padding w3-round">
+                <strong style="color: var(--azul-profundo);"><i class="fa fa-map-pin"></i> Ubicación de la Resultante (\( X_R \)):</strong>
+                <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
+                    Buscamos el punto de aplicación de la carga total (\( D+L \)) respecto al eje de COL1 para alinear el centroide.
+                </p>
+            </div>
+
+            <div class="tabla-container">
+                <table class="tabla-traslapos tabla-small">
+                    <thead>
+                        <tr>
+                            <th style="text-align:left;">Parámetro</th>
+                            <th>COL1 (40x40)</th>
+                            <th>COL2 (40x40)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="text-align:left;">Carga de Servicio (\( P_{D+L} \)) (kN)</td>
+                            <td>240</td>
+                            <td>350</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">Momento de Servicio (\( M_{y,D+L} \)) (kNm)</td>
+                            <td>5</td>
+                            <td>0</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="w3-panel w3-white w3-padding w3-round w3-center" style="border: 1px dashed var(--azul-profundo); margin-bottom: 15px;">
+                <div class="math-scroll w3-large" style="color: var(--azul-profundo);">
+                    \( X_R = \frac{\sum (P_i \cdot x_i) + \sum M_i}{\sum P_i} = \frac{350 \cdot 3.0 - 5}{590} = \mathbf{1.771 \text{ m}} \)
+                </div>
+                <span class="w3-small" style="color: var(--gris-texto);">(desde COL1)</span>
+            </div>
+
+            <div class="w3-panel ce-panel-gris w3-padding w3-round" style="border-left-color: green;">
+                <strong style="color: green;"><i class="fa fa-check-circle"></i> Interpretación:</strong>
+                <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
+                    La resultante cae dentro de la zapata y define la posición del centro geométrico requerido. Este es el principio fundamental del diseño: la geometría se ajusta a las cargas, no al revés.
+                </p>
+            </div>
+
+            <div class="w3-panel ce-panel-azul w3-padding w3-round">
+                <strong style="color: var(--azul-profundo);"><i class="fa fa-map-pin"></i> Determinación de Longitud Total (\( Long \)):</strong>
+                <p class="w3-small" style="margin-top: 5px; margin-bottom: 5px;">
+                    Se busca que el centro geométrico de la zapata coincida con la resultante, por lo que:
+                </p>
+                <div class="math-scroll w3-center w3-small">
+                    \( Long = 2 \cdot (X_R + \text{distancia al borde}) \)
+                </div>
+                <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
+                    Con \( X_R = 1.771 \, \text{m} \) y una distancia al borde de 0.20 m:<br>
+                    \( Long = 2 \cdot (1.771 + 0.20) = \mathbf{3.971 \text{ m}} \) &rarr; <strong>Se adopta Long = 4.00 m</strong>.
+                </p>
+            </div>
+
+            <div class="w3-panel ce-panel-naranja w3-padding w3-round">
+                <strong style="color: var(--naranja-estructural);"><i class="fa fa-exclamation-triangle"></i> Validación Geométrica:</strong>
+                <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
+                    Con \( Long = 4.00 \text{ m} \), el centro geométrico de la zapata (a 2.00 m del borde) coincide prácticamente con la resultante de cargas de servicio, reduciendo la excentricidad (\( e \approx 0 \)) y favoreciendo una distribución uniforme de presiones en el suelo.
+                </p>
+            </div>
+
+            <div class="w3-panel ce-panel-azul w3-padding w3-round">
+                <strong style="color: var(--azul-profundo);"><i class="fa fa-flag"></i> Determinación del Ancho (\( B \)):</strong>
+                <p class="w3-small" style="margin-top: 5px; margin-bottom: 10px;">
+                    Con la longitud \( Long = 4.00 \text{ m} \) definida, se obtiene una primera estimación del ancho a partir del esfuerzo admisible neto.
+                </p>
+
+                <div class="w3-panel w3-white w3-padding-small w3-round" style="border: 1px solid var(--gris-borde);">
+                    <strong style="color: var(--gris-texto); font-size: 0.85em;">Paso A: Cálculo de Esfuerzo Neto</strong>
+                    <div class="math-scroll w3-center w3-small" style="margin-top: 5px;">
+                        \( q_{neto} = q_{adm} - (\gamma_{conc} \cdot h) = 200 - (24 \cdot 0.45) = \mathbf{189.2 \text{ kPa}} \)
+                    </div>
+                </div>
+
+                <div class="w3-panel w3-white w3-padding-small w3-round" style="border: 1px solid var(--gris-borde); margin-bottom: 10px;">
+                    <strong style="color: var(--gris-texto); font-size: 0.85em;">Paso B: Área Requerida y Ancho</strong>
+                    <div class="math-scroll w3-center w3-medium" style="margin-top: 5px; color: var(--azul-profundo);">
+                        \( B = \frac{P_{D+L}}{Long \cdot q_{neto}} = \frac{590 \text{ kN}}{4.00 \text{ m} \cdot 189.2 \text{ kPa}} = \mathbf{0.78 \text{ m}} \)
+                    </div>
+                </div>
+
+                <p class="w3-small" style="margin-top: 0; margin-bottom: 10px;">
+                    Se propone inicialmente <strong>B = 0.80 m</strong>.
+                </p>
+
+                <div class="w3-panel ce-panel-naranja w3-padding w3-round" style="margin-bottom: 0;">
+                    <strong style="color: var(--naranja-estructural);"><i class="fa fa-exclamation-triangle"></i> Ajuste por Validación:</strong>
+                    <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
+                        Al verificar la distribución de presiones de servicio (considerando excentricidades por sismo), se detecta que el ancho de 0.80 m es insuficiente, por lo que se incrementa a <strong>B = 1.00 m</strong>.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 3: VALIDACIÓN DE SERVICIO -->
+        <div class="panel-control" id="validacion-servicio-combinada">
+            <h2 class="panel-titulo">3. Validación de Servicio</h2>
+            <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Presión en los extremos para combinaciones de servicio</p>
+
+            <div class="w3-panel ce-panel-azul w3-padding w3-round">
+                <strong style="color: var(--azul-profundo);"><i class="fa fa-lightbulb-o"></i> Idea clave:</strong>
+                <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
+                    La zapata combinada funciona como una unidad rígida. Su principal ventaja es la <strong>redistribución de cargas</strong>: La zapata redistribuye las cargas mediante compatibilidad de deformaciones, generando una única resultante que reduce excentricidades individuales.
+                </p>
+            </div>
+
+            <div class="w3-panel ce-panel-gris w3-padding w3-round" style="border-left-color: var(--gris-texto);">
+                <strong style="color: var(--azul-profundo);"><i class="fa fa-map-marker"></i> Marco de Referencia Local:</strong>
+                <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
+                    Ubicamos \( x=0.0 \text{ m} \) en el eje de COL1 y \( x=3.0 \text{ m} \) en el eje de COL2.<br>
+                    La zapata se extiende desde <strong>\( x=-0.20 \text{ m} \)</strong> hasta <strong>\( x=3.80 \text{ m} \)</strong>.
+                </p>
+            </div>
+
+            <div class="w3-center w3-margin-top w3-margin-bottom w3-padding w3-round w3-white" style="border: 1px dashed var(--gris-borde);">
+                <img src="https://lms.uis.edu.co/ava/draftfile.php/610615/user/draft/504914904/image%20%285%29.png" alt="Esquema de presiones zapata combinada" style="max-width: 100%; height: auto; border-radius: 5px; mix-blend-mode: multiply;">
+                <p class="w3-small w3-margin-top" style="color: var(--gris-texto); margin-bottom: 0;">
+                    <i><strong>Figura 2:</strong> Diagrama de presiones de contacto para las tres combinaciones de <strong>servicio</strong> analizadas. La zapata mantiene contacto total (\( q > 0 \)) en toda su longitud.</i>
+                </p>
+            </div>
+
+            <div class="tabla-container">
+                <table class="tabla-traslapos tabla-small">
+                    <thead>
+                        <tr>
+                            <th style="text-align:left;">Componente</th>
+                            <th>\(q_{serv,x=-0.20 m}\) (kPa)</th>
+                            <th>\(q_{serv,x=3.80 m}\) (kPa)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="text-align:left;">B.2.3-2: D+L</td>
+                            <td>153.88</td>
+                            <td>141.13</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">B.2.3-8: D+0.75(0.7E)+0.75L</td>
+                            <td class="ce-alerta">173.43</td>
+                            <td>119.58</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">B.2.3-10: 0.6D-0.7E</td>
+                            <td class="ce-alerta">41.55</td>
+                            <td>95.46</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="w3-panel ce-panel-naranja w3-padding w3-round">
+                <strong style="color: var(--naranja-estructural);"><i class="fa fa-exclamation-triangle"></i> Verificación Técnica:</strong>
+                <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
+                    Se confirma que <strong>\( q_{min} \ge 0 \)</strong> (sin levantamiento) y <strong>\( q_{max} \le 189.2 \text{ kPa} \)</strong> (\( q_{neto} \)). La zapata es estable y permanece en contacto total con el suelo en todas las combinaciones de servicio analizadas.
+                </p>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 4: COMPORTAMIENTO ESTRUCTURAL -->
+        <div class="panel-control" id="comportamiento-combinada">
+            <h2 class="panel-titulo">4. Comportamiento Estructural</h2>
+            <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Modelo: Zapata como "Viga Invertida" sobre fundación elástica</p>
+
+            <div class="w3-panel w3-pale-red w3-leftbar w3-border-red w3-padding w3-round" style="margin-bottom: 20px;">
+                <strong style="color: #b91c1c;"><i class="fa fa-minus-circle"></i> Inversión de Esfuerzos:</strong>
+                <p class="w3-small" style="margin-top: 5px; margin-bottom: 0; color: #475569;">
+                    A diferencia de las zapatas aisladas, aquí el momento más crítico es <strong>negativo</strong> (tracción arriba). La zapata se "infla" hacia arriba entre las dos columnas, requiriendo refuerzo principal en la <strong>cara superior</strong>.
+                </p>
+            </div>
+
+            <p class="w3-small" style="color: var(--gris-texto);">Presiones calculadas para el diseño del concreto (Estado Límite Último):</p>
+
+            <div class="tabla-container">
+                <table class="tabla-traslapos tabla-small">
+                    <thead>
+                        <tr>
+                            <th style="text-align:left;">Combinación de Diseño</th>
+                            <th>\( q_{u,x=-0.20 \text{m}} \) [kPa]</th>
+                            <th>\( q_{u,x=3.80 \text{m}} \) [kPa]</th>
+                            <th>Promedio [kPa]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="text-align:left;"><strong>B.2.4-2:</strong> 1.2D + 1.6L</td>
+                            <td>195.45</td>
+                            <td>176.55</td>
+                            <td style="font-weight:bold;">186.00</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;"><strong>B.2.4-5:</strong> 1.2D + E + L</td>
+                            <td>228.50</td>
+                            <td>134.00</td>
+                            <td style="font-weight:bold;">181.25</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- CAJA IMAGEN 3 -->
+            <div class="w3-center w3-margin-top w3-margin-bottom w3-padding w3-round w3-white" style="border: 1px dashed var(--gris-borde);">
+                <img src="https://lms.uis.edu.co/ava/draftfile.php/610615/user/draft/504914904/image%20%286%29.png" alt="Esquema de presiones zapata combinada combinaciones últimas" style="max-width: 100%; height: auto; border-radius: 5px; mix-blend-mode: multiply;">
+                <p class="w3-small w3-margin-top" style="color: var(--gris-texto); margin-bottom: 0;">
+                    <i><strong>Figura 3:</strong> Diagrama de presiones de contacto para las combinaciones <strong>últimas</strong> analizadas.</i>
+                </p>
+            </div>
+
+            <!-- CAJA IMAGEN 4 -->
+            <div class="w3-center w3-margin-top w3-margin-bottom w3-padding w3-round w3-white" style="border: 1px dashed var(--gris-borde);">
+                <img src="https://lms.uis.edu.co/ava/draftfile.php/610615/user/draft/504914904/image%20%287%29.png" alt="Diagrama de cortante último" style="max-width: 100%; height: auto; border-radius: 5px; mix-blend-mode: multiply;">
+                <p class="w3-small w3-margin-top" style="color: var(--gris-texto); margin-bottom: 10px;">
+                    <i><strong>Figura 4:</strong> Diagrama de cortante último Vu (kN).</i>
+                </p>
+                <div class="w3-panel ce-panel-gris w3-padding w3-round w3-left-align" style="border-left-color: var(--gris-texto);">
+                    <strong style="color: var(--azul-profundo);"><i class="fa fa-bar-chart"></i> Análisis de Cortante de Diseño:</strong>
+                    <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
+                        Bajo el modelo de <strong>viga invertida</strong>, el cortante se verifica en las caras de las columnas (o a una distancia \( d \)). Los picos de cortante ocurren en los apoyos, donde la carga puntual de la columna contrarresta la presión ascendente del terreno, definiendo los requerimientos de peralte y refuerzo transversal (en casos extremos).
+                    </p>
+                </div>
+            </div>
+
+            <!-- CAJA IMAGEN 5 -->
+            <div class="w3-center w3-margin-top w3-margin-bottom w3-padding w3-round w3-white" style="border: 1px dashed var(--gris-borde);">
+                <img src="https://lms.uis.edu.co/ava/draftfile.php/610615/user/draft/504914904/image%20%288%29.png" alt="Diagrama de momento último" style="max-width: 100%; height: auto; border-radius: 5px; mix-blend-mode: multiply;">
+                <p class="w3-small w3-margin-top" style="color: var(--gris-texto); margin-bottom: 10px;">
+                    <i><strong>Figura 5:</strong> Diagrama de momento último Mu (kNm).</i>
+                </p>
+                <div class="w3-panel ce-panel-azul w3-padding w3-round w3-left-align">
+                    <strong style="color: var(--azul-profundo);"><i class="fa fa-map-pin"></i> Análisis de Flexión Longitudinal:</strong>
+                    <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
+                        El diseño debe cubrir la envolvente completa de momentos: se dispondrá <strong>refuerzo superior</strong> para resistir el momento negativo máximo en el vano entre columnas, y <strong>refuerzo inferior</strong> en las zonas de los voladizos para absorber los momentos positivos generados por la presión del suelo.
+                    </p>
+                </div>
+            </div>
+
+            <div class="w3-panel ce-panel-azul w3-padding w3-round">
+                <strong style="color: var(--azul-profundo);"><i class="fa fa-balance-scale"></i> ¿Por qué se excluye el peso propio del análisis estructural (\( M_u, V_u \))?</strong>
+                <p class="w3-small" style="margin-top: 10px; margin-bottom: 10px;">
+                    El peso propio de la zapata y el suelo de relleno generan una carga distribuida que es equilibrada por la reacción del suelo, produciendo un campo de presiones aproximadamente uniforme en la base.
+                </p>
+                <div class="w3-panel w3-white w3-padding-small w3-round" style="border: 1px solid var(--gris-borde); margin-bottom: 10px;">
+                    <strong style="color: var(--gris-texto); font-size: 0.85em;">Concepto clave: Gradiente de presión</strong>
+                    <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
+                        Los esfuerzos internos (momento y cortante) están asociados principalmente a las <strong>variaciones de presión</strong> en el suelo, es decir, a los gradientes inducidos por las cargas concentradas de las columnas.
+                    </p>
+                </div>
+                <p class="w3-small" style="margin-top: 0; margin-bottom: 10px;">
+                    Dado que el peso propio aporta esencialmente una componente uniforme, su influencia en los valores máximos de \( M_u \) y \( V_u \) es reducida. Por esta razón, en este ejemplo se omite en el cálculo de \( q_u \), adoptando un modelo simplificado en el que las presiones de diseño provienen únicamente de las cargas de las columnas.
+                </p>
+                <div style="border-top: 1px dashed var(--gris-borde); padding-top: 10px; font-size: 0.8em; color: var(--gris-texto); font-style: italic;">
+                    <strong>Nota:</strong> La inclusión del peso propio incrementa ligeramente las presiones totales y tiende a reducir la excentricidad del sistema, generando cambios pequeños en los esfuerzos internos. Su omisión constituye una simplificación común y conservadora para el diseño manual.
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 5: CORTANTE UNIDIRECCIONAL -->
+        <div class="panel-control" id="cortante-uni-combinada">
+            <h2 class="panel-titulo">5. Verificación de Cortante Unidireccional</h2>
+            <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Revisión a una distancia "d" desde la cara del apoyo</p>
+
+            <div class="w3-panel w3-pale-red w3-leftbar w3-border-red w3-padding w3-round" style="margin-bottom: 20px;">
+                <strong style="color: #b91c1c;"><i class="fa fa-exclamation-triangle"></i> Ajuste por Validación de Resistencia:</strong>
+                <p class="w3-small" style="margin-top: 10px; margin-bottom: 10px; color: #475569;">
+                    Con el espesor inicial de <strong>0.45 m</strong> (\( d \approx 359 \text{ mm} \)), el cortante máximo actuante es de <strong>211 kN</strong>, superando la resistencia nominal de la sección (\( \phi V_n = 210 \text{ kN} \)).
+                </p>
+                <div class="w3-panel w3-white w3-padding-small w3-round" style="border: 1px dashed #dc2626; margin-bottom: 10px;">
+                    <strong style="color: var(--azul-profundo);"><i class="fa fa-check-circle"></i> Decisión de Ingeniería:</strong>
+                    <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
+                        Se aumenta el espesor a <strong>h = 0.50 m</strong> (\( d = 409 \text{ mm} \)), lo que eleva la capacidad a cortante a <strong>239 kN</strong>. Esta decisión permite prescindir del uso de estribos o refuerzo transversal de cortante, lo cual, aunque es normativamente posible, se evita para garantizar la <strong>facilidad constructiva</strong>, simplificar el armado de acero y asegurar un correcto flujo del concreto durante el vaciado.
+                    </p>
+                </div>
+                <p class="w3-small" style="margin-top: 0; margin-bottom: 0; color: #475569; border-top: 1px solid rgba(220, 38, 36, 0.1); padding-top: 10px;">
+                    <strong><i class="fa fa-search"></i> Impacto en Presiones de Servicio:</strong> Al aumentar \( h \), el esfuerzo neto admisible se reduce a <strong>188 kPa</strong>. Se ha verificado que las presiones de contacto calculadas en el predimensionamiento (Sección 3) siguen siendo inferiores a este nuevo límite, manteniendo la estabilidad del sistema.
+                </p>
+            </div>
+
+            <p class="w3-small" style="color: var(--gris-texto);">
+                El valor de \( V_u \) corresponde al cortante obtenido del diagrama de esfuerzos internos en la sección ubicada a una distancia <strong>\( d = 0.41 \text{ m} \)</strong> desde la cara de cada columna. Este análisis es integral y considera todas las caras de falla potencial.
+            </p>
+
+            <div class="w3-panel ce-panel-gris w3-padding w3-round" style="border-left-color: #3b82f6;">
+                <p class="w3-small" style="margin-top: 0; margin-bottom: 0; color: #1e40af;">
+                    <strong><i class="fa fa-map-pin"></i> Nota de cálculo:</strong> Se presentan los valores críticos ocurridos en las caras internas (entre apoyos), situadas en <strong>\( x = 0.61 \text{ m} \)</strong> para COL1 y <strong>\( x = 2.39 \text{ m} \)</strong> para COL2. Debido a la magnitud de las cargas, el cortante en la cara externa de COL2 (\( x = 3.61 \text{ m} \)) no es gobernante y se omite en este resumen.
+                </p>
+            </div>
+
+            <div class="tabla-container">
+                <table class="tabla-traslapos tabla-small">
+                    <thead>
+                        <tr>
+                            <th style="text-align:left;">Sección Crítica</th>
+                            <th>Abscisa \( x \) [m]</th>
+                            <th>\( V_u \) (1.2D+1.6L)</th>
+                            <th>\( V_u \) (1.2D+E+L)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="text-align:left;">Cara Interna COL1</td>
+                            <td>0.61</td>
+                            <td>147.4 kN</td>
+                            <td>133.0 kN</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">Cara Interna COL2</td>
+                            <td>2.39</td>
+                            <td>186.5 kN</td>
+                            <td class="ce-alerta" style="font-weight:bold;">202.5 kN</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="w3-panel ce-panel-gris w3-padding w3-round" style="border-left-color: green;">
+                <strong style="color: green;"><i class="fa fa-check-circle"></i> Verificación Final:</strong>
+                <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
+                    Para \( h=0.50 \text{m} \), la resistencia es <strong>\( \phi V_n = 239 \text{ kN} \)</strong>.<br>
+                    Como \( V_{u,max} (202.5 \text{ kN}) < 239 \text{ kN} \), el diseño <strong>CUMPLE</strong> por cortante unidireccional.
+                </p>
+            </div>
+
+            <div class="w3-panel ce-panel-gris w3-padding w3-round" style="border-left-color: var(--gris-texto);">
+                <strong style="color: var(--azul-profundo);"><i class="fa fa-info-circle"></i> Nota de Consistencia del Modelo:</strong>
+                <p class="w3-small" style="margin-top: 5px; margin-bottom: 10px;">
+                    Los valores de \( V_u \) y \( M_u \) presentados en este ejemplo corresponden a la <strong>integración de presiones sobre todo el ancho real de la zapata</strong> (B), por lo que los resultados representan directamente las fuerzas internas totales de la sección.
+                </p>
+                <p class="w3-small" style="margin-top: 0; margin-bottom: 10px;">
+                    En este caso, como <strong>B = 1.00 m</strong>, los resultados coinciden numéricamente con un análisis “por metro de ancho”. Sin embargo, esto es una <strong>coincidencia geométrica</strong> y no una suposición del modelo.
+                </p>
+                <p class="w3-small" style="margin-top: 0; margin-bottom: 0; font-style: italic;">
+                    Para otros valores de B, sería necesario diferenciar explícitamente entre resultados por unidad de ancho y resultados totales.
+                </p>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 6: PUNZONAMIENTO -->
+        <div class="panel-control" id="punzonamiento-combinada">
+            <h2 class="panel-titulo">6. Cortante por Punzonamiento</h2>
+            <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Revisión a \( d/2 \) de la cara de los apoyos</p>
+
+            <div class="w3-panel ce-panel-azul w3-padding w3-round">
+                <strong style="color: var(--azul-profundo);"><i class="fa fa-map-pin"></i> Rigor en el Cálculo de \( V_u \):</strong>
+                <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
+                    Para un diseño preciso, se evalúa la presión <strong>\( q_u \) exactamente en el eje del área crítica</strong> de cada columna, considerando el gradiente de presiones del modelo.
+                </p>
+            </div>
+
+            <div class="ce-grid ce-grid-2" style="margin-bottom: 15px;">
+                <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid var(--gris-borde); margin:0;">
+                    <strong style="color: var(--azul-profundo);"><i class="fa fa-building"></i> Columna COL1 (Borde):</strong>
+                    <ul class="w3-small" style="margin: 8px 0; padding-left: 20px; color: var(--gris-texto);">
+                        <li>Perímetro (\( b_0 \)): 2.02 m</li>
+                        <li>Área Crítica (\( A_c \)): 0.489 m²</li>
+                        <li><strong>\( q_u \) eje Área Crítica: 221.4 kPa</strong></li>
+                        <li>Solicitación \( V_u \): 209.1 kN</li>
+                        <li>Resistencia \( \phi V_c \): 936.5 kN</li>
+                    </ul>
+                    <div style="color: green; font-weight: bold; font-size: 0.85em;"><i class="fa fa-check-circle"></i> CUMPLE</div>
+                </div>
+
+                <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid var(--gris-borde); margin:0;">
+                    <strong style="color: var(--azul-profundo);"><i class="fa fa-building"></i> Columna COL2 (Interior):</strong>
+                    <ul class="w3-small" style="margin: 8px 0; padding-left: 20px; color: var(--gris-texto);">
+                        <li>Perímetro (\( b_0 \)): 3.24 m</li>
+                        <li>Área Crítica (\( A_c \)): 0.655 m²</li>
+                        <li><strong>\( q_u \) eje Área Crítica: 180.3 kPa</strong></li>
+                        <li>Solicitación \( V_u \): 321.9 kN</li>
+                        <li>Resistencia \( \phi V_c \): 1501.8 kN</li>
+                    </ul>
+                    <div style="color: green; font-weight: bold; font-size: 0.85em;"><i class="fa fa-check-circle"></i> CUMPLE</div>
+                </div>
+            </div>
+
+            <div class="w3-panel ce-panel-gris w3-padding w3-round" style="margin-bottom: 20px;">
+                <strong style="color: var(--azul-profundo);"><i class="fa fa-shield"></i> Verificación de Ecuaciones NSR-10 (C.11.12.2.1)</strong>
+                
+                <div class="w3-panel w3-pale-red w3-border w3-border-red w3-round" style="padding: 15px; margin-top: 15px;">
+                    <strong style="color: #b91c1c; font-size: 0.9em;"><i class="fa fa-map-marker"></i> COL1 (\( \alpha_s = 30 \)):</strong>
+                    <div class="ce-grid ce-grid-3" style="text-align: center; margin-top: 10px; gap: 10px;">
+                        <div class="w3-white w3-round" style="padding: 5px; font-size: 0.75em; border: 1px solid #fecaca;">Eq C.11-31. Forma: 1447 kN</div>
+                        <div class="w3-white w3-round" style="padding: 5px; font-size: 0.75em; border: 1px solid #fecaca;">Eq C.11-32. Ubic: 1903 kN</div>
+                        <div class="w3-white w3-round" style="padding: 5px; font-size: 0.75em; border: 2px solid #dc2626; font-weight: 700;">Eq C.11-33. Límite: 936.5 kN</div>
+                    </div>
+                </div>
+
+                <div class="w3-panel w3-white w3-border w3-round" style="border-color: #bae6fd !important; padding: 15px; background-color: #f0f9ff !important;">
+                    <strong style="color: #0369a1; font-size: 0.9em;"><i class="fa fa-map-marker"></i> COL2 (\( \alpha_s = 40 \)):</strong>
+                    <div class="ce-grid ce-grid-3" style="text-align: center; margin-top: 10px; gap: 10px;">
+                        <div class="w3-white w3-round" style="padding: 5px; font-size: 0.75em; border: 1px solid #bae6fd;">Eq C.11-31. Forma: 2321 kN</div>
+                        <div class="w3-white w3-round" style="padding: 5px; font-size: 0.75em; border: 1px solid #bae6fd;">Eq C.11-32. Ubic: 2665 kN</div>
+                        <div class="w3-white w3-round" style="padding: 5px; font-size: 0.75em; border: 2px solid #0284c7; font-weight: 700;">Eq C.11-33. Límite: 1501.8 kN</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid #bbf7d0; border-left: 5px solid #166534;">
+                <strong style="color: #166534;"><i class="fa fa-puzzle-piece"></i> Geometría: ¿Por qué \( b_0 \) es así?</strong>
+                <div class="ce-grid ce-grid-2" style="margin-top: 10px;">
+                    <div class="w3-small" style="color: #166534;">
+                        <strong>COL1 (3 lados):</strong> El lindero "corta" la falla.<br>
+                        Lados: \( 0.605 + 0.605 + 0.81 = \mathbf{2.02 \text{ m}} \).<br>
+                        <em>Cabe sobrado en el ancho de 1.00 m.</em>
+                    </div>
+                    <div class="w3-small" style="color: #166534;">
+                        <strong>COL2 (4 lados):</strong> Falla completa por todo el perímetro.<br>
+                        Lados: \( 4 \cdot (0.40 + 0.41) = \mathbf{3.24 \text{ m}} \).<br>
+                        <em>Ocupa 0.81 m de los 1.00 m disponibles.</em>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CAJA IMAGEN 6 -->
+            <div class="w3-center w3-margin-top w3-margin-bottom w3-padding w3-round w3-white" style="border: 1px dashed var(--gris-borde);">
+                <strong style="color: #b91c1c; display: block; margin-bottom: 10px;"><i class="fa fa-bolt"></i> Sección Crítica \( b_0 \) (Cortante Bidireccional)</strong>
+                <img src="https://lms.uis.edu.co/ava/draftfile.php/610615/user/draft/504914904/b0%20%281%29.png" alt="Perímetro Crítico" style="max-width: 100%; height: auto; border-radius: 5px; mix-blend-mode: multiply;">
+                <p class="w3-small w3-margin-top" style="color: #9f1239; margin-bottom: 0;">
+                    Diferenciación del perímetro de control a una distancia \( d/2 \). Se debe analizar con especial cuidado la <strong>columna de borde</strong>, donde el perímetro solo tiene 3 lados efectivos para la transferencia de cortante.
+                </p>
+            </div>
+
+            <div class="w3-panel ce-panel-gris w3-padding w3-round" style="border-left-color: green;">
+                <p class="w3-small" style="margin: 0; color: var(--azul-profundo);">
+                    <strong><i class="fa fa-shield"></i> Veredicto:</strong> El punzonamiento no controla el diseño en este ejemplo. La zapata es lo suficientemente <strong>rígida y amplia</strong> para que el concreto trabaje con un factor de seguridad muy alto.
+                </p>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 7: DISEÑO POR FLEXIÓN -->
+        <div class="panel-control" id="flexion-combinada">
+            <h2 class="panel-titulo">7. Diseño por Flexión</h2>
+            <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Determinación de armadura superior e inferior</p>
+
+            <p class="w3-small" style="color: var(--gris-texto);">
+                El momento de diseño \( M_u \) se evalúa en las caras de las columnas y a lo largo del vano, identificando la envolvente completa de esfuerzos. En zapatas combinadas, el caso crítico corresponde al <strong>momento negativo en el tramo entre columnas</strong>, donde la zapata trabaja como una viga invertida.
+            </p>
+
+            <div class="tabla-container">
+                <table class="tabla-traslapos tabla-small">
+                    <thead>
+                        <tr>
+                            <th style="text-align:left;">Ubicación Crítica</th>
+                            <th>Abscisa \( x \) [m]</th>
+                            <th>\( M_u \) (1.2D+1.6L)</th>
+                            <th>\( M_u \) (1.2D+E+L)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="text-align:left;">Cara externa COL1 / Interna COL1</td>
+                            <td>-0.20 / 0.20</td>
+                            <td>0.0 / -51.2</td>
+                            <td>0.0 / -80.0</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;">Cara interna COL2 / Externa COL2</td>
+                            <td>2.80 / 3.20</td>
+                            <td>1.0 / 31.9</td>
+                            <td>17.6 / 24.6</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left; font-weight:bold;">MÁXIMO NEGATIVO (Vano)</td>
+                            <td style="font-weight:bold;">x ≈ 1.25 m</td>
+                            <td style="font-weight:bold;">-183.5 kNm</td>
+                            <td class="ce-alerta" style="font-weight:bold;">-195.4 kNm</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="w3-panel ce-panel-gris w3-padding w3-round" style="border-left-color: var(--gris-texto);">
+                <strong style="color: var(--azul-profundo);"><i class="fa fa-info-circle"></i> Nota de Consistencia del Modelo:</strong>
+                <p class="w3-small" style="margin-top: 5px; margin-bottom: 10px;">
+                    Los valores de \( V_u \) y \( M_u \) presentados en este ejemplo corresponden a la <strong>integración de presiones sobre todo el ancho real de la zapata</strong> (B), por lo que los resultados representan directamente las fuerzas internas totales de la sección.
+                </p>
+                <p class="w3-small" style="margin-top: 0; margin-bottom: 10px;">
+                    En este caso, como <strong>B = 1.00 m</strong>, los resultados coinciden numéricamente con un análisis “por metro de ancho”. Sin embargo, esto es una <strong>coincidencia geométrica</strong> y no una suposición del modelo.
+                </p>
+                <p class="w3-small" style="margin-top: 0; margin-bottom: 0; font-style: italic;">
+                    Para otros valores de B, sería necesario diferenciar explícitamente entre resultados por unidad de ancho y resultados totales.
+                </p>
+            </div>
+
+            <div class="w3-panel ce-panel-azul w3-padding w3-round w3-border" style="border-color: var(--gris-borde) !important;">
+                <strong style="color: var(--azul-profundo);"><i class="fa fa-diamond"></i> Cálculo de Armadura (\( f'_c=21 \text{ MPa}, f_y=420 \text{ MPa}, d=409 \text{ mm} \)):</strong>
+                <ul class="w3-small" style="margin: 10px 0 0 0; padding-left: 20px; color: var(--gris-texto);">
+                    <li><strong>Refuerzo Mínimo (\( \rho_{min} = 0.0018 \)):</strong> \( A_{s,min} = 0.0018 \cdot 1000 \cdot 500= \mathbf{900\text{ mm}^2} \)</li>
+                    <li><strong>Refuerzo Negativo (Superior):</strong> Requerido \( 1313 \text{ mm}^2 \) &rarr; Se adopta <strong>No. 5 @ 150 mm</strong>.</li>
+                    <li><strong>Refuerzo Positivo (Inferior):</strong> Requerido \( 207 \text{ mm}^2 < A_{s,min} \) &rarr; Controla el mínimo &rarr; Se adopta <strong>No. 5 @ 220 mm</strong>.</li>
+                </ul>
+            </div>
+
+            <div class="w3-panel ce-panel-naranja w3-padding w3-round">
+                <strong style="color: var(--naranja-estructural);"><i class="fa fa-wrench"></i> Estrategia de Despiece (Optimización):</strong>
+                <p class="w3-small" style="margin-top: 5px; margin-bottom: 5px;">
+                    Se propone una malla base superior de <strong>No. 5 @ 220 mm</strong> continua. En la zona de máximo momento negativo, se adicionan bastones de <strong>No. 4 @ 220 mm</strong>, alcanzando un \( A_s \) total de <strong>1481 mm²</strong>.
+                </p>
+                <p class="w3-small" style="margin-top: 0; margin-bottom: 15px;">
+                    Esta disposición sigue el principio de <strong>compatibilidad entre el diagrama de momentos y el diagrama de refuerzo</strong>, concentrando acero donde la demanda estructural es mayor.
+                </p>
+
+                <!-- CAJA IMAGEN 7 -->
+                <div class="w3-center w3-margin-top w3-margin-bottom w3-padding w3-round w3-white" style="border: 1px dashed var(--naranja-estructural);">
+                    <strong style="color: var(--azul-profundo); display: block; margin-bottom: 10px;"><i class="fa fa-industry"></i> Detallado de Refuerzo: Optimización de Bastones</strong>
+                    <img src="https://lms.uis.edu.co/ava/draftfile.php/610615/user/draft/504914904/ref%20%281%29.png" alt="Cortes de Despiece" style="max-width: 100%; height: auto; border-radius: 5px; mix-blend-mode: multiply;">
+                    <p class="w3-small w3-margin-top" style="color: var(--azul-profundo); margin-bottom: 0;">
+                        <strong>Estrategia sugerida:</strong> Combinación de barras <strong>No. 5 @ 220 mm + No. 4 @ 220 mm</strong> (alternadas) para cumplir con el momento negativo superior, optimizando el peso del acero sin comprometer la separación máxima.
+                    </p>
+                </div>
+                <p class="w3-small" style="margin-top: 5px; margin-bottom: 0; font-style: italic; color: var(--gris-texto);">
+                    *Los bastones se extienden desde la zona de \( M_{max} \) una longitud de desarrollo \( L_d \), y se interrumpen donde la malla base es suficiente, adicionando anclaje de \( d \) o \( 12d_b \).
+                </p>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 8: DISEÑO TRANSVERSAL -->
+        <div class="panel-control" id="transversal-combinada">
+            <h2 class="panel-titulo">8. Diseño Transversal</h2>
+            <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Modelo de viga imaginaria para transferencia en dirección B</p>
+
+            <div class="w3-panel ce-panel-azul w3-padding w3-round">
+                <strong style="color: var(--azul-profundo);"><i class="fa fa-map-pin"></i> Modelo Adoptado (Nilson):</strong>
+                <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
+                    Se idealiza el comportamiento transversal mediante una <strong>viga imaginaria</strong> empotrada en la columna, extendiéndose una distancia \( d/2 \) desde cada cara. La carga \( w_u \) se obtiene repartiendo la reacción total sobre el ancho \( B \).
+                </p>
+            </div>
+
+            <div class="ce-grid ce-grid-2" style="margin-bottom: 15px;">
+                <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid var(--gris-borde); margin:0;">
+                    <strong style="color: var(--azul-profundo); border-bottom: 1px solid var(--gris-borde); display: block; padding-bottom: 5px; margin-bottom: 10px;"><i class="fa fa-building"></i> Columna COL1 (Borde)</strong>
+                    <div class="w3-small" style="color: var(--gris-texto);">
+                        <strong>Geometría:</strong><br>
+                        \( b_{eff} = 0.61 \text{ m} \) | \( L = 1.00 \text{ m} \)<br><br>
+                        <strong>Cargas (\( w_u \)):</strong><br>
+                        • \( 304 \text{ kN/m} \) (1.2D+1.6L)<br>
+                        • \( 310 \text{ kN/m} \) (1.2D+E+L)<br><br>
+                        <strong>Resistencia:</strong><br>
+                        • \( V_u = 34 \text{ kN} < \phi V_c (145 \text{ kN}) \) <i class="fa fa-check-circle" style="color:green;"></i><br>
+                        • \( M_u \approx 14 \text{ kNm} \) (Controla mín.)<br>
+                        <div class="w3-panel ce-panel-gris w3-round" style="padding: 10px; margin-top: 10px; border: 1px solid #c6f6d5; color: #22543d;">
+                            <strong>Controlado por mínimo: (\( A_s = 544 \text{ mm}^2 \)) &rarr; No.5 @ 220 mm</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid var(--gris-borde); margin:0;">
+                    <strong style="color: var(--azul-profundo); border-bottom: 1px solid var(--gris-borde); display: block; padding-bottom: 5px; margin-bottom: 10px;"><i class="fa fa-building"></i> Columna COL2 (Interior)</strong>
+                    <div class="w3-small" style="color: var(--gris-texto);">
+                        <strong>Geometría:</strong><br>
+                        \( b_{eff} = 0.81 \text{ m} \) | \( L = 1.00 \text{ m} \)<br><br>
+                        <strong>Cargas (\( w_u \)):</strong><br>
+                        • \( 440 \text{ kN/m} \) (1.2D+1.6L)<br>
+                        • \( 415 \text{ kN/m} \) (1.2D+E+L)<br><br>
+                        <strong>Resistencia:</strong><br>
+                        • \( V_u = 48 \text{ kN} < \phi V_c (193 \text{ kN}) \) <i class="fa fa-check-circle" style="color:green;"></i><br>
+                        • \( M_u \approx 20 \text{ kNm} \) (Controla mín.)<br>
+                        <div class="w3-panel ce-panel-gris w3-round" style="padding: 10px; margin-top: 10px; border: 1px solid #c6f6d5; color: #22543d;">
+                            <strong>Controlado por mínimo: (\( A_s = 728 \text{ mm}^2 \)) &rarr; No.5 @ 220 mm</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="w3-panel ce-panel-naranja w3-padding w3-round">
+                <strong style="color: var(--naranja-estructural);"><i class="fa fa-exclamation-triangle"></i> Lectura de Resultados:</strong>
+                <p class="w3-small" style="margin-top: 5px; margin-bottom: 10px;">
+                    En este caso, el diseño transversal está gobernado por <strong>acero mínimo</strong>, lo que indica que la zapata trabaja principalmente en dirección longitudinal y que la flexión transversal es secundaria.
+                </p>
+                <p class="w3-small" style="margin-top: 0; margin-bottom: 0;">
+                    <strong>No generalizar:</strong> para zapatas con mayores cargas o anchos \( B \), la flexión y el cortante transversal pueden controlar el diseño y exigir mayores cuantías o espesores.
+                </p>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 9: APLASTAMIENTO -->
+        <div class="panel-control" id="aplastamiento-combinada">
+            <h2 class="panel-titulo">9. Aplastamiento en la Base</h2>
+            <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Interfaz Columna–Zapata (NSR-10 C.10.14)</p>
+
+            <div class="w3-panel ce-panel-azul w3-padding w3-round">
+                <strong style="color: var(--azul-profundo);"><i class="fa fa-map-pin"></i> Criterio de Resistencia:</strong>
+                <p class="w3-small" style="margin-top: 5px; margin-bottom: 5px;">
+                    Evaluamos la capacidad del concreto de la zapata para recibir la carga concentrada de la columna:
+                </p>
+                <div class="math-scroll w3-center w3-medium" style="font-weight: bold; margin-bottom: 5px;">
+                    \( \phi P_n = \phi (0.85 f'_c A_1)\sqrt{A_2/A_1} \)
+                </div>
+                <p class="w3-small" style="margin-top: 0; margin-bottom: 0;">
+                    Donde \( A_1 \) es el área de la columna y \( A_2 \) es el área de la base del tronco de pirámide (dispersión 2H:1V). El factor de confinamiento \( \sqrt{A_2/A_1} \) está limitado a <strong>2.0</strong>.
+                </p>
+            </div>
+
+            <div class="ce-grid ce-grid-2" style="margin-bottom: 15px;">
+                <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid var(--gris-borde); margin:0;">
+                    <strong style="color: var(--azul-profundo); border-bottom: 1px solid var(--gris-borde); display: block; padding-bottom: 5px; margin-bottom: 10px;"><i class="fa fa-building"></i> COL1 (Condición de Borde)</strong>
+                    <p class="w3-small" style="color: var(--gris-texto); margin-bottom: 5px;">Dispersión restringida en un sentido por el lindero.</p>
+                    <ul class="w3-small" style="margin:0; padding-left:20px; color: var(--gris-texto);">
+                        <li>\( A_1 = 0.16 \, \text{m}^2 \)</li>
+                        <li>\( A_2 = 0.70 \times 1.00 = 0.70 \, \text{m}^2 \)</li>
+                        <li>\( \sqrt{A_2/A_1} = 2.09 \rightarrow \mathbf{2.0} \)</li>
+                    </ul>
+                    <p class="w3-small" style="margin-top:10px; margin-bottom:0; font-style:italic; color: var(--gris-texto);">
+                        Incluso con la restricción de borde, se alcanza el confinamiento máximo.
+                    </p>
+                </div>
+                
+                <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid var(--gris-borde); margin:0;">
+                    <strong style="color: var(--azul-profundo); border-bottom: 1px solid var(--gris-borde); display: block; padding-bottom: 5px; margin-bottom: 10px;"><i class="fa fa-building"></i> COL2 (Interior)</strong>
+                    <p class="w3-small" style="color: var(--gris-texto); margin-bottom: 5px;">Dispersión simétrica en todas las direcciones.</p>
+                    <ul class="w3-small" style="margin:0; padding-left:20px; color: var(--gris-texto);">
+                        <li>\( A_1 = 0.16 \, \text{m}^2 \)</li>
+                        <li>\( A_2 = 1.00^2 = 1.00 \, \text{m}^2 \)</li>
+                        <li>\( \sqrt{A_2/A_1} = 2.50 \rightarrow \mathbf{2.0} \)</li>
+                    </ul>
+                    <p class="w3-small" style="margin-top:10px; margin-bottom:0; font-style:italic; color: var(--gris-texto);">
+                        Capacidad plena por desarrollo geométrico total.
+                    </p>
+                </div>
+            </div>
+
+            <!-- CAJA IMAGEN 8 -->
+            <div class="w3-center w3-margin-top w3-margin-bottom w3-padding w3-round w3-white" style="border: 1px dashed var(--gris-borde);">
+                <strong style="color: var(--azul-profundo); display: block; margin-bottom: 10px;"><i class="fa fa-search"></i> Visualización: Área de Dispersión \( A_2 \) (Aplastamiento)</strong>
+                <img src="https://lms.uis.edu.co/ava/draftfile.php/610615/user/draft/504914904/a2a1%20%282%29.png" alt="Esquema Aplastamiento" style="max-width: 100%; height: auto; border-radius: 5px; mix-blend-mode: multiply;">
+                <p class="w3-small w3-margin-top" style="color: var(--gris-texto); margin-bottom: 0; font-style: italic;">
+                    Representación del tronco de pirámide (dispersión 2H:1V). Nótese cómo la limitación geométrica por borde de zapata reduce el área \( A_2 \), aunque usualmente se mantiene el factor de confinamiento máximo de 2.0.
+                </p>
+            </div>
+
+            <div class="w3-panel ce-panel-gris w3-padding w3-round" style="border-left-color: green;">
+                <strong style="color: green;"><i class="fa fa-check-circle"></i> Conclusión de Resistencia:</strong>
+                <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
+                    En ambos apoyos, la resistencia nominal (\( \phi P_n \approx 3,712 \text{ kN} \)) es muy superior a las cargas últimas aplicadas (\( 310 - 440 \text{ kN} \)). En este ejemplo el aplastamiento <strong>no controla el diseño</strong>, por lo que el concreto simple de la zapata es suficiente para transferir la carga.
+                </p>
+            </div>
+            
+            <p class="w3-small w3-center" style="color: var(--gris-texto); font-style: italic; border-top: 1px dashed var(--gris-borde); padding-top: 10px;">
+                Nota: En zapatas convencionales, el factor de confinamiento suele alcanzar el límite de 2.0.
+            </p>
+        </div>
+
+        <!-- NOTA DE FLUJO INTERDISCIPLINAR Y ANEXOS -->
+        <div class="panel-control" style="background-color: #f0f9ff !important; border-color: #bae6fd !important; border-left: 5px solid #0284c7 !important;">
+            <strong style="color: #0369a1; font-size: 1.1em; text-transform: uppercase;"><i class="fa fa-refresh"></i> El Diseño como Proceso Iterativo</strong>
+            <p class="w3-small" style="margin-top: 5px; margin-bottom: 10px; color: #334155;">
+                Es fundamental comprender que este diseño estructural representa una <strong>primera fase</strong> del proyecto. En la práctica profesional, este modelo se entrega al especialista en <strong>Geotecnia</strong>, quien valida las presiones mediante sus propios modelos y avala o solicita ajustes al diseño.
+            </p>
+            <div class="w3-panel w3-white w3-padding w3-round" style="margin-bottom: 0;">
+                <p class="w3-small" style="margin: 0; color: #0c4a6e;">
+                    <strong><i class="fa fa-map-pin"></i> Validación en Obra:</strong> Antes de fundir el concreto, el geotecnista debe realizar la <strong>inspección visual del terreno excavado</strong>. En ese momento, si las condiciones reales del suelo difieren de lo previsto en el estudio inicial, se pueden (y deben) realizar los últimos ajustes técnicos.<br><br>
+                    <em>La ingeniería de cimentaciones es proceso que requiere trabajo interdisciplinar.</em>
+                </p>
+            </div>
+        </div>
+
+        <div class="panel-control">
+            <h2 class="panel-titulo" style="background: var(--azul-profundo); color: white; border:none;"><i class="fa fa-link"></i> Anexo: Criterios de Armado</h2>
+            <ul class="w3-small" style="margin: 15px 0 0 0; padding-left: 20px; color: var(--gris-texto);">
+                <li style="margin-bottom: 8px;"><strong>Acero Longitudinal Superior:</strong> Es el refuerzo principal del vano. Debe ser continuo para absorber la tracción generada por el momento negativo.</li>
+                <li style="margin-bottom: 8px;"><strong>Acero Longitudinal Inferior:</strong> Se dispone para resistir los momentos positivos en los voladizos y por requisitos de integridad.</li>
+                <li style="margin-bottom: 8px;"><strong>Acero Transversal:</strong> Se concentra bajo las columnas formando "vigas ocultas" de ancho \( B \), garantizando la transferencia de carga hacia los bordes.</li>
+                <li style="margin-bottom: 15px;"><strong>Recubrimiento:</strong> Se respetan los <strong>75 mm</strong> mínimos en todas las caras en contacto con el terreno.</li>
+            </ul>
+
+            <div class="w3-panel ce-panel-naranja w3-padding w3-round" style="margin-bottom: 0;">
+                <strong style="color: var(--naranja-estructural);"><i class="fa fa-exclamation-triangle"></i> Nota sobre el Recubrimiento:</strong>
+                <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
+                    Se garantiza un recubrimiento de 75 mm por estar en contacto permanente con el suelo. Este valor es crítico para el cálculo del peralte efectivo (\( d \)) y la protección galvánica del refuerzo.
+                </p>
+            </div>
+        </div>
