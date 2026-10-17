@@ -1,3 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Ejemplo práctico de diseño de zapatas combinadas. Geometría, interacción suelo-estructura, presiones, cortante, flexión y detallamiento.">
+    <meta name="author" content="Ing. Rafael Antonio Correa Melano">
+    
+    <title>Diseño Zapata Combinada - Criterio Estructural</title>
+    
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <!-- Librerías Asíncronas (MathJax) -->
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']] }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        /* PALETA DE COLORES DE LA MARCA */
+        :root {
+            --azul-profundo: #1A2530;
+            --naranja-estructural: #E67E22;
+            --gris-claro: #F4F5F7;
+            
+            /* Variantes suaves para fondos */
+            --azul-suave: #E8ECF1; 
+            --naranja-suave: #FDF2E9; 
+            --gris-borde: #CBD5E1;
+            --gris-texto: #64748b;
+        }
+
+        html { scroll-behavior: smooth; }
+        body { background-color: var(--gris-claro); font-family: 'Segoe UI', sans-serif; color: var(--azul-profundo); }
+        
+        .contenedor-principal {
+            max-width: 1250px; margin: 30px auto; border-radius: 12px;
+            background: white; padding: 0; overflow: hidden;
+            box-shadow: 0 8px 25px rgba(26,37,48,0.15);
+        }
+        
+        /* HEADER Y MANIFIESTO */
+        .header-rc { background: var(--azul-profundo); color: white; padding: 30px 20px; text-align: center; position: relative; }
+        .brand-logo-header { max-width: 250px; height: auto; margin-bottom: 10px; display: inline-block; }
+        .lema-global { font-size: 0.9em; letter-spacing: 2px; color: #a0aec0; text-transform: uppercase; margin-bottom: 20px; font-weight: bold; }
+        .lema-global span { color: var(--naranja-estructural); }
+
+        /* RUTA DE APRENDIZAJE */
+        .ruta-aprendizaje {
+            display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 20px;
+            font-size: 0.85em; color: #a0aec0;
+        }
+        .ruta-item { padding: 4px 12px; border-radius: 20px; border: 1px solid #4a5568; background: rgba(255,255,255,0.05); }
+        .ruta-activa { border-color: var(--naranja-estructural); color: white; background: rgba(230, 126, 34, 0.2); font-weight: bold; }
+        .ruta-flecha { color: #4a5568; font-size: 0.8em; }
+
+        .contenido-body { padding: 40px; }
+        
+        /* CAJAS Y RESALTADOS (Paneles de Criterio Estructural) */
+        .panel-control { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 25px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); margin-bottom: 25px; }
+        .panel-titulo { margin-top: 0; font-weight: bold; color: var(--azul-profundo); border-bottom: 2px solid var(--naranja-estructural); padding-bottom: 8px; margin-bottom: 20px; font-size: 1.6em; }
+        
+        /* CLASES COHESIVAS DE LA MARCA */
+        .ce-panel-azul { background-color: var(--azul-suave); border-left: 4px solid var(--azul-profundo); color: var(--azul-profundo); }
+        .ce-panel-naranja { background-color: var(--naranja-suave); border-left: 4px solid var(--naranja-estructural); color: var(--azul-profundo); }
+        .ce-panel-gris { background-color: var(--gris-claro); border-left: 4px solid var(--gris-borde); color: var(--azul-profundo); }
+        .ce-destacado { color: var(--naranja-estructural); font-weight: bold; }
+        .ce-alerta { color: #c62828; font-weight: bold; }
+
+        /* SISTEMA GRID */
+        .ce-grid { display: grid; gap: 15px; margin-bottom: 15px; margin-top: 10px; }
+        .ce-grid-2 { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+        .ce-grid-3 { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+        .ce-grid-4 { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+
+        .ce-grid > div { min-width: 0; }
+
+        /* TABLAS ESTANDARIZADAS */
+        .tabla-container { overflow-x: auto; width: 100%; border-radius: 6px; box-shadow: 0 0 5px rgba(0,0,0,0.05); margin: 15px 0; }
+        .tabla-traslapos { width: 100%; border-collapse: collapse; font-size: 0.95em; min-width: 600px; }
+        .tabla-traslapos th { background-color: var(--azul-profundo) !important; color: white !important; padding: 14px; text-align: center; transition: background-color 0.3s; }
+        .tabla-traslapos td { padding: 12px; text-align: center; border-bottom: 1px solid #e2e8f0; }
+        .tabla-traslapos tr:hover { background-color: var(--gris-claro); }
+        .tabla-small td, .tabla-small th { padding: 8px; font-size: 0.85em; }
+
+        /* BANNERS DE TABLA RESPONSIVOS */
+        @media (max-width: 768px) {
+            .tabla-traslapos th {
+                background-color: var(--naranja-estructural) !important;
+                padding: 8px 6px !important;
+                font-size: 0.85em;
+            }
+            .tabla-traslapos td {
+                padding: 8px 6px !important;
+                font-size: 0.85em;
+            }
+        }
+
+        /* LOGO FOOTER */
+        .brand-logo-footer { max-width: 200px; height: auto; margin-bottom: 15px; display: inline-block; }
+        footer { background-color: var(--gris-claro) !important; }
+
+        summary:focus { outline: none; }
+        .math-scroll { overflow-x: auto; padding: 10px 0; }
+
+        @media (max-width: 1250px) {
+            .contenedor-principal { width: 100% !important; margin: 0 !important; border-radius: 0 !important; box-shadow: none; padding: 0 !important; }
+            .contenido-body { padding: 20px; }
+        }
+
+        /* OPTIMIZACIÓN DE IMPRESIÓN */
+        @media print {
+            .no-print { display: none !important; }
+            .contenedor-principal { box-shadow: none !important; margin: 0 !important; width: 100% !important; border-radius: 0 !important;}
+            .panel-control { page-break-inside: avoid; border: 1px solid #e2e8f0; margin-bottom: 15px; box-shadow: none; }
+            body { background: white !important; color: black !important; }
+            .tabla-traslapos { font-size: 0.85em; }
+            .tabla-traslapos th { color: black !important; background-color: #f0f0f0 !important; border: 1px solid #ccc; }
+            .tabla-traslapos td { border: 1px solid #ccc; }
+            a { text-decoration: none; color: black; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Botón Volver Arriba -->
+<button onclick="topFunction()" id="btnTop" class="w3-button w3-circle w3-xlarge no-print" 
+        style="display:none; position:fixed; bottom:30px; right:30px; z-index:99; background-color:var(--naranja-estructural); color:white; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
+    <i class="fa fa-arrow-up"></i>
+</button>
+
+<div class="contenedor-principal w3-animate-opacity">
+    
+    <!-- HEADER Y NARRATIVA GLOBAL -->
+    <div class="header-rc no-print">
+        <img src="../assets/IsotipoFOscuroT.png" alt="Logotipo Criterio Estructural" class="brand-logo-header" onerror="this.src='https://via.placeholder.com/250x80/1A2530/FFFFFF?text=CRITERIO+ESTRUCTURAL'"><br>
+        
+        <div class="lema-global">
+            Guía de Detallamiento Estructural <br>
+            <span>Aprender haciendo. Comprender antes de detallar.</span>
+        </div>
+        
+        <h1 class="w3-xxlarge" style="margin: 0; font-weight: bold;">Diseño de Zapata Combinada</h1>
+        <div style="font-size: 1.1em; color: #cbd5e1; margin-top: 5px;">Ejemplo Práctico: Integración de Apoyos y Flujo de Cargas</div>
+
+        <div class="ruta-aprendizaje">
+            <span class="ruta-item">1. Geometría y Presiones</span> <i class="fa fa-chevron-right ruta-flecha"></i>
+            <span class="ruta-item ruta-activa">📐 2. Estabilidad y Cortante</span> <i class="fa fa-chevron-right ruta-flecha"></i>
+            <span class="ruta-item">3. Diseño por Flexión</span> <i class="fa fa-chevron-right ruta-flecha"></i>
+            <span class="ruta-item">4. Detallamiento Final</span>
+        </div>
+    </div>
+
+    <div class="contenido-body">
+
+    <!-- ==================================================================== -->
+    <!-- AQUÍ SE PEGAN LOS 3 BLOQUES DE CONTENIDO DE ZAPATA COMBINADA         -->
+    <!-- (Introducción, Reacciones, Cortante, Flexión, Punzonamiento, etc.)   -->
+    <!-- ==================================================================== -->
+
+
         <!-- INTRODUCCIÓN ZAPATA COMBINADA -->
         <div class="panel-control" id="intro-combinada">
             <h2 class="panel-titulo">Diseño de Zapata Combinada</h2>
@@ -814,3 +978,77 @@
                 </p>
             </div>
         </div>
+
+    <!-- ==================================================================== -->
+    <!-- FIN DEL CONTENIDO DE ZAPATA COMBINADA                                -->
+    <!-- ==================================================================== -->
+
+        <!-- BOTONES DE NAVEGACIÓN -->
+        <div class="w3-center w3-padding-32 no-print">
+            <a href="../index.html" class="w3-button w3-light-grey w3-round-large w3-border">Inicio</a>
+            <a href="ZAPPresionesCentrica.html" class="w3-button w3-red w3-round-large" style="background-color: var(--naranja-estructural) !important;">Simulador de Presión</a>
+            <a href="../herramientas/traslapos.html" class="w3-button w3-light-grey w3-round-large w3-border">Guía Definitiva de Traslapos</a>
+        </div>
+        
+        <!-- SECCIÓN DE COMENTARIOS INFERIOR -->
+        <div class="w3-container w3-margin-top w3-padding-32 no-print">
+            <h3 style="border-bottom: 2px solid var(--naranja-estructural); color: var(--azul-profundo); padding-bottom: 8px;">Consultas y Discusión Académica</h3>
+            <p class="w3-small" style="opacity: 0.8;">Inicia sesión con tu cuenta de GitHub para dejar una pregunta o comentario técnico sobre este ejemplo.</p>
+            <script src="https://utteranc.es/client.js"
+                repo="rafacorreacolombia/Hormigon-armado"
+                issue-term="pathname"
+                theme="github-light"
+                crossorigin="anonymous"
+                async>
+            </script>                                        
+        </div>
+                        
+    </div> <!-- Cierra .contenido-body -->
+        
+    <!-- FOOTER INTACTO -->
+    <footer class="w3-container w3-padding-32 w3-center w3-margin-top no-print" style="color: var(--azul-profundo); background-color: var(--gris-claro);">
+        <div class="w3-border-top w3-padding-24" style="max-width: 500px; margin: auto; border-color: var(--gris-borde)!important;">
+            <img src="../assets/IsotipoFClaroT.png" alt="Logotipo Criterio Estructural - Pie de página" class="brand-logo-footer" onerror="this.src='https://via.placeholder.com/200x60/F4F5F7/1A2530?text=CRITERIO+ESTRUCTURAL'">
+            <p class="w3-medium"><b>Autor</b></p>
+
+            <h4 style="margin:0;">
+                <b>Ing. Rafael Antonio Correa Melano</b>
+            </h4>
+            
+            <p class="w3-small">
+                Ingeniero Civil • M.IE.<br>
+                Universidad Industrial de Santander
+            </p>
+            
+            <hr style="opacity:0.2; border-top: 1px solid var(--azul-profundo);">
+            
+            <p class="w3-small" style="opacity: 0.8;">
+                <b>Criterio Estructural</b><br>
+                © 2026 Rafael Antonio Correa Melano.<br>
+                Todos los derechos reservados.
+            </p>
+            <div class="w3-margin-top">
+                <span class="w3-tag w3-round w3-white w3-border w3-small" style="border-color: var(--naranja-estructural)!important; color: var(--naranja-estructural)!important;">Bucaramanga, Colombia 🇨🇴</span>
+            </div>
+        </div>
+    </footer>
+</div> <!-- Cierra .contenedor-principal -->
+
+<!-- SCRIPT BOTÓN VOLVER ARRIBA -->
+<script>
+    let btnTop = document.getElementById("btnTop");
+    window.onscroll = function() {
+        if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+            btnTop.style.display = "block";
+        } else {
+            btnTop.style.display = "none";
+        }
+    };
+    function topFunction() {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }
+</script>
+
+</body>
+</html>
