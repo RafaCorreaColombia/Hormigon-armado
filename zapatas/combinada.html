@@ -923,15 +923,15 @@
                 <strong style="color: var(--azul-profundo);"><i class="fa fa-diamond"></i> Cálculo de Armadura (\( f'_c=21 \text{ MPa}, f_y=420 \text{ MPa}, d=367.1 \text{ mm} \)):</strong>
                 <ul class="w3-small" style="margin: 10px 0 0 0; padding-left: 20px; color: var(--gris-texto);">
                     <li><strong>Refuerzo Mínimo (\( \rho_{min} = 0.0018 \)):</strong> \( A_{s,min} = 0.0018 \cdot 1000 \cdot 450= \mathbf{810\text{ mm}^2} \)</li>
-                    <li><strong>Refuerzo Negativo (Superior):</strong> Requerido \( 1478 \text{ mm}^2 \) &rarr; Se adopta <strong>5 No. 5 + 4 No. 4</strong>.</li>
-                    <li><strong>Refuerzo Positivo (Inferior):</strong> Requerido \( 231 \text{ mm}^2 < A_{s,min} \) &rarr; Controla el mínimo &rarr; Se adopta <strong>No. 5 @ 225 mm</strong>.</li>
+                    <li><strong>Refuerzo Negativo (Superior):</strong> Requerido \( 1478 \text{ mm}^2 \) &rarr; Se adopta <strong>5 No. 5 + 4 No. 4, \( \phi M_n = 198 text{ kNm} \)</strong>.</li>
+                    <li><strong>Refuerzo Positivo (Inferior):</strong> Requerido \( 231 \text{ mm}^2 < A_{s,min} \) &rarr; Controla el mínimo &rarr; Se adopta <strong>5 No. 5, \( \phi M_n = 133 text{ kNm} \)</strong>.</li>
                 </ul>
             </div>
 
             <div class="w3-panel ce-panel-naranja w3-padding w3-round">
                 <strong style="color: var(--naranja-estructural);"><i class="fa fa-wrench"></i> Estrategia de Despiece (Optimización):</strong>
                 <p class="w3-small" style="margin-top: 5px; margin-bottom: 5px;">
-                    Se propone una malla base superior de <strong>No. 5 @ 220 mm</strong> continua. En la zona de máximo momento negativo, se adicionan bastones de <strong>No. 4 @ 220 mm</strong>, alcanzando un \( A_s \) total de <strong>1481 mm²</strong>.
+                    Se propone una malla base superior de <strong>5 No. 5 (1 @ 200 mm)</strong> continua. En la zona de máximo momento negativo, se adicionan 4 bastones <strong>No. 4</strong>, alcanzando un \( A_s \) total de <strong>1496 mm²</strong>.
                 </p>
                 <p class="w3-small" style="margin-top: 0; margin-bottom: 15px;">
                     Esta disposición sigue el principio de <strong>compatibilidad entre el diagrama de momentos y el diagrama de refuerzo</strong>, concentrando acero donde la demanda estructural es mayor.
@@ -942,7 +942,7 @@
                     <strong style="color: var(--azul-profundo); display: block; margin-bottom: 10px;"><i class="fa fa-industry"></i> Detallado de Refuerzo: Optimización de Bastones</strong>
                     <img src="https://lms.uis.edu.co/ava/draftfile.php/610615/user/draft/504914904/ref%20%281%29.png" alt="Cortes de Despiece" style="max-width: 100%; height: auto; border-radius: 5px; mix-blend-mode: multiply;">
                     <p class="w3-small w3-margin-top" style="color: var(--azul-profundo); margin-bottom: 0;">
-                        <strong>Estrategia sugerida:</strong> Combinación de barras <strong>No. 5 @ 220 mm + No. 4 @ 220 mm</strong> (alternadas) para cumplir con el momento negativo superior, optimizando el peso del acero sin comprometer la separación máxima.
+                        <strong>Estrategia sugerida:</strong> Combinación de barras <strong>5 No. 5 (1 @ 200 mm) + 4 No. 4</strong> (alternadas) para cumplir con el momento negativo superior, optimizando el consumo de acero sin comprometer la separación máxima.
                     </p>
                 </div>
                 <p class="w3-small" style="margin-top: 5px; margin-bottom: 0; font-style: italic; color: var(--gris-texto);">
