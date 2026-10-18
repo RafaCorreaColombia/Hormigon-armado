@@ -981,12 +981,11 @@
             <!-- CAJA IMAGEN 5 -->
             <div class="w3-center w3-margin-top w3-margin-bottom w3-padding w3-round w3-white" style="border: 1px dashed var(--gris-borde);">
                 
-                <!-- GRÁFICO SVG MOMENTOS GENERADO CON ECUACIONES EXACTAS E INVERTIDO NATIVAMENTE -->
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520" style="width: 100%; max-width: 700px; height: auto; background: white; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; margin: 0 auto; display: block;">
+                <!-- GRÁFICO SVG DINÁMICO EVALUADO POR TRAMOS (CÚBICAS EXACTAS) -->
+                <svg id="svg-momentos" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520" style="width: 100%; max-width: 700px; height: auto; background: white; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; margin: 0 auto; display: block;">
                     
                     <!-- Fondo de la cuadrícula (Grid) -->
                     <g stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4 4">
-                        <!-- Líneas verticales X -->
                         <line x1="60" y1="40" x2="60" y2="440" />
                         <line x1="147.5" y1="40" x2="147.5" y2="440" />
                         <line x1="235" y1="40" x2="235" y2="440" />
@@ -997,7 +996,7 @@
                         <line x1="672.5" y1="40" x2="672.5" y2="440" />
                         <line x1="760" y1="40" x2="760" y2="440" />
                         
-                        <!-- Líneas horizontales Y (Escala -200 a +50 invertida nativamente) -->
+                        <!-- Líneas horizontales Y (Escala -200 a +50 invertida) -->
                         <line x1="60" y1="40" x2="760" y2="40" />     <!-- M = -200 -->
                         <line x1="60" y1="120" x2="760" y2="120" />    <!-- M = -150 -->
                         <line x1="60" y1="200" x2="760" y2="200" />    <!-- M = -100 -->
@@ -1031,28 +1030,16 @@
 
                     <!-- Eje Cero Principal (M = 0) -->
                     <line x1="60" y1="360" x2="760" y2="360" stroke="#475569" stroke-width="2.5" />
-                    <!-- Borde vertical izquierdo -->
                     <line x1="60" y1="40" x2="60" y2="440" stroke="#94a3b8" stroke-width="2" />
 
-                    <!-- CURVAS DE MOMENTO FLECTOR (Basadas en las ecuaciones polinómicas) -->
-                    
-                    <!-- 3. Combinación 0.9D-E (Naranja) -->
-                    <path d="M 60,360 L 83.3,369.2 L 106.7,369.7 L 130,361.5 Q 152.7,338.0 175.5,314.6 T 221,276.1 T 266.5,246.6 T 312,226.6 T 357.5,216.6 T 403,217.2 T 448.5,229.0 T 494,252.4 T 539.5,288.1 T 585,336.5 L 608.3,373.1 L 631.7,394.4 Q 643.3,397.4 655,400.4 T 676,386.2 T 697,375.0 T 718,367.0 T 739,362.1 T 760,360.5 L 760,360 Z" fill="#ea580c" opacity="0.12" />
-                    <path d="M 60,360 L 83.3,369.2 L 106.7,369.7 L 130,361.5 Q 152.7,338.0 175.5,314.6 T 221,276.1 T 266.5,246.6 T 312,226.6 T 357.5,216.6 T 403,217.2 T 448.5,229.0 T 494,252.4 T 539.5,288.1 T 585,336.5 L 608.3,373.1 L 631.7,394.4 Q 643.3,397.4 655,400.4 T 676,386.2 T 697,375.0 T 718,367.0 T 739,362.1 T 760,360.5" fill="none" stroke="#ea580c" stroke-width="2.5" stroke-linejoin="round" />
-
-                    <!-- 1. Combinación 1.2D+1.6L (Azul) -->
-                    <path d="M 60,360 L 83.3,348.8 L 106.7,321.5 L 130,278.0 Q 152.7,236.2 175.5,194.4 T 221,131.5 T 266.5,89.3 T 312,67.7 T 357.5,66.4 T 403,85.5 T 448.5,124.6 T 494,183.8 T 539.5,262.8 T 585,361.6 L 608.3,404.2 L 631.7,420.7 Q 643.3,415.9 655,411.0 T 676,392.6 T 697,378.2 T 718,368.0 T 739,361.9 T 760,359.9 L 760,360 Z" fill="#2563eb" opacity="0.12" />
-                    <path d="M 60,360 L 83.3,348.8 L 106.7,321.5 L 130,278.0 Q 152.7,236.2 175.5,194.4 T 221,131.5 T 266.5,89.3 T 312,67.7 T 357.5,66.4 T 403,85.5 T 448.5,124.6 T 494,183.8 T 539.5,262.8 T 585,361.6 L 608.3,404.2 L 631.7,420.7 Q 643.3,415.9 655,411.0 T 676,392.6 T 697,378.2 T 718,368.0 T 739,361.9 T 760,359.9" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linejoin="round" />
-
-                    <!-- 2. Combinación 1.2D+E+L (Armada oscura) -->
-                    <path d="M 60,360 L 83.3,333.0 L 106.7,290.4 L 130,232.0 Q 152.7,192.0 175.5,152.0 T 221,95.0 T 266.5,60.3 T 312,47.4 T 357.5,55.4 T 403,83.9 T 448.5,132.1 T 494,199.2 T 539.5,284.8 T 585,388.1 L 608.3,417.0 L 631.7,420.8 Q 643.3,410.1 655,399.4 T 676,384.8 T 697,373.6 T 718,365.6 T 739,360.9 T 760,359.4 L 760,360 Z" fill="#334155" opacity="0.15" />
-                    <path d="M 60,360 L 83.3,333.0 L 106.7,290.4 L 130,232.0 Q 152.7,192.0 175.5,152.0 T 221,95.0 T 266.5,60.3 T 312,47.4 T 357.5,55.4 T 403,83.9 T 448.5,132.1 T 494,199.2 T 539.5,284.8 T 585,388.1 L 608.3,417.0 L 631.7,420.8 Q 643.3,410.1 655,399.4 T 676,384.8 T 697,373.6 T 718,365.6 T 739,360.9 T 760,359.4" fill="none" stroke="#334155" stroke-width="2.5" stroke-linejoin="round" />
+                    <!-- CONTENEDOR DE CURVAS GENERADAS POR SCRIPT -->
+                    <g id="curvas-container"></g>
 
                     <!-- Etiquetas de Ejes -->
                     <text x="410" y="475" font-size="13" font-weight="bold" fill="#475569" text-anchor="middle">Abscisa X (m)</text>
                     <text x="25" y="240" font-size="13" font-weight="bold" fill="#475569" text-anchor="middle" transform="rotate(-90 25 240)">Momento Último Mu (kNm)</text>
 
-                    <!-- Leyenda (Legend) -->
+                    <!-- Leyenda -->
                     <g transform="translate(60, 500)">
                         <line x1="100" y1="0" x2="130" y2="0" stroke="#2563eb" stroke-width="3" />
                         <text x="135" y="4" font-size="12" font-weight="bold" fill="#475569">1.2D + 1.6L</text>
@@ -1063,8 +1050,95 @@
                     </g>
                 </svg>
 
+                <!-- SCRIPT DE EVALUACIÓN AUTOMÁTICA DE CÚBICAS -->
+                <script>
+                <![CDATA[
+                (function() {
+                    const tramos = [
+                        {min: -0.2, max: 0.2, c: [-0.7875, -282.75, -128.01, -14.299]},
+                        {min: 0.2,  max: 2.8, c: [-1.5313, 100.96, -270.43, 0]},
+                        {min: 2.8,  max: 3.2, c: [-0.7875, -452.75, 2815, -4314.1]},
+                        {min: 3.2,  max: 3.8, c: [-0.7875, 97.252, -705.01, 1317.8]}
+                    ];
+                    const tramosEL = [
+                        {min: -0.2, max: 0.2, c: [-3.9375, -275.61, -199.81, -28.969]},
+                        {min: 0.2,  max: 2.8, c: [-3.9375, 111.89, -264.91, -31.449]},
+                        {min: 2.8,  max: 3.2, c: [-3.9375, -406.86, 2565.2, -3888.7]},
+                        {min: 3.2,  max: 3.8, c: [-3.9375, 111.89, -679.8, 1183.3]}
+                    ];
+                    const tramos09 = [
+                        {min: -0.2, max: 0.2, c: [3.2344, -153.09, 2.1544, 6.5804]},
+                        {min: 0.2,  max: 2.8, c: [3.2344, 34.409, -136.52, 26.814]},
+                        {min: 2.8,  max: 3.2, c: [3.2344, -296.84, 1793.4, -2780]},
+                        {min: 3.2,  max: 3.8, c: [3.2344, 34.409, -401.6, 852.06]}
+                    ];
+
+                    function evalPoly(x, c) {
+                        return c[0]*Math.pow(x,3) + c[1]*Math.pow(x,2) + c[2]*x + c[3];
+                    }
+
+                    // Mapeo de coordenadas X [-0.2, 3.8] a Pixeles [60, 760]
+                    function mapX(x) {
+                        return 60 + ((x - (-0.2)) / (3.8 - (-0.2))) * (700);
+                    }
+                    // Mapeo de Momentos [-200, 50] a Pixeles de la cuadricula (Y=360 es M=0, escala 1.6 px por kNm)
+                    function mapY(m) {
+                        return 360 - (m * 1.6);
+                    }
+
+                    function generarPath(tramosArr) {
+                        let pts = [];
+                        tramosArr.forEach(t => {
+                            for (let x = t.min; x <= t.max; x += 0.02) {
+                                pts.push({x: mapX(x), y: mapY(evalPoly(x, t.c))});
+                            }
+                        });
+                        // Asegurar punto final exacto
+                        let xFin = tramosArr[tramosArr.length-1].max;
+                        pts.push({x: mapX(xFin), y: mapY(evalPoly(xFin, tramosArr[tramosArr.length-1].c))});
+
+                        let dArea = `M ${mapX(-0.2)},360 `;
+                        let dLine = `M ${pts[0].x} ${pts[0].y} `;
+                        pts.forEach(p => {
+                            dArea += `L ${p.x} ${p.y} `;
+                            dLine += `L ${p.x} ${p.y} `;
+                        });
+                        dArea += `L ${mapX(xFin)},360 Z`;
+                        return {area: dArea, line: dLine};
+                    }
+
+                    const container = document.getElementById('curvas-container');
+                    
+                    // Definiciones de curvas y estilos
+                    const datasets = [
+                        {arr: tramos09, color: '#ea580c', op: '0.12'},
+                        {arr: tramos,   color: '#2563eb', op: '0.12'},
+                        {arr: tramosEL, color: '#334155', op: '0.15'}
+                    ];
+
+                    datasets.forEach(ds => {
+                        let res = generarPath(ds.arr);
+                        let pathArea = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                        pathArea.setAttribute('d', res.area);
+                        pathArea.setAttribute('fill', ds.color);
+                        pathArea.setAttribute('opacity', ds.op);
+
+                        let pathLine = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                        pathLine.setAttribute('d', res.line);
+                        pathLine.setAttribute('fill', 'none');
+                        pathLine.setAttribute('stroke', ds.color);
+                        pathLine.setAttribute('stroke-width', '2.5');
+                        pathLine.setAttribute('stroke-linejoin', 'round');
+
+                        container.appendChild(pathArea);
+                        container.appendChild(pathLine);
+                    });
+                })();
+                ]]>
+                </script>
+
                 <p class="w3-small w3-margin-top" style="color: var(--gris-texto); margin-bottom: 10px; padding-top: 15px;">
-                    <i><strong>Figura 5:</strong> Diagrama de momento flector último \( M_u \) (kNm) dibujado del lado de la tracción. El momento negativo domina la demanda en el tramo entre columnas, traccionando la fibra superior.</i>
+                    <i><strong>Figura 5:</strong> Diagrama de momento flector último \(M_u\) (kNm) evaluado analíticamente por tramos cúbicos y dibujado del lado de la tracción.</i>
                 </p>
                 <div class="w3-panel ce-panel-azul w3-padding w3-round w3-left-align">
                     <strong style="color: var(--azul-profundo);"><i class="fa fa-map-pin"></i> Análisis de Flexión Longitudinal:</strong>
