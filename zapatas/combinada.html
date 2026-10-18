@@ -751,6 +751,105 @@
 
             <!-- CAJA IMAGEN 4 -->
             <div class="w3-center w3-margin-top w3-margin-bottom w3-padding w3-round w3-white" style="border: 1px dashed var(--gris-borde);">
+                
+                <!-- GRÁFICO SVG CORTANTE GENERADO CON DATOS EXACTOS -->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520" style="width: 100%; max-width: 700px; height: auto; background: white; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; margin: 0 auto; display: block;">
+                    
+                    <!-- Fondo de la cuadrícula (Grid) -->
+                    <g stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4 4">
+                        <!-- Líneas verticales X -->
+                        <line x1="60" y1="40" x2="60" y2="440" />
+                        <line x1="147.5" y1="40" x2="147.5" y2="440" />
+                        <line x1="235" y1="40" x2="235" y2="440" />
+                        <line x1="322.5" y1="40" x2="322.5" y2="440" />
+                        <line x1="410" y1="40" x2="410" y2="440" />
+                        <line x1="497.5" y1="40" x2="497.5" y2="440" />
+                        <line x1="585" y1="40" x2="585" y2="440" />
+                        <line x1="672.5" y1="40" x2="672.5" y2="440" />
+                        <line x1="760" y1="40" x2="760" y2="440" />
+                        
+                        <!-- Líneas horizontales Y (Escala +300 a -300) -->
+                        <line x1="60" y1="40" x2="760" y2="40" />     <!-- +300 -->
+                        <line x1="60" y1="106.7" x2="760" y2="106.7" /> <!-- +200 -->
+                        <line x1="60" y1="173.3" x2="760" y2="173.3" /> <!-- +100 -->
+                        <line x1="60" y1="240" x2="760" y2="240" />     <!-- 0 -->
+                        <line x1="60" y1="306.7" x2="760" y2="306.7" /> <!-- -100 -->
+                        <line x1="60" y1="373.3" x2="760" y2="373.3" /> <!-- -200 -->
+                        <line x1="60" y1="440" x2="760" y2="440" />     <!-- -300 -->
+                    </g>
+
+                    <!-- Eje Y: Textos -->
+                    <g font-size="12" fill="#64748b" text-anchor="end">
+                        <text x="50" y="44">+300</text>
+                        <text x="50" y="110.7">+200</text>
+                        <text x="50" y="177.3">+100</text>
+                        <text x="50" y="244" font-weight="bold" fill="#0f172a">0</text>
+                        <text x="50" y="310.7">-100</text>
+                        <text x="50" y="377.3">-200</text>
+                        <text x="50" y="444">-300</text>
+                    </g>
+
+                    <!-- Eje X: Textos -->
+                    <g font-size="12" fill="#64748b" text-anchor="middle">
+                        <text x="60" y="15">-0.20</text>
+                        <text x="147.5" y="15">0.30</text>
+                        <text x="235" y="15">0.80</text>
+                        <text x="322.5" y="15">1.30</text>
+                        <text x="410" y="15">1.80</text>
+                        <text x="497.5" y="15">2.30</text>
+                        <text x="585" y="15">2.80</text>
+                        <text x="672.5" y="15">3.30</text>
+                        <text x="760" y="15">3.80</text>
+                    </g>
+
+                    <!-- Eje Cero Principal (V = 0) -->
+                    <line x1="60" y1="240" x2="760" y2="240" stroke="#475569" stroke-width="2.5" />
+                    <!-- Borde vertical izquierdo -->
+                    <line x1="60" y1="40" x2="60" y2="440" stroke="#94a3b8" stroke-width="2" />
+
+                    <!-- CURVAS DE FUERZA CORTANTE RELLENAS CON TRANSPARENCIA -->
+                    
+                    <!-- 3. Combinación 0.9D-E (Naranja) -->
+                    <polygon points="60,240 83.3,267.4 106.7,294.7 130,321.6 175.5,308.6 221,294.7 266.5,279.9 312,264.2 357.5,247.7 403,230.3 448.5,212.0 494,192.9 539.5,172.8 585,151.9 608.3,199.7 631.7,247.3 655,294.7 676,284.1 697,273.4 718,262.4 739,251.3 760,240" fill="#ea580c" opacity="0.12" />
+                    <polyline points="60,240 83.3,267.4 106.7,294.7 130,321.6 175.5,308.6 221,294.7 266.5,279.9 312,264.2 357.5,247.7 403,230.3 448.5,212.0 494,192.9 539.5,172.8 585,151.9 608.3,199.7 631.7,247.3 655,294.7 676,284.1 697,273.4 718,262.4 739,251.3 760,240" fill="none" stroke="#ea580c" stroke-width="2.5" stroke-linejoin="round" />
+
+                    <!-- 1. Combinación 1.2D+1.6L (Azul) -->
+                    <polygon points="60,240 83.3,290.2 106.7,340.5 130,390.8 175.5,357.4 221,324.1 266.5,291.1 312,258.3 357.5,225.7 403,193.3 448.5,161.2 494,129.2 539.5,97.5 585,65.9 608.3,147.6 631.7,229.4 655,311.2 676,296.9 697,282.6 718,268.3 739,254.1 760,240" fill="#2563eb" opacity="0.12" />
+                    <polyline points="60,240 83.3,290.2 106.7,340.5 130,390.8 175.5,357.4 221,324.1 266.5,291.1 312,258.3 357.5,225.7 403,193.3 448.5,161.2 494,129.2 539.5,97.5 585,65.9 608.3,147.6 631.7,229.4 655,311.2 676,296.9 697,282.6 718,268.3 739,254.1 760,240" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linejoin="round" />
+
+                    <!-- 2. Combinación 1.2D+E+L (Armada oscura) -->
+                    <polygon points="60,240 83.3,288.7 106.7,337.7 130,387.0 175.5,349.6 221,313.2 266.5,277.9 312,243.6 357.5,210.5 403,178.3 448.5,147.3 494,117.3 539.5,88.4 585,60.5 608.3,138.9 631.7,217.5 655,296.4 676,284.7 697,273.2 718,261.9 739,250.8 760,240" fill="#334155" opacity="0.15" />
+                    <polyline points="60,240 83.3,288.7 106.7,337.7 130,387.0 175.5,349.6 221,313.2 266.5,277.9 312,243.6 357.5,210.5 403,178.3 448.5,147.3 494,117.3 539.5,88.4 585,60.5 608.3,138.9 631.7,217.5 655,296.4 676,284.7 697,273.2 718,261.9 739,250.8 760,240" fill="none" stroke="#334155" stroke-width="2.5" stroke-linejoin="round" />
+
+                    <!-- Etiquetas de Ejes -->
+                    <text x="410" y="470" font-size="13" font-weight="bold" fill="#475569" text-anchor="middle">Abscisa X (m)</text>
+                    <text x="25" y="240" font-size="13" font-weight="bold" fill="#475569" text-anchor="middle" transform="rotate(-90 25 240)">Fuerza Cortante Última Vu (kN)</text>
+
+                    <!-- Leyenda (Legend) -->
+                    <g transform="translate(60, 495)">
+                        <!-- Leyenda 1 -->
+                        <line x1="100" y1="0" x2="130" y2="0" stroke="#2563eb" stroke-width="3" />
+                        <text x="135" y="4" font-size="12" font-weight="bold" fill="#475569">1.2D + 1.6L</text>
+                        <!-- Leyenda 2 -->
+                        <line x1="250" y1="0" x2="280" y2="0" stroke="#334155" stroke-width="3" />
+                        <text x="285" y="4" font-size="12" font-weight="bold" fill="#475569">1.2D + E + L</text>
+                        <!-- Leyenda 3 -->
+                        <line x1="410" y1="0" x2="440" y2="0" stroke="#ea580c" stroke-width="3" />
+                        <text x="445" y="4" font-size="12" font-weight="bold" fill="#475569">0.9D - E</text>
+                    </g>
+                </svg>
+
+                <p class="w3-small w3-margin-top" style="color: var(--gris-texto); margin-bottom: 10px; padding-top: 15px;">
+                    <i><strong>Figura 4:</strong> Diagrama de fuerza cortante última \( V_u \) (kN). Se aprecian claramente los saltos abruptos generados por las cargas concentradas de las columnas.</i>
+                </p>
+                <div class="w3-panel ce-panel-gris w3-padding w3-round w3-left-align" style="border-left-color: var(--gris-texto);">
+                    <strong style="color: var(--azul-profundo);"><i class="fa fa-bar-chart"></i> Análisis de Cortante de Diseño:</strong>
+                    <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
+                        Bajo el modelo de <strong>viga invertida</strong>, el cortante se verifica a una distancia \( d \) de las caras de las columnas. Los picos de cortante ocurren en los apoyos, donde la carga puntual de la columna contrarresta la presión ascendente del terreno, definiendo los requerimientos de peralte y refuerzo transversal.
+                    </p>
+                </div>
+            </div>
+            <div class="w3-center w3-margin-top w3-margin-bottom w3-padding w3-round w3-white" style="border: 1px dashed var(--gris-borde);">
                 <img src="https://lms.uis.edu.co/ava/draftfile.php/610615/user/draft/504914904/image%20%287%29.png" alt="Diagrama de cortante último" style="max-width: 100%; height: auto; border-radius: 5px; mix-blend-mode: multiply;">
                 <p class="w3-small w3-margin-top" style="color: var(--gris-texto); margin-bottom: 10px;">
                     <i><strong>Figura 4:</strong> Diagrama de cortante último Vu (kN).</i>
