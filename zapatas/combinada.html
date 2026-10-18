@@ -978,10 +978,93 @@
                     </p>
                 </div>
             </div>
+            <!-- CAJA IMAGEN 5 -->
             <div class="w3-center w3-margin-top w3-margin-bottom w3-padding w3-round w3-white" style="border: 1px dashed var(--gris-borde);">
-                <img src="https://lms.uis.edu.co/ava/draftfile.php/610615/user/draft/504914904/image%20%288%29.png" alt="Diagrama de momento último" style="max-width: 100%; height: auto; border-radius: 5px; mix-blend-mode: multiply;">
-                <p class="w3-small w3-margin-top" style="color: var(--gris-texto); margin-bottom: 10px;">
-                    <i><strong>Figura 5:</strong> Diagrama de momento último Mu (kNm).</i>
+                
+                <!-- GRÁFICO SVG MOMENTOS GENERADO CON ECUACIONES EXACTAS E INVERTIDO NATIVAMENTE -->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520" style="width: 100%; max-width: 700px; height: auto; background: white; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; margin: 0 auto; display: block;">
+                    
+                    <!-- Fondo de la cuadrícula (Grid) -->
+                    <g stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4 4">
+                        <!-- Líneas verticales X -->
+                        <line x1="60" y1="40" x2="60" y2="440" />
+                        <line x1="147.5" y1="40" x2="147.5" y2="440" />
+                        <line x1="235" y1="40" x2="235" y2="440" />
+                        <line x1="322.5" y1="40" x2="322.5" y2="440" />
+                        <line x1="410" y1="40" x2="410" y2="440" />
+                        <line x1="497.5" y1="40" x2="497.5" y2="440" />
+                        <line x1="585" y1="40" x2="585" y2="440" />
+                        <line x1="672.5" y1="40" x2="672.5" y2="440" />
+                        <line x1="760" y1="40" x2="760" y2="440" />
+                        
+                        <!-- Líneas horizontales Y (Escala -200 a +50 invertida nativamente) -->
+                        <line x1="60" y1="40" x2="760" y2="40" />     <!-- M = -200 -->
+                        <line x1="60" y1="120" x2="760" y2="120" />    <!-- M = -150 -->
+                        <line x1="60" y1="200" x2="760" y2="200" />    <!-- M = -100 -->
+                        <line x1="60" y1="280" x2="760" y2="280" />    <!-- M = -50 -->
+                        <line x1="60" y1="360" x2="760" y2="360" />    <!-- M = 0 -->
+                        <line x1="60" y1="440" x2="760" y2="440" />    <!-- M = +50 -->
+                    </g>
+
+                    <!-- Eje Y: Textos -->
+                    <g font-size="12" fill="#64748b" text-anchor="end">
+                        <text x="50" y="44">-200</text>
+                        <text x="50" y="124">-150</text>
+                        <text x="50" y="204">-100</text>
+                        <text x="50" y="284">-50</text>
+                        <text x="50" y="364" font-weight="bold" fill="#0f172a">0</text>
+                        <text x="50" y="444">+50</text>
+                    </g>
+
+                    <!-- Eje X: Textos -->
+                    <g font-size="12" fill="#64748b" text-anchor="middle">
+                        <text x="60" y="15">-0.20</text>
+                        <text x="147.5" y="15">0.30</text>
+                        <text x="235" y="15">0.80</text>
+                        <text x="322.5" y="15">1.30</text>
+                        <text x="410" y="15">1.80</text>
+                        <text x="497.5" y="15">2.30</text>
+                        <text x="585" y="15">2.80</text>
+                        <text x="672.5" y="15">3.30</text>
+                        <text x="760" y="15">3.80</text>
+                    </g>
+
+                    <!-- Eje Cero Principal (M = 0) -->
+                    <line x1="60" y1="360" x2="760" y2="360" stroke="#475569" stroke-width="2.5" />
+                    <!-- Borde vertical izquierdo -->
+                    <line x1="60" y1="40" x2="60" y2="440" stroke="#94a3b8" stroke-width="2" />
+
+                    <!-- CURVAS DE MOMENTO FLECTOR (Basadas en las ecuaciones polinómicas) -->
+                    
+                    <!-- 3. Combinación 0.9D-E (Naranja) -->
+                    <path d="M 60,360 L 83.3,369.2 L 106.7,369.7 L 130,361.5 Q 152.7,338.0 175.5,314.6 T 221,276.1 T 266.5,246.6 T 312,226.6 T 357.5,216.6 T 403,217.2 T 448.5,229.0 T 494,252.4 T 539.5,288.1 T 585,336.5 L 608.3,373.1 L 631.7,394.4 Q 643.3,397.4 655,400.4 T 676,386.2 T 697,375.0 T 718,367.0 T 739,362.1 T 760,360.5 L 760,360 Z" fill="#ea580c" opacity="0.12" />
+                    <path d="M 60,360 L 83.3,369.2 L 106.7,369.7 L 130,361.5 Q 152.7,338.0 175.5,314.6 T 221,276.1 T 266.5,246.6 T 312,226.6 T 357.5,216.6 T 403,217.2 T 448.5,229.0 T 494,252.4 T 539.5,288.1 T 585,336.5 L 608.3,373.1 L 631.7,394.4 Q 643.3,397.4 655,400.4 T 676,386.2 T 697,375.0 T 718,367.0 T 739,362.1 T 760,360.5" fill="none" stroke="#ea580c" stroke-width="2.5" stroke-linejoin="round" />
+
+                    <!-- 1. Combinación 1.2D+1.6L (Azul) -->
+                    <path d="M 60,360 L 83.3,348.8 L 106.7,321.5 L 130,278.0 Q 152.7,236.2 175.5,194.4 T 221,131.5 T 266.5,89.3 T 312,67.7 T 357.5,66.4 T 403,85.5 T 448.5,124.6 T 494,183.8 T 539.5,262.8 T 585,361.6 L 608.3,404.2 L 631.7,420.7 Q 643.3,415.9 655,411.0 T 676,392.6 T 697,378.2 T 718,368.0 T 739,361.9 T 760,359.9 L 760,360 Z" fill="#2563eb" opacity="0.12" />
+                    <path d="M 60,360 L 83.3,348.8 L 106.7,321.5 L 130,278.0 Q 152.7,236.2 175.5,194.4 T 221,131.5 T 266.5,89.3 T 312,67.7 T 357.5,66.4 T 403,85.5 T 448.5,124.6 T 494,183.8 T 539.5,262.8 T 585,361.6 L 608.3,404.2 L 631.7,420.7 Q 643.3,415.9 655,411.0 T 676,392.6 T 697,378.2 T 718,368.0 T 739,361.9 T 760,359.9" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linejoin="round" />
+
+                    <!-- 2. Combinación 1.2D+E+L (Armada oscura) -->
+                    <path d="M 60,360 L 83.3,333.0 L 106.7,290.4 L 130,232.0 Q 152.7,192.0 175.5,152.0 T 221,95.0 T 266.5,60.3 T 312,47.4 T 357.5,55.4 T 403,83.9 T 448.5,132.1 T 494,199.2 T 539.5,284.8 T 585,388.1 L 608.3,417.0 L 631.7,420.8 Q 643.3,410.1 655,399.4 T 676,384.8 T 697,373.6 T 718,365.6 T 739,360.9 T 760,359.4 L 760,360 Z" fill="#334155" opacity="0.15" />
+                    <path d="M 60,360 L 83.3,333.0 L 106.7,290.4 L 130,232.0 Q 152.7,192.0 175.5,152.0 T 221,95.0 T 266.5,60.3 T 312,47.4 T 357.5,55.4 T 403,83.9 T 448.5,132.1 T 494,199.2 T 539.5,284.8 T 585,388.1 L 608.3,417.0 L 631.7,420.8 Q 643.3,410.1 655,399.4 T 676,384.8 T 697,373.6 T 718,365.6 T 739,360.9 T 760,359.4" fill="none" stroke="#334155" stroke-width="2.5" stroke-linejoin="round" />
+
+                    <!-- Etiquetas de Ejes -->
+                    <text x="410" y="475" font-size="13" font-weight="bold" fill="#475569" text-anchor="middle">Abscisa X (m)</text>
+                    <text x="25" y="240" font-size="13" font-weight="bold" fill="#475569" text-anchor="middle" transform="rotate(-90 25 240)">Momento Último Mu (kNm)</text>
+
+                    <!-- Leyenda (Legend) -->
+                    <g transform="translate(60, 500)">
+                        <line x1="100" y1="0" x2="130" y2="0" stroke="#2563eb" stroke-width="3" />
+                        <text x="135" y="4" font-size="12" font-weight="bold" fill="#475569">1.2D + 1.6L</text>
+                        <line x1="250" y1="0" x2="280" y2="0" stroke="#334155" stroke-width="3" />
+                        <text x="285" y="4" font-size="12" font-weight="bold" fill="#475569">1.2D + E + L</text>
+                        <line x1="410" y1="0" x2="440" y2="0" stroke="#ea580c" stroke-width="3" />
+                        <text x="445" y="4" font-size="12" font-weight="bold" fill="#475569">0.9D - E</text>
+                    </g>
+                </svg>
+
+                <p class="w3-small w3-margin-top" style="color: var(--gris-texto); margin-bottom: 10px; padding-top: 15px;">
+                    <i><strong>Figura 5:</strong> Diagrama de momento flector último \( M_u \) (kNm) dibujado del lado de la tracción. El momento negativo domina la demanda en el tramo entre columnas, traccionando la fibra superior.</i>
                 </p>
                 <div class="w3-panel ce-panel-azul w3-padding w3-round w3-left-align">
                     <strong style="color: var(--azul-profundo);"><i class="fa fa-map-pin"></i> Análisis de Flexión Longitudinal:</strong>
