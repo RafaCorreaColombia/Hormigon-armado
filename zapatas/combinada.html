@@ -279,37 +279,33 @@
                 
                 <div class="ce-grid ce-grid-2" style="margin-top: 10px; margin-bottom: 10px;">
                     <div style="background: rgba(255,255,255,0.6); padding: 10px; border-radius: 6px; border: 1px solid rgba(255,152,0,0.3); margin:0;">
-                        <strong style="color: #e65100; font-size: 0.95em;">1. A Compresión (\(l_{dc}\)):</strong><br>
+                        <strong style="color: #e65100; font-size: 0.95em;">1. Longitud de Anclaje a Compresión (\( l_{dc} \)):</strong><br>
+                        <span style="font-size: 0.85em;">Calculada según requerimientos normativos (NSR-10 C.12.3):</span>
                         <ul style="margin: 2px 0 0 15px; font-size: 0.85em;">
-                            <li>Longitud básica: \(\mathbf{350 \text{ mm}}\).</li>
-                            <li>Reducción (0.75): Aplicable solo si los estribos de confinamiento se extienden efectivamente <strong>dentro de la zona de desarrollo en la zapata</strong>, no solo en la columna.</li>
-                            <li>Valor requerido: \(350 \times 0.75 =\) <strong>263 mm</strong>.</li>
+                            <li>Base: Mayor entre \( \frac{0.24 f_y}{\sqrt{f'_c}} d_b = \mathbf{350 \text{ mm}} \) y \( (0.043 f_y) d_b = 287 \text{ mm} \).</li>
+                            <li>Se aplica factor de reducción de \( 0.75 \) a \( l_{dc} \) permitido según <strong>C.12.3.3(b)</strong>, dado que el refuerzo de la columna está confinado por estribos cerrados No. 4 con separación de 90 mm (menor a 100 mm). Aplicable solo si los estribos de confinamiento se extienden efectivamente <strong>dentro de la zona de desarrollo en la zapata</strong>, no solo en la columna.</li>
+                            <li>Valor requerido de diseño: \( 350 \times 0.75 = \) <strong>263 mm</strong></li>
                         </ul>
                     </div>
                     <div style="background: rgba(255,255,255,0.6); padding: 10px; border-radius: 6px; border: 1px solid rgba(255,152,0,0.3); margin:0;">
-                        <strong style="color: #e65100; font-size: 0.95em;">2. A Tracción con Gancho (\(l_{dh}\)):</strong><br>
+                        <strong style="color: #e65100; font-size: 0.95em;">2. Longitud de Anclaje a Tracción (\( l_{dh} \)):</strong><br>
+                        <span style="font-size: 0.85em;">Con gancho estándar a 90° (NSR-10 C.12.5):</span>
                         <ul style="margin: 2px 0 0 15px; font-size: 0.85em;">
-                            <li>Longitud básica: \(\mathbf{350 \text{ mm}}\).</li>
-                            <li>Reducción (0.70): Válida si se garantizan 65 mm de recubrimiento lateral y 50 mm en la extensión del gancho comprobados en su <strong>orientación real</strong>.</li>
-                            <li>Valor requerido: \(350 \times 0.70 =\) <strong>245 mm</strong>.</li>
+                            <li>Base: \( l_{dh} = \frac{0.24 f_y}{\sqrt{f'_c}} d_b = \mathbf{350 \text{ mm}} \).</li>
+                            <li>Se aplica factor de reducción de \( 0.70 \) a \( l_{dh} \) permitido según <strong>C.12.5.3(a)</strong>. Nota: esta reducción es válida sólo si se garantizan 65 mm de recubrimiento lateral y 50 mm en la extensión del gancho comprobados en su <strong>orientación real</strong></li>
+                            <li>Valor requerido de diseño: \( 350 \times 0.70 = \) <strong>245 mm</strong></li>
                         </ul>
                     </div>
-                </div>
-                
-                <div class="w3-panel ce-panel-naranja w3-padding w3-round">
-                    <strong style="color: var(--naranja-estructural);"><i class="fa fa-exclamation-triangle"></i> Altura Preliminar de la Zapata:</strong>
-                    <p class="w3-small" style="margin-top: 5px; margin-bottom: 8px;">
-                        La altura preliminar se establece a partir de la longitud de desarrollo requerida y de la geometría efectiva del refuerzo inferior. Cuando las barras terminan con gancho a 90°, la verificación a compresión debe considerar únicamente la <strong>longitud recta efectiva</strong>, puesto que el gancho no se considera eficaz para desarrollar barras a compresión.
-                    </p>
-                    <div class="w3-panel w3-white w3-padding-small w3-round" style="border: 1px dashed var(--naranja-estructural); margin-bottom: 0; margin-top: 8px;">
-                        <strong style="color: var(--azul-profundo);">💡 Nota del proceso de diseño:</strong> La altura adoptada se confirma después de verificar la geometría real de anclaje, el cortante unidireccional, el punzonamiento y la flexión. Para este ejemplo, se propone inicialmente una altura de <strong>400 mm</strong>, sujeta a la comprobación geométrica del anclaje; las verificaciones estructurales posteriores conducen a adoptar <strong>450 mm</strong>.
-                    </div>
+                    
                 </div>
                 
                 <div class="w3-panel ce-panel-naranja w3-padding w3-round">
                     <strong style="color: var(--naranja-estructural);"><i class="fa fa-exclamation-triangle"></i> Altura Mínima de la Zapata:</strong>
+                    <p class="w3-small" style="margin-top: 5px; margin-bottom: 8px;">
+                        La altura preliminar se establece a partir de la longitud de desarrollo requerida y de la geometría efectiva del refuerzo inferior. Cuando las barras terminan con gancho a 90°, la verificación a compresión debe considerar únicamente la <strong>longitud recta efectiva</strong>, puesto que el gancho no se considera eficaz para desarrollar barras a compresión.
+                    </p>
                     <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
-                        Se debe garantizar que el acero de refuerzo longitudinal se ancle adecuadamente. Comparando los requisitos, <strong>gobierna la condición a compresión</strong> (\( l_{dc} = 263 \text{ mm} \)).
+                        Comparando los requisitos, <strong>gobierna la condición a compresión</strong> (\( l_{dc} = 263 \text{ mm} \)).
                     </p>
                     <p class="w3-small" style="margin-top: 5px; margin-bottom: 8px;">
                         A este valor sumamos el recubrimiento inferior de 75 mm y las dos capas de refuerzo de la zapata (asumimos parrilla calibre No.5, \( 2 \times 15.9 \text{ mm} \)). De allí obtenemos la altura mínima constructiva requerida:
@@ -318,7 +314,7 @@
                         \[ H_{min} = 263 + 75 + 31.8 = \mathbf{369.8 \text{ mm}} \approx 400 \text{ mm} \]
                     </div>
                     <div class="w3-panel w3-white w3-padding-small w3-round" style="border: 1px dashed var(--naranja-estructural); margin-bottom: 0; margin-top: 8px;">
-                        <strong style="color: var(--azul-profundo);">💡 Nota del proceso de diseño:</strong> Inicialmente <strong>se adopta H = 0.40 m</strong> cumpliendo esta geometría. Sin embargo, en verificaciones posteriores (Sección 5: Cortante Unidireccional), se detectará que esta altura resulta insuficiente por capacidad estructural, requiriendo un incremento a \( 0.45 \text{ m} \).
+                        <strong style="color: var(--azul-profundo);">💡 Nota del proceso de diseño:</strong> La altura adoptada se confirma después de verificar la geometría real de anclaje, el cortante unidireccional, el punzonamiento y la flexión. Para este ejemplo, se propone inicialmente una altura de <strong>400 mm</strong>, sujeta a la comprobación geométrica del anclaje; las verificaciones estructurales posteriores conducen a adoptar <strong>450 mm</strong>.
                     </div>
                 </div>
             </div>
