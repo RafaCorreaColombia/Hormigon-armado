@@ -576,19 +576,19 @@
             <div class="w3-panel ce-panel-azul w3-padding w3-round">
                 <strong style="color: var(--azul-profundo);"><i class="fa fa-balance-scale"></i> ¿Por qué se excluye el peso propio del análisis estructural (\( M_u, V_u \))?</strong>
                 <p class="w3-small" style="margin-top: 10px; margin-bottom: 10px;">
-                    El peso propio de la zapata y el suelo de relleno generan una carga distribuida que es equilibrada por la reacción del suelo, produciendo un campo de presiones aproximadamente uniforme en la base.
+                    Para el análisis longitudinal se adopta un modelo de <strong>cargas netas</strong> en el que se consideran las acciones de las columnas y la reacción del suelo asociada <em>exclusivamente</em> a estas.
                 </p>
                 <div class="w3-panel w3-white w3-padding-small w3-round" style="border: 1px solid var(--gris-borde); margin-bottom: 10px;">
-                    <strong style="color: var(--gris-texto); font-size: 0.85em;">Concepto clave: Gradiente de presión</strong>
+                    <strong style="color: var(--gris-texto); font-size: 0.85em;">Concepto clave: Equilibrio de cargas uniformes</strong>
                     <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
-                        Los esfuerzos internos (momento y cortante) están asociados principalmente a las <strong>variaciones de presión</strong> en el suelo, es decir, a los gradientes inducidos por las cargas concentradas de las columnas. <!-- Revisar redacción, esfuerzos? o fuerzas? -->
+                        Las <strong>fuerzas internas</strong> (momento flector y fuerza cortante) se generan por los gradientes inducidos por las cargas concentradas. El peso propio de la zapata y el relleno actúan hacia abajo como una carga distribuida uniforme, la cual es contrarrestada directamente por una reacción ascendente del terreno de igual magnitud.
                     </p>
                 </div>
                 <p class="w3-small" style="margin-top: 0; margin-bottom: 10px;">
-                    Dado que el peso propio aporta esencialmente una componente uniforme, su influencia en los valores máximos de \( M_u \) y \( V_u \) es reducida. Por esta razón, en este ejemplo se omite en el cálculo de \( q_u \), adoptando un modelo simplificado en el que las presiones de diseño provienen únicamente de las cargas de las columnas.
+                    Al compensarse mutuamente bajo esta idealización, su exclusión del cálculo de \( q_u \), \( M_u \) y \( V_u \) no es una "simplificación conservadora", sino el proceder <strong>coherente</strong> con el enfoque de presiones netas.
                 </p>
                 <div style="border-top: 1px dashed var(--gris-borde); padding-top: 10px; font-size: 0.8em; color: var(--gris-texto); font-style: italic;">
-                    <strong>Nota:</strong> La inclusión del peso propio incrementa ligeramente las presiones totales y tiende a reducir la excentricidad del sistema, generando cambios pequeños en los esfuerzos internos. Su omisión constituye una simplificación común y conservadora para el diseño manual. <!-- Revisar redacción, esfuerzos? o fuerzas? -->
+                    <strong>Nota de consistencia:</strong> La validez de este modelo depende del uso estricto de las cargas. El ingeniero debe garantizar en todo momento la coherencia de los datos: el modelo geotécnico general (asentamientos) evalúa el hundimiento con presiones brutas, mientras que el modelo estructural (flexión y cortante) aísla el comportamiento de la zapata utilizando presiones netas.
                 </div>
             </div>
         </div>
