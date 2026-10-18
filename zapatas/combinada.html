@@ -866,7 +866,7 @@
                         \[a=\frac{A_s f_y}{0.85 f'_c b}\]
                     </div>
                     <p class="w3-small" style="color: var(--gris-texto); margin-bottom: 0; line-height: 1.4;">
-                        De aquí se despeja el <strong>acero requerido por cálculo</strong> (\( A_{s,req} \)). Para el diseño, gobernará el mayor valor entre este \( A_{s,req} \) y el <strong>acero mínimo</strong> normativo exigido para elementos sometidos a flexión.
+                        De aquí se despeja el <strong>acero requerido por cálculo</strong> (\( A_{s,req} \)). Para el diseño, gobernará el mayor valor entre este \( A_{s,req} \) y el <strong>acero mínimo</strong> normativo exigido para elementos sometidos a flexión.  Priorizamos la posición del refuerzo para el sentido longitudinal, ubicándolo en la capa más exterior para garantizar el mayor peralte efectivo.
                     </p>
                 </div>
             </div>
@@ -959,7 +959,14 @@
             <div class="w3-panel ce-panel-azul w3-padding w3-round">
                 <strong style="color: var(--azul-profundo);"><i class="fa fa-map-pin"></i> Modelo Adoptado (Nilson):</strong>
                 <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
-                    Se idealiza el comportamiento transversal mediante una <strong>viga imaginaria</strong> empotrada en la columna, extendiéndose una distancia \( d/2 \) desde cada cara. La carga \( w_u \) se obtiene repartiendo la reacción total sobre el ancho \( B \).
+                    Se idealiza el comportamiento transversal mediante una <strong>viga imaginaria</strong> empotrada en la columna, extendiéndose una distancia \( d/2 \) desde cada cara, en este caso \( d = 351.2 \text{ mm} \) . La carga \( w_u \) se obtiene repartiendo la reacción total sobre el ancho \( B \).
+                </p>
+            </div>
+
+            <div class="w3-panel ce-panel-gris w3-padding w3-round" style="border-left-color: var(--naranja-estructural); margin-bottom: 20px;">
+                <strong style="color: var(--azul-profundo);"><i class="fa fa-info-circle"></i> Criterio geométrico de cortante transversal:</strong>
+                <p class="w3-small" style="margin-top: 5px; margin-bottom: 0; color: var(--gris-texto);">
+                    En la dirección transversal, la proyección del voladizo desde la cara de la columna es menor que el peralte efectivo (\( l_{vol} < d \)). Por tanto, la sección crítica de cortante unidireccional queda fuera de la zapata y esta verificación no resulta aplicable para la geometría adoptada. El valor <strong>N.A. (No Aplica)</strong> en los resultados indica que no existe una sección crítica de concreto dentro de la zapata en la posición definida por el procedimiento de cálculo normativo.
                 </p>
             </div>
 
@@ -969,9 +976,11 @@
                     <div class="w3-small" style="color: var(--gris-texto);">
                         <strong>Geometría:</strong><br>
                         \( b_{eff} = 0.58 \text{ m} \) | \( L = 1.00 \text{ m} \)<br><br>
+                        
                         <strong>Cargas (\( w_u \)):</strong><br>
                         • \( 304 \text{ kN/m} \) (1.2D+1.6L)<br>
                         • \( 310 \text{ kN/m} \) (1.2D+E+L)<br><br>
+                        
                         <strong>Resistencia:</strong><br>
                         • \( V_u = N.A. \text{ kN} < \phi V_c (125 \text{ kN}) \) <i class="fa fa-check-circle" style="color:green;"></i><br>
                         • \( M_u \approx 14 \text{ kNm} \) (Controla mín.)<br>
@@ -986,9 +995,11 @@
                     <div class="w3-small" style="color: var(--gris-texto);">
                         <strong>Geometría:</strong><br>
                         \( b_{eff} = 0.77 \text{ m} \) | \( L = 1.00 \text{ m} \)<br><br>
+                        
                         <strong>Cargas (\( w_u \)):</strong><br>
                         • \( 440 \text{ kN/m} \) (1.2D+1.6L)<br>
                         • \( 415 \text{ kN/m} \) (1.2D+E+L)<br><br>
+                        
                         <strong>Resistencia:</strong><br>
                         • \( V_u = N.A. \text{ kN} < \phi V_c (193 \text{ kN}) \) <i class="fa fa-check-circle" style="color:green;"></i><br>
                         • \( M_u \approx 20 \text{ kNm} \) (Controla mín.)<br>
@@ -1002,7 +1013,7 @@
             <div class="w3-panel ce-panel-naranja w3-padding w3-round">
                 <strong style="color: var(--naranja-estructural);"><i class="fa fa-exclamation-triangle"></i> Lectura de Resultados:</strong>
                     <p class="w3-small" style="margin-top: 5px; margin-bottom: 10px;">
-                        En este caso, el diseño transversal está gobernado por <strong>acero mínimo</strong>. Dado que la zapata trabaja predominantemente en su dirección longitudinal, priorizamos la posición del refuerzo para este sentido, ubicándolo en la capa más exterior para garantizar el mayor peralte efectivo.
+                        En este caso, el diseño transversal está gobernado por <strong>acero mínimo</strong>.
                     </p>
                 <p class="w3-small" style="margin-top: 0; margin-bottom: 0;">
                     <strong>No generalizar:</strong> para zapatas con mayores cargas o anchos \( B \), la flexión y el cortante transversal pueden controlar el diseño y exigir mayores cuantías o espesores.
@@ -1068,7 +1079,7 @@
             <div class="w3-panel ce-panel-gris w3-padding w3-round" style="border-left-color: green;">
                 <strong style="color: green;"><i class="fa fa-check-circle"></i> Conclusión de Resistencia:</strong>
                 <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
-                    En ambos apoyos, la resistencia nominal (\( \phi P_n \approx 3,712 \text{ kN} \)) es muy superior a las cargas últimas aplicadas (\( 310 - 440 \text{ kN} \)). En este ejemplo el aplastamiento <strong>no controla el diseño</strong>, por lo que el concreto simple de la zapata es suficiente para transferir la carga.
+                    En ambos apoyos, la resistencia de diseño por aplastamiento, (\( \phi P_n \approx 3,712 \text{ kN} \)),  supera las cargas últimas consideradas, (\( 310 - 440 \text{ kN} \)). Esta verificación local no gobierna el diseño para las condiciones analizadas.
                 </p>
             </div>
             
