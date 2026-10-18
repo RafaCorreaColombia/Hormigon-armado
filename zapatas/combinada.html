@@ -648,6 +648,101 @@
 
             <!-- CAJA IMAGEN 3 -->
             <div class="w3-center w3-margin-top w3-margin-bottom w3-padding w3-round w3-white" style="border: 1px dashed var(--gris-borde);">
+                
+                <!-- GRÁFICO SVG GENERADO CON DATOS EXACTOS -->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520" style="width: 100%; max-width: 700px; height: auto; background: white; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; margin: 0 auto; display: block;">
+                    
+                    <!-- Fondo de la cuadrícula (Grid) -->
+                    <g stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4 4">
+                        <!-- Líneas verticales X -->
+                        <line x1="60" y1="40" x2="60" y2="440" />
+                        <line x1="147.5" y1="40" x2="147.5" y2="440" />
+                        <line x1="235" y1="40" x2="235" y2="440" />
+                        <line x1="322.5" y1="40" x2="322.5" y2="440" />
+                        <line x1="410" y1="40" x2="410" y2="440" />
+                        <line x1="497.5" y1="40" x2="497.5" y2="440" />
+                        <line x1="585" y1="40" x2="585" y2="440" />
+                        <line x1="672.5" y1="40" x2="672.5" y2="440" />
+                        <line x1="760" y1="40" x2="760" y2="440" />
+                        
+                        <!-- Líneas horizontales Y (Escala 0 a 250) -->
+                        <line x1="60" y1="120" x2="760" y2="120" />
+                        <line x1="60" y1="200" x2="760" y2="200" />
+                        <line x1="60" y1="280" x2="760" y2="280" />
+                        <line x1="60" y1="360" x2="760" y2="360" />
+                        <line x1="60" y1="440" x2="760" y2="440" />
+                    </g>
+
+                    <!-- Eje Y: Textos -->
+                    <g font-size="12" fill="#64748b" text-anchor="end">
+                        <text x="50" y="44">0</text>
+                        <text x="50" y="124">50</text>
+                        <text x="50" y="204">100</text>
+                        <text x="50" y="284">150</text>
+                        <text x="50" y="364">200</text>
+                        <text x="50" y="444">250</text>
+                    </g>
+
+                    <!-- Eje X: Textos -->
+                    <g font-size="12" fill="#64748b" text-anchor="middle">
+                        <text x="60" y="25">-0.20</text>
+                        <text x="147.5" y="25">0.30</text>
+                        <text x="235" y="25">0.80</text>
+                        <text x="322.5" y="25">1.30</text>
+                        <text x="410" y="25">1.80</text>
+                        <text x="497.5" y="25">2.30</text>
+                        <text x="585" y="25">2.80</text>
+                        <text x="672.5" y="25">3.30</text>
+                        <text x="760" y="25">3.80</text>
+                    </g>
+
+                    <!-- Ejes Principales (0 y Línea inferior) -->
+                    <line x1="60" y1="40" x2="760" y2="40" stroke="#94a3b8" stroke-width="2" />
+                    <line x1="60" y1="40" x2="60" y2="440" stroke="#94a3b8" stroke-width="2" />
+
+                    <!-- ÁREAS RELLENAS CON TRANSPARENCIA -->
+                    
+                    <!-- 3. Combinación 0.9D-E (Naranja) -->
+                    <polygon points="60,40 60,143.9 760,268.1 760,40" fill="#ea580c" opacity="0.12" />
+                    <line x1="60" y1="143.9" x2="760" y2="268.1" stroke="#ea580c" stroke-width="2.5" />
+                    <circle cx="60" cy="143.9" r="3.5" fill="#ea580c"/>
+                    <circle cx="760" cy="268.1" r="3.5" fill="#ea580c"/>
+
+                    <!-- 1. Combinación 1.2D+1.6L (Azul) -->
+                    <polygon points="60,40 60,352.7 760,322.5 760,40" fill="#2563eb" opacity="0.12" />
+                    <line x1="60" y1="352.7" x2="760" y2="322.5" stroke="#2563eb" stroke-width="2.5" />
+                    <circle cx="60" cy="352.7" r="3.5" fill="#2563eb"/>
+                    <circle cx="760" cy="322.5" r="3.5" fill="#2563eb"/>
+
+                    <!-- 2. Combinación 1.2D+E+L (Armada oscura) -->
+                    <polygon points="60,40 60,405.6 760,254.4 760,40" fill="#334155" opacity="0.15" />
+                    <line x1="60" y1="405.6" x2="760" y2="254.4" stroke="#334155" stroke-width="2.5" />
+                    <circle cx="60" cy="405.6" r="3.5" fill="#334155"/>
+                    <circle cx="760" cy="254.4" r="3.5" fill="#334155"/>
+
+                    <!-- Etiquetas de Ejes -->
+                    <text x="410" y="10" font-size="13" font-weight="bold" fill="#475569" text-anchor="middle">Abscisa X (m)</text>
+                    <text x="25" y="240" font-size="13" font-weight="bold" fill="#475569" text-anchor="middle" transform="rotate(-90 25 240)">Presión Última q_u (kPa)</text>
+
+                    <!-- Leyenda (Legend) -->
+                    <g transform="translate(60, 490)">
+                        <!-- Leyenda 1 -->
+                        <line x1="100" y1="0" x2="130" y2="0" stroke="#2563eb" stroke-width="3" />
+                        <text x="135" y="4" font-size="12" font-weight="bold" fill="#475569">1.2D + 1.6L</text>
+                        <!-- Leyenda 2 -->
+                        <line x1="250" y1="0" x2="280" y2="0" stroke="#334155" stroke-width="3" />
+                        <text x="285" y="4" font-size="12" font-weight="bold" fill="#475569">1.2D + E + L</text>
+                        <!-- Leyenda 3 -->
+                        <line x1="410" y1="0" x2="440" y2="0" stroke="#ea580c" stroke-width="3" />
+                        <text x="445" y="4" font-size="12" font-weight="bold" fill="#475569">0.9D - E</text>
+                    </g>
+                </svg>
+
+                <p class="w3-small w3-margin-top" style="color: var(--gris-texto); margin-bottom: 0; padding-top: 15px;">
+                    <i><strong>Figura 3:</strong> Diagrama de presiones de contacto para las combinaciones <strong>últimas</strong> analizadas.</i>
+                </p>
+            </div>
+            <div class="w3-center w3-margin-top w3-margin-bottom w3-padding w3-round w3-white" style="border: 1px dashed var(--gris-borde);">
                 <img src="https://lms.uis.edu.co/ava/draftfile.php/610615/user/draft/504914904/image%20%286%29.png" alt="Esquema de presiones zapata combinada combinaciones últimas" style="max-width: 100%; height: auto; border-radius: 5px; mix-blend-mode: multiply;">
                 <p class="w3-small w3-margin-top" style="color: var(--gris-texto); margin-bottom: 0;">
                     <i><strong>Figura 3:</strong> Diagrama de presiones de contacto para las combinaciones <strong>últimas</strong> analizadas.</i>
