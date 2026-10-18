@@ -616,7 +616,8 @@
                 <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid var(--gris-borde); margin:0;">
                     <strong style="color: var(--naranja-estructural);">📉 Demanda de Cortante (\( V_u \))</strong>
                     <p class="w3-small" style="margin-top: 5px; margin-bottom: 5px;">
-                        La sección crítica se ubica a una distancia <strong>\( d \)</strong> de la cara de cada columna (NSR-10 C.11.1.3.1). Se obtiene del diagrama de cortante para cada combinación última evaluado en las secciones críticas. <!-- Revisar redacción -->
+                        La sección crítica se ubica a una distancia <strong>\( d \)</strong> de la cara de cada columna (NSR-10 C.11.1.3.1).
+                        El valor de \( V_u \) se obtiene del diagrama de fuerzas cortantes para cada combinación última, leyendo la magnitud en dichas secciones críticas.
                     </p>
                 </div>
                 <!-- Capacidad phi Vc -->
@@ -651,7 +652,7 @@
             </div>
 
             <p class="w3-small" style="color: var(--gris-texto);">
-                El valor de \( V_u \) corresponde al cortante obtenido del diagrama de esfuerzos internos en la sección ubicada a una distancia <strong>\( d = 0.3671 \text{ m} \)</strong> desde la cara de cada columna. Este análisis es integral y considera todas las caras de falla potencial. <!-- Revisar redacción, esfuerzos? o fuerzas? -->
+                El valor de \( V_u \) corresponde a la <strong>fuerza cortante</strong> obtenida del diagrama en la sección ubicada a una distancia <strong>\( d = 0.367 \text{ m} \)</strong> desde la cara de cada columna. Este análisis es integral y evalúa todas las secciones críticas de falla potencial.
             </p>
 
             <div class="w3-panel ce-panel-gris w3-padding w3-round" style="border-left-color: #3b82f6;">
@@ -849,7 +850,7 @@
                 <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid var(--gris-borde); margin:0;">
                     <strong style="color: var(--naranja-estructural);">📉 Demanda por Flexión (\( M_u \))</strong>
                     <p class="w3-small" style="color: var(--gris-texto);">
-                        El momento de diseño \( M_u \) se evalúa en las caras de las columnas y a lo largo del vano, identificando la envolvente completa de esfuerzos. En este ejemplo de zapata combinada, el caso crítico corresponde al <strong>momento negativo en el tramo entre columnas</strong>, donde la zapata trabaja como una viga invertida.
+                        El momento de diseño \( M_u \) se evalúa en las caras de las columnas y a lo largo del vano, identificando la <strong>envolvente completa de momentos</strong>. En este ejemplo de zapata combinada, el caso crítico corresponde al <strong>momento negativo en el tramo entre columnas</strong>, donde la zapata trabaja como una viga invertida.
                     </p>
                     
                 </div>
