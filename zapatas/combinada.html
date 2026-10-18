@@ -156,12 +156,7 @@
 
     <div class="contenido-body">
 
-    <!-- ==================================================================== -->
-    <!-- AQUÍ SE PEGAN LOS 3 BLOQUES DE CONTENIDO DE ZAPATA COMBINADA         -->
-    <!-- (Introducción, Reacciones, Cortante, Flexión, Punzonamiento, etc.)   -->
-    <!-- ==================================================================== -->
-
-
+   
         <!-- INTRODUCCIÓN ZAPATA COMBINADA -->
         <div class="panel-control" id="intro-combinada">
             <h2 class="panel-titulo">Diseño de Zapata Combinada</h2>
@@ -170,7 +165,7 @@
             <div class="w3-panel ce-panel-azul w3-padding w3-round">
                 <strong style="color: var(--azul-profundo);"><i class="fa fa-map-pin"></i> Criterio de Diseño:</strong>
                 <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
-                    A diferencia de las zapatas aisladas, donde permitimos un comportamiento no lineal (despegue) bajo sismo, en zapatas combinadas buscamos un comportamiento en el que <strong>toda la base permanezca en compresión</strong>, evitando pérdida de contacto suelo-estructura. Esto se logra dimensionando la zapata para que su centro geométrico coincida con la resultante de cargas permanentes (\( D + L \)), favoreciendo una distribución de presiones uniformes.
+                    A diferencia de las zapatas aisladas, donde permitimos un comportamiento no lineal (despegue) bajo sismo, en zapatas combinadas buscamos un comportamiento en el que <strong>toda la base permanezca en compresión</strong>, evitando pérdida de contacto suelo-estructura. El predimensionamiento busca aproximar el centroide de la base a la resultante de las cargas de servicio (\( D + L \)), reduciendo la excentricidad global. Esto favorece una distribución de presiones más uniforme, pero no elimina necesariamente sus variaciones. La distribución final debe verificarse considerando las cargas axiales, los momentos aplicados y las dimensiones adoptadas.
                 </p>
             </div>
 
@@ -273,12 +268,6 @@
         <div class="panel-control" id="predimensionamiento-combinada">
             <h2 class="panel-titulo">2. Predimensionamiento</h2>
             <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Determinación de las dimensiones de la zapata</p>
-            <div class="w3-panel w3-padding-large w3-round" style="background-color: var(--gris-claro); border-left: 5px solid var(--naranja-estructural); margin-bottom: 20px;">
-                <strong style="color: var(--azul-profundo); font-size: 1.05em;"><i class="fa fa-bullseye"></i> Objetivo del Predimensionamiento</strong>
-                <p class="w3-small" style="margin-top: 8px; margin-bottom: 0; color: var(--gris-texto); line-height: 1.5;">
-                    El predimensionamiento busca aproximar el centroide de la base a la resultante de las cargas de servicio, reduciendo la excentricidad global. Esto favorece una distribución de presiones más uniforme, pero no elimina necesariamente sus variaciones. La distribución final debe verificarse considerando las cargas axiales, los momentos aplicados y las dimensiones adoptadas.
-                </p>
-            </div>
             
             <div class="w3-panel w3-padding w3-round" style="background-color: #fff4e5; border-left: 6px solid #ff9800; margin-bottom: 20px;">
                 <strong style="color: #e65100;">⚠️ FILTRO DE SEGURIDAD (Zapata Combinada):</strong><br>
