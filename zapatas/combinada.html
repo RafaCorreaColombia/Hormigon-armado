@@ -714,6 +714,40 @@
         <div class="panel-control" id="punzonamiento-combinada">
             <h2 class="panel-titulo">6. Cortante por Punzonamiento</h2>
             <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Revisión a \( d/2 \) de la cara de los apoyos</p>
+            
+            <!-- CAJAS DE EXPLICACIÓN: DEMANDA Y CAPACIDAD 5.2 -->
+            <div class="ce-grid ce-grid-2" style="margin-bottom: 15px;">
+                
+                <!-- Demanda Vu Punzonamiento -->
+                <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid var(--gris-borde); margin:0;">
+                    <strong style="color: var(--naranja-estructural);">📉 Demanda Básica (\( V_u \))</strong>
+                    <p class="w3-small" style="margin-top: 5px; margin-bottom: 5px;">
+                        Realizamos un equilibrio de fuerzas. La carga puntual de la columna (\( P_u \)) es contrarrestada por la reacción del suelo que empuja <strong>dentro</strong> del área crítica (\( A_{crit} = 0.668 \text{ m}^2 \)) ubicada a \( d/2 \):
+                    </p>
+                    <div class="math-scroll w3-center w3-small" style="background: #f8fafc; padding: 5px; border-radius: 4px;">
+                        \[ V_u = P_u - (A_{crit} \cdot q_{u,eje\_ac} ) \]
+                    </div>
+                    <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
+                        Donde \( q_u \) es la presión última. En este ejemplo, al considerar una distribución lineal de presiones, esta presión se evalúa en el centroide de dicha área crítica.
+                    </p>
+                </div>
+
+                <!-- Capacidad phi Vc Punzonamiento -->
+                <div class="w3-panel ce-panel-azul w3-padding w3-round" style="margin:0;">
+                    <strong style="color: var(--azul-profundo);"><i class="fa fa-shield"></i> Capacidad del Concreto (\( \phi V_c \))</strong>
+                    <p class="w3-small" style="margin-top: 5px; margin-bottom: 5px;">
+                        Se rige por el menor de tres valores normativos (NSR-10 C.11.11.2.1) evaluados a lo largo del perímetro crítico \( b_o = 3268 \text{ mm} \):
+                    </p>
+                    <div class="w3-small" style="font-family: 'Courier New', monospace; color: var(--azul-profundo); background: rgba(255,255,255,0.5); padding: 5px; border-radius: 4px; margin-bottom: 5px;">
+                        • Ec. C.11-31<br>
+                        • Ec. C.11-32<br>
+                        <strong>• Ec. C.11-33</strong>
+                    </div>
+                    <div class="math-scroll w3-center w3-small" style="font-weight: bold; color: #15803d; background: rgba(21, 128, 61, 0.1); border-radius: 4px; padding: 4px;">
+                        \[ \phi = 0.75 \]
+                    </div>
+                </div>
+            </div>
 
             <div class="w3-panel ce-panel-azul w3-padding w3-round">
                 <strong style="color: var(--azul-profundo);"><i class="fa fa-map-pin"></i> Rigor en el Cálculo de \( V_u \):</strong>
