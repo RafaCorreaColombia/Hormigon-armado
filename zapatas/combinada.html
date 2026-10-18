@@ -600,7 +600,40 @@
         <!-- SECCIÓN 5: CORTANTE UNIDIRECCIONAL -->
         <div class="panel-control" id="cortante-uni-combinada">
             <h2 class="panel-titulo">5. Verificación de Cortante Unidireccional</h2>
-            <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Revisión a una distancia "d" desde la cara del apoyo</p>
+            
+            <!-- CAJITA: CÁLCULO DEL PERALTE EFECTIVO -->
+            <div class="w3-panel ce-panel-gris w3-padding w3-round" style="margin-bottom: 20px;">
+                <strong style="color: var(--azul-profundo);">📏 Definición del Peralte Efectivo (\( d \))</strong>
+                <div class="math-scroll w3-center w3-small" style="margin: 8px 0 0 0;">
+                    \[ d = H - recub - \frac{d_b}{2} \]
+                </div>
+            </div>
+            <h4 style="color: var(--azul-profundo); font-weight:bold; margin-top:30px;">5.1 Cortante Unidireccional (Comportamiento como Viga Ancha)</h4>
+            <p class="w3-small" style="margin-top: -5px; color: var(--gris-texto);">Sección crítica evaluada a una distancia \( d = 417.1 \text{ mm} \) de la cara de la columna.</p>
+            <!-- CAJAS DE EXPLICACIÓN: DEMANDA Y CAPACIDAD -->
+            <div class="ce-grid ce-grid-2" style="margin-bottom: 15px;">
+                
+                <!-- Demanda Vu -->
+                <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid var(--gris-borde); margin:0;">
+                    <strong style="color: var(--naranja-estructural);">📉 Demanda de Cortante (\( V_u \))</strong>
+                    <p class="w3-small" style="margin-top: 5px; margin-bottom: 5px;">
+                        La sección crítica se ubica a una distancia <strong>\( d \)</strong> de la cara de cada columna (NSR-10 C.11.1.3.1). El cortante se obtiene del diagrama de cortante para cada combinación última evaluado en las secciones críticas.
+                    </p>
+                </div>
+                <!-- Capacidad phi Vc -->
+                <div class="w3-panel ce-panel-azul w3-padding w3-round" style="margin:0;">
+                    <strong style="color: var(--azul-profundo);"><i class="fa fa-shield"></i> Capacidad del Concreto (\( \phi V_c \))</strong>
+                    <p class="w3-small" style="margin-top: 5px; margin-bottom: 5px;">
+                        Resistencia nominal al cortante del concreto no preesforzado (NSR-10 C.11.2.1.1). Se calcula para el ancho de la zapata \( b_w \):
+                    </p>
+                    <div class="math-scroll w3-center w3-small">
+                        \[ \phi V_c = \phi \left( 0.17 \lambda \sqrt{f'_c} \right) b_w d \]
+                    </div>
+                    <p class="w3-small" style="color: var(--gris-texto); margin-bottom: 5px; line-height: 1.3;">
+                        Con \( \phi = 0.75 \) (NSR-10 C.9.3.2.3), \( \lambda = 1.0 \) (concreto peso normal)
+                    </p>
+                </div>
+            </div>
 
             <div class="w3-panel w3-pale-red w3-leftbar w3-border-red w3-padding w3-round" style="margin-bottom: 20px;">
                 <strong style="color: #b91c1c;"><i class="fa fa-exclamation-triangle"></i> Ajuste por Validación de Resistencia:</strong>
