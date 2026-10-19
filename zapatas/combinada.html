@@ -868,9 +868,6 @@
                     </p>
                 </div>
             </div>
-            
-
-            
             <!-- CAJA IMAGEN 5 -->
             <div class="w3-center w3-margin-top w3-margin-bottom w3-padding w3-round w3-white" style="border: 1px dashed var(--gris-borde);">
                 
@@ -889,12 +886,12 @@
                         <line x1="672.5" y1="40" x2="672.5" y2="440" />
                         <line x1="760" y1="40" x2="760" y2="440" />
                         
-                        <!-- Líneas horizontales Y (Escala -200 a +50 invertida) -->
+                        <!-- Líneas horizontales Y (Escala -200 a +50) -->
                         <line x1="60" y1="40" x2="760" y2="40" />     <!-- M = -200 -->
                         <line x1="60" y1="120" x2="760" y2="120" />    <!-- M = -150 -->
                         <line x1="60" y1="200" x2="760" y2="200" />    <!-- M = -100 -->
                         <line x1="60" y1="280" x2="760" y2="280" />    <!-- M = -50 -->
-                        <line x1="60" y1="360" x2="760" y2="360" />    <!-- M = 0 -->
+                        <line x1="60" y1="360" x2="760" y2="360" />    <!-- M = 0 (Eje neutro) -->
                         <line x1="60" y1="440" x2="760" y2="440" />    <!-- M = +50 -->
                     </g>
 
@@ -925,7 +922,7 @@
                     <line x1="60" y1="360" x2="760" y2="360" stroke="#475569" stroke-width="2.5" />
                     <line x1="60" y1="40" x2="60" y2="440" stroke="#94a3b8" stroke-width="2" />
 
-                    <!-- CONTENEDOR DE CURVAS GENERADAS POR SCRIPT -->
+                    <!-- CONTENEDOR DE CURVAS DINÁMICAS -->
                     <g id="curvas-container"></g>
 
                     <!-- Etiquetas de Ejes -->
@@ -943,11 +940,11 @@
                     </g>
                 </svg>
 
-                <!-- SCRIPT DE EVALUACIÓN AUTOMÁTICA DE CÚBICAS -->
+                <!-- SCRIPT DE EVALUACIÓN AUTOMÁTICA DE CÚBICAS (CORREGIDO) -->
                 <script>
-                <![CDATA[
                 (function() {
-                    const tramos = [
+                    // Coeficientes exactos por tramos para cada combinación
+                    const tramos12DL = [
                         {min: -0.2, max: 0.2, c: [-0.7875, -282.75, -128.01, -14.299]},
                         {min: 0.2,  max: 2.8, c: [-1.5313, 100.96, -270.43, 0]},
                         {min: 2.8,  max: 3.2, c: [-0.7875, -452.75, 2815, -4314.1]},
@@ -959,7 +956,7 @@
                         {min: 2.8,  max: 3.2, c: [-3.9375, -406.86, 2565.2, -3888.7]},
                         {min: 3.2,  max: 3.8, c: [-3.9375, 111.89, -679.8, 1183.3]}
                     ];
-                    const tramos09 = [
+                    const tramos09DE = [
                         {min: -0.2, max: 0.2, c: [3.2344, -153.09, 2.1544, 6.5804]},
                         {min: 0.2,  max: 2.8, c: [3.2344, 34.409, -136.52, 26.814]},
                         {min: 2.8,  max: 3.2, c: [3.2344, -296.84, 1793.4, -2780]},
@@ -974,9 +971,10 @@
                     function mapX(x) {
                         return 60 + ((x - (-0.2)) / (3.8 - (-0.2))) * (700);
                     }
-                    // Mapeo de Momentos [-200, 50] a Pixeles de la cuadricula (Y=360 es M=0, escala 1.6 px por kNm)
+                    
+                    // Mapeo corregido: M=0 está en Y=360. Negativos arriba (-200 a Y=40), Positivos abajo (+50 a Y=440)
                     function mapY(m) {
-                        return 360 - (m * 1.6);
+                        return 360 + (m * 1.6);
                     }
 
                     function generarPath(tramosArr) {
@@ -986,7 +984,6 @@
                                 pts.push({x: mapX(x), y: mapY(evalPoly(x, t.c))});
                             }
                         });
-                        // Asegurar punto final exacto
                         let xFin = tramosArr[tramosArr.length-1].max;
                         pts.push({x: mapX(xFin), y: mapY(evalPoly(xFin, tramosArr[tramosArr.length-1].c))});
 
@@ -1002,11 +999,10 @@
 
                     const container = document.getElementById('curvas-container');
                     
-                    // Definiciones de curvas y estilos
                     const datasets = [
-                        {arr: tramos09, color: '#ea580c', op: '0.12'},
-                        {arr: tramos,   color: '#2563eb', op: '0.12'},
-                        {arr: tramosEL, color: '#334155', op: '0.15'}
+                        {arr: tramos09DE, color: '#ea580c', op: '0.12'},
+                        {arr: tramos12DL,  color: '#2563eb', op: '0.12'},
+                        {arr: tramosEL,    color: '#334155', op: '0.15'}
                     ];
 
                     datasets.forEach(ds => {
@@ -1027,11 +1023,10 @@
                         container.appendChild(pathLine);
                     });
                 })();
-                ]]>
                 </script>
 
                 <p class="w3-small w3-margin-top" style="color: var(--gris-texto); margin-bottom: 10px; padding-top: 15px;">
-                    <i><strong>Figura 5:</strong> Diagrama de momento flector último \(M_u\) (kNm) evaluado analíticamente por tramos cúbicos y dibujado del lado de la tracción.</i>
+                    <i><strong>Figura 5:</strong> Diagrama de momento flector último \(M_u\) (kNm) evaluado analíticamente mediante las ecuaciones cúbicas por tramos y dibujado del lado de la tracción.</i>
                 </p>
                 <div class="w3-panel ce-panel-azul w3-padding w3-round w3-left-align">
                     <strong style="color: var(--azul-profundo);"><i class="fa fa-map-pin"></i> Análisis de Flexión Longitudinal:</strong>
@@ -1040,8 +1035,6 @@
                     </p>
                 </div>
             </div>
-            
-
 
             <div class="w3-panel ce-panel-azul w3-padding w3-round">
                 <strong style="color: var(--azul-profundo);"><i class="fa fa-balance-scale"></i> ¿Por qué se excluye el peso propio del análisis estructural (\( M_u, V_u \))?</strong>
