@@ -1497,8 +1497,20 @@
             <div class="w3-panel ce-panel-azul w3-padding w3-round">
                 <strong style="color: var(--azul-profundo);"><i class="fa fa-map-pin"></i> Modelo Adoptado (Referencia conceptual: Nilson):</strong>
                 <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
-                    Para visualizar la transferencia de esfuerzos en dirección transversal, se recurre a la analogía de una <strong>viga imaginaria</strong> asociada a cada columna. Para el diseño, esta idealización se organiza operativamente mediante una <strong>franja de diseño transversal</strong>, delimitada según la geometría del apoyo y el peralte efectivo \( d = 351.2 \text{ mm} \).
+                    Para visualizar la transferencia de esfuerzos en dirección transversal, se recurre a la analogía de una <strong>viga imaginaria</strong> asociada a cada columna. Para el diseño, esta idealización se organiza operativamente mediante una <strong>franja de diseño transversal</strong>, delimitada según la geometría del apoyo.
                 </p>
+
+                <!-- CAJITA: CÁLCULO DEL PERALTE EFECTIVO TRANSVERSAL -->
+                <div class="w3-panel ce-panel-gris w3-padding-small w3-round" style="margin-top: 12px; margin-bottom: 12px;">
+                    <strong style="color: var(--azul-profundo);">📏 Peralte Efectivo Transversal (\( d_{trans} \))</strong>
+                    <p class="w3-small" style="margin-top: 5px; margin-bottom: 5px; color: var(--gris-texto);">
+                        Debido a la disposición ortogonal del acero, el refuerzo transversal se ubica en una segunda capa (hacia el interior de la sección). Por tanto, su peralte efectivo es menor, restando un diámetro completo de barra (\( d_b \)) respecto al peralte longitudinal. Para barras No. 5 (\( 15.9 \text{ mm} \)):
+                    </p>
+                    <div class="math-scroll w3-center w3-small" style="margin: 5px 0; color: var(--azul-profundo);">
+                        \[ d_{trans} = d_{long} - d_b = 367.1 - 15.9 = \mathbf{351.2 \text{ mm}} \]
+                    </div>
+                </div>
+
                 <p class="w3-small" style="margin-top: 8px; margin-bottom: 0;">
                     La carga lineal equivalente \( w_u \) se obtiene distribuyendo la carga última de la columna sobre el ancho total de la zapata, \( B \). Para este ejemplo, se adopta:
                 </p>
@@ -1512,7 +1524,7 @@
                 <strong style="color: var(--azul-profundo); display: block; margin-bottom: 10px;"><i class="fa fa-arrows-h"></i> Definición Geométrica de la Franja de Diseño</strong>
                 <img src="../assets/zc05.png" alt="Franja de diseño transversal" style="max-width: 100%; height: auto; border-radius: 5px; mix-blend-mode: multiply;">
                 <p class="w3-small w3-margin-top w3-left-align" style="color: var(--gris-texto); margin-bottom: 0; padding-top: 10px;">
-                    <i><strong>Figura 6:</strong> La franja de diseño transversal (resaltada en azul)[cite: 7]. En el sentido transversal, la franja se analiza como un voladizo sometido a la reacción ascendente del suelo equivalente a \( W_{u,i} = P_{u,i} / B \)[cite: 7]. El diseño considera la flexión transversal y la verificación del cortante unidireccional cuando existe una sección crítica aplicable dentro de la zapata[cite: 7].</i>
+                    <i><strong>Figura 6:</strong> La franja de diseño transversal (resaltada en azul). En el sentido transversal, la franja se analiza como un voladizo sometido a la reacción ascendente del suelo equivalente a \( W_{u,i} = P_{u,i} / B \). El diseño considera la flexión transversal y la verificación del cortante unidireccional cuando existe una sección crítica aplicable dentro de la zapata.</i>
                 </p>
             </div>
 
