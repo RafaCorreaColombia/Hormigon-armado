@@ -1472,7 +1472,7 @@
                     <strong style="color: var(--azul-profundo); border-bottom: 1px solid var(--gris-borde); display: block; padding-bottom: 5px; margin-bottom: 10px;"><i class="fa fa-building"></i> Columna COL1 (Borde)</strong>
                     <div class="w3-small" style="color: var(--gris-texto);">
                         <strong>Geometría de la Franja:</strong><br>
-                        \( b_{eff} = 0.58 \text{ m} \) | \( B = 1.00 \text{ m} \)<br><br>
+                        \( b_{eff} = 0.58 \text{ m} \) | \( H = 0.45 \text{ m} \) | \( B = 1.00 \text{ m} \)<br><br>
                         
                         <strong>Cargas (\( w_{u,1} = P_{u,1} / B \)):</strong><br>
                         • \( 304 \text{ kN/m} \) (1.2D+1.6L)<br>
@@ -1482,7 +1482,19 @@
                         • \( V_u = N.A. \text{ kN} \) (sección crítica fuera de la zapata). Se documenta el valor de la resistencia nominal reducida, \( \phi V_c (118 \text{ kN}) \)<br>
                         • \( M_u \approx 14 \text{ kNm} \) (Controla mín.)<br>
                         <div class="w3-panel ce-panel-gris w3-round" style="padding: 10px; margin-top: 10px; border: 1px solid #c6f6d5; color: #22543d;">
-                            <strong>Controlado por mínimo: (\( A_s = 466 \text{ mm}^2 \)) &rarr; No.5 @ 240 mm</strong>
+                            <strong>Controlado por mínimo: \( A_{s,min} = 0.0018 \cdot b_{eff} \cdot h \)</strong>
+                            <p class="w3-small" style="margin: 5px 0 0 0;">
+                                \( A_{s,min} = 0.0018 \times 580 \text{ mm} \times 450 \text{ mm} \approx 470 \text{ mm}^2 \)
+                            </p>
+                            <p class="w3-small" style="margin: 3px 0 0 0;">
+                                En barras No. 5 (\( A_b = 199 \text{ mm}^2 \)) equivale a \( 2.36 \) barras.
+                            </p>
+                            <p class="w3-small" style="margin: 3px 0 0 0;">
+                                Separación: \( 580 \text{ mm} / 2.36 = 245 \text{ mm} \) &rarr; <strong>Se adopta 1 No.5 @ 240 mm</strong>
+                            </p>
+                            <p class="w3-small" style="margin: 6px 0 0 0; color: var(--azul-profundo); border-top: 1px dashed rgba(34, 84, 61, 0.2); padding-top: 4px;">
+                                <i class="fa fa-check"></i> <strong>Verificación:</strong> \( \phi M_n = 84 \text{ kNm} \gg M_u (14 \text{ kNm}) \)
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -1491,7 +1503,7 @@
                     <strong style="color: var(--azul-profundo); border-bottom: 1px solid var(--gris-borde); display: block; padding-bottom: 5px; margin-bottom: 10px;"><i class="fa fa-building"></i> Columna COL2 (Interior)</strong>
                     <div class="w3-small" style="color: var(--gris-texto);">
                         <strong>Geometría de la Franja:</strong><br>
-                        \( b_{eff} = 0.75 \text{ m} \) | \( B = 1.00 \text{ m} \)<br><br>
+                        \( b_{eff} = 0.75 \text{ m} \) | \( H = 0.45 \text{ m} \) | \( B = 1.00 \text{ m} \)<br><br>
                         
                         <strong>Cargas (\( w_{u,2} = P_{u,2} / B \)):</strong><br>
                         • \( 440 \text{ kN/m} \) (1.2D+1.6L)<br>
@@ -1501,7 +1513,19 @@
                         • \( V_u = N.A. \text{ kN} \) (sección crítica fuera de la zapata). Se documenta el valor de la resistencia nominal reducida, \( \phi V_c (154 \text{ kN}) \) </i><br>
                         • \( M_u \approx 20 \text{ kNm} \) (Controla mín.)<br>
                         <div class="w3-panel ce-panel-gris w3-round" style="padding: 10px; margin-top: 10px; border: 1px solid #c6f6d5; color: #22543d;">
-                            <strong>Controlado por mínimo: (\( A_s = 608 \text{ mm}^2 \)) &rarr; No.5 @ 240 mm</strong>
+                            <strong>Controlado por mínimo: \( A_{s,min} = 0.0018 \cdot b_{eff} \cdot h \)</strong>
+                            <p class="w3-small" style="margin: 5px 0 0 0;">
+                                \( A_{s,min} = 0.0018 \times 750 \text{ mm} \times 450 \text{ mm} \approx 608 \text{ mm}^2 \)
+                            </p>
+                            <p class="w3-small" style="margin: 3px 0 0 0;">
+                                En barras No. 5 (\( A_b = 199 \text{ mm}^2 \)) equivale a \( 3.05 \) barras.
+                            </p>
+                            <p class="w3-small" style="margin: 3px 0 0 0;">
+                                Separación: \( 750 \text{ mm} / 3.05 = 246 \text{ mm} \) &rarr; <strong>Se adopta 1 No.5 @ 240 mm</strong>
+                            </p>
+                            <p class="w3-small" style="margin: 6px 0 0 0; color: var(--azul-profundo); border-top: 1px dashed rgba(34, 84, 61, 0.2); padding-top: 4px;">
+                                <i class="fa fa-check"></i> <strong>Verificación:</strong> \( \phi M_n = 109 \text{ kNm} \gg M_u (20 \text{ kNm}) \)
+                            </p>
                         </div>
                     </div>
                 </div>
