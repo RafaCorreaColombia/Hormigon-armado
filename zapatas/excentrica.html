@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Ejemplo práctico de diseño de zapatas excéntricas (lindero). Geometría, interacción suelo-estructura, presiones, cortante, flexión y detallamiento.">
+    <meta name="author" content="Ing. Rafael Antonio Correa Melano">
+    
+    <title>Diseño Zapata Excéntrica - Criterio Estructural</title>
+    
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <!-- Librerías Asíncronas (MathJax) -->
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']] }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        /* PALETA DE COLORES DE LA MARCA */
+        :root {
+            --azul-profundo: #1A2530;
+            --naranja-estructural: #E67E22;
+            --gris-claro: #F4F5F7;
+            
+            /* Variantes suaves para fondos */
+            --azul-suave: #E8ECF1; 
+            --naranja-suave: #FDF2E9; 
+            --gris-borde: #CBD5E1;
+            --gris-texto: #64748b;
+        }
+
+        html { scroll-behavior: smooth; }
+        body { background-color: var(--gris-claro); font-family: 'Segoe UI', sans-serif; color: var(--azul-profundo); }
+        
+        .contenedor-principal {
+            max-width: 1250px; margin: 30px auto; border-radius: 12px;
+            background: white; padding: 0; overflow: hidden;
+            box-shadow: 0 8px 25px rgba(26,37,48,0.15);
+        }
+        
+        /* HEADER Y MANIFIESTO */
+        .header-rc { background: var(--azul-profundo); color: white; padding: 30px 20px; text-align: center; position: relative; }
+        .brand-logo-header { max-width: 250px; height: auto; margin-bottom: 10px; display: inline-block; }
+        .lema-global { font-size: 0.9em; letter-spacing: 2px; color: #a0aec0; text-transform: uppercase; margin-bottom: 20px; font-weight: bold; }
+        .lema-global span { color: var(--naranja-estructural); }
+
+        /* RUTA DE APRENDIZAJE */
+        .ruta-aprendizaje {
+            display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 20px;
+            font-size: 0.85em; color: #a0aec0;
+        }
+        .ruta-item { padding: 4px 12px; border-radius: 20px; border: 1px solid #4a5568; background: rgba(255,255,255,0.05); }
+        .ruta-activa { border-color: var(--naranja-estructural); color: white; background: rgba(230, 126, 34, 0.2); font-weight: bold; }
+        .ruta-flecha { color: #4a5568; font-size: 0.8em; }
+
+        .contenido-body { padding: 40px; }
+        
+        /* CAJAS Y RESALTADOS (Paneles de Criterio Estructural) */
+        .panel-control { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 25px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); margin-bottom: 25px; }
+        .panel-titulo { margin-top: 0; font-weight: bold; color: var(--azul-profundo); border-bottom: 2px solid var(--naranja-estructural); padding-bottom: 8px; margin-bottom: 20px; font-size: 1.6em; }
+        
+        /* CLASES COHESIVAS DE LA MARCA */
+        .ce-panel-azul { background-color: var(--azul-suave); border-left: 4px solid var(--azul-profundo); color: var(--azul-profundo); }
+        .ce-panel-naranja { background-color: var(--naranja-suave); border-left: 4px solid var(--naranja-estructural); color: var(--azul-profundo); }
+        .ce-panel-gris { background-color: var(--gris-claro); border-left: 4px solid var(--gris-borde); color: var(--azul-profundo); }
+        .ce-destacado { color: var(--naranja-estructural); font-weight: bold; }
+        .ce-alerta { color: #c62828; font-weight: bold; }
+
+        /* SISTEMA GRID */
+        .ce-grid { display: grid; gap: 15px; margin-bottom: 15px; margin-top: 10px; }
+        .ce-grid-2 { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+        .ce-grid-3 { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+        .ce-grid-4 { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+
+        .ce-grid > div { min-width: 0; }
+
+        /* TABLAS ESTANDARIZADAS */
+        .tabla-container { overflow-x: auto; width: 100%; border-radius: 6px; box-shadow: 0 0 5px rgba(0,0,0,0.05); margin: 15px 0; }
+        .tabla-traslapos { width: 100%; border-collapse: collapse; font-size: 0.95em; min-width: 600px; }
+        .tabla-traslapos th { background-color: var(--azul-profundo) !important; color: white !important; padding: 14px; text-align: center; transition: background-color 0.3s; }
+        .tabla-traslapos td { padding: 12px; text-align: center; border-bottom: 1px solid #e2e8f0; }
+        .tabla-traslapos tr:hover { background-color: var(--gris-claro); }
+        .tabla-small td, .tabla-small th { padding: 8px; font-size: 0.85em; }
+
+        /* BANNERS DE TABLA RESPONSIVOS */
+        @media (max-width: 768px) {
+            .tabla-traslapos th {
+                background-color: var(--naranja-estructural) !important;
+                padding: 8px 6px !important;
+                font-size: 0.85em;
+            }
+            .tabla-traslapos td {
+                padding: 8px 6px !important;
+                font-size: 0.85em;
+            }
+        }
+
+        /* LOGO FOOTER */
+        .brand-logo-footer { max-width: 200px; height: auto; margin-bottom: 15px; display: inline-block; }
+        footer { background-color: var(--gris-claro) !important; }
+
+        summary:focus { outline: none; }
+        .math-scroll { overflow-x: auto; padding: 10px 0; }
+
+        @media (max-width: 1250px) {
+            .contenedor-principal { width: 100% !important; margin: 0 !important; border-radius: 0 !important; box-shadow: none; padding: 0 !important; }
+            .contenido-body { padding: 20px; }
+        }
+
+        /* OPTIMIZACIÓN DE IMPRESIÓN */
+        @media print {
+            .no-print { display: none !important; }
+            .contenedor-principal { box-shadow: none !important; margin: 0 !important; width: 100% !important; border-radius: 0 !important;}
+            .panel-control { page-break-inside: avoid; border: 1px solid #e2e8f0; margin-bottom: 15px; box-shadow: none; }
+            body { background: white !important; color: black !important; }
+            .tabla-traslapos { font-size: 0.85em; }
+            .tabla-traslapos th { color: black !important; background-color: #f0f0f0 !important; border: 1px solid #ccc; }
+            .tabla-traslapos td { border: 1px solid #ccc; }
+            a { text-decoration: none; color: black; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Botón Volver Arriba -->
+<button onclick="topFunction()" id="btnTop" class="w3-button w3-circle w3-xlarge no-print" 
+        style="display:none; position:fixed; bottom:30px; right:30px; z-index:99; background-color:var(--naranja-estructural); color:white; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
+    <i class="fa fa-arrow-up"></i>
+</button>
+
+<div class="contenedor-principal w3-animate-opacity">
+    
+    <!-- HEADER Y NARRATIVA GLOBAL -->
+    <div class="header-rc no-print">
+        <img src="../assets/IsotipoFOscuroT.png" alt="Logotipo Criterio Estructural" class="brand-logo-header" onerror="this.src='https://via.placeholder.com/250x80/1A2530/FFFFFF?text=CRITERIO+ESTRUCTURAL'"><br>
+        
+        <div class="lema-global">
+            Guía de Detallamiento Estructural <br>
+            <span>Aprender haciendo. Comprender antes de detallar.</span>
+        </div>
+        
+        <h1 class="w3-xxlarge" style="margin: 0; font-weight: bold;">Diseño de Zapata Excéntrica (Lindero)</h1>
+        <div style="font-size: 1.1em; color: #cbd5e1; margin-top: 5px;">Criterios de diseño y control de presiones</div>
+
+        <div class="ruta-aprendizaje">
+            <span class="ruta-item">1. Predimensionamiento y Presiones</span> <i class="fa fa-chevron-right ruta-flecha"></i>
+            <span class="ruta-item ruta-activa">📐 2. Esfuerzos y Cortante</span> <i class="fa fa-chevron-right ruta-flecha"></i>
+            <span class="ruta-item">3. Diseño por Flexión</span> <i class="fa fa-chevron-right ruta-flecha"></i>
+            <span class="ruta-item">4. Interfaz y Detallado</span>
+        </div>
+    </div>
+
+    <div class="contenido-body">
+
+        <!-- SECCIÓN 0: CONCEPTO -->
+        <div class="panel-control" id="concepto-excentrica">
+            <h2 class="panel-titulo">Diseño de Zapata Excéntrica (Lindero)</h2>
+            <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Criterios de diseño</p>
+
+            <div class="w3-panel ce-panel-naranja w3-padding w3-round">
+                <strong style="color: var(--naranja-estructural);"><i class="fa fa-map-pin"></i> 📌 El Fenómeno de Excentricidad:</strong>
+                <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
+                    En COL1 (lindero), la imposibilidad de extender la zapata hacia el exterior desplaza la resultante al borde. La <strong>Viga de Enlace</strong> actúa como una palanca que conecta COL1 con COL2, "anclando" el sistema para reducir la excentricidad del sistema y controlar el gradiente de presiones.
+                </p>
+            </div>
+
+            <div class="w3-center w3-margin-top w3-margin-bottom w3-padding w3-round w3-white" style="border: 1px dashed var(--gris-borde);">
+                <img src="../assets/ze01.png" alt="Planta Zapata Lindero" style="max-width: 100%; height: auto; border-radius: 5px; mix-blend-mode: multiply;">
+                <p class="w3-small w3-margin-top" style="color: var(--gris-texto); margin-bottom: 0;">
+                    <i><strong>Figura 1:</strong> Modelo y Equilibrio: Zapata de Lindero Conectada por Viga de Enlace.</i>
+                </p>
+            </div>
+
+            <div class="w3-panel ce-panel-gris w3-padding w3-round" style="border-left-color: var(--gris-texto);">
+                <strong style="color: var(--azul-profundo); display: block; margin-bottom: 12px; text-transform: uppercase;">
+                    <i class="fa fa-bar-chart"></i> 📊 Criterios Académicos de Evaluación del Modelo
+                </strong>
+                <p class="w3-small" style="margin-top: 5px; margin-bottom: 12px;">
+                    Los siguientes indicadores permiten evaluar la <strong>calidad del predimensionamiento</strong> y la <strong>consistencia del equilibrio</strong>. Estos rangos son de uso académico para interpretación del comportamiento.
+                </p>
+
+                <strong style="color: var(--azul-profundo); font-size: 13px; text-transform: uppercase;">📊 Tabla 1. CRITERIOS ACADÉMICOS DE CONTROL</strong>
+                <div class="tabla-container">
+                    <table class="tabla-traslapos tabla-small">
+                        <thead>
+                            <tr>
+                                <th style="text-align:left;">Indicador</th>
+                                <th>Evaluación</th>
+                                <th>Interpretación</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="text-align:left;">
+                                    <strong>Diferencia de centroide</strong><br>
+                                    <span style="color: var(--gris-texto);"><strong>(|xr - xc| / L)</strong></span>
+                                </td>
+                                <td>
+                                    &lt; 5% → <strong style="color: #166534;">OK</strong><br>
+                                    5% – 10% → <strong style="color: #92400e;">Aceptable</strong><br>
+                                    &gt; 10% → <strong style="color: #b91c1c;">Ajustar</strong>
+                                </td>
+                                <td style="text-align:left;">
+                                    Mide la alineación entre el centro de cargas y el centro geométrico de la zapata.<br>Combinación <strong>D + L</strong> debe estar en el rango &lt; 5%.<br>Combinación <strong>D + 0.75(0.7E) + 0.75L</strong> No debe estar en el rango &gt; 10%.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:left;">
+                                    <strong>Diferencia de presiones</strong><br>
+                                    <span style="color: var(--gris-texto);"><strong>(Δq / q_min)</strong></span>
+                                </td>
+                                <td>
+                                    &lt; 15% → <strong style="color: #166534;">OK</strong><br>
+                                    15% – 25% → <strong style="color: #92400e;">Aceptable</strong><br>
+                                    &gt; 25% → <strong style="color: #b91c1c;">Ajustar</strong>
+                                </td>
+                                <td style="text-align:left;">
+                                    Evalúa el gradiente de presiones entre bordes de la zapata.<br>Combinación <strong>D + L</strong> debe estar en el rango &lt; 15%.<br>Combinación <strong>D + 0.75(0.7E) + 0.75L</strong> No debe estar en el rango &gt; 25%.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="w3-panel ce-panel-azul w3-padding-small w3-round" style="margin-top: 15px;">
+                    <p class="w3-small" style="margin: 0;">
+                        <strong>Nota:</strong> Bajo combinación <strong>0.6D - 0.7E</strong>, estos indicadores pueden incrementarse debido al carácter transitorio de las acciones laterales. En estos casos, se prioriza la verificación de contacto completo (<strong>q &gt; 0</strong>). En todas las combinaciones se hace control de esfuerzos máximos \(q_{max}&lt;q_{neto}\).
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 1: REACCIONES BASE -->
+        <div class="panel-control" id="reacciones-excentrica">
+            <h2 class="panel-titulo">1. Reacciones Base</h2>
+            <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Control de Estabilidad</p>
+
+            <strong style="color: var(--azul-profundo); font-size: 13px; text-transform: uppercase;">📊 TABLA 2. Reacciones Base del Modelo (kN, kNm)</strong>
+            <div class="tabla-container">
+                <table class="tabla-traslapos tabla-small">
+                    <thead>
+                        <tr>
+                            <th style="text-align:left;">Componente</th>
+                            <th>P1 (Vertical) [kN]</th>
+                            <th>M1 (Momento) [kNm]</th>
+                            <th>P2 (Vertical) [kN]</th>
+                            <th>M2 (Momento) [kNm]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="text-align:left;"><strong>Muerta (D)</strong></td>
+                            <td>200.0</td>
+                            <td>5.0</td>
+                            <td>300.0</td>
+                            <td>0.0</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;"><strong>Viva (L)</strong></td>
+                            <td>40.0</td>
+                            <td>0.0</td>
+                            <td>50.0</td>
+                            <td>0.0</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;" class="ce-alerta"><strong>Sismo (E)</strong></td>
+                            <td class="ce-alerta">30.0</td>
+                            <td class="ce-alerta">30.0</td>
+                            <td class="ce-alerta">5.0</td>
+                            <td class="ce-alerta">30.0</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p class="w3-small" style="color: var(--gris-texto); margin-top: -5px; margin-bottom: 15px;">
+                Convención de momento positivo en este ejemplo: sentido antihorario.
+            </p>
+
+            <div class="ce-grid ce-grid-2">
+                <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid var(--gris-borde); margin:0;">
+                    <strong style="color: var(--azul-profundo);"><i class="fa fa-wrench"></i> 🛠️ Parámetros Fijos</strong>
+                    <ul class="w3-small" style="margin: 8px 0 0 0; padding-left: 20px; color: var(--gris-texto);">
+                        <li>Distancia entre ejes (S): <strong>3.00 m</strong></li>
+                        <li>Sección Columnas: <strong>0.40 x 0.40 m</strong></li>
+                        <li>Esfuerzo Admisible (q_adm): <strong>200 kN/m²</strong></li>
+                        <li>Espesor h: <strong>0.45 m</strong> | q_neto: <strong>189.2 kPa</strong></li>
+                    </ul>
+                </div>
+
+                <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid var(--gris-borde); margin:0;">
+                    <strong style="color: var(--azul-profundo);"><i class="fa fa-ruler"></i> 📏 Dimensiones Finales</strong>
+                    <ul class="w3-small" style="margin: 8px 0 0 0; padding-left: 20px; color: var(--gris-texto);">
+                        <li><strong>Z. COL1 (Relación 2:1):</strong> 0.90 m x 1.80 m</li>
+                        <li><strong>Z. COL2 (Relación 1:1):</strong> 1.40 m x 1.40 m</li>
+                        <li>Área COL1: <strong>1.62 m²</strong> | Área COL2: <strong>1.96 m²</strong></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 2: DIMENSIONAMIENTO DE BASES -->
+        <div class="panel-control" id="dimensionamiento-excentrica">
+            <h2 class="panel-titulo">2. Dimensionamiento de Bases</h2>
+            <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Relación de aspecto y capacidad neta del suelo</p>
+
+            <div class="w3-panel ce-panel-gris w3-padding w3-round">
+                <strong style="color: var(--azul-profundo);">1️⃣ Capacidad Neta del Suelo (\( q_{neto} \)):</strong>
+                <p class="w3-small" style="margin-top: 5px; margin-bottom: 5px;">
+                    Partiendo de una altura inicial \( h = 0.45 \text{ m} \) (basada en anclaje de barras No.5):
+                </p>
+                <div class="math-scroll w3-small" style="margin-top: 5px;">
+                    \( q_{neto} = q_{adm} - (\gamma_{conc} \cdot h) = 200 \text{ kPa} - (24 \cdot 0.45) = \mathbf{189.2 \text{ kPa}} \)
+                </div>
+            </div>
+
+            <strong style="color: var(--azul-profundo); font-size: 13px; text-transform: uppercase;">📊 Tabla 3. RESULTANTES POR COLUMNA - COMBINACIONES DE SERVICIO (P,M)</strong>
+            <div class="tabla-container">
+                <table class="tabla-traslapos tabla-small">
+                    <thead>
+                        <tr>
+                            <th style="text-align:left;">Combinación (NSR-10)</th>
+                            <th>P1 (kN)</th>
+                            <th>M1 (kNm)</th>
+                            <th>P2 (kN)</th>
+                            <th>M2 (kNm)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="text-align:left;"><strong>B.2.3-2:</strong> D + L</td>
+                            <td>240.0</td>
+                            <td>5.0</td>
+                            <td>350.0</td>
+                            <td>0.0</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;"><strong>B.2.3-8:</strong> D + 0.75(0.7E) + 0.75L</td>
+                            <td>245.8</td>
+                            <td>20.8</td>
+                            <td>340.1</td>
+                            <td>15.8</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;" class="ce-alerta"><strong>B.2.3-10:</strong> 0.6D - 0.7E</td>
+                            <td class="ce-alerta">99.0</td>
+                            <td class="ce-alerta">-18.0</td>
+                            <td class="ce-alerta">176.5</td>
+                            <td class="ce-alerta">-21.0</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="ce-grid ce-grid-2">
+                <div class="w3-panel ce-panel-naranja w3-padding w3-round" style="margin:0;">
+                    <strong style="color: var(--naranja-estructural);"><i class="fa fa-building"></i> 🏢 Zapata COL1 (Excéntrica)</strong>
+                    <p class="w3-small" style="margin-top: 5px; margin-bottom: 10px;">
+                        Relación de aspecto deseada: <strong>\(\Delta Y / \Delta X = 2.0\)</strong>.
+                    </p>
+                    <ul class="w3-small" style="margin: 0; padding-left: 20px; color: var(--gris-texto);">
+                        <li>\( P_{D+L} = 240 \text{ kN} \)</li>
+                        <li>\( Area_{req} = 240 / 189.2 = 1.27 \text{ m}^2 \)</li>
+                        <li>\( L_x \cdot (2 L_x) = 1.27 \rightarrow L_x = 0.80 \text{ m} \)</li>
+                    </ul>
+                    <div class="w3-panel w3-white w3-padding-small w3-round w3-center" style="border: 1px dashed var(--naranja-estructural); margin-top: 10px; color: #9a3412; font-weight: bold;">
+                        Adoptado: 0.90 m x 1.80 m
+                    </div>
+                </div>
+
+                <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid #bbf7d0; border-left: 4px solid #166534; margin:0;">
+                    <strong style="color: #166534;"><i class="fa fa-building"></i> 🏢 Zapata COL2 (Centrada)</strong>
+                    <p class="w3-small" style="margin-top: 5px; margin-bottom: 10px;">
+                        Relación de aspecto deseada: <strong>\(\Delta Y / \Delta X = 1.0\)</strong> (Cuadrada).
+                    </p>
+                    <ul class="w3-small" style="margin: 0; padding-left: 20px; color: var(--gris-texto);">
+                        <li>\( P_{D+L} = 350 \text{ kN} \)</li>
+                        <li>\( Area_{req} = 350 / 189.2 = 1.85 \text{ m}^2 \)</li>
+                        <li>\( L = \sqrt{1.85} = 1.36 \text{ m} \)</li>
+                    </ul>
+                    <div class="w3-panel w3-white w3-padding-small w3-round w3-center" style="border: 1px dashed #166534; margin-top: 10px; color: #166534; font-weight: bold;">
+                        Adoptado: 1.40 m x 1.40 m
+                    </div>
+                </div>
+            </div>
+
+            <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid var(--gris-borde); margin-top: 24px;">
+                <strong style="color: var(--azul-profundo); font-size: 1.1em; border-bottom: 1px solid var(--gris-borde); display: block; padding-bottom: 8px; margin-bottom: 15px;"><i class="fa fa-crosshairs"></i> 🎯 Localización del Centroide Geométrico (\(x_c\))</strong>
+                
+                <p class="w3-small" style="color: var(--gris-texto); margin-bottom: 15px;">
+                    Determinamos el centro de gravedad del área de contacto del sistema (ambas zapatas) respecto al eje de <strong>COL1 (x = 0)</strong>:
+                </p>
+
+                <div class="tabla-container">
+                    <table class="tabla-traslapos tabla-small">
+                        <thead>
+                            <tr>
+                                <th style="text-align:left;">Elemento</th>
+                                <th>Área (\(A_i\)) [m²]</th>
+                                <th>Brazo (\(x_i\)) [m]</th>
+                                <th>Momento de Área (\(A_i \cdot x_i\))</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="text-align:left;">Zapata COL1 (0.9x1.8)</td>
+                                <td>1.62</td>
+                                <td>0.25</td>
+                                <td>0.405</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:left;">Zapata COL2 (1.4x1.4)</td>
+                                <td>1.96</td>
+                                <td>3.00</td>
+                                <td>5.880</td>
+                            </tr>
+                            <tr style="background:#f8fafc; font-weight:bold;">
+                                <td style="text-align:left;">TOTALES</td>
+                                <td>\(\Sigma A = 3.58\)</td>
+                                <td style="color: var(--gris-texto);">---</td>
+                                <td style="color: #166534;">\(\Sigma M_x = 6.285\)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="w3-panel ce-panel-azul w3-padding w3-round w3-center" style="border: 1px dashed var(--azul-profundo);">
+                    <div class="math-scroll w3-large" style="color: var(--azul-profundo); margin-bottom: 5px;">
+                        \(x_c = \frac{\sum (A_i \cdot x_i)}{\sum A_i} = \frac{6.285}{3.58} = \mathbf{1.7556 \text{ m}}\)
+                    </div>
+                    <span class="w3-small" style="color: var(--azul-profundo);">Desde el eje de COL1</span>
+                </div>
+
+                <p class="w3-small" style="color: var(--gris-texto); font-style: italic; margin-top: 15px; margin-bottom: 0;">
+                    <strong>Nota técnica:</strong> El brazo \(x_1 = 0.25 \text{ m}\) surge de la condición de lindero: la columna (40 cm) está al borde, situando su eje a 20 cm del límite. Como la zapata tiene 90 cm, su centro está a 45 cm del borde, es decir, a \(45 - 20 = 25 \text{ cm}\) del eje de la columna.
+                </p>
+            </div>
+
+            <div class="w3-panel ce-panel-azul w3-padding w3-round">
+                <strong style="color: var(--azul-profundo);"><i class="fa fa-lightbulb-o"></i> 📌 Nota Pedagógica:</strong>
+                <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
+                    Observen cómo la zapata de lindero (COL1) se proyecta más larga en sentido perpendicular a la viga de enlace (\(\Delta Y = 1.80 \text{ m}\)) para distribuir mejor el bulbo de presiones, mientras que en el eje X se mantiene estrecha para no invadir excesivamente el espacio interno.
+                </p>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 3: ANALÍTICA DE PRESIONES DE SERVICIO -->
+        <div class="panel-control" id="presiones-excentrica">
+            <h2 class="panel-titulo">3. Analítica de Presiones de Servicio</h2>
+            <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Verificación de Excentricidad y Delta de Presiones</p>
+
+            <div class="w3-panel ce-panel-gris w3-padding w3-round">
+                <strong style="color: var(--azul-profundo);"><i class="fa fa-map-marker"></i> 📍 Marco de Referencia y Geometría del Sistema</strong>
+                <p class="w3-small" style="margin-top: 10px; margin-bottom: 12px;">
+                    Ubicamos el origen <strong>\( x = 0.00 \text{ m} \)</strong> en el eje de la columna de lindero (COL1). Las extensiones de las bases respecto a este eje son:
+                </p>
+                
+                <div class="ce-grid ce-grid-2">
+                    <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid var(--gris-borde); margin:0;">
+                        <strong style="color: var(--azul-profundo); text-transform: uppercase; font-size: 0.9em;">Zapata COL1 (Excéntrica)</strong>
+                        <ul class="w3-small" style="margin: 8px 0 0 0; padding-left: 15px; color: var(--gris-texto); list-style: none;">
+                            <li>• Borde exterior: <strong>\( x_1i = -0.20 \text{ m} \)</strong></li>
+                            <li>• Eje Columna 1: <strong>\( x_1 = 0.00 \text{ m} \)</strong></li>
+                            <li>• Borde interior: <strong>\( x_1j = 0.70 \text{ m} \)</strong></li>
+                            <li style="margin-top: 5px; border-top: 1px dashed var(--gris-borde); padding-top: 5px; font-style: italic;">Longitud: 0.90 m</li>
+                        </ul>
+                    </div>
+
+                    <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid var(--gris-borde); margin:0;">
+                        <strong style="color: var(--azul-profundo); text-transform: uppercase; font-size: 0.9em;">Zapata COL2 (Centrada)</strong>
+                        <ul class="w3-small" style="margin: 8px 0 0 0; padding-left: 15px; color: var(--gris-texto); list-style: none;">
+                            <li>• Borde interior: <strong>\( x_2i = 2.30 \text{ m} \)</strong></li>
+                            <li>• Eje Columna 2: <strong>\( x_2 = 3.00 \text{ m} \)</strong></li>
+                            <li>• Borde exterior: <strong>\( x_2j = 3.70 \text{ m} \)</strong></li>
+                            <li style="margin-top: 5px; border-top: 1px dashed var(--gris-borde); padding-top: 5px; font-style: italic;">Longitud: 1.40 m</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <p class="w3-small" style="margin-top: 15px; margin-bottom: 0; font-style: italic; color: var(--gris-texto);">
+                    Nota: La viga de enlace cubre el vano libre entre \( x = 0.70 \text{ m} \) y \( x = 2.30 \text{ m} \), garantizando la transferencia de momentos para mantener el equilibrio estático del conjunto.<br>
+                    Este sistema de coordenadas permite formular equilibrio global respecto a un único eje de referencia (COL1), simplificando la obtención de la resultante.
+                </p>
+            </div>
+
+            <div class="w3-center w3-margin-top w3-margin-bottom w3-padding w3-round w3-white" style="border: 1px dashed var(--gris-borde);">
+                <img src="../assets/ze02.png" alt="Diagrama de Presiones de Servicio" style="max-width: 100%; height: auto; border-radius: 5px; mix-blend-mode: multiply;">
+                <p class="w3-small w3-margin-top" style="color: var(--gris-texto); margin-bottom: 0; font-style: italic;">
+                    <strong>Figura 2:</strong> Diagrama de presiones de contacto para combinaciones de servicio. Nótese la interrupción del diagrama en la zona de la viga de enlace (\(x=0.70\) a \(x=2.30\)). Se asume comportamiento rígido de cada base, generando distribuciones aproximadamente lineales de presión en cada zapata.
+                </p>
+            </div>
+
+            <div class="ce-grid ce-grid-3">
+                <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid #bbf7d0; margin:0;">
+                    <strong style="color: #166534;"><i class="fa fa-check"></i> ✅ B.2.3-2 (D+L)</strong>
+                    <div class="w3-small" style="margin-top: 10px; color: #14532d;">
+                        • Resultante: \(x_R = \mathbf{1.771 \text{ m}}\)<br>
+                        • Centroide: \(x_c = \mathbf{1.756 \text{ m}}\)<br>
+                        • Dif. Centroide: <strong>0.4% (OK)</strong><br>
+                        • Dif. Presiones: <strong>3.1% (OK)</strong><br>
+                        <span style="font-size: 0.9em; opacity: 0.8;">q_izq: 162.3 | q_der: 167.3 kPa</span>
+                    </div>
+                </div>
+
+                <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid #bfdbfe; margin:0;">
+                    <strong style="color: #1e40af;"><i class="fa fa-warning"></i> ⚠️ B.2.3-8 (Sismo)</strong>
+                    <div class="w3-small" style="margin-top: 10px; color: #1e3a8a;">
+                        • Resultante: \(x_R = \mathbf{1.679 \text{ m}}\)<br>
+                        • Centroide: \(x_c = \mathbf{1.756 \text{ m}}\)<br>
+                        • Dif. Centroide: <strong>2.0% (OK)</strong><br>
+                        • Dif. Presiones: <strong>16.1% (ACEPTABLE)</strong><br>
+                        <span style="font-size: 0.9em; opacity: 0.8;">q_izq: 175.9 | q_der: 151.5 kPa</span>
+                    </div>
+                </div>
+
+                <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid #fecaca; margin:0;">
+                    <strong style="color: #9f1239;"><i class="fa fa-bell"></i> 🚨 B.2.3-10 (0.6D-0.7E)</strong>
+                    <div class="w3-small" style="margin-top: 10px; color: #9f1239;">
+                        • Resultante: \(x_R = \mathbf{2.064 \text{ m}}\)<br>
+                        • Centroide: \(x_c = \mathbf{1.756 \text{ m}}\)<br>
+                        • Dif. Centroide: <strong>7.9% (ACEPTABLE)</strong><br>
+                        • Dif. Presiones: <strong>86.3% (REVISAR)</strong><br>
+                        <span style="font-size: 0.9em; opacity: 0.8;">Gradiente severo de presiones.</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid var(--gris-borde); margin-top: 24px;">
+                <strong style="color: var(--azul-profundo); font-size: 1.1em; border-bottom: 1px solid var(--gris-borde); display: block; padding-bottom: 8px; margin-bottom: 15px;"><i class="fa fa-search"></i> 🔍 Análisis de Resultados vs. Criterios de Control</strong>
+                
+                <p class="w3-small" style="color: var(--gris-texto); margin-bottom: 15px;">
+                    Al contrastar nuestro modelo con los <strong>Criterios Académicos de Evaluación</strong>, podemos concluir lo siguiente:
+                </p>
+
+                <div class="ce-grid ce-grid-2">
+                    <div class="w3-panel ce-panel-gris w3-padding w3-round" style="margin:0;">
+                        <strong style="color: #166534;"><i class="fa fa-check-circle"></i> ✅ Combinación Permanente (D + L)</strong>
+                        <p class="w3-small" style="margin-top: 8px; margin-bottom: 0;">
+                            Con una diferencia de presiones de solo <strong>3.1%</strong>, el predimensionamiento es calificado como <strong>Excelente (OK)</strong>. Esto garantiza que el suelo se deforme de manera uniforme, minimizando riesgos de asentamientos diferenciales entre las columnas.
+                        </p>
+                    </div>
+
+                    <div class="w3-panel ce-panel-gris w3-padding w3-round" style="margin:0;">
+                        <strong style="color: #92400e;"><i class="fa fa-balance-scale"></i> ⚖️ Combinación con Sismo (B.2.3-8)</strong>
+                        <p class="w3-small" style="margin-top: 8px; margin-bottom: 0;">
+                            El indicador de <strong>16.1%</strong> se clasifica como <strong>Aceptable</strong>. Es un resultado esperado: las fuerzas horizontales del sismo desplazan la resultante, pero el sistema de viga de enlace es lo suficientemente rígido para mantener el gradiente bajo control sin llegar a niveles críticos (&gt;25%).
+                        </p>
+                    </div>
+                </div>
+
+                <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid #fecaca; border-left: 4px solid #dc2626; margin-top: 15px;">
+                    <strong style="color: #991b1b;"><i class="fa fa-exclamation-triangle"></i> 🚨 Caso Crítico: B.2.3-10 (0.6D - 0.7E)</strong>
+                    <p class="w3-small" style="margin-top: 8px; margin-bottom: 0; color: #7f1d1d;">
+                        Aquí la diferencia de presiones sube al <strong>86.3%</strong>. Este valor nos indica que estamos en el límite del comportamiento rígido y que cualquier incremento en la carga sísmica podría generar despegue (presiones negativas).
+                    </p>
+                </div>
+            </div>
+
+            <div class="w3-panel ce-panel-azul w3-padding w3-round">
+                <strong style="color: var(--azul-profundo);"><i class="fa fa-lightbulb-o"></i> 💡 Conclusión de Estabilidad:</strong>
+                <p class="w3-small" style="margin-top: 5px; margin-bottom: 10px;">
+                    Aunque el predimensionamiento basado en cargas gravitacionales es excelente (desviación de centroides del 0.4%), la combinación <strong>B.2.3-10</strong> revela la vulnerabilidad del sistema ante sismos con carga muerta reducida.
+                </p>
+                <p class="w3-small" style="margin-top: 0; margin-bottom: 5px;">
+                    Un diferencial de presiones del <strong>86.3%</strong> indica que la zapata de lindero es propensa al despegue al analizar ese estado límite de servicio en esa dirección. En un diseño definitivo, esto obligaría a:
+                </p>
+                <ul class="w3-small" style="margin: 0; padding-left: 20px; color: var(--gris-texto);">
+                    <li>Revisar presiones con momentos biaxiales detalladamente y,</li>
+                    <li>Verificar que no exista tracción (levantamiento) en los bordes considerando todas las combinaciones de servicio.</li>
+                </ul>
+            </div>
+
+            <strong style="color: var(--azul-profundo); font-size: 13px; text-transform: uppercase;">📊 Tabla 4. Presiones de Contacto PARA COMBINACIONES DE SERVICIO (kPa)</strong>
+            <div class="tabla-container">
+                <table class="tabla-traslapos tabla-small">
+                    <thead>
+                        <tr>
+                            <th style="text-align:left;">Combinación de Servicio</th>
+                            <th>Z. COL1 (Lindero)<br><span style="font-size: 0.85em; font-weight: normal; opacity: 0.8;">\(x \in [-0.2, 0.7]\)</span></th>
+                            <th>Z. COL2 (Interna)<br><span style="font-size: 0.85em; font-weight: normal; opacity: 0.8;">\(x \in [2.3, 3.7]\)</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="text-align:left;"><strong>B.2.3-2: D + L</strong></td>
+                            <td>\(q_{x=-0.2} \approx 162.3 \text{ kPa}\)</td>
+                            <td>\(q_{x=3.7} \approx 167.3 \text{ kPa}\)</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;"><strong>B.2.3-8: D+0.75(0.7E)+0.75L</strong></td>
+                            <td>\(q_{x=-0.2} \approx 175.9 \text{ kPa}\)</td>
+                            <td>\(q_{x=3.7} \approx 151.5 \text{ kPa}\)</td>
+                        </tr>
+                        <tr class="ce-alerta">
+                            <td style="text-align:left;"><strong>B.2.3-10: 0.6D - 0.7E</strong></td>
+                            <td>\(q_{x=-0.2} \approx 53.7 \text{ kPa}\)</td>
+                            <td>\(q_{x=3.7} \approx 100.1 \text{ kPa}\)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid #bbf7d0; border-left: 4px solid #166534;">
+                <strong style="color: #166534;"><i class="fa fa-check-square-o"></i> ✅ Verificación de Contacto:</strong>
+                <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
+                    En todas las combinaciones analizadas, el esfuerzo mínimo es positivo (\(q &gt; 0\)), garantizando contacto total en ambas bases. Además, los picos de presión (175.9 kPa) son inferiores al \(q_{neto}\) de 189.2 kPa.
+                </p>
+            </div>
+            
+            <div class="w3-panel ce-panel-azul w3-padding w3-round">
+                <strong style="color: var(--azul-profundo);"><i class="fa fa-cogs"></i> 💡 Comportamiento del Sistema Conectado:</strong>
+                <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
+                    A diferencia de una zapata combinada rectangular, aquí el suelo solo reacciona bajo las dos bases independientes. La viga de enlace garantiza que ambas zapatas desciendan uniformemente, pero "no transmite presión directa al suelo" en su tramo central.
+                </p>
+            </div>
+
+        </div>
+
+        <!-- SECCIÓN 4: ANÁLISIS ESTRUCTURAL -->
+        <div class="panel-control" id="analisis-excentrica">
+            <h2 class="panel-titulo">4. Análisis Estructural (Estado Límite Último)</h2>
+            <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Presiones Mayoradas, Diagramas de Esfuerzos Internos (\(V_u, M_u\)) y Diseño de Viga de Enlace</p>
+
+            <div class="w3-panel ce-panel-naranja w3-padding w3-round">
+                <strong style="color: var(--naranja-estructural);"><i class="fa fa-map-pin"></i> 📌 Nota de Diseño:</strong>
+                <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
+                    Las presiones presentadas a continuación se utilizan para el diseño por resistencia (concreto y acero). Se han calculado integrando las cargas mayoradas sobre el área real de las bases adoptadas.
+                </p>
+            </div>
+
+            <div class="w3-center w3-margin-top w3-margin-bottom w3-padding w3-round w3-white" id="figura3" style="border: 1px dashed var(--gris-borde);">
+                <img src="../assets/ze03.png" alt="Diagrama Presiones de Contacto Últimas" style="max-width: 100%; height: auto; border-radius: 5px; mix-blend-mode: multiply;">
+                <p class="w3-small w3-margin-top" style="color: var(--gris-texto); margin-bottom: 0; font-style: italic;">
+                    <strong>Figura 3:</strong> Diagrama de presiones de contacto para combinaciones últimas.
+                </p>
+            </div>
+
+            <strong style="color: var(--azul-profundo); font-size: 13px; text-transform: uppercase;">📊 Tabla 5. Presiones de Diseño (Estado Límite Último) (kPa)</strong>
+            <div class="tabla-container">
+                <table class="tabla-traslapos tabla-small">
+                    <thead>
+                        <tr>
+                            <th rowspan="2" style="vertical-align: middle;">Combinación de Diseño (ELU)</th>
+                            <th colspan="2">Zapata COL1 (Lindero) [kPa]</th>
+                            <th colspan="2">Zapata COL2 (Interna) [kPa]</th>
+                        </tr>
+                        <tr>
+                            <th>\(q_{x=-0.2}\)</th>
+                            <th>\(q_{x=0.7}\)</th>
+                            <th>\(q_{x=2.3}\)</th>
+                            <th>\(q_{x=3.7}\)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="text-align:left;"><strong>B.2.4-2:</strong> 1.2D + 1.6L</td>
+                            <td>205.7</td>
+                            <td>206.7</td>
+                            <td>208.4</td>
+                            <td>210.0</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:left;"><strong>B.2.4-5:</strong> 1.2D + E + L</td>
+                            <td class="ce-alerta">228.2</td>
+                            <td>216.4</td>
+                            <td>195.4</td>
+                            <td style="color: #1e40af; font-weight: bold;">177.0</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="w3-small" style="color: var(--gris-texto); margin-top: -5px; margin-bottom: 15px;">
+                Se observa el cambio de gradiente bajo carga sísmica (B.2.4-5).
+            </p>
+
+            <div class="w3-panel ce-panel-gris w3-padding w3-round">
+                <strong style="color: var(--azul-profundo);"><i class="fa fa-link"></i> 🔗 Interpretación Estructural:</strong>
+                <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
+                    Las presiones mayoradas actúan como carga distribuida sobre cada zapata. Esto permite modelar el sistema como una <strong>viga de enlace sobre apoyos elásticos</strong>, a partir de la cual se obtienen los diagramas de <strong>cortante (V)</strong> y <strong>momento (M)</strong>.
+                </p>
+            </div>
+
+            <div class="ce-grid ce-grid-2">
+                <div class="w3-center w3-padding w3-round w3-white" style="border: 2px dashed var(--gris-borde);">
+                    <strong style="color: var(--gris-texto); text-transform: uppercase; font-size: 12px; display: block; margin-bottom: 10px;">Diagrama de Cortante Último \(V_u\) [kN]</strong>
+                    <img src="../assets/ze04.png" alt="Cortante Último" style="max-width: 100%; height: auto; border-radius: 5px; mix-blend-mode: multiply;">
+                    <p class="w3-small w3-margin-top w3-left-align" style="color: var(--gris-texto); margin-bottom: 0; font-style: italic;">
+                        Nota: El tramo entre zapatas trabaja con cortante prácticamente constante: entre \(x=0.7\) y \(x=2.3\).
+                    </p>
+                </div>
+
+                <div class="w3-center w3-padding w3-round w3-white" style="border: 2px dashed var(--gris-borde);">
+                    <strong style="color: var(--gris-texto); text-transform: uppercase; font-size: 12px; display: block; margin-bottom: 10px;">Diagrama de Momento Último \(M_u\) [kNm]</strong>
+                    <img src="../assets/ze05.png" alt="Momento Último" style="max-width: 100%; height: auto; border-radius: 5px; mix-blend-mode: multiply;">
+                    <p class="w3-small w3-margin-top w3-left-align" style="color: var(--gris-texto); margin-bottom: 0; font-style: italic;">
+                        Nota: El acero principal (superior) se diseña con el momento negativo máximo del vano.
+                    </p>
+                </div>
+            </div>
+
+            <div class="w3-panel ce-panel-azul w3-padding w3-round">
+                <strong style="color: var(--azul-profundo);"><i class="fa fa-refresh"></i> 🔄 Conexión con el Refuerzo:</strong>
+                <p class="w3-small" style="margin-top: 5px; margin-bottom: 10px;">
+                    Bajo la combinación <strong>B.2.4-5</strong>, el efecto sísmico modifica el gradiente de presiones, incrementando la demanda en la zapata de lindero (COL1).
+                </p>
+                <p class="w3-small" style="margin-top: 0; margin-bottom: 10px;">
+                    Este cambio se refleja directamente en los diagramas, generando una <strong>envolvente de momentos</strong> que controla el diseño del refuerzo superior en la viga de enlace.
+                </p>
+                <p class="w3-small" style="margin-top: 0; margin-bottom: 0;">
+                    Por esta razón, el acero longitudinal debe verificarse considerando ambas combinaciones, adoptando siempre la condición más desfavorable.
+                </p>
+            </div>
+
+            <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid var(--gris-borde); margin-top: 24px;">
+                <strong style="color: var(--azul-profundo); font-size: 1.1em; border-bottom: 1px solid var(--gris-borde); display: block; padding-bottom: 8px; margin-bottom: 15px;"><i class="fa fa-bar-chart"></i> 📊 Diseño de Viga de Enlace: Puntos de Interés en Diagramas (\(V_u\), \(M_u\))</strong>
+                
+                <div class="tabla-container">
+                    <table class="tabla-traslapos tabla-small">
+                        <thead>
+                            <tr>
+                                <th style="text-align:left;">Localización (\(x\))</th>
+                                <th>Evento de Diseño</th>
+                                <th>\(V_u\) Máx [kN]</th>
+                                <th>\(M_u\) Máx [kNm]</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="text-align:left;">\(x = 0.20 \text{ m}\)</td>
+                                <td>Cara Interna COL1</td>
+                                <td>155.8</td>
+                                <td>-65.4</td>
+                            </tr>
+                            <tr class="ce-alerta">
+                                <td style="text-align:left;"><strong>\(x \approx 0.58 \text{ m}\)</strong></td>
+                                <td><strong>Momento Negativo Máx (Vano)</strong></td>
+                                <td>-16.5</td>
+                                <td><strong>-92.7</strong></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:left;">\(x = 2.80 \text{ m}\)</td>
+                                <td>Cara Interna COL2</td>
+                                <td class="ce-alerta"><strong>184.6</strong></td>
+                                <td>49.5</td>
+                            </tr>
+                            <tr style="background:#f0f9ff;">
+                                <td style="text-align:left;"><strong>\(x = 3.00 \text{ m}\)</strong></td>
+                                <td style="color: #1e40af;"><strong>Momento Positivo Máx (Eje 2)</strong></td>
+                                <td style="color: #1e40af;">29.6</td>
+                                <td style="color: #1e40af;"><strong>56.6</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="ce-grid ce-grid-2">
+                    <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid var(--gris-borde); margin:0;">
+                        <strong style="color: var(--azul-profundo); border-bottom: 2px solid #3b82f6; display: block; padding-bottom: 5px; margin-bottom: 15px;"><i class="fa fa-ruler-combined"></i> 📐 Geometría y Cortante</strong>
+                        <ul class="w3-small" style="margin: 0; padding-left: 20px; color: var(--gris-texto);">
+                            <li><strong>Sección Adoptada:</strong> 300 mm x 500 mm</li>
+                            <li><strong>Rigidez:</strong> \(h \approx L/6\) (Cumple criterio de viga rígida)</li>
+                            <li><strong>Refuerzo Transversal:</strong> Estribos No. 3 (2 ramas)</li>
+                            <li style="margin-top:10px; color: #b91c1c;"><strong>Zonas de Confinamiento:</strong> @ 100 mm (1.0m desde caras) <br> \(\phi V_n = 254 \text{ kN} &gt; V_u\)</li>
+                            <li style="margin-top:5px;"><strong>Zona Central:</strong> @ 200 mm <br> \(\phi V_n = 162 \text{ kN}\)</li>
+                        </ul>
+                    </div>
+
+                    <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid var(--gris-borde); margin:0;">
+                        <strong style="color: var(--azul-profundo); border-bottom: 2px solid #10b981; display: block; padding-bottom: 5px; margin-bottom: 15px;"><i class="fa fa-cubes"></i> 🏗️ Refuerzo Longitudinal</strong>
+                        <ul class="w3-small" style="margin: 0; padding-left: 20px; color: var(--gris-texto);">
+                            <li><strong>Refuerzo Superior (Negativo):</strong> <br> 2 No. 5 + 1 No. 6 <br> \(\phi M_n = 98 \text{ kNm} &gt; 92.7 \text{ kNm}\)</li>
+                            <li style="margin-top:10px;"><strong>Refuerzo Inferior (Positivo):</strong> <br> 2 No. 5 + 1 No. 4 (Refuerzo mínimo)<br> \(\phi M_n = 76 \text{ kNm} &gt; 60 \text{ kNm}\)</li>
+                            <li style="margin-top:10px; font-weight:bold; color: #166534;"><strong>Traslapo Superior (No. 6):</strong> 1100 mm (Revisar NSR-10 C.12)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="w3-panel ce-panel-azul w3-padding w3-round" style="margin-bottom: 0;">
+                    <strong style="color: var(--azul-profundo);"><i class="fa fa-exclamation-triangle"></i> ⚠️ Comentarios de Diseño:</strong>
+                    <ul class="w3-small" style="margin: 10px 0 0 0; padding-left: 20px; color: var(--gris-texto);">
+                        <li style="margin-bottom: 5px;">En sistemas con capacidad especial de disipación de energía, el confinamiento no debe limitarse a la cara de la columna; también es recomendable confinar en la zona de empotramiento con la zapata.</li>
+                        <li style="margin-bottom: 5px;">El recubrimiento de <strong>75 mm</strong> reduce el peralte efectivo (\(d\)), afectando directamente la capacidad a flexión.</li>
+                        <li style="margin-bottom: 5px;">La sección de <strong>300 mm</strong> limita el espacio útil para acero, por lo que el detallado debe ser eficiente.</li>
+                        <li>La combinación <strong>2 No.5 + 1 No.6</strong> en la cara superior cumple resistencia y mejora la constructibilidad al evitar congestión.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 5: DISEÑO ZAPATAS INDEPENDIENTES -->
+        <div class="panel-control" id="independientes-excentrica">
+            <h2 class="panel-titulo">5. Diseño de Zapatas Independientes</h2>
+            <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Estado Límite Último – Comparativa Técnica COL1 vs COL2</p>
+
+            <div class="w3-panel ce-panel-gris w3-padding w3-round">
+                <strong style="color: var(--azul-profundo);"><i class="fa fa-link"></i> 🔗 Criterio de Análisis:</strong>
+                <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
+                    Se utiliza el modelo de <strong>presiones rígidas</strong>. La zapata de lindero (COL1) es gobernada por la combinación sísmica <strong>1.2D + E + L</strong> debido al gradiente, mientras que la interna (COL2) es controlada por la envolvente gravitacional <strong>1.2D + 1.6L</strong>. Ver <strong><a href="#figura3" style="color: #3b82f6; text-decoration: underline; font-weight: bold;">Figura 3</a>:</strong> Diagrama de presiones de contacto para combinaciones últimas.
+                </p>
+            </div>
+
+            <div class="ce-grid ce-grid-2">
+                <div class="w3-panel ce-panel-naranja w3-padding w3-round" style="margin:0;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <strong style="color: var(--naranja-estructural);"><i class="fa fa-building"></i> 🏢 Zapata COL1 (Lindero)</strong>
+                        <span class="w3-small" style="background:#ffedd5; color:#9a3412; padding:2px 8px; border-radius:12px; font-weight:bold;">CRÍTICA</span>
+                    </div>
+                    
+                    <div class="w3-small" style="color: var(--gris-texto); margin-bottom: 15px; border-bottom: 1px solid var(--naranja-estructural); padding-bottom: 10px;">
+                        <strong>Geometría:</strong> 0.90 × 1.80 × 0.45 m<br>
+                        <strong>Combo Crítico:</strong> 1.2D + E + L (\(q_{max} = 228.2 \text{ kPa}\))
+                    </div>
+
+                    <p class="w3-small" style="margin-bottom: 8px;">
+                        <strong style="color: #7c2d12;">• Cortante Unidireccional <strong>(\(V_{ux}\))</strong>:</strong><br>
+                        \(V_u(d) = 28.9 \text{ kN/m} \ll \phi V_c (214 \text{ kN/m})\) <span style="color:#166534;">✔</span>
+                    </p>
+                    <p class="w3-small" style="margin-bottom: 0;">
+                        <strong style="color: #7c2d12;">• Cortante Unidireccional <strong>(\(V_{uy}\))</strong>:</strong><br>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    <!-- ==================================================================== -->
+    <!-- FIN DEL CONTENIDO DE ZAPATA EXCÉNTRICA                               -->
+    <!-- ==================================================================== -->
+
+        <!-- BOTONES DE NAVEGACIÓN -->
+        <div class="w3-center w3-padding-32 no-print">
+            <a href="../index.html" class="w3-button w3-light-grey w3-round-large w3-border">Inicio</a>
+            <a href="ZAPPresionesCentrica.html" class="w3-button w3-red w3-round-large" style="background-color: var(--naranja-estructural) !important;">Simulador de Presión</a>
+            <a href="../herramientas/traslapos.html" class="w3-button w3-light-grey w3-round-large w3-border">Guía Definitiva de Traslapos</a>
+        </div>
+        
+        <!-- SECCIÓN DE COMENTARIOS INFERIOR -->
+        <div class="w3-container w3-margin-top w3-padding-32 no-print">
+            <h3 style="border-bottom: 2px solid var(--naranja-estructural); color: var(--azul-profundo); padding-bottom: 8px;">Consultas y Discusión Académica</h3>
+            <p class="w3-small" style="opacity: 0.8;">Inicia sesión con tu cuenta de GitHub para dejar una pregunta o comentario técnico sobre este ejemplo.</p>
+            <script src="https://utteranc.es/client.js"
+                repo="rafacorreacolombia/Hormigon-armado"
+                issue-term="pathname"
+                theme="github-light"
+                crossorigin="anonymous"
+                async>
+            </script>                                        
+        </div>
+                        
+    </div> <!-- Cierra .contenido-body -->
+        
+    <!-- FOOTER INTACTO -->
+    <footer class="w3-container w3-padding-32 w3-center w3-margin-top no-print" style="color: var(--azul-profundo); background-color: var(--gris-claro);">
+        <div class="w3-border-top w3-padding-24" style="max-width: 500px; margin: auto; border-color: var(--gris-borde)!important;">
+            <img src="../assets/IsotipoFClaroT.png" alt="Logotipo Criterio Estructural - Pie de página" class="brand-logo-footer" onerror="this.src='https://via.placeholder.com/200x60/F4F5F7/1A2530?text=CRITERIO+ESTRUCTURAL'">
+            <p class="w3-medium"><b>Autor</b></p>
+
+            <h4 style="margin:0;">
+                <b>Ing. Rafael Antonio Correa Melano</b>
+            </h4>
+            
+            <p class="w3-small">
+                Ingeniero Civil • M.IE.<br>
+                Universidad Industrial de Santander
+            </p>
+            
+            <hr style="opacity:0.2; border-top: 1px solid var(--azul-profundo);">
+            
+            <p class="w3-small" style="opacity: 0.8;">
+                <b>Criterio Estructural</b><br>
+                © 2026 Rafael Antonio Correa Melano.<br>
+                Todos los derechos reservados.
+            </p>
+            <div class="w3-margin-top">
+                <span class="w3-tag w3-round w3-white w3-border w3-small" style="border-color: var(--naranja-estructural)!important; color: var(--naranja-estructural)!important;">Bucaramanga, Colombia 🇨🇴</span>
+            </div>
+        </div>
+    </footer>
+</div> <!-- Cierra .contenedor-principal -->
+
+<!-- SCRIPT BOTÓN VOLVER ARRIBA -->
+<script>
+    let btnTop = document.getElementById("btnTop");
+    window.onscroll = function() {
+        if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+            btnTop.style.display = "block";
+        } else {
+            btnTop.style.display = "none";
+        }
+    };
+    function topFunction() {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }
+</script>
+
+</body>
+</html>
