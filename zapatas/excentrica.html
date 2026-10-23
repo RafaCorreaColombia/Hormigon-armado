@@ -826,6 +826,173 @@
             </div>
         </div>
 
+
+        <!-- SECCIÓN 5: DISEÑO ZAPATAS INDEPENDIENTES (Versión Completa) -->
+        <div class="panel-control" id="independientes-excentrica">
+            <h2 class="panel-titulo">5. Diseño de Zapatas Independientes</h2>
+            <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Estado Límite Último – Comparativa Técnica COL1 vs COL2</p>
+
+            <div class="w3-panel ce-panel-gris w3-padding w3-round">
+                <strong style="color: var(--azul-profundo);"><i class="fa fa-link"></i> 🔗 Criterio de Análisis:</strong>
+                <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
+                    Se utiliza el modelo de <strong>presiones rígidas</strong>. La zapata de lindero (COL1) es gobernada por la combinación sísmica <strong>1.2D + E + L</strong> debido al gradiente, mientras que la interna (COL2) es controlada por la envolvente gravitacional <strong>1.2D + 1.6L</strong>. Ver <strong><a href="#figura3" style="color: #3b82f6; text-decoration: underline; font-weight: bold;">Figura 3</a>:</strong> Diagrama de presiones de contacto para combinaciones últimas.
+                </p>
+            </div>
+
+            <div class="ce-grid ce-grid-2">
+                <!-- COL 1 -->
+                <div class="w3-panel ce-panel-naranja w3-padding w3-round" style="margin:0; display:flex; flex-direction:column;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <strong style="color: var(--naranja-estructural);"><i class="fa fa-building"></i> 🏢 Zapata COL1 (Lindero)</strong>
+                        <span class="w3-small" style="background:#ffedd5; color:#9a3412; padding:2px 8px; border-radius:12px; font-weight:bold;">CRÍTICA</span>
+                    </div>
+                    
+                    <div class="w3-small" style="color: var(--gris-texto); margin-bottom: 15px; border-bottom: 1px solid var(--naranja-estructural); padding-bottom: 10px;">
+                        <strong>Geometría:</strong> 0.90 × 1.80 × 0.45 m<br>
+                        <strong>Combo Crítico:</strong> 1.2D + E + L (\(q_{max} = 228.2 \text{ kPa}\))
+                    </div>
+
+                    <div style="flex-grow:1;">
+                        <p class="w3-small" style="margin-bottom: 8px;">
+                            <strong style="color: #7c2d12;">• Cortante Unidireccional <strong>(\(V_{ux}\))</strong>:</strong><br>
+                            \(V_u(d) = 28.9 \text{ kN/m} \ll \phi V_c (214 \text{ kN/m})\) <span style="color:#166534;">✔</span>
+                        </p>
+                        <p class="w3-small" style="margin-bottom: 8px;">
+                            <strong style="color: #7c2d12;">• Cortante Unidireccional <strong>(\(V_{uy}\))</strong>:</strong><br>
+                            \(V_u(d) = 86.4 \text{ kN/m} \ll \phi V_c (214 \text{ kN/m})\) <span style="color:#166534;">✔</span>
+                        </p>
+                        <p class="w3-small" style="margin-bottom: 8px;">
+                            <strong style="color: #7c2d12;">• Punzonamiento (Cara de Borde):</strong><br>
+                            \(b_0 = 1.93 \text{ m} \mid \alpha_s = 30\) <br>
+                            \(V_u = 209.6 \text{ kN} &lt; \phi V_n (805 \text{ kN})\) <span style="color:#166534;">✔</span>
+                        </p>
+                        <p class="w3-small" style="margin-bottom: 8px;">
+                            <strong style="color: #7c2d12;">• Flexión Longitudinal (\(M_{ux}\)):</strong><br>
+                            \(M_u = 27.3 \text{ kNm/m} \rightarrow\) Controla <strong>As mín</strong> <span style="color:#166534;">✔</span>
+                        </p>
+                        <p class="w3-small" style="margin-bottom: 8px;">
+                            <strong style="color: #7c2d12;">• Flexión Transversal (\(M_{uy}\)):</strong><br>
+                            Volado \(0.75 \text{ m} \rightarrow M_u = 63.5 \text{ kNm/m}\) <br>
+                            \(\phi M_n (1 \text{No.5@225}) = 119 \text{ kNm/m}\) <span style="color:#166534;">✔</span>
+                        </p>
+                    </div>
+                    
+                    <div class="w3-margin-top w3-padding-small w3-round w3-center w3-small" style="background-color: #c2410c; color: white; font-weight: bold;">
+                        Refuerzo: No. 5 @ 225 mm (E.A.D: En Ambas Direcciones)
+                    </div>
+                </div>
+
+                <!-- COL 2 -->
+                <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid #bbf7d0; display:flex; flex-direction:column; margin:0;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <strong style="color: #166534;"><i class="fa fa-building"></i> 🏢 Zapata COL2 (Interna)</strong>
+                        <span class="w3-small" style="background:#dcfce7; color:#166534; padding:2px 8px; border-radius:12px; font-weight:bold;">ESTABLE</span>
+                    </div>
+                    
+                    <div class="w3-small" style="color: var(--gris-texto); margin-bottom: 15px; border-bottom: 1px solid #bbf7d0; padding-bottom: 10px;">
+                        <strong>Geometría:</strong> 1.40 × 1.40 × 0.45 m<br>
+                        <strong>Combo Crítico:</strong> 1.2D + 1.6L (\(q \approx 209 \text{ kPa}\))
+                    </div>
+
+                    <div style="flex-grow:1;">
+                        <p class="w3-small" style="margin-bottom: 8px;">
+                            <strong style="color: #064e3b;">• Cortante Unidireccional <strong>(\(V_{ux} \approx V_{uy}\))</strong>:</strong><br>
+                            \(V_u = 28.0 \text{ kN/m} &lt; \phi V_c (214 \text{ kN/m})\) <span style="color:#166534;">✔</span>
+                        </p>
+                        <p class="w3-small" style="margin-bottom: 8px;">
+                            <strong style="color: #064e3b;">• Punzonamiento (Interior):</strong><br>
+                            \(b_0 = 3.07 \text{ m} \mid \alpha_s = 40\) <br>
+                            \(V_u = 317 \text{ kN} &lt; \phi V_n (1277 \text{ kN})\) <span style="color:#166534;">✔</span>
+                        </p>
+                        <p class="w3-small" style="margin-bottom: 8px;">
+                            <strong style="color: #064e3b;">• Flexión (Simétrica):</strong><br>
+                            Volado \(0.50 \text{ m} \rightarrow M_u = 26.3 \text{ kNm/m}\) <br>
+                            Controla <strong>As mín</strong> (\(\rho = 0.0018\)) <span style="color:#166534;">✔</span>
+                        </p>
+                        <p class="w3-small" style="margin-bottom: 8px;">
+                            <strong style="color: #064e3b;">• Aplastamiento:</strong><br>
+                            \(\phi Rn = 1856 \text{ kN} \gg P_u (440 \text{ kN})\) <span style="color:#166534;">✔</span>
+                        </p>
+                    </div>
+
+                    <div class="w3-margin-top w3-padding-small w3-round w3-center w3-small" style="background-color: #166534; color: white; font-weight: bold;">
+                        Refuerzo: No. 5 @ 225 mm (E.A.D)
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONCLUSIÓN -->
+            <div class="w3-panel ce-panel-azul w3-padding w3-round w3-margin-top">
+                <strong style="color: var(--azul-profundo);"><i class="fa fa-lightbulb-o"></i> 💡 Lectura Comparativa:</strong>
+                <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
+                    La zapata de lindero (COL1) desarrolla mayores gradientes de presión y demanda estructural, siendo la que controla el diseño del sistema. La zapata interior (COL2) presenta un comportamiento más uniforme y eficiente.
+                </p>
+            </div>
+
+            <div class="w3-panel w3-padding w3-round w3-margin-top" style="background:#f0f9ff; border-left: 4px solid #0ea5e9; color: #0c4a6e;">
+                <strong style="color: #0369a1;"><i class="fa fa-wrench"></i> 🛠️ Nota de Detallado:</strong>
+                <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
+                    Para ambas zapatas, se debe suministrar <strong>gancho estándar a 90°</strong> (según C.12.5) en los extremos de las barras para garantizar el desarrollo del refuerzo, dado que los volados son cortos respecto a la longitud de transferencia requerida.
+                </p>
+            </div>
+
+            <div class="w3-center w3-margin-top w3-margin-bottom w3-padding w3-round w3-white" style="border: 1px dashed var(--gris-borde);">
+                <img src="../assets/ze06.png" alt="Detallado de Refuerzo" style="max-width: 100%; height: auto; border-radius: 5px; mix-blend-mode: multiply;">
+                <p class="w3-small w3-margin-top" style="color: var(--gris-texto); margin-bottom: 0; font-style: italic;">
+                    <strong>Figura 4:</strong> Detallado de Refuerzo.
+                </p>
+            </div>
+
+            <!-- CONCEPTOS DE DISEÑO -->
+            <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid var(--gris-borde); box-shadow: 0 2px 5px rgba(0,0,0,0.02); margin-bottom: 15px;">
+                <div style="display:flex; align-items:center; margin-bottom:12px;">
+                    <span class="w3-round w3-small" style="background-color: #4f46e5; color: white; padding: 4px 10px; font-weight: bold; margin-right: 10px;">CONCEPTO 01</span>
+                    <strong style="color: var(--azul-profundo); font-size: 1.1em;">La Viga como "Soporte" de la Zapata</strong>
+                </div>
+                <p class="w3-small" style="color: var(--gris-texto); margin-bottom: 10px;">
+                    En el modelo de viga de enlace, asumimos que la viga es lo suficientemente rígida para "recoger" las presiones del suelo. Por lo tanto, el voladizo transversal de la zapata no nace en la cara de la columna (40 cm), sino en la <strong>cara de la viga (30 cm)</strong>.
+                </p>
+                <p class="w3-small" style="color: var(--gris-texto); margin-bottom: 0;">
+                    <span class="ce-alerta">¿Por qué es más conservador?</span> Al medir desde la viga, el brazo de palanca aumenta de 0.70m a <strong>0.75m</strong>. Ese pequeño incremento del 7% en la longitud se traduce en un aumento del 15% en el momento flector (\(L^2\)). Diseñar así garantiza que la zapata no falle en la transición viga-losa.
+                </p>
+            </div>
+
+            <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid var(--gris-borde); box-shadow: 0 2px 5px rgba(0,0,0,0.02);">
+                <div style="display:flex; align-items:center; margin-bottom:12px;">
+                    <span class="w3-round w3-small" style="background-color: #0891b2; color: white; padding: 4px 10px; font-weight: bold; margin-right: 10px;">CONCEPTO 02</span>
+                    <strong style="color: var(--azul-profundo); font-size: 1.1em;">Variación del Peralte Efectivo (\(d\)) por Capas</strong>
+                </div>
+                <p class="w3-small" style="color: var(--gris-texto); margin-bottom: 5px;">
+                    En zapatas con flexión en dos direcciones, las barras se cruzan. Si la capa longitudinal (sentido \(x\)) está abajo:
+                </p>
+                <ul class="w3-small" style="color: var(--gris-texto); padding-left: 20px; margin-top: 5px; margin-bottom: 10px;">
+                    <li><strong>Capa Inferior:</strong> \(d \approx 367 \text{ mm}\) (Máxima eficiencia).</li>
+                    <li><strong>Capa Superior:</strong> \(d \approx 350 \text{ mm}\) (Se descuenta el diámetro de la barra de abajo).</li>
+                </ul>
+                <p class="w3-small" style="color: var(--gris-texto); margin-bottom: 0;">
+                    Aunque el \(M_{uy}\) es mayor en COL1, el diseño con <strong>No. 5 @ 225 mm</strong> es tan robusto que incluso con el \(d\) reducido, por ejemplo, las capacidades (\(\phi V_c=205 \text{ kN/m}\)) y (\(\phi M_n=113 \text{ kNm/m}\)) siguen estando muy por encima de la demanda.
+                </p>
+            </div>
+
+            <!-- NOTA DE FLUJO DE TRABAJO INTERDISCIPLINAR -->
+            <div class="w3-panel w3-padding w3-round" style="background: #f0f9ff; border: 1px solid #bae6fd; border-left: 4px solid #0284c7; margin-top: 25px; margin-bottom: 0;">
+                <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                    <span style="font-size: 1.3em; margin-right: 10px;">🔄</span>
+                    <strong style="color: #0369a1; text-transform: uppercase;">El Diseño como Proceso Iterativo</strong>
+                </div>
+                <p class="w3-small" style="color: var(--azul-profundo); margin-bottom: 15px;">
+                    Es fundamental comprender que este diseño estructural representa una <strong>primera fase</strong> del proyecto. En la práctica profesional, este modelo se entrega al especialista en <strong>Geotecnia</strong>, quien valida las presiones mediante sus propios modelos y avala o solicita ajustes al diseño.
+                </p>
+                <div class="w3-panel w3-round w3-padding-small" style="background: rgba(255,255,255,0.7); border: 1px dashed #7dd3fc; margin-bottom: 0;">
+                    <p class="w3-small" style="color: #0c4a6e; margin: 0;">
+                        <strong><i class="fa fa-map-marker"></i> Validación en Obra:</strong> Antes de fundir el concreto, el geotecnista debe realizar la <strong>inspección visual del terreno excavado</strong>. En ese momento, si las condiciones reales del suelo difieren de lo previsto en el estudio inicial, se pueden (y deben) realizar los últimos ajustes técnicos.<br><br>
+                        <em>La ingeniería de cimentaciones es un proceso que requiere trabajo interdisciplinar.</em>
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
     <!-- ==================================================================== -->
     <!-- FIN DEL CONTENIDO DE ZAPATA EXCÉNTRICA                               -->
     <!-- ==================================================================== -->
