@@ -311,11 +311,20 @@
             <div class="w3-panel ce-panel-gris w3-padding w3-round">
                 <strong style="color: var(--azul-profundo);">1️⃣ Capacidad Neta del Suelo (\( q_{neto} \)):</strong>
                 <p class="w3-small" style="margin-top: 5px; margin-bottom: 5px;">
-                    Partiendo de una altura inicial \( h = 0.45 \text{ m} \) (basada en anclaje de barras No.5):
+                    Partiendo de una altura o espesor de zapata \( h = 0.45 \text{ m} \) (dimensionada por anclaje de barras No. 5):
+                </p>
+                <div class="math-scroll w3-small" style="margin-top: 5px; margin-bottom: 8px;">
+                    \( q_{neto} = q_{adm} - \Delta q_{peso\_propio} = q_{adm} - (\gamma_c \cdot h + \gamma_{suelo} \cdot h_{relleno}) \)
+                </div>
+                <p class="w3-small" style="margin-top: 0; margin-bottom: 5px;">
+                    Para este caso de estudio, se asume que la zapata se encuentra <strong>a ras del terreno natural</strong> (sin capa de suelo de relleno encima, es decir, \( h_{relleno} = 0 \)), por lo cual se descuenta únicamente el peso propio del concreto (\( \gamma_c = 24 \text{ kN/m}^3 \)):
                 </p>
                 <div class="math-scroll w3-small" style="margin-top: 5px;">
-                    \( q_{neto} = q_{adm} - (\gamma_{conc} \cdot h) = 200 \text{ kPa} - (24 \cdot 0.45) = \mathbf{189.2 \text{ kPa}} \)
+                    \( q_{neto} = 200 \text{ kPa} - (24 \text{ kN/m}^3 \cdot 0.45 \text{ m}) = \mathbf{189.2 \text{ kPa}} \)
                 </div>
+                <p class="w3-small" style="color: var(--gris-texto); margin-top: 8px; margin-bottom: 0; font-style: italic;">
+                    <strong>Nota de criterio:</strong> Si existiera un espesor de relleno de suelo sobre la zapata (\( h_{relleno} = D_f - h \)), se debería descontar adicionalmente la presión ejercida por dicha capa de tierra (\( \gamma_{suelo} \cdot h_{relleno} \)).
+                </p>
             </div>
 
             <strong style="color: var(--azul-profundo); font-size: 13px; text-transform: uppercase;">📊 Tabla 3. RESULTANTES POR COLUMNA - COMBINACIONES DE SERVICIO (P,M)</strong>
@@ -488,7 +497,7 @@
             </div>
 
             <div class="w3-center w3-margin-top w3-margin-bottom w3-padding w3-round w3-white" style="border: 1px dashed var(--gris-borde);">
-                <img src="../assets/ze02.png" alt="Diagrama de Presiones de Servicio" style="max-width: 100%; height: auto; border-radius: 5px; mix-blend-mode: multiply;">
+                <img src="../assets/ze03.png" alt="Diagrama de Presiones de Servicio" style="max-width: 100%; height: auto; border-radius: 5px; mix-blend-mode: multiply;">
                 <p class="w3-small w3-margin-top" style="color: var(--gris-texto); margin-bottom: 0; font-style: italic;">
                     <strong>Figura 2:</strong> Diagrama de presiones de contacto para combinaciones de servicio. Nótese la interrupción del diagrama en la zona de la viga de enlace (\(x=0.70\) a \(x=2.30\)). Se asume comportamiento rígido de cada base, generando distribuciones aproximadamente lineales de presión en cada zapata.
                 </p>
@@ -695,7 +704,7 @@
 
                 <div class="w3-center w3-padding w3-round w3-white" style="border: 2px dashed var(--gris-borde);">
                     <strong style="color: var(--gris-texto); text-transform: uppercase; font-size: 12px; display: block; margin-bottom: 10px;">Diagrama de Momento Último \(M_u\) [kNm]</strong>
-                    <img src="../assets/ze05.png" alt="Momento Último" style="max-width: 100%; height: auto; border-radius: 5px; mix-blend-mode: multiply;">
+                    <img src="../assets/ze02.png" alt="Momento Último" style="max-width: 100%; height: auto; border-radius: 5px; mix-blend-mode: multiply;">
                     <p class="w3-small w3-margin-top w3-left-align" style="color: var(--gris-texto); margin-bottom: 0; font-style: italic;">
                         Nota: El acero principal (superior) se diseña con el momento negativo máximo del vano.
                     </p>
