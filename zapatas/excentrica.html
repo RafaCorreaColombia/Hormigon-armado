@@ -197,7 +197,7 @@
                             <tr>
                                 <td style="text-align:left;">
                                     <strong>Diferencia de centroide</strong><br>
-                                    <span style="color: var(--gris-texto);"><strong>(|xr - xc| / L)</strong></span>
+                                    <span style="color: var(--gris-texto);"><strong>(\( \frac{|x_r - x_c|}{L} \))</strong></span>
                                 </td>
                                 <td>
                                     &lt; 5% → <strong style="color: #166534;">OK</strong><br>
@@ -205,13 +205,13 @@
                                     &gt; 10% → <strong style="color: #b91c1c;">Ajustar</strong>
                                 </td>
                                 <td style="text-align:left;">
-                                    Mide la alineación entre el centro de cargas y el centro geométrico de la zapata.<br>Combinación <strong>D + L</strong> debe estar en el rango &lt; 5%.<br>Combinación <strong>D + 0.75(0.7E) + 0.75L</strong> No debe estar en el rango &gt; 10%.
+                                    Mide la alineación entre el centro de cargas y el centro geométrico de la zapata.<br>Combinación <strong>\( D + L \)</strong> debe estar en el rango &lt; 5%.<br>Combinación <strong>\( D + 0.75(0.7E) + 0.75L \)</strong> No debe estar en el rango &gt; 10%.
                                 </td>
                             </tr>
                             <tr>
                                 <td style="text-align:left;">
                                     <strong>Diferencia de presiones</strong><br>
-                                    <span style="color: var(--gris-texto);"><strong>(Δq / q_min)</strong></span>
+                                    <span style="color: var(--gris-texto);"><strong>(\( \Delta q / q_{min} \))</strong></span>
                                 </td>
                                 <td>
                                     &lt; 15% → <strong style="color: #166534;">OK</strong><br>
@@ -219,7 +219,7 @@
                                     &gt; 25% → <strong style="color: #b91c1c;">Ajustar</strong>
                                 </td>
                                 <td style="text-align:left;">
-                                    Evalúa el gradiente de presiones entre bordes de la zapata.<br>Combinación <strong>D + L</strong> debe estar en el rango &lt; 15%.<br>Combinación <strong>D + 0.75(0.7E) + 0.75L</strong> No debe estar en el rango &gt; 25%.
+                                    Evalúa el gradiente de presiones entre bordes de la zapata.<br>Combinación <strong>\( D + L \)</strong> debe estar en el rango &lt; 15%.<br>Combinación <strong>\( D + 0.75(0.7E) + 0.75L \)</strong> No debe estar en el rango &gt; 25%.
                                 </td>
                             </tr>
                             <tr>
@@ -246,6 +246,9 @@
                     </p>
                     <p class="w3-small" style="margin: 0;">
                         <strong>Nota 2 (Signo de la acción sísmica):</strong> Aunque normativamente se deben evaluar ambas orientaciones del sismo (\(\pm E\)), en este análisis la combinación <strong>B.2.3-8</strong> se reporta con <strong>+E</strong> por ser la condición gobernante que maximiza el momento y la carga sobre la zapata de lindero (COL1) según los límites de la <a href="#tabla-1" style="color: var(--azul-profundo); font-weight: bold; text-decoration: underline;">Tabla 1</a>. De forma análoga, la combinación <strong>B.2.3-10 (0.6D - 0.7E)</strong> se evalúa con <strong>-E</strong> para inducir el efecto más desfavorable de descompresión (presiones mínimas, tendencia al levantamiento o pérdida de contacto), al oponer la componente sísmica a la menor carga vertical del sistema.
+                    </p>
+                    <p class="w3-small" style="margin: 0;">
+                        <strong>Nota 3 (Definición de variables del indicador de centroide):</strong> En la expresión \(\frac{|x_r - x_c|}{L}\), el numerador \(|x_r - x_c|\) representa la excentricidad o separación entre la ubicación de la resultante global de cargas (\(x_r\)) y el centroide geométrico del área combinada de contacto (\(x_c\)). Por su parte, <strong>\(L\)</strong> corresponde a la <strong>longitud total del sistema de cimentación de borde a borde exterior</strong> (en este ejemplo, desde \(x = -0.20 \text{ m}\) hasta \(x = 3.70 \text{ m}\), obteniendo \(L = 3.90 \text{ m}\)), y no a la distancia libre entre columnas ni a la distancia entre ejes (\(S = 3.00 \text{ m}\)).
                     </p>
                 </div>
             </div>
