@@ -397,30 +397,39 @@
                 <div class="w3-panel ce-panel-naranja w3-padding w3-round" style="margin:0;">
                     <strong style="color: var(--naranja-estructural);"><i class="fa fa-building"></i> 🏢 Zapata COL1 (Excéntrica)</strong>
                     <p class="w3-small" style="margin-top: 5px; margin-bottom: 10px;">
-                        Relación de aspecto deseada: <strong>\(\Delta Y / \Delta X = 2.0\)</strong>.
+                        Relación de aspecto adoptada para el tanteo inicial: <strong>\(\Delta Y / \Delta X = 2.0\)</strong>.
                     </p>
                     <ul class="w3-small" style="margin: 0; padding-left: 20px; color: var(--gris-texto);">
-                        <li>\( P_{D+Live} = 240 \text{ kN} \)</li>
-                        <li>\( Area_{req} = 240 / 189.2 = 1.27 \text{ m}^2 \)</li>
-                        <li>\( L_x \cdot (2 L_x) = 1.27 \rightarrow L_x = 0.80 \text{ m} \)</li>
+                        <li>\( P_{D+L} = 240 \text{ kN} \)</li>
+                        <li>\( A_{\mathrm{req}} = \frac{240}{189.2} = 1.27 \text{ m}^2 \)</li>
+                        <li>Como \(\Delta Y = 2\Delta X\):</li>
+                        <li style="list-style-type: none; margin-left: -10px; margin-top: 3px;">
+                            \(\Delta X \cdot (2\Delta X) = 1.27 \rightarrow \Delta X = \sqrt{\frac{1.27}{2}} = 0.80 \text{ m}\)
+                        </li>
+                        <li style="list-style-type: none; margin-left: -10px; margin-top: 3px;">
+                            \(\Delta Y = 2(0.80) = 1.60 \text{ m}\)
+                        </li>
                     </ul>
                     <div class="w3-panel w3-white w3-padding-small w3-round w3-center" style="border: 1px dashed var(--naranja-estructural); margin-top: 10px; color: #9a3412; font-weight: bold;">
-                        Adoptado: 0.90 m x 1.80 m
+                        Adoptado: \(\Delta X = 0.90 \text{ m} \times \Delta Y = 1.80 \text{ m}\)
                     </div>
                 </div>
-
+                
                 <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid #bbf7d0; border-left: 4px solid #166534; margin:0;">
                     <strong style="color: #166534;"><i class="fa fa-building"></i> 🏢 Zapata COL2 (Centrada)</strong>
                     <p class="w3-small" style="margin-top: 5px; margin-bottom: 10px;">
-                        Relación de aspecto deseada: <strong>\(\Delta Y / \Delta X = 1.0\)</strong> (Cuadrada).
+                        Relación de aspecto adoptada para el tanteo inicial: <strong>\(\Delta Y / \Delta X = 1.0\)</strong> (Cuadrada).
                     </p>
                     <ul class="w3-small" style="margin: 0; padding-left: 20px; color: var(--gris-texto);">
-                        <li>\( P_{D+Live} = 350 \text{ kN} \)</li>
-                        <li>\( Area_{req} = 350 / 189.2 = 1.85 \text{ m}^2 \)</li>
-                        <li>\( L = \sqrt{1.85} = 1.36 \text{ m} \)</li>
+                        <li>\( P_{D+L} = 350 \text{ kN} \)</li>
+                        <li>\( A_{\mathrm{req}} = \frac{350}{189.2} = 1.85 \text{ m}^2 \)</li>
+                        <li>Como \(\Delta Y = \Delta X = L\):</li>
+                        <li style="list-style-type: none; margin-left: -10px; margin-top: 3px;">
+                            \( L^2 = 1.85 \rightarrow L = \sqrt{1.85} = 1.36 \text{ m} \)
+                        </li>
                     </ul>
                     <div class="w3-panel w3-white w3-padding-small w3-round w3-center" style="border: 1px dashed #166534; margin-top: 10px; color: #166534; font-weight: bold;">
-                        Adoptado: 1.40 m x 1.40 m
+                        Adoptado: \(\Delta X = 1.40 \text{ m} \times \Delta Y = 1.40 \text{ m}\)
                     </div>
                 </div>
             </div>
