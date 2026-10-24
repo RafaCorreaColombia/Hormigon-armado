@@ -165,7 +165,7 @@
             <div class="w3-panel ce-panel-azul w3-padding w3-round">
                 <strong style="color: var(--azul-profundo);"><i class="fa fa-map-pin"></i> Criterio de Diseño:</strong>
                 <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
-                    A diferencia de las zapatas aisladas, donde permitimos un comportamiento no lineal (despegue) bajo sismo, en zapatas combinadas buscamos un comportamiento en el que <strong>toda la base permanezca en compresión</strong>, evitando pérdida de contacto suelo-estructura. El predimensionamiento busca aproximar el centroide de la base a la resultante de las cargas de servicio (\( D + L \)), reduciendo la excentricidad global. Esto favorece una distribución de presiones más uniforme, pero no elimina necesariamente sus variaciones. La distribución final debe verificarse considerando las cargas axiales, los momentos aplicados y las dimensiones adoptadas.
+                    A diferencia de las zapatas aisladas, donde permitimos un comportamiento no lineal (despegue) bajo sismo, en zapatas combinadas buscamos un comportamiento en el que <strong>toda la base permanezca en compresión</strong>, evitando pérdida de contacto suelo-estructura. El predimensionamiento busca aproximar el centroide de la base a la resultante de las cargas de servicio (\( D + Live \)), reduciendo la excentricidad global. Esto favorece una distribución de presiones más uniforme, pero no elimina necesariamente sus variaciones. La distribución final debe verificarse considerando las cargas axiales, los momentos aplicados y las dimensiones adoptadas.
                 </p>
             </div>
 
@@ -360,12 +360,12 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td style="text-align:left;">Carga de Servicio (\( P_{D+L} \)) (kN)</td>
+                            <td style="text-align:left;">Carga de Servicio (\( P_{D+Live} \)) (kN)</td>
                             <td>240</td>
                             <td>350</td>
                         </tr>
                         <tr>
-                            <td style="text-align:left;">Momento de Servicio (\( M_{y,D+L} \)) (kNm)</td>
+                            <td style="text-align:left;">Momento de Servicio (\( M_{y,D+Live} \)) (kNm)</td>
                             <td>5</td>
                             <td>0</td>
                         </tr>
@@ -424,7 +424,7 @@
                 <div class="w3-panel w3-white w3-padding-small w3-round" style="border: 1px solid var(--gris-borde); margin-bottom: 10px;">
                     <strong style="color: var(--gris-texto); font-size: 0.85em;">Paso B: Área Requerida y Ancho</strong>
                     <div class="math-scroll w3-center w3-medium" style="margin-top: 5px; color: var(--azul-profundo);">
-                        \( B = \frac{P_{D+L}}{Long \cdot q_{neto}} = \frac{590 \text{ kN}}{4.00 \text{ m} \cdot 190.4 \text{ kPa}} = \mathbf{0.77 \text{ m}} \)
+                        \( B = \frac{P_{D+Live}}{Long \cdot q_{neto}} = \frac{590 \text{ kN}}{4.00 \text{ m} \cdot 190.4 \text{ kPa}} = \mathbf{0.77 \text{ m}} \)
                     </div>
                 </div>
 
@@ -522,13 +522,13 @@
                     <circle cx="60" cy="123.3" r="3.5" fill="#ea580c"/>
                     <circle cx="760" cy="232.2" r="3.5" fill="#ea580c"/>
 
-                    <!-- 1. Combinación D+L (Azul) -->
+                    <!-- 1. Combinación D+Live (Azul) -->
                     <polygon points="60,40 60,347.75 760,322.25 760,40" fill="#2563eb" opacity="0.12" />
                     <line x1="60" y1="347.75" x2="760" y2="322.25" stroke="#2563eb" stroke-width="2.5" />
                     <circle cx="60" cy="347.75" r="3.5" fill="#2563eb"/>
                     <circle cx="760" cy="322.25" r="3.5" fill="#2563eb"/>
 
-                    <!-- 2. Combinación D+0.75(0.7E)+0.75L (Armada oscura) -->
+                    <!-- 2. Combinación D+0.75(0.7E)+0.75Live (Armada oscura) -->
                     <polygon points="60,40 60,386.425 760,279.7 760,40" fill="#334155" opacity="0.15" />
                     <line x1="60" y1="386.425" x2="760" y2="279.7" stroke="#334155" stroke-width="2.5" />
                     <circle cx="60" cy="386.425" r="3.5" fill="#334155"/>
@@ -542,10 +542,10 @@
                     <g transform="translate(0, 490)">
                         <!-- Leyenda 1 -->
                         <line x1="160" y1="0" x2="190" y2="0" stroke="#2563eb" stroke-width="3" />
-                        <text x="195" y="4" font-size="12" font-weight="bold" fill="#475569">D + L</text>
+                        <text x="195" y="4" font-size="12" font-weight="bold" fill="#475569">D + Live</text>
                         <!-- Leyenda 2 -->
                         <line x1="300" y1="0" x2="330" y2="0" stroke="#334155" stroke-width="3" />
-                        <text x="335" y="4" font-size="12" font-weight="bold" fill="#475569">D + 0.75(0.7E) + 0.75L</text>
+                        <text x="335" y="4" font-size="12" font-weight="bold" fill="#475569">D + 0.75(0.7E) + 0.75Live</text>
                         <!-- Leyenda 3 -->
                         <line x1="520" y1="0" x2="550" y2="0" stroke="#ea580c" stroke-width="3" />
                         <text x="555" y="4" font-size="12" font-weight="bold" fill="#475569">0.6D - 0.7E</text>
@@ -569,12 +569,12 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td style="text-align:left;">B.2.3-2: D+L</td>
+                            <td style="text-align:left;">B.2.3-2: D+Live</td>
                             <td>153.88</td>
                             <td>141.13</td>
                         </tr>
                         <tr>
-                            <td style="text-align:left;">B.2.3-8: D+0.75(0.7E)+0.75L</td>
+                            <td style="text-align:left;">B.2.3-8: D+0.75(0.7E)+0.75Live</td>
                             <td class="ce-alerta">173.21</td>
                             <td>119.85</td>
                         </tr>
@@ -621,13 +621,13 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td style="text-align:left;"><strong>B.2.4-2:</strong> 1.2D + 1.6L</td>
+                            <td style="text-align:left;"><strong>B.2.4-2:</strong> 1.2D + 1.6Live</td>
                             <td>195.45</td>
                             <td>176.55</td>
                             <td style="font-weight:bold;">186.00</td>
                         </tr>
                         <tr>
-                            <td style="text-align:left;"><strong>B.2.4-5:</strong> 1.2D + E + L</td>
+                            <td style="text-align:left;"><strong>B.2.4-5:</strong> 1.2D + E + Live</td>
                             <td>228.50</td>
                             <td>134.00</td>
                             <td style="font-weight:bold;">181.25</td>
@@ -707,13 +707,13 @@
                     <circle cx="60" cy="143.9" r="3.5" fill="#ea580c"/>
                     <circle cx="760" cy="268.1" r="3.5" fill="#ea580c"/>
 
-                    <!-- 1. Combinación 1.2D+1.6L (Azul) -->
+                    <!-- 1. Combinación 1.2D+1.6Live (Azul) -->
                     <polygon points="60,40 60,352.7 760,322.5 760,40" fill="#2563eb" opacity="0.12" />
                     <line x1="60" y1="352.7" x2="760" y2="322.5" stroke="#2563eb" stroke-width="2.5" />
                     <circle cx="60" cy="352.7" r="3.5" fill="#2563eb"/>
                     <circle cx="760" cy="322.5" r="3.5" fill="#2563eb"/>
 
-                    <!-- 2. Combinación 1.2D+E+L (Armada oscura) -->
+                    <!-- 2. Combinación 1.2D+E+Live (Armada oscura) -->
                     <polygon points="60,40 60,405.6 760,254.4 760,40" fill="#334155" opacity="0.15" />
                     <line x1="60" y1="405.6" x2="760" y2="254.4" stroke="#334155" stroke-width="2.5" />
                     <circle cx="60" cy="405.6" r="3.5" fill="#334155"/>
@@ -727,10 +727,10 @@
                     <g transform="translate(60, 490)">
                         <!-- Leyenda 1 -->
                         <line x1="100" y1="0" x2="130" y2="0" stroke="#2563eb" stroke-width="3" />
-                        <text x="135" y="4" font-size="12" font-weight="bold" fill="#475569">1.2D + 1.6L</text>
+                        <text x="135" y="4" font-size="12" font-weight="bold" fill="#475569">1.2D + 1.6Live</text>
                         <!-- Leyenda 2 -->
                         <line x1="250" y1="0" x2="280" y2="0" stroke="#334155" stroke-width="3" />
-                        <text x="285" y="4" font-size="12" font-weight="bold" fill="#475569">1.2D + E + L</text>
+                        <text x="285" y="4" font-size="12" font-weight="bold" fill="#475569">1.2D + E + Live</text>
                         <!-- Leyenda 3 -->
                         <line x1="410" y1="0" x2="440" y2="0" stroke="#ea580c" stroke-width="3" />
                         <text x="445" y="4" font-size="12" font-weight="bold" fill="#475569">0.9D - E</text>
@@ -749,7 +749,7 @@
                     Para evaluar adecuadamente la alternancia direccional del sismo, el análisis integral debe contemplar las combinaciones con la acción sísmica invertida (\(-E\)), destacando de manera especial la combinación <strong>\(0.9D - E\)</strong>. Esta verificación es indispensable estructuralmente, ya que la reducción de las cargas gravitacionales sumada al momento de vuelco sísmico puede inducir <strong>momentos de inversión</strong>, modificando las zonas en tracción de la zapata y, por ende, alterando los requerimientos del armado inferior.
                 </p>
                 <p class="w3-small" style="margin-top: 0; margin-bottom: 0; color: var(--gris-texto); line-height: 1.5;">
-                    No obstante, tal como se evidencia gráficamente en las envolventes de cortante último (\(V_u\)) y momento flector (\(M_u\)), para la configuración geométrica masiva y las solicitaciones específicas de este ejemplo, <strong>esta combinación no gobierna el diseño</strong>. Las demandas críticas continúan siendo controladas por las combinaciones mayoradas dominadas por gravedad (\(1.2D + 1.6L\) y \(1.2D + E + L\)).
+                    No obstante, tal como se evidencia gráficamente en las envolventes de cortante último (\(V_u\)) y momento flector (\(M_u\)), para la configuración geométrica masiva y las solicitaciones específicas de este ejemplo, <strong>esta combinación no gobierna el diseño</strong>. Las demandas críticas continúan siendo controladas por las combinaciones mayoradas dominadas por gravedad (\(1.2D + 1.6Live\) y \(1.2D + E + Live\)).
                 </p>
             </div>
 
@@ -838,11 +838,11 @@
                     <polygon points="60,240 83.3,267.4 106.7,294.7 130,321.6 175.5,308.6 221,294.7 266.5,279.9 312,264.2 357.5,247.7 403,230.3 448.5,212.0 494,192.9 539.5,172.8 585,151.9 608.3,199.7 631.7,247.3 655,294.7 676,284.1 697,273.4 718,262.4 739,251.3 760,240" fill="#ea580c" opacity="0.12" />
                     <polyline points="60,240 83.3,267.4 106.7,294.7 130,321.6 175.5,308.6 221,294.7 266.5,279.9 312,264.2 357.5,247.7 403,230.3 448.5,212.0 494,192.9 539.5,172.8 585,151.9 608.3,199.7 631.7,247.3 655,294.7 676,284.1 697,273.4 718,262.4 739,251.3 760,240" fill="none" stroke="#ea580c" stroke-width="2.5" stroke-linejoin="round" />
 
-                    <!-- 1. Combinación 1.2D+1.6L (Azul) -->
+                    <!-- 1. Combinación 1.2D+1.6Live (Azul) -->
                     <polygon points="60,240 83.3,290.2 106.7,340.5 130,390.8 175.5,357.4 221,324.1 266.5,291.1 312,258.3 357.5,225.7 403,193.3 448.5,161.2 494,129.2 539.5,97.5 585,65.9 608.3,147.6 631.7,229.4 655,311.2 676,296.9 697,282.6 718,268.3 739,254.1 760,240" fill="#2563eb" opacity="0.12" />
                     <polyline points="60,240 83.3,290.2 106.7,340.5 130,390.8 175.5,357.4 221,324.1 266.5,291.1 312,258.3 357.5,225.7 403,193.3 448.5,161.2 494,129.2 539.5,97.5 585,65.9 608.3,147.6 631.7,229.4 655,311.2 676,296.9 697,282.6 718,268.3 739,254.1 760,240" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linejoin="round" />
 
-                    <!-- 2. Combinación 1.2D+E+L (Armada oscura) -->
+                    <!-- 2. Combinación 1.2D+E+Live (Armada oscura) -->
                     <polygon points="60,240 83.3,288.7 106.7,337.7 130,387.0 175.5,349.6 221,313.2 266.5,277.9 312,243.6 357.5,210.5 403,178.3 448.5,147.3 494,117.3 539.5,88.4 585,60.5 608.3,138.9 631.7,217.5 655,296.4 676,284.7 697,273.2 718,261.9 739,250.8 760,240" fill="#334155" opacity="0.15" />
                     <polyline points="60,240 83.3,288.7 106.7,337.7 130,387.0 175.5,349.6 221,313.2 266.5,277.9 312,243.6 357.5,210.5 403,178.3 448.5,147.3 494,117.3 539.5,88.4 585,60.5 608.3,138.9 631.7,217.5 655,296.4 676,284.7 697,273.2 718,261.9 739,250.8 760,240" fill="none" stroke="#334155" stroke-width="2.5" stroke-linejoin="round" />
 
@@ -854,10 +854,10 @@
                     <g transform="translate(60, 495)">
                         <!-- Leyenda 1 -->
                         <line x1="100" y1="0" x2="130" y2="0" stroke="#2563eb" stroke-width="3" />
-                        <text x="135" y="4" font-size="12" font-weight="bold" fill="#475569">1.2D + 1.6L</text>
+                        <text x="135" y="4" font-size="12" font-weight="bold" fill="#475569">1.2D + 1.6Live</text>
                         <!-- Leyenda 2 -->
                         <line x1="250" y1="0" x2="280" y2="0" stroke="#334155" stroke-width="3" />
-                        <text x="285" y="4" font-size="12" font-weight="bold" fill="#475569">1.2D + E + L</text>
+                        <text x="285" y="4" font-size="12" font-weight="bold" fill="#475569">1.2D + E + Live</text>
                         <!-- Leyenda 3 -->
                         <line x1="410" y1="0" x2="440" y2="0" stroke="#ea580c" stroke-width="3" />
                         <text x="445" y="4" font-size="12" font-weight="bold" fill="#475569">0.9D - E</text>
@@ -941,9 +941,9 @@
                     <!-- Leyenda -->
                     <g transform="translate(60, 500)">
                         <line x1="100" y1="0" x2="130" y2="0" stroke="#2563eb" stroke-width="3" />
-                        <text x="135" y="4" font-size="12" font-weight="bold" fill="#475569">1.2D + 1.6L</text>
+                        <text x="135" y="4" font-size="12" font-weight="bold" fill="#475569">1.2D + 1.6Live</text>
                         <line x1="250" y1="0" x2="280" y2="0" stroke="#334155" stroke-width="3" />
-                        <text x="285" y="4" font-size="12" font-weight="bold" fill="#475569">1.2D + E + L</text>
+                        <text x="285" y="4" font-size="12" font-weight="bold" fill="#475569">1.2D + E + Live</text>
                         <line x1="410" y1="0" x2="440" y2="0" stroke="#ea580c" stroke-width="3" />
                         <text x="445" y="4" font-size="12" font-weight="bold" fill="#475569">0.9D - E</text>
                     </g>
@@ -1135,8 +1135,8 @@
                         <tr>
                             <th style="text-align:left;">Sección Crítica</th>
                             <th>Abscisa \( x \) [m]</th>
-                            <th>\( V_u \) (1.2D+1.6L)</th>
-                            <th>\( V_u \) (1.2D+E+L)</th>
+                            <th>\( V_u \) (1.2D+1.6Live)</th>
+                            <th>\( V_u \) (1.2D+E+Live)</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1230,7 +1230,7 @@
                     <ul class="w3-small" style="margin: 8px 0; padding-left: 20px; color: var(--gris-texto);">
                         <li>Perímetro (\( b_0 \)): 1.93 m</li>
                         <li>Área Crítica (\( A_c \)): 0.448 m²</li>
-                        <li>Combinación que Gobierna: (\( 1.2 D + 1.6 L \))</li>
+                        <li>Combinación que Gobierna: (\( 1.2 D + 1.6 Live \))</li>
                         <li><strong>\( q_u \) eje Área Crítica: 194.1 kPa</strong></li>
                         <li>Solicitación \( V_u \): 217.1 kN</li>
                         <li>Resistencia \( \phi V_c \): 805.2 kN</li>
@@ -1243,7 +1243,7 @@
                     <ul class="w3-small" style="margin: 8px 0; padding-left: 20px; color: var(--gris-texto);">
                         <li>Perímetro (\( b_0 \)): 3.07 m</li>
                         <li>Área Crítica (\( A_c \)): 0.588 m²</li>
-                        <li>Combinación que Gobierna: (\( 1.2 D + 1.6 L \))</li>
+                        <li>Combinación que Gobierna: (\( 1.2 D + 1.6 Live \))</li>
                         <li><strong>\( q_u \) eje Área Crítica: 180.3 kPa</strong></li>
                         <li>Solicitación \( V_u \): 333.9 kN</li>
                         <li>Resistencia \( \phi V_c \): 1277.4 kN</li>
@@ -1347,8 +1347,8 @@
                         <tr>
                             <th style="text-align:left;">Ubicación Crítica</th>
                             <th>Abscisa \( x \) [m]</th>
-                            <th>\( M_u \) (1.2D+1.6L)</th>
-                            <th>\( M_u \) (1.2D+E+L)</th>
+                            <th>\( M_u \) (1.2D+1.6Live)</th>
+                            <th>\( M_u \) (1.2D+E+Live)</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1475,8 +1475,8 @@
                         \( b_{eff} = 0.58 \text{ m} \) | \( H = 0.45 \text{ m} \) | \( B = 1.00 \text{ m} \)<br><br>
                         
                         <strong>Cargas (\( w_{u,1} = P_{u,1} / B \)):</strong><br>
-                        • \( 304 \text{ kN/m} \) (1.2D+1.6L)<br>
-                        • \( 310 \text{ kN/m} \) (1.2D+E+L)<br><br>
+                        • \( 304 \text{ kN/m} \) (1.2D+1.6Live)<br>
+                        • \( 310 \text{ kN/m} \) (1.2D+E+Live)<br><br>
                         
                         <strong>Resistencia:</strong><br>
                         • \( V_u = N.A. \text{ kN} \) (sección crítica fuera de la zapata). Se documenta el valor de la resistencia nominal reducida, \( \phi V_c (118 \text{ kN}) \)<br>
@@ -1506,8 +1506,8 @@
                         \( b_{eff} = 0.75 \text{ m} \) | \( H = 0.45 \text{ m} \) | \( B = 1.00 \text{ m} \)<br><br>
                         
                         <strong>Cargas (\( w_{u,2} = P_{u,2} / B \)):</strong><br>
-                        • \( 440 \text{ kN/m} \) (1.2D+1.6L)<br>
-                        • \( 415 \text{ kN/m} \) (1.2D+E+L)<br><br>
+                        • \( 440 \text{ kN/m} \) (1.2D+1.6Live)<br>
+                        • \( 415 \text{ kN/m} \) (1.2D+E+Live)<br><br>
                         
                         <strong>Resistencia:</strong><br>
                         • \( V_u = N.A. \text{ kN} \) (sección crítica fuera de la zapata). Se documenta el valor de la resistencia nominal reducida, \( \phi V_c (154 \text{ kN}) \) </i><br>
