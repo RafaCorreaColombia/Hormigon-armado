@@ -325,7 +325,7 @@
                     <ul class="w3-small" style="margin: 8px 0 0 0; padding-left: 20px; color: var(--gris-texto);">
                         <li><strong>Z.COL1 (Relación 2:1):</strong> 0.90 m x 1.80 m</li>
                         <li><strong>Z.COL2 (Relación 1:1):</strong> 1.40 m x 1.40 m</li>
-                        <li>Área COL1: <strong>1.62 m²</strong> | Área COL2: <strong>1.96 m²</strong></li>
+                        <li>Área Z.COL1: <strong>1.62 m²</strong> | Área Z.COL2: <strong>1.96 m²</strong></li>
                     </ul>
                 </div>
             </div>
@@ -395,7 +395,7 @@
 
             <div class="ce-grid ce-grid-2">
                 <div class="w3-panel ce-panel-naranja w3-padding w3-round" style="margin:0;">
-                    <strong style="color: var(--naranja-estructural);"><i class="fa fa-building"></i> 🏢 Zapata COL1 (Excéntrica)</strong>
+                    <strong style="color: var(--naranja-estructural);"><i class="fa fa-building"></i> 🏢 Zapata Z.COL1 (Excéntrica)</strong>
                     <p class="w3-small" style="margin-top: 5px; margin-bottom: 10px;">
                         Relación de aspecto adoptada para el tanteo inicial: <strong>\(\Delta Y / \Delta X = 2.0\)</strong>.
                     </p>
@@ -416,7 +416,7 @@
                 </div>
                 
                 <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid #bbf7d0; border-left: 4px solid #166534; margin:0;">
-                    <strong style="color: #166534;"><i class="fa fa-building"></i> 🏢 Zapata COL2 (Centrada)</strong>
+                    <strong style="color: #166534;"><i class="fa fa-building"></i> 🏢 Zapata Z.COL2 (Centrada)</strong>
                     <p class="w3-small" style="margin-top: 5px; margin-bottom: 10px;">
                         Relación de aspecto adoptada para el tanteo inicial: <strong>\(\Delta Y / \Delta X = 1.0\)</strong> (Cuadrada).
                     </p>
@@ -459,13 +459,13 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td style="text-align:left;">Zapata COL1 (0.9x1.8)</td>
+                                <td style="text-align:left;">Zapata Z.COL1 (0.9x1.8)</td>
                                 <td>1.62</td>
                                 <td>0.25</td>
                                 <td>0.405</td>
                             </tr>
                             <tr>
-                                <td style="text-align:left;">Zapata COL2 (1.4x1.4)</td>
+                                <td style="text-align:left;">Zapata Z.COL2 (1.4x1.4)</td>
                                 <td>1.96</td>
                                 <td>3.00</td>
                                 <td>5.880</td>
@@ -495,10 +495,10 @@
             <div class="w3-panel ce-panel-azul w3-padding w3-round">
                 <strong style="color: var(--azul-profundo);"><i class="fa fa-lightbulb-o"></i> 📌 Criterio para el Predimensionamiento Geométrico:</strong>
                 <p class="w3-small" style="margin-top: 5px; margin-bottom: 8px;">
-                    Observen que la zapata de lindero (COL1) se plantea con una dimensión reducida en la dirección de la viga de enlace (\(\Delta X = 0.90 \text{ m}\)) y una mayor en sentido transversal (\(\Delta Y = 1.80 \text{ m}\)). Esta elección responde a un criterio fundamental: como el borde exterior de esa zapata debe coincidir con el lindero, aumentar su dimensión en X desplaza el centroide de la base de esa zapata respecto al eje de la columna e <strong>incrementa su excentricidad geométrica</strong>. En consecuencia, la viga de enlace puede verse sometida a mayores solicitaciones de momento.
+                    Observen que la zapata de lindero (Z.COL1) se plantea con una dimensión reducida en la dirección de la viga de enlace (\(\Delta X = 0.90 \text{ m}\)) y una mayor en sentido transversal (\(\Delta Y = 1.80 \text{ m}\)). Esta elección responde a un criterio fundamental: como el borde exterior de esa zapata debe coincidir con el lindero, aumentar su dimensión en X desplaza el centroide de la base de esa zapata respecto al eje de la columna e <strong>incrementa su excentricidad geométrica</strong>. En consecuencia, la viga de enlace puede verse sometida a mayores solicitaciones de momento.
                 </p>
                 <p class="w3-small" style="margin: 0;">
-                    Por eso, en este tanteo inicial se busca obtener el área de contacto requerida sin extender innecesariamente la zapata de lindero (COL1) hacia el interior del terreno. La dimensión transversal permite ganar área sin aumentar en la misma proporción su excentricidad en X. Estas dimensiones constituyen un punto de partida para el análisis del sistema; se ajustarán si las verificaciones posteriores de presiones de contacto y equilibrio lo requieren.
+                    Por eso, en este tanteo inicial se busca obtener el área de contacto requerida sin extender innecesariamente la zapata de lindero (Z.COL1) hacia el interior del terreno. La dimensión transversal permite ganar área sin aumentar en la misma proporción su excentricidad en X. Estas dimensiones constituyen un punto de partida para el análisis del sistema; se ajustarán si las verificaciones posteriores de presiones de contacto y equilibrio lo requieren.
                 </p>
             </div>
         </div>
@@ -516,7 +516,7 @@
                 
                 <div class="ce-grid ce-grid-2">
                     <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid var(--gris-borde); margin:0;">
-                        <strong style="color: var(--azul-profundo); text-transform: uppercase; font-size: 0.9em;">Zapata COL1 (Excéntrica)</strong>
+                        <strong style="color: var(--azul-profundo); text-transform: uppercase; font-size: 0.9em;">Zapata Z.COL1 (Excéntrica)</strong>
                         <ul class="w3-small" style="margin: 8px 0 0 0; padding-left: 15px; color: var(--gris-texto); list-style: none;">
                             <li>• Borde exterior: <strong>\( x_1i = -0.20 \text{ m} \)</strong></li>
                             <li>• Eje Columna 1: <strong>\( x_1 = 0.00 \text{ m} \)</strong></li>
@@ -526,7 +526,7 @@
                     </div>
 
                     <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid var(--gris-borde); margin:0;">
-                        <strong style="color: var(--azul-profundo); text-transform: uppercase; font-size: 0.9em;">Zapata COL2 (Centrada)</strong>
+                        <strong style="color: var(--azul-profundo); text-transform: uppercase; font-size: 0.9em;">Zapata Z.COL2 (Centrada)</strong>
                         <ul class="w3-small" style="margin: 8px 0 0 0; padding-left: 15px; color: var(--gris-texto); list-style: none;">
                             <li>• Borde interior: <strong>\( x_2i = 2.30 \text{ m} \)</strong></li>
                             <li>• Eje Columna 2: <strong>\( x_2 = 3.00 \text{ m} \)</strong></li>
@@ -635,8 +635,8 @@
                     <thead>
                         <tr>
                             <th style="text-align:left;">Combinación de Servicio</th>
-                            <th>Z. COL1 (Lindero)<br><span style="font-size: 0.85em; font-weight: normal; opacity: 0.8;">\(x \in [-0.2, 0.7]\)</span></th>
-                            <th>Z. COL2 (Interna)<br><span style="font-size: 0.85em; font-weight: normal; opacity: 0.8;">\(x \in [2.3, 3.7]\)</span></th>
+                            <th>Z.COL1 (Lindero)<br><span style="font-size: 0.85em; font-weight: normal; opacity: 0.8;">\(x \in [-0.2, 0.7]\)</span></th>
+                            <th>Z.COL2 (Interna)<br><span style="font-size: 0.85em; font-weight: normal; opacity: 0.8;">\(x \in [2.3, 3.7]\)</span></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -700,8 +700,8 @@
                     <thead>
                         <tr>
                             <th rowspan="2" style="vertical-align: middle;">Combinación de Diseño (ELU)</th>
-                            <th colspan="2">Zapata COL1 (Lindero) [kPa]</th>
-                            <th colspan="2">Zapata COL2 (Interna) [kPa]</th>
+                            <th colspan="2">Zapata Z.COL1 (Lindero) [kPa]</th>
+                            <th colspan="2">Zapata Z.COL2 (Interna) [kPa]</th>
                         </tr>
                         <tr>
                             <th>\(q_{x=-0.2}\)</th>
@@ -760,7 +760,7 @@
             <div class="w3-panel ce-panel-azul w3-padding w3-round">
                 <strong style="color: var(--azul-profundo);"><i class="fa fa-refresh"></i> 🔄 Conexión con el Refuerzo:</strong>
                 <p class="w3-small" style="margin-top: 5px; margin-bottom: 10px;">
-                    Bajo la combinación <strong>B.2.4-5</strong>, el efecto sísmico modifica el gradiente de presiones, incrementando la demanda en la zapata de lindero (COL1).
+                    Bajo la combinación <strong>B.2.4-5</strong>, el efecto sísmico modifica el gradiente de presiones, incrementando la demanda en la zapata de lindero (Z.COL1).
                 </p>
                 <p class="w3-small" style="margin-top: 0; margin-bottom: 10px;">
                     Este cambio se refleja directamente en los diagramas, generando una <strong>envolvente de momentos</strong> que controla el diseño del refuerzo superior en la viga de enlace.
@@ -850,12 +850,12 @@
         <!-- SECCIÓN 5: DISEÑO ZAPATAS INDEPENDIENTES (Versión Completa) -->
         <div class="panel-control" id="independientes-excentrica">
             <h2 class="panel-titulo">5. Diseño de Zapatas Independientes</h2>
-            <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Estado Límite Último – Comparativa Técnica COL1 vs COL2</p>
+            <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Estado Límite Último – Comparativa Técnica Z.COL1 vs Z.COL2</p>
 
             <div class="w3-panel ce-panel-gris w3-padding w3-round">
                 <strong style="color: var(--azul-profundo);"><i class="fa fa-link"></i> 🔗 Criterio de Análisis:</strong>
                 <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
-                    Se utiliza el modelo de <strong>presiones rígidas</strong>. La zapata de lindero (COL1) es gobernada por la combinación sísmica <strong>1.2D + E + Live</strong> debido al gradiente, mientras que la interna (COL2) es controlada por la envolvente gravitacional <strong>1.2D + 1.6Live</strong>. Ver <strong><a href="#figura3" style="color: #3b82f6; text-decoration: underline; font-weight: bold;">Figura 3</a>:</strong> Diagrama de presiones de contacto para combinaciones últimas.
+                    Se utiliza el modelo de <strong>presiones rígidas</strong>. La zapata de lindero (Z.COL1) es gobernada por la combinación sísmica <strong>1.2D + E + Live</strong> debido al gradiente, mientras que la interna (Z.COL2) es controlada por la envolvente gravitacional <strong>1.2D + 1.6Live</strong>. Ver <strong><a href="#figura3" style="color: #3b82f6; text-decoration: underline; font-weight: bold;">Figura 3</a>:</strong> Diagrama de presiones de contacto para combinaciones últimas.
                 </p>
             </div>
 
@@ -863,7 +863,7 @@
                 <!-- COL 1 -->
                 <div class="w3-panel ce-panel-naranja w3-padding w3-round" style="margin:0; display:flex; flex-direction:column;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                        <strong style="color: var(--naranja-estructural);"><i class="fa fa-building"></i> 🏢 Zapata COL1 (Lindero)</strong>
+                        <strong style="color: var(--naranja-estructural);"><i class="fa fa-building"></i> 🏢 Zapata Z.COL1 (Lindero)</strong>
                         <span class="w3-small" style="background:#ffedd5; color:#9a3412; padding:2px 8px; border-radius:12px; font-weight:bold;">CRÍTICA</span>
                     </div>
                     
@@ -905,7 +905,7 @@
                 <!-- COL 2 -->
                 <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid #bbf7d0; display:flex; flex-direction:column; margin:0;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                        <strong style="color: #166534;"><i class="fa fa-building"></i> 🏢 Zapata COL2 (Interna)</strong>
+                        <strong style="color: #166534;"><i class="fa fa-building"></i> 🏢 Zapata Z.COL2 (Interna)</strong>
                         <span class="w3-small" style="background:#dcfce7; color:#166534; padding:2px 8px; border-radius:12px; font-weight:bold;">ESTABLE</span>
                     </div>
                     
@@ -945,7 +945,7 @@
             <div class="w3-panel ce-panel-azul w3-padding w3-round w3-margin-top">
                 <strong style="color: var(--azul-profundo);"><i class="fa fa-lightbulb-o"></i> 💡 Lectura Comparativa:</strong>
                 <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
-                    La zapata de lindero (COL1) desarrolla mayores gradientes de presión y demanda estructural, siendo la que controla el diseño del sistema. La zapata interior (COL2) presenta un comportamiento más uniforme y eficiente.
+                    La zapata de lindero (Z.COL1) desarrolla mayores gradientes de presión y demanda estructural, siendo la que controla el diseño del sistema. La zapata interior (COL2) presenta un comportamiento más uniforme y eficiente.
                 </p>
             </div>
 
@@ -990,7 +990,7 @@
                     <li><strong>Capa Superior:</strong> \(d \approx 350 \text{ mm}\) (Se descuenta el diámetro de la barra de abajo).</li>
                 </ul>
                 <p class="w3-small" style="color: var(--gris-texto); margin-bottom: 0;">
-                    Aunque el \(M_{uy}\) es mayor en COL1, el diseño con <strong>No. 5 @ 225 mm</strong> es tan robusto que incluso con el \(d\) reducido, por ejemplo, las capacidades (\(\phi V_c=205 \text{ kN/m}\)) y (\(\phi M_n=113 \text{ kNm/m}\)) siguen estando muy por encima de la demanda.
+                    Aunque el \(M_{uy}\) es mayor en Z.COL1, el diseño con <strong>No. 5 @ 225 mm</strong> es tan robusto que incluso con el \(d\) reducido, por ejemplo, las capacidades (\(\phi V_c=205 \text{ kN/m}\)) y (\(\phi M_n=113 \text{ kNm/m}\)) siguen estando muy por encima de la demanda.
                 </p>
             </div>
 
