@@ -483,16 +483,12 @@
             </div>
 
             <div class="w3-panel ce-panel-azul w3-padding w3-round">
-                <strong style="color: var(--azul-profundo);"><i class="fa fa-lightbulb-o"></i> 📌 Nota Pedagógica:</strong>
-                <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
-                    Observen cómo la zapata de lindero (COL1) mantiene un ancho acotado en la dirección del conector (\(\Delta X = 0.90 \text{ m}\)): esto busca <strong>minimizar la excentricidad</strong> entre el eje de la columna y el centroide de la base, reduciendo directamente el momento que debe transferir la viga de enlace. La proyección más larga en sentido transversal (\(\Delta Y = 1.80 \text{ m}\)) simplemente compensa la dimensión corta en X para garantizar el área de contacto requerida sobre el suelo.
+                <strong style="color: var(--azul-profundo);"><i class="fa fa-lightbulb-o"></i> 📌 Criterio para el Predimensionamiento Geométrico:</strong>
+                <p class="w3-small" style="margin-top: 5px; margin-bottom: 8px;">
+                    Observen que la zapata de lindero (COL1) se plantea con una dimensión reducida en la dirección de la viga de enlace (\(\Delta X = 0.90 \text{ m}\)) y una mayor en sentido transversal (\(\Delta Y = 1.80 \text{ m}\)). Esta elección responde a un criterio fundamental: como el borde exterior de esa zapata debe coincidir con el lindero, aumentar su dimensión en X desplaza el centroide de la base de esa zapata respecto al eje de la columna e <strong>incrementa su excentricidad geométrica</strong>. En consecuencia, la viga de enlace puede verse sometida a mayores solicitaciones de momento.
                 </p>
-            </div>
-
-            <div class="w3-panel ce-panel-azul w3-padding w3-round">
-                <strong style="color: var(--azul-profundo);"><i class="fa fa-lightbulb-o"></i> 📌 Nota Pedagógica:</strong>
-                <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
-                    Observen cómo la zapata de lindero (COL1) se proyecta más larga en sentido perpendicular a la viga de enlace (\(\Delta Y = 1.80 \text{ m}\)) para distribuir mejor el bulbo de presiones, mientras que en el eje X se mantiene estrecha para no invadir excesivamente el espacio interno.
+                <p class="w3-small" style="margin: 0;">
+                    Por eso, en este tanteo inicial se busca obtener el área de contacto requerida sin extender innecesariamente la zapata de lindero (COL1) hacia el interior del terreno. La dimensión transversal permite ganar área sin aumentar en la misma proporción su excentricidad en X. Estas dimensiones constituyen un punto de partida para el análisis del sistema; se ajustarán si las verificaciones posteriores de presiones de contacto y equilibrio lo requieren.
                 </p>
             </div>
         </div>
