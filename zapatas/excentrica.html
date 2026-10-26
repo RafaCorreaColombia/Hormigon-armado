@@ -550,9 +550,32 @@
                 <!-- GRÁFICO SVG GENERADO CON DATOS EXACTOS -->
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 540" style="width: 100%; max-width: 750px; height: auto; background: white; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; margin: 0 auto; display: block;">
                     
+                    <!-- DEFINICIÓN DE ACHURADOS SUAVES (PATTERNS) -->
+                    <defs>
+                        <!-- 1. Azul (D+L) -->
+                        <pattern id="hatch-blue" width="10" height="10" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+                            <line x1="0" y1="0" x2="0" y2="10" stroke="#2563eb" stroke-width="1.5" opacity="0.25" />
+                        </pattern>
+                        <!-- 2. Naranja (D+Sismo+L) -->
+                        <pattern id="hatch-orange" width="10" height="10" patternTransform="rotate(-45)" patternUnits="userSpaceOnUse">
+                            <line x1="0" y1="0" x2="0" y2="10" stroke="#ea580c" stroke-width="1.5" opacity="0.25" />
+                        </pattern>
+                        <!-- 3. Gris Oscuro (D-Sismo+L) -->
+                        <pattern id="hatch-gray" width="10" height="10" patternTransform="rotate(0)" patternUnits="userSpaceOnUse">
+                            <line x1="0" y1="0" x2="0" y2="10" stroke="#334155" stroke-width="1.5" opacity="0.25" />
+                        </pattern>
+                        <!-- 4. Verde (0.6D+0.7E) -->
+                        <pattern id="hatch-green" width="10" height="10" patternTransform="rotate(90)" patternUnits="userSpaceOnUse">
+                            <line x1="0" y1="0" x2="0" y2="10" stroke="#16a34a" stroke-width="1.5" opacity="0.25" />
+                        </pattern>
+                        <!-- 5. Púrpura (0.6D-0.7E) -->
+                        <pattern id="hatch-purple" width="12" height="12" patternTransform="rotate(60)" patternUnits="userSpaceOnUse">
+                            <line x1="0" y1="0" x2="0" y2="12" stroke="#9333ea" stroke-width="1.5" opacity="0.25" />
+                        </pattern>
+                    </defs>
+            
                     <!-- Fondo de la cuadrícula (Grid) -->
                     <g stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4 4">
-                        <!-- Líneas verticales X -->
                         <line x1="60" y1="40" x2="60" y2="440" />      <!-- -0.2 (Inicio COL1) -->
                         <line x1="95" y1="40" x2="95" y2="440" />      <!-- 0.0 (Eje COL1) -->
                         <line x1="217.5" y1="40" x2="217.5" y2="440" /><!-- 0.7 (Fin COL1) -->
@@ -564,7 +587,6 @@
                         <line x1="742.5" y1="40" x2="742.5" y2="440" /><!-- 3.7 (Fin COL2) -->
                         <line x1="760" y1="40" x2="760" y2="440" />    <!-- 3.8 -->
                         
-                        <!-- Líneas horizontales Y (Escala 0 a 250 kPa) -->
                         <line x1="60" y1="120" x2="760" y2="120" /> <!-- 200 kPa -->
                         <line x1="60" y1="200" x2="760" y2="200" /> <!-- 150 kPa -->
                         <line x1="60" y1="280" x2="760" y2="280" /> <!-- 100 kPa -->
@@ -573,8 +595,8 @@
                     </g>
             
                     <!-- FRANJAS DE COLUMNAS (Fondo suave) -->
-                    <rect x="60" y="40" width="70" height="400" fill="#cbd5e1" opacity="0.35" /> <!-- COL1: x=-0.2 a 0.2 -->
-                    <rect x="585" y="40" width="70" height="400" fill="#cbd5e1" opacity="0.35" /> <!-- COL2: x=2.8 a 3.2 -->
+                    <rect x="60" y="40" width="70" height="400" fill="#cbd5e1" opacity="0.35" /> <!-- COL1 -->
+                    <rect x="585" y="40" width="70" height="400" fill="#cbd5e1" opacity="0.35" /> <!-- COL2 -->
             
                     <!-- Eje Y: Textos -->
                     <g font-size="12" fill="#64748b" text-anchor="end">
@@ -602,80 +624,100 @@
                     <line x1="95" y1="40" x2="95" y2="440" stroke="#64748b" stroke-width="2.5" />
             
                     <!-- ========================================== -->
-                    <!-- ÁREAS RELLENAS (POLÍGONOS Y LÍNEAS)        -->
+                    <!-- BLOQUES DE PRESIÓN: ACHURADO Y BORDES      -->
                     <!-- ========================================== -->
                     
                     <!-- 5. Combinación 0.6D - 0.7E (Púrpura) -->
-                    <!-- ZAPATA 1 -->
-                    <polygon points="60,440 60,354.1 217.5,337.0 217.5,440" fill="#9333ea" opacity="0.06" />
-                    <line x1="60" y1="354.1" x2="217.5" y2="337.0" stroke="#9333ea" stroke-width="2.5" />
-                    <circle cx="60" cy="354.1" r="3" fill="#9333ea"/>
-                    <circle cx="217.5" cy="337.0" r="3" fill="#9333ea"/>
-                    <!-- ZAPATA 2 -->
-                    <polygon points="497.5,440 497.5,306.6 742.5,279.8 742.5,440" fill="#9333ea" opacity="0.06" />
-                    <line x1="497.5" y1="306.6" x2="742.5" y2="279.8" stroke="#9333ea" stroke-width="2.5" />
-                    <circle cx="497.5" cy="306.6" r="3" fill="#9333ea"/>
-                    <circle cx="742.5" cy="279.8" r="3" fill="#9333ea"/>
+                    <g>
+                        <!-- Zapata 1 -->
+                        <polygon points="60,440 60,354.1 217.5,337.0 217.5,440" fill="#9333ea" opacity="0.04" />
+                        <polygon points="60,440 60,354.1 217.5,337.0 217.5,440" fill="url(#hatch-purple)" />
+                        <polyline points="60,440 60,354.1 217.5,337.0 217.5,440" fill="none" stroke="#9333ea" stroke-width="2.5" />
+                        <circle cx="60" cy="354.1" r="3" fill="#9333ea"/>
+                        <circle cx="217.5" cy="337.0" r="3" fill="#9333ea"/>
+                        <!-- Zapata 2 -->
+                        <polygon points="497.5,440 497.5,306.6 742.5,279.8 742.5,440" fill="#9333ea" opacity="0.04" />
+                        <polygon points="497.5,440 497.5,306.6 742.5,279.8 742.5,440" fill="url(#hatch-purple)" />
+                        <polyline points="497.5,440 497.5,306.6 742.5,279.8 742.5,440" fill="none" stroke="#9333ea" stroke-width="2.5" />
+                        <circle cx="497.5" cy="306.6" r="3" fill="#9333ea"/>
+                        <circle cx="742.5" cy="279.8" r="3" fill="#9333ea"/>
+                    </g>
             
                     <!-- 4. Combinación 0.6D + 0.7E (Verde) -->
-                    <!-- ZAPATA 1 -->
-                    <polygon points="60,440 60,266.9 217.5,279.8 217.5,440" fill="#16a34a" opacity="0.06" />
-                    <line x1="60" y1="266.9" x2="217.5" y2="279.8" stroke="#16a34a" stroke-width="2.5" />
-                    <circle cx="60" cy="266.9" r="3" fill="#16a34a"/>
-                    <circle cx="217.5" cy="279.8" r="3" fill="#16a34a"/>
-                    <!-- ZAPATA 2 -->
-                    <polygon points="497.5,440 497.5,302.9 742.5,322.9 742.5,440" fill="#16a34a" opacity="0.06" />
-                    <line x1="497.5" y1="302.9" x2="742.5" y2="322.9" stroke="#16a34a" stroke-width="2.5" />
-                    <circle cx="497.5" cy="302.9" r="3" fill="#16a34a"/>
-                    <circle cx="742.5" cy="322.9" r="3" fill="#16a34a"/>
+                    <g>
+                        <!-- Zapata 1 -->
+                        <polygon points="60,440 60,266.9 217.5,279.8 217.5,440" fill="#16a34a" opacity="0.04" />
+                        <polygon points="60,440 60,266.9 217.5,279.8 217.5,440" fill="url(#hatch-green)" />
+                        <polyline points="60,440 60,266.9 217.5,279.8 217.5,440" fill="none" stroke="#16a34a" stroke-width="2.5" />
+                        <circle cx="60" cy="266.9" r="3" fill="#16a34a"/>
+                        <circle cx="217.5" cy="279.8" r="3" fill="#16a34a"/>
+                        <!-- Zapata 2 -->
+                        <polygon points="497.5,440 497.5,302.9 742.5,322.9 742.5,440" fill="#16a34a" opacity="0.04" />
+                        <polygon points="497.5,440 497.5,302.9 742.5,322.9 742.5,440" fill="url(#hatch-green)" />
+                        <polyline points="497.5,440 497.5,302.9 742.5,322.9 742.5,440" fill="none" stroke="#16a34a" stroke-width="2.5" />
+                        <circle cx="497.5" cy="302.9" r="3" fill="#16a34a"/>
+                        <circle cx="742.5" cy="322.9" r="3" fill="#16a34a"/>
+                    </g>
             
                     <!-- 3. Combinación D - 0.75(0.7E) + 0.75L (Gris oscuro) -->
-                    <!-- ZAPATA 1 -->
-                    <polygon points="60,440 60,224.0 217.5,210.4 217.5,440" fill="#334155" opacity="0.06" />
-                    <line x1="60" y1="224.0" x2="217.5" y2="210.4" stroke="#334155" stroke-width="2.5" />
-                    <circle cx="60" cy="224.0" r="3" fill="#334155"/>
-                    <circle cx="217.5" cy="210.4" r="3" fill="#334155"/>
-                    <!-- ZAPATA 2 -->
-                    <polygon points="497.5,440 497.5,186.4 742.5,165.3 742.5,440" fill="#334155" opacity="0.06" />
-                    <line x1="497.5" y1="186.4" x2="742.5" y2="165.3" stroke="#334155" stroke-width="2.5" />
-                    <circle cx="497.5" cy="186.4" r="3" fill="#334155"/>
-                    <circle cx="742.5" cy="165.3" r="3" fill="#334155"/>
+                    <g>
+                        <!-- Zapata 1 -->
+                        <polygon points="60,440 60,224.0 217.5,210.4 217.5,440" fill="#334155" opacity="0.04" />
+                        <polygon points="60,440 60,224.0 217.5,210.4 217.5,440" fill="url(#hatch-gray)" />
+                        <polyline points="60,440 60,224.0 217.5,210.4 217.5,440" fill="none" stroke="#334155" stroke-width="2.5" />
+                        <circle cx="60" cy="224.0" r="3" fill="#334155"/>
+                        <circle cx="217.5" cy="210.4" r="3" fill="#334155"/>
+                        <!-- Zapata 2 -->
+                        <polygon points="497.5,440 497.5,186.4 742.5,165.3 742.5,440" fill="#334155" opacity="0.04" />
+                        <polygon points="497.5,440 497.5,186.4 742.5,165.3 742.5,440" fill="url(#hatch-gray)" />
+                        <polyline points="497.5,440 497.5,186.4 742.5,165.3 742.5,440" fill="none" stroke="#334155" stroke-width="2.5" />
+                        <circle cx="497.5" cy="186.4" r="3" fill="#334155"/>
+                        <circle cx="742.5" cy="165.3" r="3" fill="#334155"/>
+                    </g>
             
                     <!-- 2. Combinación D + 0.75(0.7E) + 0.75L (Naranja) -->
-                    <!-- ZAPATA 1 -->
-                    <polygon points="60,440 60,158.6 217.5,167.5 217.5,440" fill="#ea580c" opacity="0.08" />
-                    <line x1="60" y1="158.6" x2="217.5" y2="167.5" stroke="#ea580c" stroke-width="2.5" />
-                    <circle cx="60" cy="158.6" r="3" fill="#ea580c"/>
-                    <circle cx="217.5" cy="167.5" r="3" fill="#ea580c"/>
-                    <!-- ZAPATA 2 -->
-                    <polygon points="497.5,440 497.5,183.7 742.5,197.6 742.5,440" fill="#ea580c" opacity="0.08" />
-                    <line x1="497.5" y1="183.7" x2="742.5" y2="197.6" stroke="#ea580c" stroke-width="2.5" />
-                    <circle cx="497.5" cy="183.7" r="3" fill="#ea580c"/>
-                    <circle cx="742.5" cy="197.6" r="3" fill="#ea580c"/>
+                    <g>
+                        <!-- Zapata 1 -->
+                        <polygon points="60,440 60,158.6 217.5,167.5 217.5,440" fill="#ea580c" opacity="0.04" />
+                        <polygon points="60,440 60,158.6 217.5,167.5 217.5,440" fill="url(#hatch-orange)" />
+                        <polyline points="60,440 60,158.6 217.5,167.5 217.5,440" fill="none" stroke="#ea580c" stroke-width="2.5" />
+                        <circle cx="60" cy="158.6" r="3" fill="#ea580c"/>
+                        <circle cx="217.5" cy="167.5" r="3" fill="#ea580c"/>
+                        <!-- Zapata 2 -->
+                        <polygon points="497.5,440 497.5,183.7 742.5,197.6 742.5,440" fill="#ea580c" opacity="0.04" />
+                        <polygon points="497.5,440 497.5,183.7 742.5,197.6 742.5,440" fill="url(#hatch-orange)" />
+                        <polyline points="497.5,440 497.5,183.7 742.5,197.6 742.5,440" fill="none" stroke="#ea580c" stroke-width="2.5" />
+                        <circle cx="497.5" cy="183.7" r="3" fill="#ea580c"/>
+                        <circle cx="742.5" cy="197.6" r="3" fill="#ea580c"/>
+                    </g>
             
                     <!-- 1. Combinación D + L (Azul) -->
-                    <!-- ZAPATA 1 -->
-                    <polygon points="60,440 60,180.3 217.5,178.6 217.5,440" fill="#2563eb" opacity="0.08" />
-                    <line x1="60" y1="180.3" x2="217.5" y2="178.6" stroke="#2563eb" stroke-width="3" />
-                    <circle cx="60" cy="180.3" r="3" fill="#2563eb"/>
-                    <circle cx="217.5" cy="178.6" r="3" fill="#2563eb"/>
-                    <!-- ZAPATA 2 -->
-                    <polygon points="497.5,440 497.5,175.2 742.5,172.3 742.5,440" fill="#2563eb" opacity="0.08" />
-                    <line x1="497.5" y1="175.2" x2="742.5" y2="172.3" stroke="#2563eb" stroke-width="3" />
-                    <circle cx="497.5" cy="175.2" r="3" fill="#2563eb"/>
-                    <circle cx="742.5" cy="172.3" r="3" fill="#2563eb"/>
+                    <g>
+                        <!-- Zapata 1 -->
+                        <polygon points="60,440 60,180.3 217.5,178.6 217.5,440" fill="#2563eb" opacity="0.04" />
+                        <polygon points="60,440 60,180.3 217.5,178.6 217.5,440" fill="url(#hatch-blue)" />
+                        <polyline points="60,440 60,180.3 217.5,178.6 217.5,440" fill="none" stroke="#2563eb" stroke-width="3" />
+                        <circle cx="60" cy="180.3" r="3" fill="#2563eb"/>
+                        <circle cx="217.5" cy="178.6" r="3" fill="#2563eb"/>
+                        <!-- Zapata 2 -->
+                        <polygon points="497.5,440 497.5,175.2 742.5,172.3 742.5,440" fill="#2563eb" opacity="0.04" />
+                        <polygon points="497.5,440 497.5,175.2 742.5,172.3 742.5,440" fill="url(#hatch-blue)" />
+                        <polyline points="497.5,440 497.5,175.2 742.5,172.3 742.5,440" fill="none" stroke="#2563eb" stroke-width="3" />
+                        <circle cx="497.5" cy="175.2" r="3" fill="#2563eb"/>
+                        <circle cx="742.5" cy="172.3" r="3" fill="#2563eb"/>
+                    </g>
             
                     <!-- ========================================== -->
                     <!-- REFERENCIAS GEOMÉTRICAS Y DE COLUMNAS      -->
                     <!-- ========================================== -->
             
-                    <!-- Líneas Base (Suelo vacío en zona de Viga) -->
+                    <!-- Línea base roja en zona libre de viga -->
                     <line x1="217.5" y1="440" x2="497.5" y2="440" stroke="#b91c1c" stroke-width="2.5" stroke-dasharray="6 4" />
                     
-                    <!-- Líneas Verticales (Caras de columnas) -->
-                    <line x1="130" y1="40" x2="130" y2="440" stroke="#475569" stroke-width="1.5" stroke-dasharray="5 4" /> <!-- Cara Int COL1 -->
-                    <line x1="585" y1="40" x2="585" y2="440" stroke="#475569" stroke-width="1.5" stroke-dasharray="5 4" /> <!-- Cara Int COL2 -->
-                    <line x1="655" y1="40" x2="655" y2="440" stroke="#475569" stroke-width="1.5" stroke-dasharray="5 4" /> <!-- Cara Ext COL2 -->
+                    <!-- Caras de columnas (Líneas verticales punteadas) -->
+                    <line x1="130" y1="40" x2="130" y2="440" stroke="#475569" stroke-width="1.5" stroke-dasharray="5 4" />
+                    <line x1="585" y1="40" x2="585" y2="440" stroke="#475569" stroke-width="1.5" stroke-dasharray="5 4" />
+                    <line x1="655" y1="40" x2="655" y2="440" stroke="#475569" stroke-width="1.5" stroke-dasharray="5 4" />
                     
                     <!-- Cotas de Ancho c=0.40m -->
                     <g stroke="#475569" stroke-width="1.5">
@@ -687,12 +729,12 @@
                         <line x1="585" y1="51" x2="585" y2="59" />
                         <line x1="655" y1="51" x2="655" y2="59" />
                     </g>
-                    <text x="95" y="60" font-size="11" fill="#334155" text-anchor="middle" font-weight="bold">0.40m</text>
-                    <text x="620" y="60" font-size="11" fill="#334155" text-anchor="middle" font-weight="bold">0.40m</text>
+                    <text x="95" y="48" font-size="11" fill="#334155" text-anchor="middle" font-weight="bold">c=0.40m</text>
+                    <text x="620" y="48" font-size="11" fill="#334155" text-anchor="middle" font-weight="bold">c=0.40m</text>
                     
                     <!-- Textos Zonales -->
-                    <text x="138" y="430" font-size="13" font-weight="bold" fill="#475569" text-anchor="middle" opacity="0.6">ZAPATA COL 1</text>
-                    <text x="620" y="430" font-size="13" font-weight="bold" fill="#475569" text-anchor="middle" opacity="0.6">ZAPATA COL 2</text>
+                    <text x="138" y="430" font-size="13" font-weight="bold" fill="#475569" text-anchor="middle" opacity="0.7">ZAPATA COL 1</text>
+                    <text x="620" y="430" font-size="13" font-weight="bold" fill="#475569" text-anchor="middle" opacity="0.7">ZAPATA COL 2</text>
                     <text x="357.5" y="430" font-size="11" font-weight="bold" fill="#b91c1c" text-anchor="middle" opacity="0.8">TRAMO LIBRE (VIGA DE ENLACE) q=0</text>
             
                     <!-- Etiquetas de Ejes -->
@@ -703,7 +745,6 @@
                     <!-- LEYENDA                                    -->
                     <!-- ========================================== -->
                     <g transform="translate(60, 480)">
-                        <!-- Fila 1 -->
                         <line x1="0" y1="0" x2="25" y2="0" stroke="#2563eb" stroke-width="3" />
                         <text x="30" y="4" font-size="11" font-weight="bold" fill="#475569">D + L</text>
             
@@ -713,7 +754,6 @@
                         <line x1="285" y1="0" x2="310" y2="0" stroke="#334155" stroke-width="3" />
                         <text x="315" y="4" font-size="11" font-weight="bold" fill="#475569">D - 0.75(0.7E) + 0.75L</text>
             
-                        <!-- Fila 2 -->
                         <line x1="90" y1="20" x2="115" y2="20" stroke="#16a34a" stroke-width="3" />
                         <text x="120" y="24" font-size="11" font-weight="bold" fill="#475569">0.6D + 0.7E</text>
             
@@ -723,7 +763,7 @@
                 </svg>
             
                 <p class="w3-small w3-margin-top w3-left-align" style="color: var(--gris-texto); margin-bottom: 0; padding-top: 15px;">
-                    <i><strong>Figura 2:</strong> Diagrama de presiones de contacto para las combinaciones de servicio analizadas. Nótese la interrupción absoluta del esfuerzo (\(q=0\)) en el tramo central correspondiente a la viga de enlace, la cual garantiza el descenso uniforme pero no transmite presión directa al suelo. Las franjas sombreadas indican el ancho real de contacto con las columnas (c=0.40m).</i>
+                    <i><strong>Figura 2:</strong> Diagrama de presiones de contacto para las combinaciones de servicio analizadas. Se delimitan bloques completos de esfuerzo con líneas continuas hasta \(q=0\) y achurados suaves diferenciados, destacando la interrupción absoluta de carga directa al suelo en el tramo de la viga de enlace.</i>
                 </p>
             </div>
 
