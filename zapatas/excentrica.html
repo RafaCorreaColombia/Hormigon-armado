@@ -713,15 +713,12 @@
                 </svg>
             
                 <p class="w3-small w3-margin-top w3-left-align" style="color: var(--gris-texto); margin-bottom: 0; padding-top: 15px;">
-                    <i><strong>Figura 2:</strong> Diagrama de presiones de contacto para las combinaciones de servicio analizadas. Se delimitan bloques completos de esfuerzo con líneas continuas hasta \(q=0\) y rellenos sólidos transparentes, destacando la interrupción absoluta de carga directa al suelo en el tramo de la viga de enlace. Las presiones positivas se grafican hacia abajo, indicando la reacción del terreno.</i>
+                    <i><strong>Figura 2:</strong> Diagrama de presiones de contacto para las combinaciones de servicio analizadas.
+                        Nótese la interrupción del diagrama en la zona de la viga de enlace (\(x=0.70\) a \(x=2.30\)). Se asume comportamiento rígido de cada base, generando distribuciones aproximadamente lineales de presión en cada zapata.
+                        Las presiones positivas se grafican hacia abajo, indicando la reacción del terreno.</i>
                 </p>
             </div>
-            <div class="w3-center w3-margin-top w3-margin-bottom w3-padding w3-round w3-white" style="border: 1px dashed var(--gris-borde);">
-                <img src="../assets/ze03.png" alt="Diagrama de Presiones de Servicio" style="max-width: 100%; height: auto; border-radius: 5px; mix-blend-mode: multiply;">
-                <p class="w3-small w3-margin-top" style="color: var(--gris-texto); margin-bottom: 0; font-style: italic;">
-                    <strong>Figura 2:</strong> Diagrama de presiones de contacto para combinaciones de servicio. Nótese la interrupción del diagrama en la zona de la viga de enlace (\(x=0.70\) a \(x=2.30\)). Se asume comportamiento rígido de cada base, generando distribuciones aproximadamente lineales de presión en cada zapata.
-                </p>
-            </div>
+
 
             <div class="ce-grid ce-grid-3">
                 <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid #bbf7d0; margin:0;">
@@ -858,6 +855,183 @@
                 <strong style="color: var(--naranja-estructural);"><i class="fa fa-map-pin"></i> 📌 Nota de Diseño:</strong>
                 <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
                     Las presiones presentadas a continuación se utilizan para el diseño por resistencia (concreto y acero). Se han calculado integrando las cargas mayoradas sobre el área real de las bases adoptadas.
+                </p>
+            </div>
+
+            <!-- CAJA IMAGEN 3: PRESIONES ÚLTIMAS -->
+            <div class="w3-center w3-margin-top w3-margin-bottom w3-padding w3-round w3-white" style="border: 1px dashed var(--gris-borde);">
+                
+                <strong style="color: var(--gris-texto); text-transform: uppercase; font-size: 12px; display: block; margin-bottom: 10px;">Diagrama de Presiones Últimas q_u(x) [kPa]</strong>
+                
+                <!-- GRÁFICO SVG GENERADO CON DATOS EXACTOS -->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 540" style="width: 100%; max-width: 750px; height: auto; background: white; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; margin: 0 auto; display: block;">
+                    
+                    <!-- Fondo de la cuadrícula (Grid) -->
+                    <g stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4 4">
+                        <!-- Líneas verticales X -->
+                        <line x1="60" y1="40" x2="60" y2="440" />      <!-- -0.2 (Inicio COL1) -->
+                        <line x1="95" y1="40" x2="95" y2="440" />      <!-- 0.0 (Eje COL1) -->
+                        <line x1="217.5" y1="40" x2="217.5" y2="440" /><!-- 0.7 (Fin COL1) -->
+                        <line x1="270" y1="40" x2="270" y2="440" />    <!-- 1.0 -->
+                        <line x1="357.5" y1="40" x2="357.5" y2="440" /> <!-- 1.5 -->
+                        <line x1="445" y1="40" x2="445" y2="440" />    <!-- 2.0 -->
+                        <line x1="497.5" y1="40" x2="497.5" y2="440" /><!-- 2.3 (Inicio COL2) -->
+                        <line x1="620" y1="40" x2="620" y2="440" />    <!-- 3.0 (Eje COL2) -->
+                        <line x1="742.5" y1="40" x2="742.5" y2="440" /><!-- 3.7 (Fin COL2) -->
+                        <line x1="760" y1="40" x2="760" y2="440" />    <!-- 3.8 -->
+                        
+                        <!-- Líneas horizontales Y (Escala invertida: q=0 arriba, positivas abajo) -->
+                        <line x1="60" y1="120" x2="760" y2="120" /> <!-- 0 kPa -->
+                        <line x1="60" y1="184" x2="760" y2="184" /> <!-- 50 kPa -->
+                        <line x1="60" y1="248" x2="760" y2="248" /> <!-- 100 kPa -->
+                        <line x1="60" y1="312" x2="760" y2="312" /> <!-- 150 kPa -->
+                        <line x1="60" y1="376" x2="760" y2="376" /> <!-- 200 kPa -->
+                        <line x1="60" y1="440" x2="760" y2="440" /> <!-- 250 kPa -->
+                    </g>
+            
+                    <!-- FRANJAS DE COLUMNAS (Fondo suave) -->
+                    <rect x="60" y="40" width="70" height="400" fill="#cbd5e1" opacity="0.35" /> <!-- COL1: x=-0.2 a 0.2 -->
+                    <rect x="585" y="40" width="70" height="400" fill="#cbd5e1" opacity="0.35" /> <!-- COL2: x=2.8 a 3.2 -->
+            
+                    <!-- Eje Y: Textos -->
+                    <g font-size="12" fill="#64748b" text-anchor="end">
+                        <text x="85" y="124">0</text>
+                        <text x="85" y="188">50</text>
+                        <text x="85" y="252">100</text>
+                        <text x="85" y="316">150</text>
+                        <text x="85" y="380">200</text>
+                        <text x="85" y="444">250</text>
+                    </g>
+            
+                    <!-- Eje X: Textos -->
+                    <g font-size="12" fill="#64748b" text-anchor="middle">
+                        <text x="60" y="25">-0.2</text>
+                        <text x="95" y="25">0.0</text>
+                        <text x="217.5" y="25">0.7</text>
+                        <text x="357.5" y="25">1.5</text>
+                        <text x="497.5" y="25">2.3</text>
+                        <text x="620" y="25">3.0</text>
+                        <text x="742.5" y="25">3.7</text>
+                    </g>
+            
+                    <!-- Ejes Principales -->
+                    <line x1="60" y1="120" x2="760" y2="120" stroke="#94a3b8" stroke-width="2.5" /> <!-- Eje X (q=0) -->
+                    <line x1="95" y1="40" x2="95" y2="440" stroke="#64748b" stroke-width="1.5" /> <!-- Eje Y (x=0) -->
+            
+                    <!-- ========================================== -->
+                    <!-- BLOQUES DE PRESIÓN ÚLTIMA                 -->
+                    <!-- ========================================== -->
+                    
+                    <!-- 5. Combinación 0.9D - E (Púrpura) -->
+                    <g>
+                        <!-- Zapata 1 -->
+                        <polygon points="60,120 60,225.6 217.5,245.3 217.5,120" fill="#9333ea" opacity="0.12" />
+                        <polyline points="60,120 60,225.6 217.5,245.3 217.5,120" fill="none" stroke="#9333ea" stroke-width="2.5" />
+                        <!-- Zapata 2 -->
+                        <polygon points="497.5,120 497.5,280.3 742.5,310.9 742.5,120" fill="#9333ea" opacity="0.12" />
+                        <polyline points="497.5,120 497.5,280.3 742.5,310.9 742.5,120" fill="none" stroke="#9333ea" stroke-width="2.5" />
+                    </g>
+            
+                    <!-- 4. Combinación 0.9D + E (Verde) -->
+                    <g>
+                        <!-- Zapata 1 -->
+                        <polygon points="60,120 60,325.3 217.5,310.6 217.5,120" fill="#16a34a" opacity="0.12" />
+                        <polyline points="60,120 60,325.3 217.5,310.6 217.5,120" fill="none" stroke="#16a34a" stroke-width="2.5" />
+                        <!-- Zapata 2 -->
+                        <polygon points="497.5,120 497.5,284.5 742.5,261.7 742.5,120" fill="#16a34a" opacity="0.12" />
+                        <polyline points="497.5,120 497.5,284.5 742.5,261.7 742.5,120" fill="none" stroke="#16a34a" stroke-width="2.5" />
+                    </g>
+            
+                    <!-- 3. Combinación 1.2D - E + L (Gris oscuro) -->
+                    <g>
+                        <!-- Zapata 1 -->
+                        <polygon points="60,120 60,312.4 217.5,331.6 217.5,120" fill="#334155" opacity="0.12" />
+                        <polyline points="60,120 60,312.4 217.5,331.6 217.5,120" fill="none" stroke="#334155" stroke-width="2.5" />
+                        <!-- Zapata 2 -->
+                        <polygon points="497.5,120 497.5,365.8 742.5,395.7 742.5,120" fill="#334155" opacity="0.12" />
+                        <polyline points="497.5,120 497.5,365.8 742.5,395.7 742.5,120" fill="none" stroke="#334155" stroke-width="2.5" />
+                    </g>
+            
+                    <!-- 2. Combinación 1.2D + E + L (Naranja) -->
+                    <g>
+                        <!-- Zapata 1 -->
+                        <polygon points="60,120 60,412.1 217.5,397.0 217.5,120" fill="#ea580c" opacity="0.15" />
+                        <polyline points="60,120 60,412.1 217.5,397.0 217.5,120" fill="none" stroke="#ea580c" stroke-width="2.5" />
+                        <!-- Zapata 2 -->
+                        <polygon points="497.5,120 497.5,370.1 742.5,346.5 742.5,120" fill="#ea580c" opacity="0.15" />
+                        <polyline points="497.5,120 497.5,370.1 742.5,346.5 742.5,120" fill="none" stroke="#ea580c" stroke-width="2.5" />
+                    </g>
+            
+                    <!-- 1. Combinación 1.2D + 1.6L (Azul) -->
+                    <g>
+                        <!-- Zapata 1 -->
+                        <polygon points="60,120 60,383.3 217.5,384.5 217.5,120" fill="#2563eb" opacity="0.15" />
+                        <polyline points="60,120 60,383.3 217.5,384.5 217.5,120" fill="none" stroke="#2563eb" stroke-width="3" />
+                        <!-- Zapata 2 -->
+                        <polygon points="497.5,120 497.5,386.8 742.5,388.8 742.5,120" fill="#2563eb" opacity="0.15" opacity="0.15" />
+                        <polyline points="60,120 60,383.3 217.5,384.5 217.5,120" fill="none" stroke="#2563eb" stroke-width="3" />
+                        <!-- Zapata 2 -->
+                        <polygon points="497.5,120 497.5,386.8 742.5,388.8 742.5,120" fill="#2563eb" opacity="0.15" />
+                        <polyline points="497.5,120 497.5,386.8 742.5,388.8 742.5,120" fill="none" stroke="#2563eb" stroke-width="3" />
+                    </g>
+            
+                    <!-- ========================================== -->
+                    <!-- REFERENCIAS GEOMÉTRICAS Y DE COLUMNAS      -->
+                    <!-- ========================================== -->
+            
+                    <!-- Línea base roja en zona libre de viga -->
+                    <line x1="217.5" y1="120" x2="497.5" y2="120" stroke="#b91c1c" stroke-width="3" stroke-dasharray="6 4" />
+                    
+                    <!-- Caras de columnas (Líneas verticales punteadas) -->
+                    <line x1="130" y1="40" x2="130" y2="440" stroke="#475569" stroke-width="1.5" stroke-dasharray="5 4" />
+                    <line x1="585" y1="40" x2="585" y2="440" stroke="#475569" stroke-width="1.5" stroke-dasharray="5 4" />
+                    <line x1="655" y1="40" x2="655" y2="440" stroke="#475569" stroke-width="1.5" stroke-dasharray="5 4" />
+                    
+                    <!-- Cotas de Ancho c=0.40m -->
+                    <g stroke="#475569" stroke-width="1.5">
+                        <line x1="60" y1="55" x2="130" y2="55" />
+                        <line x1="60" y1="51" x2="60" y2="59" />
+                        <line x1="130" y1="51" x2="130" y2="59" />
+                        
+                        <line x1="585" y1="55" x2="655" y2="55" />
+                        <line x1="585" y1="51" x2="585" y2="59" />
+                        <line x1="655" y1="51" x2="655" y2="59" />
+                    </g>
+                    <text x="95" y="48" font-size="11" fill="#334155" text-anchor="middle" font-weight="bold">c=0.40m</text>
+                    <text x="620" y="48" font-size="11" fill="#334155" text-anchor="middle" font-weight="bold">c=0.40m</text>
+                    
+                    <!-- Textos Zonales -->
+                    <text x="138" y="110" font-size="13" font-weight="bold" fill="#475569" text-anchor="middle" opacity="0.7">ZAPATA COL 1</text>
+                    <text x="620" y="110" font-size="13" font-weight="bold" fill="#475569" text-anchor="middle" opacity="0.7">ZAPATA COL 2</text>
+                    <text x="357.5" y="110" font-size="11" font-weight="bold" fill="#b91c1c" text-anchor="middle" opacity="0.8">TRAMO LIBRE (VIGA DE ENLACE) q=0</text>
+            
+                    <!-- Etiquetas de Ejes -->
+                    <text x="410" y="12" font-size="13" font-weight="bold" fill="#475569" text-anchor="middle">Abscisa X (m)</text>
+                    <text x="25" y="280" font-size="13" font-weight="bold" fill="#475569" text-anchor="middle" transform="rotate(-90 25 280)">Presión Última q_u (kPa)</text>
+            
+                    <!-- ========================================== -->
+                    <!-- LEYENDA                                    -->
+                    <!-- ========================================== -->
+                    <g transform="translate(60, 480)">
+                        <line x1="0" y1="0" x2="25" y2="0" stroke="#2563eb" stroke-width="3" />
+                        <text x="30" y="4" font-size="11" font-weight="bold" fill="#475569">1.2D + 1.6L</text>
+            
+                        <line x1="110" y1="0" x2="135" y2="0" stroke="#ea580c" stroke-width="3" />
+                        <text x="140" y="4" font-size="11" font-weight="bold" fill="#475569">1.2D + E + L</text>
+            
+                        <line x1="285" y1="0" x2="310" y2="0" stroke="#334155" stroke-width="3" />
+                        <text x="315" y="4" font-size="11" font-weight="bold" fill="#475569">1.2D - E + L</text>
+            
+                        <line x1="110" y1="20" x2="135" y2="20" stroke="#16a34a" stroke-width="3" />
+                        <text x="140" y="24" font-size="11" font-weight="bold" fill="#475569">0.9D + E</text>
+            
+                        <line x1="285" y1="20" x2="310" y2="20" stroke="#9333ea" stroke-width="3" />
+                        <text x="315" y="24" font-size="11" font-weight="bold" fill="#475569">0.9D - E</text>
+                    </g>
+                </svg>
+            
+                <p class="w3-small w3-margin-top w3-left-align" style="color: var(--gris-texto); margin-bottom: 0; padding-top: 15px;">
+                    <i><strong>Figura 3:</strong> Diagrama de presiones de contacto para las combinaciones <strong>últimas de diseño</strong> analizadas. Se proyectan bloques completos de esfuerzo hacia abajo (\(q_u &gt; 0\)) hasta la línea base de referencia, evidenciando el efecto de las amplificaciones mayoradas sobre la zapata excéntrica (COL1) y la centrada (COL2).</i>
                 </p>
             </div>
 
