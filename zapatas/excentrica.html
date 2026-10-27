@@ -400,7 +400,7 @@
                         Relación de aspecto adoptada para el tanteo inicial: <strong>\(\Delta Y / \Delta X = 2.0\)</strong>.
                     </p>
                     <ul class="w3-small" style="margin: 0; padding-left: 20px; color: var(--gris-texto);">
-                        <li>\( P_{D+L} = 240 \text{ kN} \)</li>
+                        <li>\( P_{D+Live} = 240 \text{ kN} \)</li>
                         <li>\( A_{\mathrm{req}} = \frac{240}{189.2} = 1.27 \text{ m}^2 \)</li>
                         <li>Como \(\Delta Y = 2\Delta X\):</li>
                         <li style="list-style-type: none; margin-left: -10px; margin-top: 3px;">
@@ -421,7 +421,7 @@
                         Relación de aspecto adoptada para el tanteo inicial: <strong>\(\Delta Y / \Delta X = 1.0\)</strong> (Cuadrada).
                     </p>
                     <ul class="w3-small" style="margin: 0; padding-left: 20px; color: var(--gris-texto);">
-                        <li>\( P_{D+L} = 350 \text{ kN} \)</li>
+                        <li>\( P_{D+Live} = 350 \text{ kN} \)</li>
                         <li>\( A_{\mathrm{req}} = \frac{350}{189.2} = 1.85 \text{ m}^2 \)</li>
                         <li>Como \(\Delta Y = \Delta X = L_{Z.COL2}\):</li>
                         <li style="list-style-type: none; margin-left: -10px; margin-top: 3px;">
@@ -507,7 +507,8 @@
         <div class="panel-control" id="presiones-excentrica">
             <h2 class="panel-titulo">3. Analítica de Presiones de Servicio</h2>
             <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Verificación de Excentricidad y Delta de Presiones</p>
-
+        
+            <!-- 1. MARCO DE REFERENCIA Y GEOMETRÍA -->
             <div class="w3-panel ce-panel-gris w3-padding w3-round">
                 <strong style="color: var(--azul-profundo);"><i class="fa fa-map-marker"></i> 📍 Marco de Referencia y Geometría del Sistema</strong>
                 <p class="w3-small" style="margin-top: 10px; margin-bottom: 12px;">
@@ -524,7 +525,7 @@
                             <li style="margin-top: 5px; border-top: 1px dashed var(--gris-borde); padding-top: 5px; font-style: italic;">Longitud: 0.90 m</li>
                         </ul>
                     </div>
-
+        
                     <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid var(--gris-borde); margin:0;">
                         <strong style="color: var(--azul-profundo); text-transform: uppercase; font-size: 0.9em;">Zapata Z.COL2 (Centrada)</strong>
                         <ul class="w3-small" style="margin: 8px 0 0 0; padding-left: 15px; color: var(--gris-texto); list-style: none;">
@@ -535,49 +536,38 @@
                         </ul>
                     </div>
                 </div>
-
+        
                 <p class="w3-small" style="margin-top: 15px; margin-bottom: 0; font-style: italic; color: var(--gris-texto);">
                     Nota: La viga de enlace cubre el vano libre entre \( x = 0.70 \text{ m} \) y \( x = 2.30 \text{ m} \), garantizando la transferencia de momentos para mantener el equilibrio estático del conjunto.<br>
                     Este sistema de coordenadas permite formular equilibrio global respecto a un único eje de referencia (COL1), simplificando la obtención de la resultante.
                 </p>
             </div>
-
-            <!-- CAJA IMAGEN 2: PRESIONES DE SERVICIO -->
+        
+            <!-- 2. DIAGRAMA DE PRESIONES + TABLA 4 -->
             <div class="w3-center w3-margin-top w3-margin-bottom w3-padding w3-round w3-white" style="border: 1px dashed var(--gris-borde);">
-                
                 <strong style="color: var(--gris-texto); text-transform: uppercase; font-size: 12px; display: block; margin-bottom: 10px;">Diagrama de Presiones de Servicio q(x) [kPa]</strong>
                 
-                <!-- GRÁFICO SVG GENERADO CON DATOS EXACTOS -->
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 540" style="width: 100%; max-width: 750px; height: auto; background: white; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; margin: 0 auto; display: block;">
-                    
-                    <!-- Fondo de la cuadrícula (Grid) -->
                     <g stroke="#e2e8f0" stroke-width="1" stroke-dasharray="4 4">
-                        <!-- Líneas verticales X -->
-                        <line x1="60" y1="40" x2="60" y2="440" />      <!-- -0.2 (Inicio COL1) -->
-                        <line x1="95" y1="40" x2="95" y2="440" />      <!-- 0.0 (Eje COL1) -->
-                        <line x1="217.5" y1="40" x2="217.5" y2="440" /><!-- 0.7 (Fin COL1) -->
-                        <line x1="270" y1="40" x2="270" y2="440" />    <!-- 1.0 -->
-                        <line x1="357.5" y1="40" x2="357.5" y2="440" /> <!-- 1.5 -->
-                        <line x1="445" y1="40" x2="445" y2="440" />    <!-- 2.0 -->
-                        <line x1="497.5" y1="40" x2="497.5" y2="440" /><!-- 2.3 (Inicio COL2) -->
-                        <line x1="620" y1="40" x2="620" y2="440" />    <!-- 3.0 (Eje COL2) -->
-                        <line x1="742.5" y1="40" x2="742.5" y2="440" /><!-- 3.7 (Fin COL2) -->
-                        <line x1="760" y1="40" x2="760" y2="440" />    <!-- 3.8 -->
-                        
-                        <!-- Líneas horizontales Y (Escala invertida: q=0 arriba, positivas abajo) -->
-                        <line x1="60" y1="120" x2="760" y2="120" /> <!-- 0 kPa -->
-                        <line x1="60" y1="184" x2="760" y2="184" /> <!-- 50 kPa -->
-                        <line x1="60" y1="248" x2="760" y2="248" /> <!-- 100 kPa -->
-                        <line x1="60" y1="312" x2="760" y2="312" /> <!-- 150 kPa -->
-                        <line x1="60" y1="376" x2="760" y2="376" /> <!-- 200 kPa -->
-                        <line x1="60" y1="440" x2="760" y2="440" /> <!-- 250 kPa -->
+                        <line x1="60" y1="40" x2="60" y2="440" />
+                        <line x1="95" y1="40" x2="95" y2="440" />
+                        <line x1="217.5" y1="40" x2="217.5" y2="440" />
+                        <line x1="270" y1="40" x2="270" y2="440" />
+                        <line x1="357.5" y1="40" x2="357.5" y2="440" />
+                        <line x1="445" y1="40" x2="445" y2="440" />
+                        <line x1="497.5" y1="40" x2="497.5" y2="440" />
+                        <line x1="620" y1="40" x2="620" y2="440" />
+                        <line x1="742.5" y1="40" x2="742.5" y2="440" />
+                        <line x1="760" y1="40" x2="760" y2="440" />
+                        <line x1="60" y1="120" x2="760" y2="120" />
+                        <line x1="60" y1="184" x2="760" y2="184" />
+                        <line x1="60" y1="248" x2="760" y2="248" />
+                        <line x1="60" y1="312" x2="760" y2="312" />
+                        <line x1="60" y1="376" x2="760" y2="376" />
+                        <line x1="60" y1="440" x2="760" y2="440" />
                     </g>
-            
-                    <!-- FRANJAS DE COLUMNAS (Fondo suave) -->
-                    <rect x="60" y="40" width="70" height="400" fill="#cbd5e1" opacity="0.35" /> <!-- COL1: x=-0.2 a 0.2 -->
-                    <rect x="585" y="40" width="70" height="400" fill="#cbd5e1" opacity="0.35" /> <!-- COL2: x=2.8 a 3.2 -->
-            
-                    <!-- Eje Y: Textos -->
+                    <rect x="60" y="40" width="70" height="400" fill="#cbd5e1" opacity="0.35" />
+                    <rect x="585" y="40" width="70" height="400" fill="#cbd5e1" opacity="0.35" />
                     <g font-size="12" fill="#64748b" text-anchor="end">
                         <text x="85" y="124">0</text>
                         <text x="85" y="188">50</text>
@@ -586,8 +576,6 @@
                         <text x="85" y="380">200</text>
                         <text x="85" y="444">250</text>
                     </g>
-            
-                    <!-- Eje X: Textos -->
                     <g font-size="12" fill="#64748b" text-anchor="middle">
                         <text x="60" y="25">-0.2</text>
                         <text x="95" y="25">0.0</text>
@@ -597,210 +585,79 @@
                         <text x="620" y="25">3.0</text>
                         <text x="742.5" y="25">3.7</text>
                     </g>
-            
-                    <!-- Ejes Principales -->
-                    <line x1="60" y1="120" x2="760" y2="120" stroke="#94a3b8" stroke-width="2.5" /> <!-- Eje X (q=0) -->
-                    <line x1="95" y1="40" x2="95" y2="440" stroke="#64748b" stroke-width="1.5" /> <!-- Eje Y (x=0) -->
-            
-                    <!-- ========================================== -->
-                    <!-- BLOQUES DE PRESIÓN: SÓLIDOS TRANSPARENTES  -->
-                    <!-- ========================================== -->
-                    
-                    <!-- 5. Combinación 0.6D - 0.7E (Púrpura) -->
+                    <line x1="60" y1="120" x2="760" y2="120" stroke="#94a3b8" stroke-width="2.5" />
+                    <line x1="95" y1="40" x2="95" y2="440" stroke="#64748b" stroke-width="1.5" />
                     <g>
-                        <!-- Zapata 1 -->
                         <polygon points="60,120 60,188.7 217.5,202.4 217.5,120" fill="#9333ea" opacity="0.12" />
                         <polyline points="60,120 60,188.7 217.5,202.4 217.5,120" fill="none" stroke="#9333ea" stroke-width="2.5" />
-                        <!-- Zapata 2 -->
                         <polygon points="497.5,120 497.5,226.8 742.5,248.1 742.5,120" fill="#9333ea" opacity="0.12" />
                         <polyline points="497.5,120 497.5,226.8 742.5,248.1 742.5,120" fill="none" stroke="#9333ea" stroke-width="2.5" />
                     </g>
-            
-                    <!-- 4. Combinación 0.6D + 0.7E (Verde) -->
                     <g>
-                        <!-- Zapata 1 -->
                         <polygon points="60,120 60,258.5 217.5,248.2 217.5,120" fill="#16a34a" opacity="0.12" />
                         <polyline points="60,120 60,258.5 217.5,248.2 217.5,120" fill="none" stroke="#16a34a" stroke-width="2.5" />
-                        <!-- Zapata 2 -->
                         <polygon points="497.5,120 497.5,229.8 742.5,213.6 742.5,120" fill="#16a34a" opacity="0.12" />
                         <polyline points="497.5,120 497.5,229.8 742.5,213.6 742.5,120" fill="none" stroke="#16a34a" stroke-width="2.5" />
                     </g>
-            
-                    <!-- 3. Combinación D - 0.75(0.7E) + 0.75L (Gris oscuro) -->
                     <g>
-                        <!-- Zapata 1 -->
                         <polygon points="60,120 60,292.8 217.5,303.6 217.5,120" fill="#334155" opacity="0.12" />
                         <polyline points="60,120 60,292.8 217.5,303.6 217.5,120" fill="none" stroke="#334155" stroke-width="2.5" />
-                        <!-- Zapata 2 -->
                         <polygon points="497.5,120 497.5,322.9 742.5,339.7 742.5,120" fill="#334155" opacity="0.12" />
                         <polyline points="497.5,120 497.5,322.9 742.5,339.7 742.5,120" fill="none" stroke="#334155" stroke-width="2.5" />
                     </g>
-            
-                    <!-- 2. Combinación D + 0.75(0.7E) + 0.75L (Naranja) -->
                     <g>
-                        <!-- Zapata 1 -->
                         <polygon points="60,120 60,345.1 217.5,337.9 217.5,120" fill="#ea580c" opacity="0.15" />
                         <polyline points="60,120 60,345.1 217.5,337.9 217.5,120" fill="none" stroke="#ea580c" stroke-width="2.5" />
-                        <!-- Zapata 2 -->
                         <polygon points="497.5,120 497.5,325.1 742.5,313.9 742.5,120" fill="#ea580c" opacity="0.15" />
                         <polyline points="497.5,120 497.5,325.1 742.5,313.9 742.5,120" fill="none" stroke="#ea580c" stroke-width="2.5" />
                     </g>
-            
-                    <!-- 1. Combinación D + L (Azul) -->
                     <g>
-                        <!-- Zapata 1 -->
                         <polygon points="60,120 60,327.7 217.5,329.2 217.5,120" fill="#2563eb" opacity="0.15" />
                         <polyline points="60,120 60,327.7 217.5,329.2 217.5,120" fill="none" stroke="#2563eb" stroke-width="3" />
-                        <!-- Zapata 2 -->
                         <polygon points="497.5,120 497.5,331.9 742.5,334.2 742.5,120" fill="#2563eb" opacity="0.15" />
                         <polyline points="497.5,120 497.5,331.9 742.5,334.2 742.5,120" fill="none" stroke="#2563eb" stroke-width="3" />
                     </g>
-            
-                    <!-- ========================================== -->
-                    <!-- REFERENCIAS GEOMÉTRICAS Y DE COLUMNAS      -->
-                    <!-- ========================================== -->
-            
-                    <!-- Línea base roja en zona libre de viga -->
                     <line x1="217.5" y1="120" x2="497.5" y2="120" stroke="#b91c1c" stroke-width=".7" stroke-dasharray="6 4" />
-                    
-                    <!-- Caras de columnas (Líneas verticales punteadas) -->
                     <line x1="60" y1="40" x2="60" y2="440" stroke="#475569" stroke-width="0.7" stroke-dasharray="5 4" />
                     <line x1="130" y1="40" x2="130" y2="440" stroke="#475569" stroke-width="0.7" stroke-dasharray="5 4" />
                     <line x1="585" y1="40" x2="585" y2="440" stroke="#475569" stroke-width="0.7" stroke-dasharray="5 4" />
                     <line x1="655" y1="40" x2="655" y2="440" stroke="#475569" stroke-width="0.7" stroke-dasharray="5 4" />
-                    
-                    <!-- Cotas de Ancho c=0.40m -->
                     <g stroke="#475569" stroke-width="1.0">
                         <line x1="60" y1="67" x2="130" y2="67" />
                         <line x1="60" y1="63" x2="60" y2="71" />
                         <line x1="130" y1="63" x2="130" y2="71" />
-                        
                         <line x1="585" y1="67" x2="655" y2="67" />
                         <line x1="585" y1="63" x2="585" y2="71" />
                         <line x1="655" y1="63" x2="655" y2="71" />
                     </g>
                     <text x="95" y="60" font-size="11" fill="#334155" text-anchor="middle" font-weight="bold">0.40m</text>
                     <text x="620" y="60" font-size="11" fill="#334155" text-anchor="middle" font-weight="bold">0.40m</text>
-                    
-                    <!-- Textos Zonales -->
                     <text x="138" y="110" font-size="13" font-weight="bold" fill="#475569" text-anchor="middle" opacity="0.7">ZAPATA COL 1</text>
                     <text x="620" y="110" font-size="13" font-weight="bold" fill="#475569" text-anchor="middle" opacity="0.7">ZAPATA COL 2</text>
                     <text x="357.5" y="110" font-size="11" font-weight="bold" fill="#b91c1c" text-anchor="middle" opacity="0.8">TRAMO LIBRE (VIGA DE ENLACE) q_s=0</text>
-            
-                    <!-- Etiquetas de Ejes -->
                     <text x="410" y="12" font-size="13" font-weight="bold" fill="#475569" text-anchor="middle">Abscisa X (m)</text>
                     <text x="25" y="280" font-size="13" font-weight="bold" fill="#475569" text-anchor="middle" transform="rotate(-90 25 280)">Presión de Servicio q_s (kPa)</text>
-            
-                    <!-- ========================================== -->
-                    <!-- LEYENDA                                    -->
-                    <!-- ========================================== -->
                     <g transform="translate(200, 480)">
                         <line x1="0" y1="0" x2="25" y2="0" stroke="#2563eb" stroke-width="3" />
-                        <text x="30" y="4" font-size="11" font-weight="bold" fill="#475569">D + L</text>
-            
+                        <text x="30" y="4" font-size="11" font-weight="bold" fill="#475569">D + Live</text>
                         <line x1="90" y1="0" x2="115" y2="0" stroke="#ea580c" stroke-width="3" />
-                        <text x="120" y="4" font-size="11" font-weight="bold" fill="#475569">D + 0.75(0.7E) + 0.75L</text>
-            
+                        <text x="120" y="4" font-size="11" font-weight="bold" fill="#475569">D + 0.75(0.7E) + 0.75Live</text>
                         <line x1="285" y1="0" x2="310" y2="0" stroke="#334155" stroke-width="3" />
-                        <text x="315" y="4" font-size="11" font-weight="bold" fill="#475569">D - 0.75(0.7E) + 0.75L</text>
-            
+                        <text x="315" y="4" font-size="11" font-weight="bold" fill="#475569">D - 0.75(0.7E) + 0.75Live</text>
                         <line x1="90" y1="20" x2="115" y2="20" stroke="#16a34a" stroke-width="3" />
                         <text x="120" y="24" font-size="11" font-weight="bold" fill="#475569">0.6D + 0.7E</text>
-            
                         <line x1="285" y1="20" x2="310" y2="20" stroke="#9333ea" stroke-width="3" />
                         <text x="315" y="24" font-size="11" font-weight="bold" fill="#475569">0.6D - 0.7E</text>
                     </g>
                 </svg>
-            
-                <p class="w3-small w3-margin-top w3-left-align" style="color: var(--gris-texto); margin-bottom: 0; padding-top: 15px;">
-                    <i><strong>Figura 2:</strong> Diagrama de presiones de contacto para las combinaciones de servicio analizadas.
-                        Nótese la interrupción del diagrama en la zona de la viga de enlace (\(x=0.70\) a \(x=2.30\)). Se asume comportamiento rígido de cada base, generando distribuciones aproximadamente lineales de presión en cada zapata.
-                        Las presiones positivas se grafican hacia abajo, indicando la reacción del terreno.</i>
-                </p>
-            </div>
-
-
-            <div class="ce-grid ce-grid-3">
-                <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid #bbf7d0; margin:0;">
-                    <strong style="color: #166534;"><i class="fa fa-check"></i> ✅ B.2.3-2 (D+Live)</strong>
-                    <div class="w3-small" style="margin-top: 10px; color: #14532d;">
-                        • Resultante: \(x_R = \mathbf{1.771 \text{ m}}\)<br>
-                        • Centroide: \(x_c = \mathbf{1.756 \text{ m}}\)<br>
-                        • Dif. Centroide: <strong>0.4% (OK)</strong><br>
-                        • Dif. Presiones: <strong>3.1% (OK)</strong><br>
-                        <span style="font-size: 0.9em; opacity: 0.8;">q_izq: 162.3 | q_der: 167.3 kPa</span>
-                    </div>
-                </div>
-
-                <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid #bfdbfe; margin:0;">
-                    <strong style="color: #1e40af;"><i class="fa fa-warning"></i> ⚠️ B.2.3-8 (Sismo)</strong>
-                    <div class="w3-small" style="margin-top: 10px; color: #1e3a8a;">
-                        • Resultante: \(x_R = \mathbf{1.679 \text{ m}}\)<br>
-                        • Centroide: \(x_c = \mathbf{1.756 \text{ m}}\)<br>
-                        • Dif. Centroide: <strong>2.0% (OK)</strong><br>
-                        • Dif. Presiones: <strong>16.1% (ACEPTABLE)</strong><br>
-                        <span style="font-size: 0.9em; opacity: 0.8;">q_izq: 175.9 | q_der: 151.5 kPa</span>
-                    </div>
-                </div>
-
-                <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid #fecaca; margin:0;">
-                    <strong style="color: #9f1239;"><i class="fa fa-bell"></i> 🚨 B.2.3-10 (0.6D-0.7E)</strong>
-                    <div class="w3-small" style="margin-top: 10px; color: #9f1239;">
-                        • Resultante: \(x_R = \mathbf{2.064 \text{ m}}\)<br>
-                        • Centroide: \(x_c = \mathbf{1.756 \text{ m}}\)<br>
-                        • Dif. Centroide: <strong>7.9% (ACEPTABLE)</strong><br>
-                        • Dif. Presiones: <strong>86.3% (REVISAR)</strong><br>
-                        <span style="font-size: 0.9em; opacity: 0.8;">Gradiente severo de presiones.</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid var(--gris-borde); margin-top: 24px;">
-                <strong style="color: var(--azul-profundo); font-size: 1.1em; border-bottom: 1px solid var(--gris-borde); display: block; padding-bottom: 8px; margin-bottom: 15px;"><i class="fa fa-search"></i> 🔍 Análisis de Resultados vs. Criterios de Control</strong>
                 
-                <p class="w3-small" style="color: var(--gris-texto); margin-bottom: 15px;">
-                    Al contrastar nuestro modelo con los <strong>Criterios Académicos de Evaluación</strong>, podemos concluir lo siguiente:
+                <p class="w3-small w3-margin-top w3-left-align" style="color: var(--gris-texto); margin-bottom: 0; padding-top: 15px;">
+                    <i><strong>Figura 2:</strong> Diagrama de presiones de contacto para las combinaciones de servicio analizadas. Nótese la interrupción del diagrama en la zona de la viga de enlace (\(x=0.70\) a \(x=2.30\)). Se asume comportamiento rígido de cada base, generando distribuciones aproximadamente lineales de presión en cada zapata. Las presiones positivas se grafican hacia abajo, indicando la reacción del terreno.</i>
                 </p>
-
-                <div class="ce-grid ce-grid-2">
-                    <div class="w3-panel ce-panel-gris w3-padding w3-round" style="margin:0;">
-                        <strong style="color: #166534;"><i class="fa fa-check-circle"></i> ✅ Combinación Permanente (D + Live)</strong>
-                        <p class="w3-small" style="margin-top: 8px; margin-bottom: 0;">
-                            Con una diferencia de presiones de solo <strong>3.1%</strong>, el predimensionamiento es calificado como <strong>Excelente (OK)</strong>. Esto garantiza que el suelo se deforme de manera uniforme, minimizando riesgos de asentamientos diferenciales entre las columnas.
-                        </p>
-                    </div>
-
-                    <div class="w3-panel ce-panel-gris w3-padding w3-round" style="margin:0;">
-                        <strong style="color: #92400e;"><i class="fa fa-balance-scale"></i> ⚖️ Combinación con Sismo (B.2.3-8)</strong>
-                        <p class="w3-small" style="margin-top: 8px; margin-bottom: 0;">
-                            El indicador de <strong>16.1%</strong> se clasifica como <strong>Aceptable</strong>. Es un resultado esperado: las fuerzas horizontales del sismo desplazan la resultante, pero el sistema de viga de enlace es lo suficientemente rígido para mantener el gradiente bajo control sin llegar a niveles críticos (&gt;25%).
-                        </p>
-                    </div>
-                </div>
-
-                <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid #fecaca; border-left: 4px solid #dc2626; margin-top: 15px;">
-                    <strong style="color: #991b1b;"><i class="fa fa-exclamation-triangle"></i> 🚨 Caso Crítico: B.2.3-10 (0.6D - 0.7E)</strong>
-                    <p class="w3-small" style="margin-top: 8px; margin-bottom: 0; color: #7f1d1d;">
-                        Aquí la diferencia de presiones sube al <strong>86.3%</strong>. Este valor nos indica que estamos en el límite del comportamiento rígido y que cualquier incremento en la carga sísmica podría generar despegue (presiones negativas).
-                    </p>
-                </div>
             </div>
-
-            <div class="w3-panel ce-panel-azul w3-padding w3-round">
-                <strong style="color: var(--azul-profundo);"><i class="fa fa-lightbulb-o"></i> 💡 Conclusión de Estabilidad:</strong>
-                <p class="w3-small" style="margin-top: 5px; margin-bottom: 10px;">
-                    Aunque el predimensionamiento basado en cargas gravitacionales es excelente (desviación de centroides del 0.4%), la combinación <strong>B.2.3-10</strong> revela la vulnerabilidad del sistema ante sismos con carga muerta reducida.
-                </p>
-                <p class="w3-small" style="margin-top: 0; margin-bottom: 5px;">
-                    Un diferencial de presiones del <strong>86.3%</strong> indica que la zapata de lindero es propensa al despegue al analizar ese estado límite de servicio en esa dirección. En un diseño definitivo, esto obligaría a:
-                </p>
-                <ul class="w3-small" style="margin: 0; padding-left: 20px; color: var(--gris-texto);">
-                    <li>Revisar presiones con momentos biaxiales detalladamente y,</li>
-                    <li>Verificar que no exista tracción (levantamiento) en los bordes considerando todas las combinaciones de servicio.</li>
-                </ul>
-            </div>
-
-            <strong style="color: var(--azul-profundo); font-size: 13px; text-transform: uppercase;">📊 Tabla 4. Presiones de Contacto PARA COMBINACIONES DE SERVICIO (kPa)</strong>
+        
+            <!-- TABLA REUBICADA CON TODAS LAS COMBINACIONES -->
+            <strong id="tabla-4" style="color: var(--azul-profundo); font-size: 13px; text-transform: uppercase;">📊 Tabla 4. Presiones de Contacto PARA COMBINACIONES DE SERVICIO (kPa)</strong>
             <div class="tabla-container">
                 <table class="tabla-traslapos tabla-small">
                     <thead>
@@ -839,21 +696,76 @@
                     </tbody>
                 </table>
             </div>
-
-            <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid #bbf7d0; border-left: 4px solid #166534;">
+        
+            <!-- 3. INDICADORES DE EVALUACIÓN -->
+            <div class="ce-grid ce-grid-3" style="margin-top: 20px;">
+                <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid #bbf7d0; margin:0;">
+                    <strong style="color: #166534;"><i class="fa fa-check"></i> ✅ B.2.3-2 (D+Live)</strong>
+                    <div class="w3-small" style="margin-top: 10px; color: #14532d;">
+                        • Resultante: \(x_R = \mathbf{1.771 \text{ m}}\)<br>
+                        • Centroide: \(x_c = \mathbf{1.756 \text{ m}}\)<br>
+                        • Dif. Centroide: <strong>0.4% (OK)</strong><br>
+                        • Dif. Presiones: <strong>3.1% (OK)</strong><br>
+                        <span style="font-size: 0.9em; opacity: 0.8;">q_izq: 162.3 | q_der: 167.3 kPa</span>
+                    </div>
+                </div>
+        
+                <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid #bfdbfe; margin:0;">
+                    <strong style="color: #1e40af;"><i class="fa fa-warning"></i> ⚠️ B.2.3-8 (Sismo)</strong>
+                    <div class="w3-small" style="margin-top: 10px; color: #1e3a8a;">
+                        • Resultante: \(x_R = \mathbf{1.679 \text{ m}}\)<br>
+                        • Centroide: \(x_c = \mathbf{1.756 \text{ m}}\)<br>
+                        • Dif. Centroide: <strong>2.0% (OK)</strong><br>
+                        • Dif. Presiones: <strong>16.1% (ACEPTABLE)</strong><br>
+                        <span style="font-size: 0.9em; opacity: 0.8;">q_izq: 175.9 | q_der: 151.5 kPa</span>
+                    </div>
+                </div>
+        
+                <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid #bfdbfe; border-left: 4px solid #2563eb; margin:0;">
+                    <strong style="color: #1e40af;"><i class="fa fa-info-circle"></i> B.2.3-10: \(0.6D-0.7E\)</strong>
+                    <div class="w3-small" style="margin-top: 10px; color: #1e3a8a;">
+                        - Diferencia de centroide: <strong>7.9 %</strong> (informativa)<br>
+                        - Diferencia relativa de presiones: <strong>86.3 %</strong> (informativa)<br>
+                        - Presión mínima: <strong>53.7 kPa</strong><br>
+                        - Presión máxima: <strong>100.1 kPa</strong><br><br>
+                        Los umbrales académicos de la Tabla 1 para diferencia de centroide y diferencia de presiones no se aplican a esta combinación. La evaluación se centra en verificar el contacto completo y la capacidad portante.
+                    </div>
+                </div>
+            </div>
+        
+            <!-- 4. INTERPRETACIÓN Y NOTAS DE CRITERIO -->
+            
+            <!-- Elemento 1: Alerta 27.2% -->
+            <div class="w3-panel w3-padding w3-round" style="background-color: #fffbe3; border: 1px solid #fde68a; border-left: 4px solid #d97706; margin-top: 15px;">
+                <strong style="color: #b45309;"><i class="fa fa-exclamation-triangle"></i> Resultado por revisar</strong>
+                <p class="w3-small" style="margin-top: 5px; margin-bottom: 0; color: #451a03;">
+                    Para la combinación <strong>\(D - 0.75(0.7E) + 0.75L\)</strong>, la diferencia relativa de presiones es del <strong>27.2 %</strong>, ligeramente superior al umbral académico del <strong>25 %</strong> definido en la <a href="#tabla-1" style="color: #b45309; font-weight: bold; text-decoration: underline;">Tabla 1</a>. Esto indica que la distribución de presiones supera el rango de uniformidad adoptado para la evaluación académica. No implica por sí solo un incumplimiento de la capacidad portante ni pérdida de contacto; estos aspectos se verifican por separado.
+                </p>
+            </div>
+        
+            <!-- Elemento 2: Estabilidad y contacto (reemplaza la vulnerabilidad) -->
+            <div class="w3-panel ce-panel-azul w3-padding w3-round" style="margin-top: 15px;">
+                <strong style="color: var(--azul-profundo);"><i class="fa fa-check-circle"></i> Lectura de estabilidad y contacto</strong>
+                <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
+                    Para la combinación \(0.6D-0.7E\), el modelo arroja presiones de contacto positivas en ambas zapatas: \(q_{\min}=53.7\ \text{kPa}\) y \(q_{\max}=100.1\ \text{kPa}\). Por tanto, bajo las hipótesis adoptadas, se mantiene el contacto completo con el terreno y no se supera la capacidad neta admisible de \(189.2\ \text{kPa}\). El valor elevado de la diferencia relativa de presiones no implica por sí mismo despegue: debe interpretarse junto con las presiones absolutas y las verificaciones de contacto y capacidad portante. Estos resultados corresponden a las comprobaciones efectuadas en este modelo y no sustituyen las demás verificaciones del diseño definitivo.
+                </p>
+            </div>
+        
+            <!-- Elemento 3: Verificación global de contacto -->
+            <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid #bbf7d0; border-left: 4px solid #166534; margin-top: 15px;">
                 <strong style="color: #166534;"><i class="fa fa-check-square-o"></i> ✅ Verificación de Contacto:</strong>
                 <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
-                    En todas las combinaciones analizadas, el esfuerzo mínimo es positivo (\(q &gt; 0\)), garantizando contacto total en ambas bases. Además, los picos de presión (175.9 kPa) son inferiores al \(q_{neto}\) de 189.2 kPa.
+                    En todas las combinaciones analizadas, el esfuerzo mínimo es positivo (\(q > 0\)), garantizando contacto total en ambas bases. Además, los picos de presión (175.9 kPa) son inferiores al \(q_{neto}\) de 189.2 kPa.
                 </p>
             </div>
-            
-            <div class="w3-panel ce-panel-azul w3-padding w3-round">
+        
+            <!-- Elemento 4: Comportamiento del sistema (corregido) -->
+            <div class="w3-panel ce-panel-azul w3-padding w3-round" style="margin-top: 15px;">
                 <strong style="color: var(--azul-profundo);"><i class="fa fa-cogs"></i> 💡 Comportamiento del Sistema Conectado:</strong>
                 <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
-                    A diferencia de una zapata combinada rectangular, aquí el suelo solo reacciona bajo las dos bases independientes. La viga de enlace garantiza que ambas zapatas desciendan uniformemente, pero "no transmite presión directa al suelo" en su tramo central.
+                    A diferencia de una zapata combinada rectangular, el suelo reacciona bajo las dos bases independientes, no bajo el tramo central de la viga de enlace. Esta viga transmite las acciones necesarias para el equilibrio del sistema; la compatibilidad de desplazamientos y los asentamientos dependen de la rigidez de los elementos y de la interacción con el suelo.
                 </p>
             </div>
-
         </div>
 
         <!-- SECCIÓN 4: ANÁLISIS ESTRUCTURAL -->
@@ -952,7 +864,7 @@
                         <polyline points="497.5,120 497.5,284.5 742.5,261.7 742.5,120" fill="none" stroke="#16a34a" stroke-width="2.5" />
                     </g>
             
-                    <!-- 3. Combinación 1.2D - E + L (Gris oscuro) -->
+                    <!-- 3. Combinación 1.2D - E + Live (Gris oscuro) -->
                     <g>
                         <!-- Zapata 1 -->
                         <polygon points="60,120 60,312.4 217.5,331.6 217.5,120" fill="#334155" opacity="0.12" />
@@ -962,7 +874,7 @@
                         <polyline points="497.5,120 497.5,365.8 742.5,395.7 742.5,120" fill="none" stroke="#334155" stroke-width="2.5" />
                     </g>
             
-                    <!-- 2. Combinación 1.2D + E + L (Naranja) -->
+                    <!-- 2. Combinación 1.2D + E + Live (Naranja) -->
                     <g>
                         <!-- Zapata 1 -->
                         <polygon points="60,120 60,412.1 217.5,397.0 217.5,120" fill="#ea580c" opacity="0.15" />
@@ -972,7 +884,7 @@
                         <polyline points="497.5,120 497.5,370.1 742.5,346.5 742.5,120" fill="none" stroke="#ea580c" stroke-width="2.5" />
                     </g>
             
-                    <!-- 1. Combinación 1.2D + 1.6L (Azul) -->
+                    <!-- 1. Combinación 1.2D + 1.6Live (Azul) -->
                     <g>
                         <!-- Zapata 1 -->
                         <polygon points="60,120 60,383.3 217.5,384.5 217.5,120" fill="#2563eb" opacity="0.15" />
@@ -1025,13 +937,13 @@
                     <!-- ========================================== -->
                     <g transform="translate(200, 480)">
                         <line x1="0" y1="0" x2="25" y2="0" stroke="#2563eb" stroke-width="3" />
-                        <text x="30" y="4" font-size="11" font-weight="bold" fill="#475569">1.2D + 1.6L</text>
+                        <text x="30" y="4" font-size="11" font-weight="bold" fill="#475569">1.2D + 1.6Live</text>
             
                         <line x1="110" y1="0" x2="135" y2="0" stroke="#ea580c" stroke-width="3" />
-                        <text x="140" y="4" font-size="11" font-weight="bold" fill="#475569">1.2D + E + L</text>
+                        <text x="140" y="4" font-size="11" font-weight="bold" fill="#475569">1.2D + E + Live</text>
             
                         <line x1="285" y1="0" x2="310" y2="0" stroke="#334155" stroke-width="3" />
-                        <text x="315" y="4" font-size="11" font-weight="bold" fill="#475569">1.2D - E + L</text>
+                        <text x="315" y="4" font-size="11" font-weight="bold" fill="#475569">1.2D - E + Live</text>
             
                         <line x1="110" y1="20" x2="135" y2="20" stroke="#16a34a" stroke-width="3" />
                         <text x="140" y="24" font-size="11" font-weight="bold" fill="#475569">0.9D + E</text>
