@@ -1905,10 +1905,91 @@
                         <ul class="w3-small" style="margin: 0; padding-left: 20px; color: var(--gris-texto);">
                             <li><strong>Refuerzo Superior (Negativo):</strong> <br> 2 No. 5 + 1 No. 6 <br> \(\phi M_n = 98 \text{ kNm} &gt; 92.7 \text{ kNm}\)</li>
                             <li style="margin-top:10px;"><strong>Refuerzo Inferior (Positivo):</strong> <br> 2 No. 5 + 1 No. 4 (Mayor al refuerzo mínimo), refuerzo mínimo según C.10.5.1 \(\406 \text{ mm}^2\)</li>
-                            <li style="margin-top:10px; font-weight:bold; color: #166534;"><strong>Refuerzo Longitudinal:</strong> Barras continuas, sin traslapo, a lo largo del vano para garantizar ductilidad en pórticos especiales (C.21.5.2.3)</li>
+                            <li style="margin-top:10px; font-weight:bold; color: #166534;"><strong>Refuerzo Longitudinal continuo:</strong> se disponen barras continuas, sin empalmes por traslapo a lo largo del vano. Esta decisión evita ubicar empalmes en una longitud reducida y facilita el detallado. Cuando sean aplicables los requisitos de C.21.5.2.3 de la NSR-10, deberán respetarse las restricciones de ubicación y confinamiento establecidas para los empalmes.</li>
                         </ul>
                     </div>
+                    <!-- VERIFICACIÓN DE CORTANTE POR CAPACIDAD (CORTANTE PLÁSTICO) -->
+                    <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid var(--gris-borde); margin-top: 20px;">
+                        <strong style="color: var(--azul-profundo); font-size: 1.05em; border-bottom: 2px solid #ef4444; display: block; padding-bottom: 6px; margin-bottom: 12px;">
+                            <i class="fa fa-bolt"></i> ⚡ Verificación de Cortante por Capacidad Sísmica (\(V_e\)) — NSR-10 C.21.12.3.3 & C.21.5.4
+                        </strong>
+                    
+                        <p class="w3-small" style="color: var(--gris-texto); margin-top: 0; margin-bottom: 15px;">
+                            Por disposición expresa de la <strong>NSR-10 C.21.12.3.3</strong>, las vigas de cimentación que forman parte del sistema de resistencia sísmica deben cumplir con los requisitos de detallado y capacidad de vigas de pórticos especiales (C.21.5). El cortante de diseño por capacidad (\(V_e\)) se calcula entre las caras de los nudos que delimitan el elemento.
+                        </p>
+                    
+                        <!-- VALORES Mpr -->
+                        <div class="ce-grid ce-grid-2" style="gap: 12px; margin-bottom: 15px;">
+                            <div class="w3-padding-small w3-round" style="background: #fef2f2; border: 1px solid #fecaca;">
+                                <span class="w3-small" style="color: #991b1b; display: block; font-weight: bold; font-size: 11px;">Momento Probable Superior (\(2\#5 + 1\#6\))</span>
+                                <strong style="color: #b91c1c; font-size: 18px;">\(M_{pr}^- = 134\text{ kNm}\)</strong>
+                            </div>
+                            <div class="w3-padding-small w3-round" style="background: #f0fdf4; border: 1px solid #bbf7d0;">
+                                <span class="w3-small" style="color: #166534; display: block; font-weight: bold; font-size: 11px;">Momento Probable Inferior (\(2\#5 + 1\#4\))</span>
+                                <strong style="color: #15803d; font-size: 18px;">\(M_{pr}^+ = 107\text{ kNm}\)</strong>
+                            </div>
+                        </div>
+                    
+                        <!-- TABLA UNIFICADA DE CORTANTE NORMATIVO -->
+                        <div class="tabla-container">
+                            <table class="tabla-traslapos tabla-small" style="margin-bottom: 10px;">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align:left;">Parámetro de Diseño</th>
+                                        <th>Valor / Expresión</th>
+                                        <th>Referencia NSR-10</th>
+                                        <th>Observación Técnica</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="text-align:left;"><strong>Luz Libre del Nudo (\(L_n\))</strong></td>
+                                        <td><strong>\(2.60\text{ m}\)</strong></td>
+                                        <td>C.21.5.1.1 / C.21.5.4.1</td>
+                                        <td>Entre caras internas de columnas (delimitación del nudo estructural)</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align:left;"><strong>Cortante por Inversión (\(V_{sway}\))</strong></td>
+                                        <td>\(\frac{134 + 107}{2.60} = \mathbf{92.7\text{ kN}}\)</td>
+                                        <td>C.21.5.4.1 (a)</td>
+                                        <td>Basado en momentos probables \(M_{pr}\) en los extremos de la luz libre</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align:left;"><strong>Contribución Carga Gravitacional (\(V_g\))</strong></td>
+                                        <td>\(\approx 15.0\text{ kN}\)</td>
+                                        <td>C.21.5.4.1 (b)</td>
+                                        <td>Obtenido de la combinación de carga \(1.2D + 1.0L\) sobre el vano</td>
+                                    </tr>
+                                    <tr style="background: #f0fdf4;">
+                                        <td style="text-align:left;"><strong>Cortante Total por Capacidad (\(V_e\))</strong></td>
+                                        <td style="color: #166534;"><strong>\(107.7\text{ kN}\)</strong></td>
+                                        <td><strong>\(V_e = V_{sway} + V_g\)</strong></td>
+                                        <td><strong style="color: #166534;">\(\phi V_n = 254\text{ kN} &gt; V_e\) (Cumple ampliamente)</strong></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    
+                        <!-- SUSTENTACIÓN NORMATIVA Y CONCEPTUAL -->
+                        <div class="w3-panel ce-panel-azul w3-padding-small w3-round" style="margin-top: 15px; margin-bottom: 0;">
+                            <strong style="color: var(--azul-profundo); font-size: 12px; text-transform: uppercase; display: block; margin-bottom: 6px;">
+                                <i class="fa fa-book"></i> Sustentación Normativa de la Luz Libre (\(L_n\)):
+                            </strong>
+                            <ul class="w3-small" style="margin: 0; padding-left: 18px; color: var(--gris-texto);">
+                                <li style="margin-bottom: 4px;">
+                                    <strong>Secuencia de Trayectoria Sísmica (A.3.1.5 \(\rightarrow\) A.3.6.4 \(\rightarrow\) C.21.12.3.3):</strong> La viga de enlace forma parte integral del sistema de resistencia sísmica. La remisión explícita de C.21.12.3.3 a C.21.5 establece que las caras del nudo estructural quedan definidas por las columnas (\(L_n = 2.60\text{ m}\)), no por el borde geométrico de la zapata.
+                                </li>
+                                <li style="margin-bottom: 4px;">
+                                    <strong>Verificación de Geometría Mínima (C.21.5.1.2):</strong> Para un peralte efectivo \(d = 406\text{ mm}\), la norma exige \(L_n \ge 4d = 1.624\text{ m}\). La luz entre columnas (\(2.60\text{ m}\)) satisface este requisito (\(2.60\text{ m} &gt; 1.624\text{ m}\)), validando la aplicabilidad del capítulo C.21.5.
+                                </li>
+                                <li>
+                                    <strong>Modelo Geotécnico vs. Modelo Estructural:</strong> La separación de \(1.60\text{ m}\) entre zapatas define la longitud del vano libre sin reacción del suelo en la modelación de cimentación, pero no constituye la luz libre de comportamiento sísmico del elemento estructural.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
+            
 
                 <div class="w3-panel ce-panel-azul w3-padding w3-round" style="margin-bottom: 0;">
                     <strong style="color: var(--azul-profundo);"><i class="fa fa-exclamation-triangle"></i> ⚠️ Comentarios de Diseño:</strong>
