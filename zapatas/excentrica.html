@@ -538,11 +538,7 @@
                 </div>
         
                 <p class="w3-small" style="margin-top: 15px; margin-bottom: 0; font-style: italic; color: var(--gris-texto);">
-                    Nota: La viga de enlace conecta las bases a lo largo del vano
-                    libre entre \(x = 0.70\ \text{m}\) y \(x = 2.30\ \text{m}\),
-                    y participa en la transferencia de fuerzas y momentos necesaria
-                    para el equilibrio global del sistema.<br>
-                    Este sistema de coordenadas permite formular equilibrio global respecto a un único eje de referencia (COL1), simplificando la obtención de la resultante.
+                    Nota: La viga de enlace conecta ambas zapatas y permite transmitir las acciones necesarias para el equilibrio del sistema. Este sistema de coordenadas facilita la formulación del equilibrio global respecto a un único eje de referencia (COL1) y la obtención de la resultante.
                 </p>
             </div>
         
@@ -691,7 +687,7 @@
                             <td>\(q_{x=-0.2} \approx 108.2 \text{ kPa}\)</td>
                             <td>\(q_{x=3.7} \approx 73.2 \text{ kPa}\)</td>
                         </tr>
-                        <tr class="ce-alerta">
+                        <tr>
                             <td style="text-align:left;"><strong>B.2.3-10 (-E): 0.6D - 0.7E</strong></td>
                             <td>\(q_{x=-0.2} \approx 53.7 \text{ kPa}\)</td>
                             <td>\(q_{x=3.7} \approx 100.1 \text{ kPa}\)</td>
@@ -701,9 +697,12 @@
             </div>
         
             <!-- 3. INDICADORES DE EVALUACIÓN -->
+            <p class="w3-small" style="color: var(--gris-texto); margin-top: 25px; margin-bottom: 15px; font-style: italic;">
+                Se destacan a continuación las combinaciones representativas para la interpretación de los indicadores. Los resultados de las cinco combinaciones se presentan en el diagrama y la <strong>Tabla 4</strong>.
+            </p>
             <div class="ce-grid ce-grid-3" style="margin-top: 20px;">
                 <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid #bbf7d0; margin:0;">
-                    <strong style="color: #166534;"><i class="fa fa-check"></i> ✅ B.2.3-2 (D+Live)</strong>
+                    <strong style="color: #166534;"><i class="fa fa-check"></i> B.2.3-2 (D+Live)</strong>
                     <div class="w3-small" style="margin-top: 10px; color: #14532d;">
                         • Resultante: \(x_R = \mathbf{1.771 \text{ m}}\)<br>
                         • Centroide: \(x_c = \mathbf{1.756 \text{ m}}\)<br>
@@ -714,7 +713,7 @@
                 </div>
         
                 <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid #bfdbfe; margin:0;">
-                    <strong style="color: #1e40af;"><i class="fa fa-warning"></i> ⚠️ B.2.3-8 (Sismo)</strong>
+                    <strong style="color: #1e40af;"><i class="fa fa-circle"></i> B.2.3-8 (+E)</strong>
                     <div class="w3-small" style="margin-top: 10px; color: #1e3a8a;">
                         • Resultante: \(x_R = \mathbf{1.679 \text{ m}}\)<br>
                         • Centroide: \(x_c = \mathbf{1.756 \text{ m}}\)<br>
