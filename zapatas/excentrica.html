@@ -164,7 +164,7 @@
             <div class="w3-panel ce-panel-naranja w3-padding w3-round">
                 <strong style="color: var(--naranja-estructural);"><i class="fa fa-map-pin"></i> 📌 El Fenómeno de Excentricidad:</strong>
                 <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
-                    En COL1 (lindero), la imposibilidad de extender la zapata hacia el exterior desplaza la resultante al borde. La <strong>Viga de Enlace</strong> actúa como una palanca que conecta COL1 con COL2, "anclando" el sistema para reducir la excentricidad del sistema y controlar el gradiente de presiones.
+                    En COL1, la restricción del lindero impide extender la zapata hacia el exterior, por lo que el eje de la columna no coincide con el centroide geométrico de la base. La <strong>viga de enlace</strong> conecta COL1 con COL2 y participa en el equilibrio del sistema, modificando la distribución de acciones que deben resistir las bases. El objetivo del análisis es determinar si la geometría adoptada y las acciones transmitidas permiten mantener presiones de contacto admisibles.
                 </p>
             </div>
 
@@ -542,6 +542,51 @@
                 </p>
             </div>
         
+            <!-- MODELO MECÁNICO ADOPTADO -->
+            <div class="w3-panel ce-panel-azul w3-padding w3-round">
+                <strong style="color: var(--azul-profundo);">
+                    <i class="fa fa-cogs"></i>
+                    Modelo Mecánico Adoptado
+                </strong>
+        
+                <p class="w3-small" style="margin-top: 8px; margin-bottom: 8px;">
+                    Para este ejemplo, el conjunto formado por las zapatas
+                    Z.COL1 y Z.COL2 y la viga de enlace se analiza mediante
+                    el equilibrio global del sistema. Se adoptan las siguientes
+                    hipótesis para determinar las presiones de contacto:
+                </p>
+        
+                <ul class="w3-small" style="margin: 0; padding-left: 20px; color: var(--gris-texto);">
+                    <li style="margin-bottom: 6px;">
+                        <strong>Comportamiento de las bases:</strong>
+                        cada zapata se idealiza como rígida, de modo que la
+                        presión de contacto varía linealmente sobre su área
+                        en función de las acciones y del equilibrio adoptado.
+                    </li>
+                    <li style="margin-bottom: 6px;">
+                        <strong>Contacto suelo-zapata:</strong>
+                        el suelo se representa mediante una reacción distribuida
+                        que responde linealmente bajo las hipótesis del modelo
+                        y actúa únicamente a compresión; no se admite resistencia
+                        a tracción ni contacto bajo el vano libre de la viga.
+                    </li>
+                    <li>
+                        <strong>Viga de enlace:</strong>
+                        conecta ambas bases y transmite las fuerzas y los
+                        momentos necesarios para el equilibrio del conjunto.
+                        Su análisis estructural se realiza posteriormente
+                        utilizando las acciones correspondientes.
+                    </li>
+                </ul>
+        
+                <p class="w3-small" style="margin-top: 10px; margin-bottom: 0; font-style: italic; color: var(--gris-texto);">
+                    <strong>Alcance:</strong> las presiones obtenidas representan
+                    la respuesta del sistema bajo las hipótesis adoptadas.
+                    Su validez depende de que se cumplan las condiciones de
+                    contacto y las verificaciones de equilibrio correspondientes.
+                </p>
+            </div>
+        
             <!-- 2. DIAGRAMA DE PRESIONES + TABLA 4 -->
             <div class="w3-center w3-margin-top w3-margin-bottom w3-padding w3-round w3-white" style="border: 1px dashed var(--gris-borde);">
                 <strong style="color: var(--gris-texto); text-transform: uppercase; font-size: 12px; display: block; margin-bottom: 10px;">Diagrama de Presiones de Servicio q(x) [kPa]</strong>
@@ -651,7 +696,15 @@
                 </svg>
                 
                 <p class="w3-small w3-margin-top w3-left-align" style="color: var(--gris-texto); margin-bottom: 0; padding-top: 15px;">
-                    <i><strong>Figura 2:</strong> Diagrama de presiones de contacto para las combinaciones de servicio analizadas. Nótese la interrupción del diagrama en la zona de la viga de enlace (\(x=0.70\) a \(x=2.30\)). Se asume comportamiento rígido de cada base, generando distribuciones aproximadamente lineales de presión en cada zapata. Las presiones positivas se grafican hacia abajo, indicando la reacción del terreno.</i>
+                    <i><strong>Figura 2:</strong> Distribuciones idealizadas de las
+                        presiones de contacto para las combinaciones de servicio analizadas.
+                        El diagrama se interrumpe en el vano libre de la viga de enlace
+                        (\(x=0.70\) a \(x=2.30\)), donde no se considera reacción del
+                        terreno. Bajo la hipótesis de bases rígidas y distribución lineal
+                        de presiones, la reacción del suelo varía linealmente sobre cada
+                        zapata. Las presiones positivas se representan hacia abajo para
+                        indicar la reacción ascendente del terreno.
+                        </i>
                 </p>
             </div>
         
@@ -1026,12 +1079,24 @@
                 Se observa el cambio de gradiente bajo carga sísmica (B.2.4-5).
             </p>
 
+            
             <div class="w3-panel ce-panel-gris w3-padding w3-round">
-                <strong style="color: var(--azul-profundo);"><i class="fa fa-link"></i> 🔗 Interpretación Estructural:</strong>
+                <strong style="color: var(--azul-profundo);">
+                    <i class="fa fa-link"></i>
+                    Interpretación Estructural
+                </strong>
                 <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
-                    Las presiones mayoradas actúan como carga distribuida sobre cada zapata. Esto permite modelar el sistema como una <strong>viga de enlace sobre apoyos elásticos</strong>, a partir de la cual se obtienen los diagramas de <strong>cortante (V)</strong> y <strong>momento (M)</strong>.
+                    Las presiones mayoradas del suelo se consideran como
+                    acciones distribuidas sobre las áreas de contacto de
+                    ambas zapatas. Con estas acciones y las fuerzas
+                    transmitidas por las columnas, se analiza la viga de
+                    enlace para obtener sus diagramas de
+                    <strong>cortante (V)</strong> y <strong>momento (M)</strong>.
+                    No se considera reacción del suelo a lo largo del vano
+                    libre de la viga.
                 </p>
             </div>
+
 
             <div class="ce-grid ce-grid-2">
                 <div class="w3-center w3-padding w3-round w3-white" style="border: 2px dashed var(--gris-borde);">
