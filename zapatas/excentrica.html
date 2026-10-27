@@ -1972,23 +1972,43 @@
                             </table>
                         </div>
                     
-                        <!-- SUSTENTACIÓN NORMATIVA Y CONCEPTUAL -->
-                        <div class="w3-panel ce-panel-azul w3-padding-small w3-round" style="margin-top: 15px; margin-bottom: 0;">
+
+                        <!-- REFERENCIA NORMATIVA: VIGAS DE PÓRTICOS ESPECIALES -->
+                        <div class="w3-panel ce-panel-azul w3-padding-small w3-round"
+                             style="margin-top: 15px; margin-bottom: 0;">
                             <strong style="color: var(--azul-profundo); font-size: 12px; display: block; margin-bottom: 6px;">
-                                <i class="fa fa-book"></i> Sustentación Normativa de la Luz Libre (\(L_n\)):
+                                <i class="fa fa-book"></i> Anotaciones sobre el diseño sísmico:
                             </strong>
-                            <ul class="w3-small" style="margin: 0; padding-left: 18px; color: var(--gris-texto);">
-                                <li style="margin-bottom: 4px;">
-                                    <strong>Secuencia de Trayectoria Sísmica (A.3.1.5 \(\rightarrow\) A.3.6.4 \(\rightarrow\) C.21.12.3.3):</strong> La viga de enlace forma parte integral del sistema de resistencia sísmica. La remisión explícita de C.21.12.3.3 a C.21.5 establece que las caras del nudo estructural quedan definidas por las columnas (\(L_n = 2.60\text{ m}\)), no por el borde geométrico de la zapata.
+                        
+                            <ul class="w3-small"
+                                style="margin: 0; padding-left: 18px; color: var(--gris-texto);">
+                                <li style="margin-bottom: 5px;">
+                                    <strong>Trayectoria de las fuerzas sísmicas:</strong>
+                                    A.3.1.5 y A.3.7 establecen el marco para considerar
+                                    los efectos sísmicos en la cimentación y su conexión
+                                    con el sistema de resistencia sísmica.
                                 </li>
-                                <li style="margin-bottom: 4px;">
-                                    <strong>Verificación de Geometría Mínima (C.21.5.1.2):</strong> Para un peralte efectivo \(d = 406\text{ mm}\), la norma exige \(L_n \ge 4d = 1.624\text{ m}\). La luz entre columnas (\(2.60\text{ m}\)) satisface este requisito (\(2.60\text{ m} &gt; 1.624\text{ m}\)), validando la aplicabilidad del capítulo C.21.5.
+                                <li style="margin-bottom: 5px;">
+                                    <strong>Requisitos de detallado:</strong>
+                                    C.21.12.3.3 remite a C.21.5 para las vigas de cimentación
+                                    y los elementos allí descritos que estén sometidos a
+                                    flexión por las columnas pertenecientes al sistema de
+                                    resistencia ante fuerzas sísmicas. Debe revisarse su
+                                    aplicabilidad según las condiciones del elemento.
                                 </li>
                                 <li>
-                                    <strong>Modelo Geotécnico vs. Modelo Estructural:</strong> La separación de \(1.60\text{ m}\) entre zapatas define la longitud del vano libre sin reacción del suelo en la modelación de cimentación, pero no constituye la luz libre de comportamiento sísmico del elemento estructural.
+                                    <strong>Luz libre para el cálculo de \(V_e\):</strong>
+                                    C.21.5.4 establece el procedimiento de cortante por
+                                    capacidad para las vigas a las que aplica. En este ejemplo
+                                    se toma inicialmente \(L_n = 2.60\text{ m}\), medida entre
+                                    caras de columnas, conforme a la idealización estructural
+                                    adoptada. La definición de la luz pertinente debe ser
+                                    coherente con el comportamiento y las condiciones de apoyo
+                                    del elemento.
                                 </li>
                             </ul>
                         </div>
+
                     </div>
             
 
