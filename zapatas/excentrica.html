@@ -178,6 +178,28 @@
             <h2 class="panel-titulo">Diseño de Zapata Excéntrica (Lindero)</h2>
             <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Criterios de diseño</p>
 
+            
+            <div class="w3-panel ce-panel-naranja w3-padding w3-round">
+                <strong style="color: var(--naranja-estructural);">
+                    <i class="fa fa-map-pin"></i> 📌 El Fenómeno de Excentricidad
+                </strong>
+                <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
+                    En COL1, la restricción del lindero impide extender la zapata
+                    hacia el exterior, por lo que el eje de la columna no coincide
+                    con el centroide geométrico de la base. Esta excentricidad
+                    introduce una condición de equilibrio que no se resuelve
+                    considerando la zapata de lindero de forma aislada.
+                    Por ello, se conecta con la zapata interior Z.COL2 mediante
+                    una <strong>viga de enlace</strong>, que permite considerar
+                    las acciones transmitidas entre ambas bases dentro de un
+                    mismo sistema. El análisis busca determinar la distribución
+                    de presiones de contacto compatible con el equilibrio global
+                    y evaluar si la geometría adoptada resulta adecuada para
+                    las condiciones de carga consideradas.
+                </p>
+            </div>
+
+            
             <div class="w3-panel ce-panel-naranja w3-padding w3-round">
                 <strong style="color: var(--naranja-estructural);"><i class="fa fa-map-pin"></i> 📌 El Fenómeno de Excentricidad:</strong>
                 <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
@@ -2030,10 +2052,54 @@
             <h2 class="panel-titulo">6. Diseño de Zapatas Independientes</h2>
             <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Estado Límite Último – Comparativa Técnica Z.COL1 vs Z.COL2</p>
 
+            
+            <div class="w3-panel ce-panel-gris w3-padding w3-round">
+                <strong style="color: var(--azul-profundo);">
+                    <i class="fa fa-link"></i> 🔗 Criterio de Análisis
+                </strong>
+                <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
+                    Se adopta un <strong>modelo simplificado de equilibrio
+                    global</strong>, en el que las zapatas Z.COL1 y Z.COL2 y la
+                    viga de enlace se idealizan como un único conjunto rígido.
+                    Las acciones transmitidas por las columnas se equilibran con
+                    la reacción del terreno, representada mediante una única
+                    función lineal de presión de contacto,
+                    <strong>\(q(x)=mx+b\)</strong>, común a ambas zapatas.
+                    Esta distribución actúa únicamente sobre las áreas en
+                    contacto con el suelo; en el tramo libre de la viga de
+                    enlace no se considera reacción del terreno. Los parámetros
+                    de la función se determinan imponiendo el equilibrio global
+                    de fuerzas verticales y momentos del sistema.
+                </p>
+                <p class="w3-small" style="margin-top: 8px; margin-bottom: 0;">
+                    Con las presiones obtenidas, primero se verifican las
+                    condiciones de servicio y la capacidad portante del terreno
+                    para la geometría adoptada. Posteriormente, las acciones
+                    correspondientes a las combinaciones últimas se utilizan
+                    para diseñar la viga de enlace y las zapatas por separado,
+                    conservando las presiones calculadas como base del modelo
+                    de diseño de cada elemento.
+                </p>
+                <p class="w3-small" style="margin-top: 8px; margin-bottom: 0;">
+                    Para este ejemplo, la zapata de lindero (Z.COL1) está
+                    gobernada por la combinación sísmica
+                    <strong>\(1.2D + E + Live\)</strong>, mientras que en la
+                    zapata interior (Z.COL2) controla la combinación
+                    gravitacional <strong>\(1.2D + 1.6Live\)</strong>.
+                    Véase la <strong><a href="#figura3"
+                    style="color: #3b82f6; text-decoration: underline;">
+                    Figura 3</a></strong>, con los diagramas de presiones de
+                    contacto para las combinaciones últimas analizadas.
+                </p>
+            </div>
+
+
             <div class="w3-panel ce-panel-gris w3-padding w3-round">
                 <strong style="color: var(--azul-profundo);"><i class="fa fa-link"></i> 🔗 Criterio de Análisis:</strong>
                 <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
-                    Se utiliza el modelo de <strong>presiones rígidas</strong>. La zapata de lindero (Z.COL1) es gobernada por la combinación sísmica <strong>1.2D + E + Live</strong> debido al gradiente, mientras que la interna (Z.COL2) es controlada por la envolvente gravitacional <strong>1.2D + 1.6Live</strong>. Ver <strong><a href="#figura3" style="color: #3b82f6; text-decoration: underline; font-weight: bold;">Figura 3</a>:</strong> Diagrama de presiones de contacto para combinaciones últimas.
+                    En este ejemplo se ha adoptado un <strong>modelo de equilibrio global del sistema</strong>, idealizando las dos zapatas y la viga de enlace como un conjunto rígido. Bajo esta hipótesis, se determinan las presiones de contacto del terreno, consideradas lineales en cada base y nulas en el tramo libre de la viga de enlace.
+                    Para el diseño estructural, la zapata de lindero (Z.COL1) está gobernada por la combinación sísmica \(1.2D + E + L\), que produce la condición más exigente para su diseño en este ejemplo. En la zapata interior (Z.COL2), controla la envolvente gravitacional \(1.2D + 1.6L\).
+                    Véase la <strong><a href="#figura3" style="color: #3b82f6; text-decoration: underline; font-weight: bold;">Figura 3</a>:</strong>, que presenta los diagramas de presiones de contacto correspondientes a las combinaciones últimas analizadas.
                 </p>
             </div>
 
