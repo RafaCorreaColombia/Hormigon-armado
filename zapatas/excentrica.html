@@ -2050,32 +2050,34 @@
             <p class="w3-small" style="margin-top:-15px; opacity: 0.8;">Estado Límite Último – Comparativa Técnica Z.COL1 vs Z.COL2</p>
 
             
-            <div class="w3-panel ce-panel-gris w3-padding w3-round">
-                <strong style="color: var(--azul-profundo);">
-                    <i class="fa fa-link"></i> 🔗 Criterio de Análisis
+            <!-- INTRODUCCIÓN A LA SECCIÓN 6: PRESIONES ÚLTIMAS Y CRITERIOS DE DISEÑO -->
+            <div class="w3-panel ce-panel-azul w3-padding w3-round" style="margin-bottom: 20px;">
+                <strong style="color: var(--azul-profundo); font-size: 1.05em; display: block; margin-bottom: 8px;">
+                    <i class="fa fa-cubes"></i> Criterio de Diseño y Presiones Últimas Gobernantes
                 </strong>
-                <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
-                    Se adopta un <strong>modelo simplificado de equilibrio global</strong>, en el que las zapatas Z.COL1 y Z.COL2 y la viga de enlace se idealizan como un único conjunto rígido. Las acciones transmitidas por las columnas se equilibran con
-                    la reacción del terreno, representada mediante una única función lineal de presión de contacto, <strong>\(q(x)=mx+b\)</strong>, común a ambas zapatas. Esta distribución actúa únicamente sobre las áreas en contacto con el suelo; en el tramo libre de la viga de
-                    enlace no se considera reacción del terreno. Los parámetros de la función se determinan imponiendo el equilibrio global de fuerzas verticales y momentos del sistema.
+            
+                <p class="w3-small" style="margin-top: 0; margin-bottom: 8px; color: var(--gris-texto);">
+                    Para el diseño estructural, se determinan las presiones últimas de contacto, <strong>\(q_u(x)\)</strong>, aplicando las combinaciones de resistencia al modelo de equilibrio global adoptado. Estas presiones representan las reacciones ascendentes del terreno sobre las áreas de apoyo y permiten obtener las solicitaciones de flexión, cortante unidireccional y punzonamiento de cada zapata. Las acciones correspondientes se utilizan, además, para el diseño de la viga de enlace.
                 </p>
-                <p class="w3-small" style="margin-top: 8px; margin-bottom: 0;">
-                    Con las presiones obtenidas, primero se verifican las condiciones de servicio y la capacidad portante del terreno para la geometría adoptada. Posteriormente, las acciones correspondientes a las combinaciones últimas se utilizan
-                    para diseñar la viga de enlace y las zapatas por separado, conservando las presiones calculadas como base del modelo de diseño de cada elemento.
-                </p>
-                <p class="w3-small" style="margin-top: 8px; margin-bottom: 0;">
-                    Para este ejemplo, la zapata de lindero (Z.COL1) está gobernada por la combinación sísmica <strong>\(1.2D + E + Live\)</strong>, mientras que en la zapata interior (Z.COL2) controla la combinación gravitacional <strong>\(1.2D + 1.6Live\)</strong>.
-                    Véase la <strong><a href="#figura3" style="color: #3b82f6; text-decoration: underline;">Figura 3</a></strong>, con los diagramas de presiones de contacto para las combinaciones últimas analizadas.
-                </p>
-            </div>
-
-
-            <div class="w3-panel ce-panel-gris w3-padding w3-round">
-                <strong style="color: var(--azul-profundo);"><i class="fa fa-link"></i> 🔗 Criterio de Análisis:</strong>
-                <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
-                    En este ejemplo se ha adoptado un <strong>modelo de equilibrio global del sistema</strong>, idealizando las dos zapatas y la viga de enlace como un conjunto rígido. Bajo esta hipótesis, se determinan las presiones de contacto del terreno, consideradas lineales en cada base y nulas en el tramo libre de la viga de enlace.
-                    Para el diseño estructural, la zapata de lindero (Z.COL1) está gobernada por la combinación sísmica \(1.2D + E + L\), que produce la condición más exigente para su diseño en este ejemplo. En la zapata interior (Z.COL2), controla la envolvente gravitacional \(1.2D + 1.6L\).
-                    Véase la <strong><a href="#figura3" style="color: #3b82f6; text-decoration: underline; font-weight: bold;">Figura 3</a>:</strong>, que presenta los diagramas de presiones de contacto correspondientes a las combinaciones últimas analizadas.
+            
+                <div class="ce-grid ce-grid-2" style="gap: 10px; margin-top: 10px; margin-bottom: 10px;">
+                    <div class="w3-padding-small w3-round w3-white" style="border-left: 4px solid #ea580c; border-top: 1px solid #e2e8f0; border-right: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0;">
+                        <strong style="color: #c2410c; font-size: 11px; text-transform: uppercase; display: block;">Zapata de Lindero (Z.COL1)</strong>
+                        <p class="w3-small" style="margin: 3px 0 0 0; color: var(--gris-texto); font-size: 11.5px;">
+                            Controlada por la combinación sísmica <strong>\(1.2D + 1.0E + 1.0Live\)</strong>, que produce la condición más exigente para el diseño de esta zapata en el ejemplo.
+                        </p>
+                    </div>
+            
+                    <div class="w3-padding-small w3-round w3-white" style="border-left: 4px solid #2563eb; border-top: 1px solid #e2e8f0; border-right: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0;">
+                        <strong style="color: #1d4ed8; font-size: 11px; text-transform: uppercase; display: block;">Zapata Interior (Z.COL2)</strong>
+                        <p class="w3-small" style="margin: 3px 0 0 0; color: var(--gris-texto); font-size: 11.5px;">
+                            Controlada por la combinación gravitacional <strong>\(1.2D + 1.6Live\)</strong>, que produce la condición más exigente para el diseño de esta zapata en el ejemplo.
+                        </p>
+                    </div>
+                </div>
+            
+                <p class="w3-small" style="margin: 0; color: var(--gris-texto);">
+                    Los diagramas de presiones últimas de contacto para las combinaciones gobernantes se presentan en la <strong><a href="#figura3" style="color: #2563eb; text-decoration: underline; font-weight: bold;">Figura 3</a></strong>. A partir de ellos se obtienen las solicitaciones empleadas en las verificaciones de resistencia y en la definición del refuerzo de cada zapata.
                 </p>
             </div>
 
