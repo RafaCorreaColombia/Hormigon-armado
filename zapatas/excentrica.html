@@ -148,7 +148,7 @@
 
         <div class="ruta-aprendizaje">
             <span class="ruta-item">1. Predimensionamiento y Presiones</span> <i class="fa fa-chevron-right ruta-flecha"></i>
-            <span class="ruta-item ruta-activa">📐 2. Esfuerzos y Cortante</span> <i class="fa fa-chevron-right ruta-flecha"></i>
+            <span class="ruta-item ruta-activa">📐 2. Esfuerzos y Cor</span> <i class="fa fa-chevron-right ruta-flecha"></i>
             <span class="ruta-item">3. Diseño por Flexión</span> <i class="fa fa-chevron-right ruta-flecha"></i>
             <span class="ruta-item">4. Interfaz y Detallado</span>
         </div>
@@ -227,7 +227,7 @@
             
                 <p class="w3-small" style="margin-top: 10px; margin-bottom: 0; font-style: italic; color: var(--gris-texto);">
                     <strong>Alcance:</strong> se trata de una idealización simplificada para el análisis y diseño del ejemplo. Los resultados representan la respuesta del sistema bajo las hipótesis adoptadas y deben
-                    contrastarse con las verificaciones de equilibrio, contacto y capacidad portante correspondientes.
+                    contrastarse con las verificaciones de equilibrio, contacto y capacidad por correspondientes.
                 </p>
             </div>
 
@@ -305,7 +305,7 @@
                         <strong>\(q_{neto}\)</strong> es la capacidad neta admisible del suelo de cimentación (\(q_{neto} = q_{adm} - \Delta q_{peso\_propio}\)), la cual define la presión de contacto máxima que no debe ser superada por \(q_{max}\) bajo combinaciones de servicio.
                     </p>
                     <p class="w3-small" style="margin: 0 0 8px 0;">
-                        <strong>Nota 2 (Definición de variables del indicador de centroide):</strong> En la expresión \(\frac{|x_r - x_c|}{L}\), el numerador \(|x_r - x_c|\) representa la excentricidad o separación entre la ubicación de la resultante global de cargas (\(x_r\)) y el centroide geométrico del área combinada de contacto (\(x_c\)). Por su parte, <strong>\(L\)</strong> corresponde a la <strong>longitud total del sistema de cimentación de borde a borde exterior</strong> (en este ejemplo, desde \(x = -0.20 \text{ m}\) hasta \(x = 3.70 \text{ m}\), obteniendo \(L = 3.90 \text{ m}\)), y no a la distancia libre entre columnas ni a la distancia entre ejes (\(S = 3.00 \text{ m}\)).
+                        <strong>Nota 2 (Definición de variables del indicador de centroide):</strong> En la expresión \(\frac{|x_r - x_c|}{L}\), el numerador \(|x_r - x_c|\) representa la excentricidad o separación entre la ubicación de la resul global de cargas (\(x_r\)) y el centroide geométrico del área combinada de contacto (\(x_c\)). Por su parte, <strong>\(L\)</strong> corresponde a la <strong>longitud total del sistema de cimentación de borde a borde exterior</strong> (en este ejemplo, desde \(x = -0.20 \text{ m}\) hasta \(x = 3.70 \text{ m}\), obteniendo \(L = 3.90 \text{ m}\)), y no a la distancia libre entre columnas ni a la distancia entre ejes (\(S = 3.00 \text{ m}\)).
                     </p>
                     <p class="w3-small" style="margin: 0 0 8px 0;">
                         <strong>Nota 3 (Comportamiento transitorio):</strong> Bajo la combinación <strong>\( 0.6D - 0.7E \)</strong>, estos indicadores pueden incrementarse debido al carácter transitorio de las acciones laterales. En estos casos se prioriza la verificación de contacto completo (<strong>\( q &gt; 0 \)</strong>) y el control de capacidad máxima de soporte (\(q_{max} &lt; q_{neto}\)).
@@ -412,7 +412,7 @@
                 </p>
             </div>
 
-            <strong style="color: var(--azul-profundo); font-size: 13px; text-transform: uppercase;">📊 Tabla 3. RESULTANTES POR COLUMNA - COMBINACIONES DE SERVICIO (P,M)</strong>
+            <strong style="color: var(--azul-profundo); font-size: 13px; text-transform: uppercase;">📊 Tabla 3. RESULS POR COLUMNA - COMBINACIONES DE SERVICIO (P,M)</strong>
             <div class="tabla-container">
                 <table class="tabla-traslapos tabla-small">
                     <thead>
@@ -454,7 +454,7 @@
                 <div class="w3-panel ce-panel-naranja w3-padding w3-round" style="margin:0;">
                     <strong style="color: var(--naranja-estructural);"><i class="fa fa-building"></i> 🏢 Zapata Z.COL1 (Excéntrica)</strong>
                     <p class="w3-small" style="margin-top: 5px; margin-bottom: 10px;">
-                        Relación de aspecto adoptada para el tanteo inicial: <strong>\(\Delta Y / \Delta X = 2.0\)</strong>.
+                        Relación de aspecto adoptada para el dimensionamiento inicial: <strong>\(\Delta Y / \Delta X = 2.0\)</strong>.
                     </p>
                     <ul class="w3-small" style="margin: 0; padding-left: 20px; color: var(--gris-texto);">
                         <li>\( P_{D+Live} = 240 \text{ kN} \)</li>
@@ -475,7 +475,7 @@
                 <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid #bbf7d0; border-left: 4px solid #166534; margin:0;">
                     <strong style="color: #166534;"><i class="fa fa-building"></i> 🏢 Zapata Z.COL2 (Centrada)</strong>
                     <p class="w3-small" style="margin-top: 5px; margin-bottom: 10px;">
-                        Relación de aspecto adoptada para el tanteo inicial: <strong>\(\Delta Y / \Delta X = 1.0\)</strong> (Cuadrada).
+                        Relación de aspecto adoptada para el dimensionamiento inicial: <strong>\(\Delta Y / \Delta X = 1.0\)</strong> (Cuadrada).
                     </p>
                     <ul class="w3-small" style="margin: 0; padding-left: 20px; color: var(--gris-texto);">
                         <li>\( P_{D+Live} = 350 \text{ kN} \)</li>
@@ -491,9 +491,9 @@
                 </div>
             </div>
             <div class="w3-panel ce-panel-azul w3-padding w3-round" style="margin-top: 15px;">
-                <strong style="color: var(--azul-profundo);"><i class="fa fa-info-circle"></i> 📌 Criterio de Tanteo Inicial:</strong>
+                <strong style="color: var(--azul-profundo);"><i class="fa fa-info-circle"></i> 📌 Criterio de Dimensionamiento Inicial:</strong>
                 <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
-                    Las áreas calculadas (\(1.27 \text{ m}^2\) y \(1.85 \text{ m}^2\)) corresponden a un <strong>predimensionamiento de tanteo inicial</strong> basado únicamente en la carga vertical directa de cada columna (\(P_{D+L}\)). Debido a la interacción con la viga de enlace y la redistribución del sistema, se adoptan dimensiones ligeramente mayores (\(1.62 \text{ m}^2\) y \(1.96 \text{ m}^2\)), las cuales se verifican formalmente en las siguientes secciones mediante los criterios académicos enunciados en la <a href="#tabla-1" style="color: var(--azul-profundo); font-weight: bold; text-decoration: underline;">Tabla 1</a>.
+                    Las áreas calculadas (\(1.27 \text{ m}^2\) y \(1.85 \text{ m}^2\)) corresponden a un <strong>predimensionamiento</strong> basado únicamente en la carga vertical directa de cada columna (\(P_{D+L}\)). Debido a la interacción con la viga de enlace y la redistribución del sistema, se adoptan dimensiones ligeramente mayores (\(1.62 \text{ m}^2\) y \(1.96 \text{ m}^2\)), las cuales se verifican formalmente en las siguientes secciones mediante los criterios académicos enunciados en la <a href="#tabla-1" style="color: var(--azul-profundo); font-weight: bold; text-decoration: underline;">Tabla 1</a>.
                 </p>
             </div>
 
@@ -555,7 +555,7 @@
                     Observen que la zapata de lindero (Z.COL1) se plantea con una dimensión reducida en la dirección de la viga de enlace (\(\Delta X = 0.90 \text{ m}\)) y una mayor en sentido transversal (\(\Delta Y = 1.80 \text{ m}\)). Esta elección responde a un criterio fundamental: como el borde exterior de esa zapata debe coincidir con el lindero, aumentar su dimensión en X desplaza el centroide de la base de esa zapata respecto al eje de la columna e <strong>incrementa su excentricidad geométrica</strong>. En consecuencia, la viga de enlace puede verse sometida a mayores solicitaciones de momento.
                 </p>
                 <p class="w3-small" style="margin: 0;">
-                    Por eso, en este tanteo inicial se busca obtener el área de contacto requerida sin extender innecesariamente la zapata de lindero (Z.COL1) hacia el interior del terreno. La dimensión transversal permite ganar área sin aumentar en la misma proporción su excentricidad en X. Estas dimensiones constituyen un punto de partida para el análisis del sistema; se ajustarán si las verificaciones posteriores de presiones de contacto y equilibrio lo requieren.
+                    Por eso, en este dimensionamiento inicial se busca obtener el área de contacto requerida sin extender innecesariamente la zapata de lindero (Z.COL1) hacia el interior del terreno. La dimensión transversal permite ganar área sin aumentar en la misma proporción su excentricidad en X. Estas dimensiones constituyen un punto de partida para el análisis del sistema; se ajustarán si las verificaciones posteriores de presiones de contacto y equilibrio lo requieren.
                 </p>
             </div>
         </div>
