@@ -607,50 +607,21 @@
                 </p>
             </div>
         
-            <!-- MODELO MECÁNICO ADOPTADO -->
-            <div class="w3-panel ce-panel-azul w3-padding w3-round">
-                <strong style="color: var(--azul-profundo);">
-                    <i class="fa fa-cogs"></i>
-                    Modelo Mecánico Adoptado
+            <!-- CONEXIÓN CON EL MODELO MECÁNICO ADOPTADO -->
+            <div class="w3-panel ce-panel-azul w3-padding w3-round" style="margin-bottom: 20px;">
+                <strong style="color: var(--azul-profundo); font-size: 1.05em; display: block; margin-bottom: 8px;">
+                    <i class="fa fa-compass"></i> Aplicación del Modelo Mecánico a las Presiones de Servicio
                 </strong>
-        
-                <p class="w3-small" style="margin-top: 8px; margin-bottom: 8px;">
-                    Para este ejemplo, el conjunto formado por las zapatas
-                    Z.COL1 y Z.COL2 y la viga de enlace se analiza mediante
-                    el equilibrio global del sistema. Se adoptan las siguientes
-                    hipótesis para determinar las presiones de contacto:
+                
+                <p class="w3-small" style="margin-top: 0; margin-bottom: 8px; color: var(--gris-texto);">
+                    Con base en el <strong>modelo de equilibrio global</strong> presentado al inicio, el conjunto constituido por las zapatas Z.COL1 y Z.COL2 y la viga de enlace se analiza como una estructura integrada. La respuesta del terreno se representa mediante una única función lineal de presión de contacto, <strong>\(q(x) = mx + b\)</strong>, común a ambas bases y nula bajo el vano libre de la viga. Sus parámetros (\(m\) y \(b\)) se obtienen resolviendo simultáneamente el equilibrio global de fuerzas verticales (\(\sum F_y = 0\)) y de momentos (\(\sum M = 0\)) del sistema.
                 </p>
-        
-                <ul class="w3-small" style="margin: 0; padding-left: 20px; color: var(--gris-texto);">
-                    <li style="margin-bottom: 6px;">
-                        <strong>Comportamiento de las bases:</strong>
-                        cada zapata se idealiza como rígida, de modo que la
-                        presión de contacto varía linealmente sobre su área
-                        en función de las acciones y del equilibrio adoptado.
-                    </li>
-                    <li style="margin-bottom: 6px;">
-                        <strong>Contacto suelo-zapata:</strong>
-                        el suelo se representa mediante una reacción distribuida
-                        que responde linealmente bajo las hipótesis del modelo
-                        y actúa únicamente a compresión; no se admite resistencia
-                        a tracción ni contacto bajo el vano libre de la viga.
-                    </li>
-                    <li>
-                        <strong>Viga de enlace:</strong>
-                        conecta ambas bases y transmite las fuerzas y los
-                        momentos necesarios para el equilibrio del conjunto.
-                        Su análisis estructural se realiza posteriormente
-                        utilizando las acciones correspondientes.
-                    </li>
-                </ul>
-        
-                <p class="w3-small" style="margin-top: 10px; margin-bottom: 0; font-style: italic; color: var(--gris-texto);">
-                    <strong>Alcance:</strong> las presiones obtenidas representan
-                    la respuesta del sistema bajo las hipótesis adoptadas.
-                    Su validez depende de que se cumplan las condiciones de
-                    contacto y las verificaciones de equilibrio correspondientes.
+            
+                <p class="w3-small" style="margin: 0; color: var(--gris-texto);">
+                    Bajo combinaciones de servicio, las presiones resultantes se utilizan para verificar la condición de contacto continuo (ausencia de tracciones en el terreno) y garantizar que la presión máxima no supere la capacidad admisible del suelo (\(q_{max} \le q_{adm_neto}\)). Este mismo esquema de distribución servirá posteriormente de base para el cálculo de las demandas últimas de diseño (\(V_u, M_u\)), y las presiones se usarán para diseñar cada zapata en particular.
                 </p>
             </div>
+            
         
             <!-- 2. DIAGRAMA DE PRESIONES + TABLA 4 -->
             <div class="w3-center w3-margin-top w3-margin-bottom w3-padding w3-round w3-white" style="border: 1px dashed var(--gris-borde);">
@@ -2084,38 +2055,17 @@
                     <i class="fa fa-link"></i> 🔗 Criterio de Análisis
                 </strong>
                 <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
-                    Se adopta un <strong>modelo simplificado de equilibrio
-                    global</strong>, en el que las zapatas Z.COL1 y Z.COL2 y la
-                    viga de enlace se idealizan como un único conjunto rígido.
-                    Las acciones transmitidas por las columnas se equilibran con
-                    la reacción del terreno, representada mediante una única
-                    función lineal de presión de contacto,
-                    <strong>\(q(x)=mx+b\)</strong>, común a ambas zapatas.
-                    Esta distribución actúa únicamente sobre las áreas en
-                    contacto con el suelo; en el tramo libre de la viga de
-                    enlace no se considera reacción del terreno. Los parámetros
-                    de la función se determinan imponiendo el equilibrio global
-                    de fuerzas verticales y momentos del sistema.
+                    Se adopta un <strong>modelo simplificado de equilibrio global</strong>, en el que las zapatas Z.COL1 y Z.COL2 y la viga de enlace se idealizan como un único conjunto rígido. Las acciones transmitidas por las columnas se equilibran con
+                    la reacción del terreno, representada mediante una única función lineal de presión de contacto, <strong>\(q(x)=mx+b\)</strong>, común a ambas zapatas. Esta distribución actúa únicamente sobre las áreas en contacto con el suelo; en el tramo libre de la viga de
+                    enlace no se considera reacción del terreno. Los parámetros de la función se determinan imponiendo el equilibrio global de fuerzas verticales y momentos del sistema.
                 </p>
                 <p class="w3-small" style="margin-top: 8px; margin-bottom: 0;">
-                    Con las presiones obtenidas, primero se verifican las
-                    condiciones de servicio y la capacidad portante del terreno
-                    para la geometría adoptada. Posteriormente, las acciones
-                    correspondientes a las combinaciones últimas se utilizan
-                    para diseñar la viga de enlace y las zapatas por separado,
-                    conservando las presiones calculadas como base del modelo
-                    de diseño de cada elemento.
+                    Con las presiones obtenidas, primero se verifican las condiciones de servicio y la capacidad portante del terreno para la geometría adoptada. Posteriormente, las acciones correspondientes a las combinaciones últimas se utilizan
+                    para diseñar la viga de enlace y las zapatas por separado, conservando las presiones calculadas como base del modelo de diseño de cada elemento.
                 </p>
                 <p class="w3-small" style="margin-top: 8px; margin-bottom: 0;">
-                    Para este ejemplo, la zapata de lindero (Z.COL1) está
-                    gobernada por la combinación sísmica
-                    <strong>\(1.2D + E + Live\)</strong>, mientras que en la
-                    zapata interior (Z.COL2) controla la combinación
-                    gravitacional <strong>\(1.2D + 1.6Live\)</strong>.
-                    Véase la <strong><a href="#figura3"
-                    style="color: #3b82f6; text-decoration: underline;">
-                    Figura 3</a></strong>, con los diagramas de presiones de
-                    contacto para las combinaciones últimas analizadas.
+                    Para este ejemplo, la zapata de lindero (Z.COL1) está gobernada por la combinación sísmica <strong>\(1.2D + E + Live\)</strong>, mientras que en la zapata interior (Z.COL2) controla la combinación gravitacional <strong>\(1.2D + 1.6Live\)</strong>.
+                    Véase la <strong><a href="#figura3" style="color: #3b82f6; text-decoration: underline;">Figura 3</a></strong>, con los diagramas de presiones de contacto para las combinaciones últimas analizadas.
                 </p>
             </div>
 
