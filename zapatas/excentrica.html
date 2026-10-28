@@ -612,13 +612,13 @@
                 <strong style="color: var(--azul-profundo); font-size: 1.05em; display: block; margin-bottom: 8px;">
                     <i class="fa fa-compass"></i> Aplicación del Modelo Mecánico a las Presiones de Servicio
                 </strong>
-                
+            
                 <p class="w3-small" style="margin-top: 0; margin-bottom: 8px; color: var(--gris-texto);">
-                    Con base en el <strong>modelo de equilibrio global</strong> presentado al inicio, el conjunto constituido por las zapatas Z.COL1 y Z.COL2 y la viga de enlace se analiza como una estructura integrada. La respuesta del terreno se representa mediante una única función lineal de presión de contacto, <strong>\(q(x) = mx + b\)</strong>, común a ambas bases y nula bajo el vano libre de la viga. Sus parámetros (\(m\) y \(b\)) se obtienen resolviendo simultáneamente el equilibrio global de fuerzas verticales (\(\sum F_y = 0\)) y de momentos (\(\sum M = 0\)) del sistema.
+                    Con base en el <strong>modelo de equilibrio global</strong> presentado al inicio, el conjunto constituido por las zapatas Z.COL1 y Z.COL2 y la viga de enlace se idealiza como un sistema rígido. La reacción del terreno se representa mediante una única función lineal de presión de contacto, <strong>\(q(x)=mx+b\)</strong>, común a ambas bases y aplicada únicamente sobre sus áreas de apoyo; no se considera reacción del suelo bajo el tramo libre de la viga. Los parámetros \(m\) y \(b\) se determinan imponiendo simultáneamente el equilibrio global de fuerzas verticales (\(\sum F_y=0\)) y de momentos (\(\sum M=0\)).
                 </p>
             
                 <p class="w3-small" style="margin: 0; color: var(--gris-texto);">
-                    Bajo combinaciones de servicio, las presiones resultantes se utilizan para verificar la condición de contacto continuo (ausencia de tracciones en el terreno) y garantizar que la presión máxima no supere la capacidad admisible del suelo (\(q_{max} \le q_{adm_neto}\)). Este mismo esquema de distribución servirá posteriormente de base para el cálculo de las demandas últimas de diseño (\(V_u, M_u\)), y las presiones se usarán para diseñar cada zapata en particular.
+                    Para las combinaciones de servicio, las presiones resultantes se utilizan para verificar que la presión de contacto sea no negativa en las áreas de apoyo y que la presión máxima no supere la capacidad admisible neta del terreno (\(q_{\max}\leq q_{\mathrm{adm,neto}}\)). Posteriormente, las combinaciones últimas se analizan bajo el mismo esquema de equilibrio para obtener las presiones de contacto utilizadas en el diseño de la viga de enlace y de cada zapata.
                 </p>
             </div>
             
