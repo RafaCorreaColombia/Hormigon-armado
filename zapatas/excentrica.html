@@ -184,18 +184,9 @@
                     <i class="fa fa-map-pin"></i> 📌 El Fenómeno de Excentricidad
                 </strong>
                 <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
-                    En COL1, la restricción del lindero impide extender la zapata
-                    hacia el exterior, por lo que el eje de la columna no coincide
-                    con el centroide geométrico de la base. Esta excentricidad
-                    introduce una condición de equilibrio que no se resuelve
-                    considerando la zapata de lindero de forma aislada.
-                    Por ello, se conecta con la zapata interior Z.COL2 mediante
-                    una <strong>viga de enlace</strong>, que permite considerar
-                    las acciones transmitidas entre ambas bases dentro de un
-                    mismo sistema. El análisis busca determinar la distribución
-                    de presiones de contacto compatible con el equilibrio global
-                    y evaluar si la geometría adoptada resulta adecuada para
-                    las condiciones de carga consideradas.
+                    En COL1, la restricción del lindero impide extender la zapata hacia el exterior, por lo que el eje de la columna no coincide con el centroide geométrico de la base. Esta excentricidad introduce una condición de equilibrio que no se resuelve
+                    considerando la zapata de lindero de forma aislada. Por ello, se conecta con la zapata interior Z.COL2 mediante una <strong>viga de enlace</strong>, que permite considerar las acciones transmitidas entre ambas bases dentro de un
+                    mismo sistema. El análisis busca determinar la distribución de presiones de contacto compatible con el equilibrio global y evaluar si la geometría adoptada resulta adecuada para las condiciones de carga consideradas.
                 </p>
             </div>
 
@@ -213,6 +204,41 @@
                     <i><strong>Figura 1:</strong> Modelo y Equilibrio: Zapata de Lindero Conectada por Viga de Enlace.</i>
                 </p>
             </div>
+           
+            <!-- MODELO MECÁNICO ADOPTADO -->
+            <div class="w3-panel ce-panel-azul w3-padding w3-round">
+                <strong style="color: var(--azul-profundo);">
+                    <i class="fa fa-cogs"></i>
+                    Modelo Mecánico Adoptado
+                </strong>
+            
+                <p class="w3-small" style="margin-top: 8px; margin-bottom: 8px;">
+                    Para este ejemplo, el conjunto formado por las zapatas Z.COL1 y Z.COL2 y la viga de enlace se idealiza como un <strong>sistema rígido</strong> y se analiza mediante el equilibrio global. Bajo esta idealización, se adoptan las
+                    siguientes hipótesis para determinar las presiones de contacto:
+                </p>
+            
+                <ul class="w3-small" style="margin: 0; padding-left: 20px; color: var(--gris-texto);">
+                    <li style="margin-bottom: 6px;">
+                        <strong>Comportamiento global:</strong>
+                        las dos zapatas y la viga de enlace forman un único sistema idealizado como rígido, sometido a las fuerzas y los momentos transmitidos por las columnas COL1 y COL2.
+                    </li>
+                    <li style="margin-bottom: 6px;">
+                        <strong>Presión de contacto:</strong>
+                        se adopta una distribución lineal de presiones sobre las áreas de las dos zapatas, compatible con el equilibrio global del sistema. La reacción del terreno actúa únicamente sobre dichas áreas;
+                        no se considera apoyo del suelo bajo el tramo libre de la viga de enlace.
+                    </li>
+                    <li>
+                        <strong>Viga de enlace:</strong>
+                        conecta ambas bases y transmite las acciones necesarias para el equilibrio del conjunto. Su diseño estructural se realiza posteriormente a partir de las acciones obtenidas para las combinaciones de carga correspondientes.
+                    </li>
+                </ul>
+            
+                <p class="w3-small" style="margin-top: 10px; margin-bottom: 0; font-style: italic; color: var(--gris-texto);">
+                    <strong>Alcance:</strong> se trata de una idealización simplificada para el análisis y diseño del ejemplo. Los resultados representan la respuesta del sistema bajo las hipótesis adoptadas y deben
+                    contrastarse con las verificaciones de equilibrio, contacto y capacidad portante correspondientes.
+                </p>
+            </div>
+
 
             <div class="w3-panel ce-panel-gris w3-padding w3-round" style="border-left-color: var(--gris-texto);">
                 <strong style="color: var(--azul-profundo); display: block; margin-bottom: 12px; text-transform: uppercase;">
