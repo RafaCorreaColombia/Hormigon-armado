@@ -905,7 +905,7 @@
                 
                 <!-- Demanda Mu -->
                 <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid var(--gris-borde); margin:0;">
-                    <strong style="color: var(--naranja-estructural);">📉 Demanda por Flexión (\( M_u \))</strong>
+                    <strong style="color: var(--naranja-estructural);">📉 Demanda por Flexión (\( M_u \)) Longitudinal</strong>
                     <p class="w3-small" style="margin-top: 5px; margin-bottom: 5px;">
                         La zapata se idealiza como una <strong>viga en voladizo empotrada en la cara de la columna</strong> (sección crítica, NSR-10 C.15.4.2). La luz de este voladizo libre se calcula como:
                     </p>
@@ -934,7 +934,7 @@
             </div>
             
             <div class="w3-panel w3-padding-small w3-round w3-white w3-margin-top" style="border: 1px dashed var(--azul-profundo); font-size: 0.85em; color: var(--azul-profundo);">   
-                Resultados del análisis estático para una franja de diseño unitaria de \( 1.0 \text{ m} \):
+                Flexión longitudinal. Resultados del análisis estático para una franja de diseño unitaria de \( 1.0 \text{ m} \):
                 
                 <ul class="w3-ul w3-border w3-round ce-panel-gris" style="border-left:none;">
                     <li><strong>Comb. 1.2D+1.6Live:</strong> \( q_{cara} = 189.9 \text{ kPa} \) \(\rightarrow\) \( M_u = 37.9 \text{ kNm/m} \)</li>
@@ -944,26 +944,28 @@
                 <div class="w3-center w3-margin-top w3-margin-bottom ce-destacado w3-xlarge">
                     \( M_{u,max} = \mathbf{53.7 \text{ kNm/m}} \)
                 </div>
+                <div class="ce-grid ce-grid-2">
+                    <div class="w3-panel w3-white w3-padding w3-round w3-center" style="border: 1px solid var(--gris-borde); margin:0;">
+                        <strong style="color: var(--naranja-estructural);">📐 Acero Requerido por Análisis</strong>
+                        <div class="math-scroll w3-large" style="margin: 5px 0;">
+                            \( A_{s,req} = \mathbf{344 \text{ mm}^2/m} \)
+                        </div>
+                        <span class="w3-small" style="margin-top: -5px; color: var(--gris-texto);">\( d = 417.1 \text{ mm} \); \( b = 1000 \text{ mm} \); \( f'_c \): \( 21 \text{ MPa} \); \( f_y \): \( 420 \text{ MPa} \)</span>
+                    </div>
+                    <div class="w3-panel ce-panel-azul w3-padding w3-round w3-center" style="margin:0;">
+                        <strong style="color: var(--azul-profundo);">📏 Refuerzo Mínimo a Flexión C.10.5.4 y Cuantía de Retracción</strong>
+                        <div class="math-scroll w3-large" style="margin: 5px 0;">
+                            \[ A_{s,min} = \mathbf{900 \text{ mm}^2/m} \]
+                            \[f_y= 420 \text{ MPa} \]
+                            \[ \phi M_n= 138 \text{ kNm/m} \]
+                        </div>
+                        <span class="w3-small" style="margin-top: -5px; color: var(--gris-texto);">\( A_{s,min} = 0.0018 \times b \times H\)</span><br>
+                        <span class="w3-small ce-alerta">Gobierna el refuerzo mínimo a flexión</span>
+                    </div>
+                </div>
             </div>
 
-            <div class="ce-grid ce-grid-2">
-                <div class="w3-panel w3-white w3-padding w3-round w3-center" style="border: 1px solid var(--gris-borde); margin:0;">
-                    <strong style="color: var(--naranja-estructural);">📐 Acero Requerido por Análisis</strong>
-                    <div class="math-scroll w3-large" style="margin: 5px 0;">
-                        \( A_{s,req} = \mathbf{344 \text{ mm}^2/m} \)
-                    </div>
-                    <span class="w3-small" style="margin-top: -5px; color: var(--gris-texto);">\( d = 417.1 \text{ mm} \); \( b = 1000 \text{ mm} \); \( f'_c \): \( 21 \text{ MPa} \); \( f_y \): \( 420 \text{ MPa} \)</span>
-                </div>
-                <div class="w3-panel ce-panel-azul w3-padding w3-round w3-center" style="margin:0;">
-                    <strong style="color: var(--azul-profundo);">📏 Refuerzo Mínimo a Flexión C.10.5.4 y Cuantía de Retracción</strong>
-                    <div class="math-scroll w3-large" style="margin: 5px 0;">
-                        \[ A_{s,min} = \mathbf{900 \text{ mm}^2/m} \]
-                        \[f_y= 420 \text{ MPa} \]
-                    </div>
-                    <span class="w3-small" style="margin-top: -5px; color: var(--gris-texto);">\( A_{s,min} = 0.0018 \times b \times H\)</span><br>
-                    <span class="w3-small ce-alerta">Gobierna el refuerzo mínimo a flexión</span>
-                </div>
-            </div>
+            
             <!-- NOTA DE DISEÑO TRANSVERSAL -->
             <div class="w3-panel ce-panel-gris w3-padding w3-round" style="border-left: 4px solid var(--azul-profundo); margin-bottom: 20px;">
                 <strong style="color: var(--azul-profundo); font-size: 1.05em; display: block; margin-bottom: 8px;">
@@ -987,9 +989,10 @@
                             </div>
                         </li>
                         <li>
-                            <strong>3. Flexión Transversal Unitaria (\(M_{u,y}\)):</strong>
+                            <strong>3. Flexión Transversal Unitaria (\(M_{u,x}\)):</strong>
                             <div style="margin: 4px 0; color: #1e40af; font-weight: bold;">
-                                \( M_{u,y} = \frac{q_{u,\max} \cdot a_y^2}{2} = \frac{337.6 \cdot 0.60^2}{2} = \mathbf{60.8 \text{ kNm/m}} \)
+                                \( M_{u,x} = \frac{q_{u,\max} \cdot a_y^2}{2} = \frac{337.6 \cdot 0.60^2}{2} = \mathbf{60.8 \text{ kNm/m}} \)
+                                \( A_{s,req} = \mathbf{406 \text{ mm}^2/m} \); \( d = 401.2 \text{ mm} \); controla \( A_{s,min} = \mathbf{900 \text{ mm}^2/m} \); \( \phi M_n= 133 \text{ kNm/m} \)
                             </div>
                         </li>
                     </ul>
