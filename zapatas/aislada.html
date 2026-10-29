@@ -913,7 +913,7 @@
                             La zapata se idealiza como una <strong>viga en voladizo empotrada en la cara de la columna</strong> (sección crítica, NSR-10 C.15.4.2). La luz de este voladizo libre se calcula como:
                         </p>
                         <div class="math-scroll w3-center w3-small" style="background: #f8fafc; padding: 5px; border-radius: 4px;">
-                            \[ L_{vol} = \frac{L}{2} - \frac{c_{col}}{2} = \frac{1.60}{2} - \frac{0.40}{2} = \mathbf{0.60 \text{ m}} \]
+                            \[ L_{vol,x} = \frac{L}{2} - \frac{c_{col,x}}{2} = \frac{1.60}{2} - \frac{0.40}{2} = \mathbf{0.60 \text{ m}} \]
                         </div>
                         <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
                             Por estática, el momento último (\( M_{u,y} \)) en una franja unitaria se calcula <strong>respecto a la cara de la columna</strong>, integrando la presión del suelo (\( q_u \)) sobre el voladizo. Dado que la presión varía linealmente, la carga resultante y su brazo deben obtenerse a partir de la geometría de ese diagrama; no siempre se puede usar directamente una expresión simplificada de carga uniforme.
@@ -996,15 +996,15 @@
                                 <strong>1. Presión de diseño transversal:</strong> Se adopta \(q_{u,\max} = 337.6 \text{ kPa}\) (proveniente de la combinación sísmica \(1.2D + E + Live\)).
                             </li>
                             <li style="margin-bottom: 6px;">
-                                <strong>2. Voladizo transversal (\(a_y\)):</strong>
+                                <strong>2. Voladizo transversal (\(L_{vol,y}\)):</strong>
                                 <div style="margin: 4px 0; color: #1e40af; font-weight: bold;">
-                                    \( a_y = \frac{B - c_y}{2} = \frac{1.60 - 0.40}{2} = \mathbf{0.60 \text{ m}} \)
+                                    \( L_{vol,y} = \frac{B - c_{col,y}}{2} = \frac{1.60 - 0.40}{2} = \mathbf{0.60 \text{ m}} \)
                                 </div>
                             </li>
                             <li>
                                 <strong>3. Flexión Transversal Unitaria (\(M_{u,x}\)):</strong>
                                 <div style="margin: 4px 0; color: #1e40af; font-weight: bold;">
-                                    \( M_{u,x} = \frac{q_{u,\max} \cdot a_y^2}{2} = \frac{337.6 \cdot 0.60^2}{2} = \mathbf{60.8 \text{ kNm/m}} \)
+                                    \( M_{u,x} = \frac{q_{u,\max} \cdot L_{vol,y}^2}{2} = \frac{337.6 \cdot 0.60^2}{2} = \mathbf{60.8 \text{ kNm/m}} \)
                                 </div>
                                 <div style="margin: 4px 0; color: #475569;">
                                     \( A_{s,req} = \mathbf{406 \text{ mm}^2/m} \); \( d_{capa,y} = 401.2 \text{ mm} \); controla \( A_{s,min} = \mathbf{900 \text{ mm}^2/m} \); \( \phi M_n= 133 \text{ kNm/m} \)
