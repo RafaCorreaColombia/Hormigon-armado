@@ -964,6 +964,37 @@
                     <span class="w3-small ce-alerta">Gobierna el refuerzo mínimo a flexión</span>
                 </div>
             </div>
+            <!-- NOTA DE DISEÑO TRANSVERSAL -->
+            <div class="w3-panel ce-panel-gris w3-padding w3-round" style="border-left: 4px solid var(--azul-profundo); margin-bottom: 20px;">
+                <strong style="color: var(--azul-profundo); font-size: 1.05em; display: block; margin-bottom: 8px;">
+                    <i class="fa fa-expand-arrows-alt"></i> Criterio de Diseño Transversal (Dirección Y) bajo Gradiente Longitudinal
+                </strong>
+                
+                <p class="w3-small" style="margin-top: 0; margin-bottom: 10px; color: var(--gris-texto);">
+                    Aunque la columna no transmita momentos alrededor del eje X (\(M_x = 0\)), el voladizo transversal de la zapata debe resistir la reacción ascendente del terreno. Dado que existe un gradiente de presiones a lo largo de la dirección X (\(q_u(x) = mx + b\)), se adopta la presión máxima absoluta (\(q_{u,\max}\)) de la distribución factorizada para diseñar un <strong>refuerzo transversal uniforme</strong> en toda la cimentación, garantizando un diseño seguro y constructivamente simple.
+                </p>
+        
+                <div class="w3-padding-small w3-round" style="background: white; border: 1px solid #e2e8f0;">
+                    <strong style="color: #334155; font-size: 12px; display: block; margin-bottom: 6px;">Metodología Aplicada</strong>
+                    <ul class="w3-small" style="margin: 0; padding-left: 20px; color: var(--gris-texto);">
+                        <li style="margin-bottom: 6px;">
+                            <strong>1. Presión de diseño transversal:</strong> Se adopta \(q_{u,\max} = 337.6 \text{ kPa}\) (proveniente de la combinación sísmica \(1.2D + E + Live\)).
+                        </li>
+                        <li style="margin-bottom: 6px;">
+                            <strong>2. Voladizo transversal (\(a_y\)):</strong>
+                            <div style="margin: 4px 0; color: #1e40af; font-weight: bold;">
+                                \( a_y = \frac{B - c_y}{2} = \frac{1.60 - 0.40}{2} = \mathbf{0.60 \text{ m}} \)
+                            </div>
+                        </li>
+                        <li>
+                            <strong>3. Flexión Transversal Unitaria (\(M_{u,y}\)):</strong>
+                            <div style="margin: 4px 0; color: #1e40af; font-weight: bold;">
+                                \( M_{u,y} = \frac{q_{u,\max} \cdot a_y^2}{2} = \frac{337.6 \cdot 0.60^2}{2} = \mathbf{60.8 \text{ kNm/m}} \)
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
 
             <div class="w3-panel ce-panel-naranja w3-padding w3-round w3-margin-top">
                 <strong style="color: var(--naranja-estructural); font-size: 1.1em;"><i class="fa fa-wrench"></i> Decisión de Diseño y Constructibilidad:</strong>
