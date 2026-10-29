@@ -2074,6 +2074,100 @@
             </div>
 
             <div class="ce-grid ce-grid-2">
+                <!-- COL 1: ZAPATA DE LINDERO -->
+                <div class="w3-panel ce-panel-naranja w3-padding w3-round" style="margin:0; display:flex; flex-direction:column;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <strong style="color: var(--naranja-estructural);"><i class="fa fa-building"></i> 🏢 Zapata Z.COL1 (Lindero)</strong>
+                        <span class="w3-small" style="background:#ffedd5; color:#9a3412; padding:2px 8px; border-radius:12px; font-weight:bold;">CRÍTICA</span>
+                    </div>
+                    
+                    <div class="w3-small" style="color: var(--gris-texto); margin-bottom: 15px; border-bottom: 1px solid var(--naranja-estructural); padding-bottom: 10px;">
+                        <strong>Geometría:</strong> 0.90 × 1.80 × 0.45 m (Peralte efectivo \(d \approx 0.37 \text{ m}\))<br>
+                        <strong>Combo Crítico:</strong> 1.2D + E + Live (\(q_{max} = 228.2 \text{ kPa}\))
+                    </div>
+            
+                    <div style="flex-grow:1;">
+                        <p class="w3-small" style="margin-bottom: 8px;">
+                            <strong style="color: #7c2d12;">• Cortante Unidireccional <strong>(\(V_{ux}\))</strong>:</strong><br>
+                            \(V_u(d) = 28.9 \text{ kN/m} \ll \phi V_c (214 \text{ kN/m})\) <span style="color:#166534;">✔</span><br>
+                            <span style="color: #64748b; font-size: 11px;"><i>*\(V_u \approx q_{prom} \cdot (L_{vx} - d)\)</i></span>
+                        </p>
+                        <p class="w3-small" style="margin-bottom: 8px;">
+                            <strong style="color: #7c2d12;">• Cortante Unidireccional <strong>(\(V_{uy}\))</strong>:</strong><br>
+                            \(V_u(d) = 86.4 \text{ kN/m} \ll \phi V_c (214 \text{ kN/m})\) <span style="color:#166534;">✔</span><br>
+                            <span style="color: #64748b; font-size: 11px;"><i>*\(V_u \approx q_{max} \cdot (L_{vy} - d) \approx 228.2 \times (0.75 - 0.37)\)</i></span>
+                        </p>
+                        <p class="w3-small" style="margin-bottom: 8px;">
+                            <strong style="color: #7c2d12;">• Punzonamiento (Cara de Borde):</strong><br>
+                            \(b_0 = 1.93 \text{ m} \mid \alpha_s = 30\) <br>
+                            \(V_u = 209.6 \text{ kN} &lt; \phi V_n (805 \text{ kN})\) <span style="color:#166534;">✔</span> <br>
+                            <span style="color: #64748b; font-size: 11px;"><i>*\(V_u = P_u - (q_{prom} \cdot A_{crit})\). (Chequeo directo sin excentricidad).</i></span>
+                        </p>
+                        <p class="w3-small" style="margin-bottom: 8px;">
+                            <strong style="color: #7c2d12;">• Flexión Longitudinal (\(M_{ux}\)):</strong><br>
+                            \(M_u = 27.3 \text{ kNm/m} \rightarrow\) Controla <strong>As mín</strong> <span style="color:#166534;">✔</span> <br>
+                            <span style="color: #64748b; font-size: 11px;"><i>*\(M_u \approx q_{prom} \cdot L_{vx}^2 / 2\)</i></span><br>
+                            <span style="color: #1e40af; font-size: 11px;"><strong>Adopta: No. 5 @ 225 mm. </strong> (\(A_{s,min} = 810 \text{ mm}^2/\text{m} \mid \phi M_n = 119 \text{ kNm} \gg M_u\))</span>
+                        </p>
+                        <p class="w3-small" style="margin-bottom: 8px;">
+                            <strong style="color: #7c2d12;">• Flexión Transversal (\(M_{uy}\)):</strong><br>
+                            Volado \(0.75 \text{ m} \rightarrow M_u = 63.5 \text{ kNm/m}\)<br>
+                            Controla <strong>As mín</strong> (\(\rho = 0.0018\)) <span style="color:#166534;">✔</span> <br>
+                            <span style="color: #64748b; font-size: 11px;"><i>*\(M_u \approx q_{max} \cdot L_{vy}^2 / 2 = 228.2 \times 0.75^2 / 2\)</i></span><br>
+                            <span style="color: #1e40af; font-size: 11px;"><strong>Adopta: No. 5 @ 225 mm. </strong> (\(A_{s,min} = 810 \text{ mm}^2/\text{m} \mid \phi M_n = 119 \text{ kNm} \gg M_u\))</span>
+                        </p>
+                    </div>
+                    
+                    <div class="w3-margin-top w3-padding-small w3-round w3-center w3-small" style="background-color: #c2410c; color: white; font-weight: bold;">
+                        Refuerzo Adoptado: No. 5 @ 225 mm (E.A.D)
+                    </div>
+                </div>
+            
+                <!-- COL 2: ZAPATA INTERIOR -->
+                <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid #bbf7d0; display:flex; flex-direction:column; margin:0;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <strong style="color: #166534;"><i class="fa fa-building"></i> 🏢 Zapata Z.COL2 (Interna)</strong>
+                        <span class="w3-small" style="background:#dcfce7; color:#166534; padding:2px 8px; border-radius:12px; font-weight:bold;">ESTABLE</span>
+                    </div>
+                    
+                    <div class="w3-small" style="color: var(--gris-texto); margin-bottom: 15px; border-bottom: 1px solid #bbf7d0; padding-bottom: 10px;">
+                        <strong>Geometría:</strong> 1.40 × 1.40 × 0.45 m (Peralte efectivo \(d \approx 0.37 \text{ m}\))<br>
+                        <strong>Combo Crítico:</strong> 1.2D + 1.6Live (\(q \approx 209 \text{ kPa}\))
+                    </div>
+            
+                    <div style="flex-grow:1;">
+                        <p class="w3-small" style="margin-bottom: 8px;">
+                            <strong style="color: #064e3b;">• Cortante Unidireccional <strong>(\(V_{ux} \approx V_{uy}\))</strong>:</strong><br>
+                            \(V_u = 28.0 \text{ kN/m} &lt; \phi V_c (214 \text{ kN/m})\) <span style="color:#166534;">✔</span><br>
+                            <span style="color: #64748b; font-size: 11px;"><i>*\(V_u = q \cdot (Volado - d) \approx 209 \times (0.50 - 0.37)\)</i></span>
+                        </p>
+                        <p class="w3-small" style="margin-bottom: 8px;">
+                            <strong style="color: #064e3b;">• Punzonamiento (Interior):</strong><br>
+                            \(b_0 = 3.07 \text{ m} \mid \alpha_s = 40\) <br>
+                            \(V_u = 317 \text{ kN} &lt; \phi V_n (1277 \text{ kN})\) <span style="color:#166534;">✔</span> <br>
+                            <span style="color: #64748b; font-size: 11px;"><i>*\(V_u = P_u - (q \cdot A_{crit}) \approx 440 - (209 \times 0.77^2)\) (Cortante promedio).</i></span>
+                        </p>
+                        <p class="w3-small" style="margin-bottom: 8px;">
+                            <strong style="color: #064e3b;">• Flexión (Simétrica):</strong><br>
+                            Volado \(0.50 \text{ m} \rightarrow M_u = 26.3 \text{ kNm/m}\) <br>
+                            Controla <strong>As mín</strong> (\(\rho = 0.0018\)) <span style="color:#166534;">✔</span> <br>
+                            <span style="color: #64748b; font-size: 11px;"><i>*\(M_u = q \cdot Volado^2 / 2 \approx 209 \times 0.50^2 / 2\)</i></span><br>
+                            <span style="color: #1e40af; font-size: 11px;"><strong>Adopta: No. 5 @ 225 mm. </strong> (\(A_{s,min} = 810 \text{ mm}^2/\text{m} \mid \phi M_n = 119 \text{ kNm} \gg M_u\))</span>
+                        </p>
+                        <p class="w3-small" style="margin-bottom: 8px;">
+                            <strong style="color: #064e3b;">• Aplastamiento:</strong><br>
+                            \(\phi R_n = 1856 \text{ kN} \gg P_u (440 \text{ kN})\) <span style="color:#166534;">✔</span> <br>
+                            <span style="color: #64748b; font-size: 11px;"><i>*Basado en \(A_2/A_1 = 1\) (\(\phi R_n = 0.65 \cdot 0.85 f'_c A_1\)). Con confinamiento (\(\max 2\)) aumentaría a \(\approx 3713 \text{ kN}\).</i></span>
+                        </p>
+                    </div>
+            
+                    <div class="w3-margin-top w3-padding-small w3-round w3-center w3-small" style="background-color: #166534; color: white; font-weight: bold;">
+                        Refuerzo Adoptado: No. 5 @ 225 mm (E.A.D)
+                    </div>
+                </div>
+            </div>
+
+            <div class="ce-grid ce-grid-2">
                 <!-- COL 1 -->
                 <div class="w3-panel ce-panel-naranja w3-padding w3-round" style="margin:0; display:flex; flex-direction:column;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
