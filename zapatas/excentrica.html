@@ -148,7 +148,7 @@
 
         <div class="ruta-aprendizaje">
             <span class="ruta-item">1. Predimensionamiento y Presiones</span> <i class="fa fa-chevron-right ruta-flecha"></i>
-            <span class="ruta-item ruta-activa">📐 2. Esfuerzos y Cor</span> <i class="fa fa-chevron-right ruta-flecha"></i>
+            <span class="ruta-item ruta-activa">📐 2. Esfuerzos y Cortante</span> <i class="fa fa-chevron-right ruta-flecha"></i>
             <span class="ruta-item">3. Diseño por Flexión</span> <i class="fa fa-chevron-right ruta-flecha"></i>
             <span class="ruta-item">4. Interfaz y Detallado</span>
         </div>
@@ -168,7 +168,7 @@
                 <ul class="w3-ul" style="border:none; margin:0; padding:0;">
                     <li><a href="#analisis-excentrica" style="text-decoration: none; font-weight: 500;">4. Análisis para Diseño Estructural</a></li>
                     <li><a href="#diseno-viga" style="text-decoration: none; font-weight: 500;">5. Diseño de Viga de Enlace</a></li>
-                    <li><a href="#independientes-excentrica" style="text-decoration: none; font-weight: 500;">iseño de Zapatas</a></li>
+                    <li><a href="#independientes-excentrica" style="text-decoration: none; font-weight: 500;">Diseño de Zapatas</a></li>
                 </ul>
             </div>
         </div>
@@ -227,7 +227,7 @@
             
                 <p class="w3-small" style="margin-top: 10px; margin-bottom: 0; font-style: italic; color: var(--gris-texto);">
                     <strong>Alcance:</strong> se trata de una idealización simplificada para el análisis y diseño del ejemplo. Los resultados representan la respuesta del sistema bajo las hipótesis adoptadas y deben
-                    contrastarse con las verificaciones de equilibrio, contacto y capacidad por correspondientes.
+                    contrastarse con las verificaciones de equilibrio, contacto y capacidad portante correspondiente.
                 </p>
             </div>
 
@@ -412,7 +412,7 @@
                 </p>
             </div>
 
-            <strong style="color: var(--azul-profundo); font-size: 13px; text-transform: uppercase;">📊 Tabla 3. RESULS POR COLUMNA - COMBINACIONES DE SERVICIO (P,M)</strong>
+            <strong style="color: var(--azul-profundo); font-size: 13px; text-transform: uppercase;">📊 Tabla 3. RESULTADOS POR COLUMNA - COMBINACIONES DE SERVICIO (P,M)</strong>
             <div class="tabla-container">
                 <table class="tabla-traslapos tabla-small">
                     <thead>
@@ -473,7 +473,7 @@
                 </div>
                 
                 <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid #bbf7d0; border-left: 4px solid #166534; margin:0;">
-                    <strong style="color: #166534;"><i class="fa fa-building"></i> 🏢 Zapata Z.COL2 (Centrada)</strong>
+                    <strong style="color: #166534;"><i class="fa fa-building"></i> 🏢 Zapata Z.COL2 (Interior)</strong>
                     <p class="w3-small" style="margin-top: 5px; margin-bottom: 10px;">
                         Relación de aspecto adoptada para el dimensionamiento inicial: <strong>\(\Delta Y / \Delta X = 1.0\)</strong> (Cuadrada).
                     </p>
@@ -1904,7 +1904,7 @@
                         <strong style="color: var(--azul-profundo); border-bottom: 2px solid #3b82f6; display: block; padding-bottom: 5px; margin-bottom: 15px;"><i class="fa fa-ruler-combined"></i> 📐 Geometría y Cortante</strong>
                         <ul class="w3-small" style="margin: 0; padding-left: 20px; color: var(--gris-texto);">
                             <li><strong>Sección Adoptada:</strong> 300 mm x 500 mm</li>
-                            <li><strong>Rigidez:</strong> \(h \approx L/6\) (Cumple criterio de viga rígida)</li>
+                            <li><strong>Rigidez:</strong> \(h \approx L/6\)</li>
                             <li><strong>Refuerzo Transversal:</strong> Estribos No. 3 (2 ramas)</li>
                             <li style="margin-top:10px; color: #b91c1c;"><strong>Zonas de Confinamiento:</strong> @ 100 mm (1.0m desde caras) <br> \(\phi V_n = 254 \text{ kN} &gt; V_u = 184.6\)</li>
                             <li style="margin-top:5px;"><strong>Zona Central:</strong> @ 200 mm <br> \(\phi V_n = 162 \text{ kN}\)</li>
@@ -2100,8 +2100,8 @@
                         <p class="w3-small" style="margin-bottom: 8px;">
                             <strong style="color: #7c2d12;">• Punzonamiento (Cara de Borde):</strong><br>
                             \(b_0 = 1.93 \text{ m} \mid \alpha_s = 30\) <br>
-                            \(V_u = 209.6 \text{ kN} &lt; \phi V_n (805 \text{ kN})\) <span style="color:#166534;">✔</span> <br>
-                            <span style="color: #64748b; font-size: 11px;"><i>*\(V_u = P_u - (q_{prom} \cdot A_{crit})\). (Chequeo por cortante directo promedio, se debe verificar el incremento de esfuerzos al rededor del área crítica debido a la existencia de momentos).</i></span>
+                            \(V_u = 209.6 \text{ kN} &lt; \phi V_n (805 \text{ kN})\) <span style="color:#b45309; font-weight:bold;">⚠️ Preliminar</span> <br>
+                            <span style="color: #64748b; font-size: 11px;"><i>*\(V_u = P_u - (q_{prom} \cdot A_{crit})\). (Verificación preliminar por cortante directo; el diseño definitivo debe incluir el incremento de esfuerzos por transferencia de momento).</i></span>
                         </p>
                         <p class="w3-small" style="margin-bottom: 8px;">
                             <strong style="color: #7c2d12;">• Flexión Longitudinal (\(M_{u,y}\)):</strong><br>
@@ -2111,7 +2111,7 @@
                         </p>
                         <p class="w3-small" style="margin-bottom: 8px;">
                             <strong style="color: #7c2d12;">• Flexión Transversal (\(M_{u,x}\)):</strong><br>
-                            Volado \(0.75 \text{ m} \rightarrow M_{u,y} = 63.5 \text{ kNm/m}\)<br>
+                            Volado \(0.75 \text{ m} \rightarrow M_{u,y} = 64.2 \text{ kNm/m}\)<br>
                             Controla <strong>\(A_{s,min}\)</strong> (\(\rho = 0.0018\)) <span style="color:#166534;">✔</span> <br>
                             <span style="color: #64748b; font-size: 11px;"><i>*\(M_{u,x} \approx q_{max} \cdot L_{v,y}^2 / 2 = 228.2 \times 0.75^2 / 2\)</i></span><br>
                             <span style="color: #1e40af; font-size: 11px;"><strong>Adopta: No. 5 @ 225 mm. </strong> (\(A_{s,min} = 810 \text{ mm}^2/\text{m} \mid \phi M_n = 119 \text{ kNm} \gg M_{u,x}\))</span>
@@ -2126,7 +2126,7 @@
                 <!-- COL 2: ZAPATA INTERIOR -->
                 <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid #bbf7d0; display:flex; flex-direction:column; margin:0;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                        <strong style="color: #166534;"><i class="fa fa-building"></i> Zapata Z.COL2 (Interna)</strong>
+                        <strong style="color: #166534;"><i class="fa fa-building"></i> Zapata Z.COL2 (Interior)</strong>
                         <span class="w3-small" style="background:#dcfce7; color:#166534; padding:2px 8px; border-radius:12px; font-weight:bold;">ESTABLE</span>
                     </div>
                     
@@ -2144,8 +2144,8 @@
                         <p class="w3-small" style="margin-bottom: 8px;">
                             <strong style="color: #064e3b;">• Punzonamiento (Interior):</strong><br>
                             \(b_0 = 3.07 \text{ m} \mid \alpha_s = 40\) <br>
-                            \(V_u = 317 \text{ kN} &lt; \phi V_n (1277 \text{ kN})\) <span style="color:#166534;">✔</span> <br>
-                            <span style="color: #64748b; font-size: 11px;"><i>*\(V_u = P_u - (q \cdot A_{crit}) \approx 440 - (209 \times 0.77^2)\) (Chequeo por cortante directo promedio, se debe verificar el incremento de esfuerzos al rededor del área crítica debido a la existencia de momentos).</i></span>
+                            \(V_u = 317 \text{ kN} &lt; \phi V_n (1277 \text{ kN})\) <span style="color:#b45309; font-weight:bold;">⚠️ Preliminar</span> <br>
+                            <span style="color: #64748b; font-size: 11px;"><i>*\(V_u = P_u - (q \cdot A_{crit}) \approx 440 - (209 \times 0.77^2)\). (Verificación preliminar por cortante directo; el diseño definitivo debe incluir el incremento de esfuerzos por transferencia de momento).</i></span>
                         </p>
                         <p class="w3-small" style="margin-bottom: 8px;">
                             <strong style="color: #064e3b;">• Flexión (Simétrica):</strong><br>
@@ -2185,7 +2185,7 @@
             <div class="w3-center w3-margin-top w3-margin-bottom w3-padding w3-round w3-white" style="border: 1px dashed var(--gris-borde);">
                 <img src="../assets/ze02.png" alt="Detallado de Refuerzo" style="max-width: 100%; height: auto; border-radius: 5px; mix-blend-mode: multiply;">
                 <p class="w3-small w3-margin-top" style="color: var(--gris-texto); margin-bottom: 0; font-style: italic;">
-                    <strong>Figura 4:</strong> Detallado de Refuerzo.
+                    <strong>Figura 6:</strong> Detallado de Refuerzo.
                 </p>
             </div>
 
