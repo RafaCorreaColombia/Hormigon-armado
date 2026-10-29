@@ -956,7 +956,7 @@
                         <div class="math-scroll w3-large" style="margin: 5px 0;">
                             \( A_{s,req} = \mathbf{344 \text{ mm}^2/m} \)
                         </div>
-                        <span class="w3-small" style="margin-top: -5px; color: var(--gris-texto);">\( d = 417.1 \text{ mm} \); \( b = 1000 \text{ mm} \); \( f'_c = 21 \text{ MPa} \); \( f_y = 420 \text{ MPa} \)</span>
+                        <span class="w3-small" style="margin-top: -5px; color: var(--gris-texto);">\( d_{capa,x} = 417.1 \text{ mm} \); \( b = 1000 \text{ mm} \); \( f'_c = 21 \text{ MPa} \); \( f_y = 420 \text{ MPa} \)</span>
                     </div>
                     
                     <div class="w3-panel ce-panel-azul w3-padding w3-round w3-center" style="margin:0;">
@@ -980,11 +980,13 @@
                 <!-- NOTA DE DISEÑO TRANSVERSAL -->
                 <div class="w3-panel ce-panel-gris w3-padding w3-round" style="border-left: 4px solid var(--azul-profundo); margin-bottom: 20px;">
                     <strong style="color: var(--azul-profundo); font-size: 1.05em; display: block; margin-bottom: 8px;">
-                        <i class="fa fa-expand-arrows-alt"></i> Criterio de Diseño Transversal (Dirección Y) bajo Gradiente Longitudinal
+                        <i class="fa fa-expand-arrows-alt"></i> 📉 Demanda por Flexión (\( M_{u,x} \)) Transversal: Criterio de Diseño (Dirección Y) bajo Gradiente Longitudinal
                     </strong>
                     
                     <p class="w3-small" style="margin-top: 0; margin-bottom: 10px; color: var(--gris-texto);">
-                        Aunque la columna no transmita momentos alrededor del eje X (\(M_{u,x} = 0\)), el voladizo transversal de la zapata debe resistir la reacción ascendente del terreno. Dado que existe un gradiente de presiones a lo largo de la dirección X (\(q_u(x) = mx + b\)), se adopta la presión máxima absoluta (\(q_{u,\max}\)) de la distribución factorizada para diseñar un <strong>refuerzo transversal uniforme</strong> en toda la cimentación, garantizando un diseño seguro y constructivamente simple.
+                        Aunque en este ejemplo los momentos que transmite la columna alrededor del eje X son nulos, (\(M_{u,x} = 0\)), el voladizo transversal de la zapata debe resistir la reacción ascendente del terreno.
+                        Dado que existe un gradiente de presiones a lo largo de la dirección X (\(q_u(x) = mx + b\)),
+                        se adopta la presión máxima absoluta (\(q_{u,\max}\)) de la distribución factorizada para diseñar un <strong>refuerzo transversal uniforme</strong> en toda la cimentación, garantizando un diseño seguro y constructivamente simple.
                     </p>
             
                     <div class="w3-padding-small w3-round" style="background: white; border: 1px solid #e2e8f0;">
@@ -1005,7 +1007,7 @@
                                     \( M_{u,x} = \frac{q_{u,\max} \cdot a_y^2}{2} = \frac{337.6 \cdot 0.60^2}{2} = \mathbf{60.8 \text{ kNm/m}} \)
                                 </div>
                                 <div style="margin: 4px 0; color: #475569;">
-                                    \( A_{s,req} = \mathbf{406 \text{ mm}^2/m} \); \( d = 401.2 \text{ mm} \); controla \( A_{s,min} = \mathbf{900 \text{ mm}^2/m} \); \( \phi M_n= 133 \text{ kNm/m} \)
+                                    \( A_{s,req} = \mathbf{406 \text{ mm}^2/m} \); \( d{capa,x¡y} = 401.2 \text{ mm} \); controla \( A_{s,min} = \mathbf{900 \text{ mm}^2/m} \); \( \phi M_n= 133 \text{ kNm/m} \)
                                 </div>
                             </li>
                         </ul>
