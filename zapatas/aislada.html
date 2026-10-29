@@ -903,142 +903,6 @@
             
             
             <div class="w3-panel w3-padding-small w3-round w3-white w3-margin-top" style="border: 1px dashed var(--azul-profundo); font-size: 0.85em; color: var(--azul-profundo);">
-                <!-- CAJAS DE EXPLICACIÓN: DEMANDA Y CAPACIDAD A FLEXIÓN -->
-                <div class="ce-grid ce-grid-2" style="margin-top: 15px; margin-bottom: 15px;">
-                    
-                    <!-- Demanda Mu -->
-                    <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid var(--gris-borde); margin:0;">
-                        <strong style="color: var(--naranja-estructural);">📉 Demanda por Flexión (\( M_{u,y} \)) Longitudinal</strong>
-                        <p class="w3-small" style="margin-top: 5px; margin-bottom: 5px;">
-                            La zapata se idealiza como una <strong>viga en voladizo empotrada en la cara de la columna</strong> (sección crítica, NSR-10 C.15.4.2). La luz de este voladizo libre se calcula como:
-                        </p>
-                        <div class="math-scroll w3-center w3-small" style="background: #f8fafc; padding: 5px; border-radius: 4px;">
-                            \[ L_{vol} = \frac{L}{2} - \frac{c_{col}}{2} = \frac{1.60}{2} - \frac{0.40}{2} = \mathbf{0.60 \text{ m}} \]
-                        </div>
-                        <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
-                            Por estática, el momento último (\( M_{u,y} \)) en una franja unitaria se calcula <strong>respecto a la cara de la columna</strong>, integrando la presión del suelo (\( q_u \)) sobre el voladizo. Dado que la presión varía linealmente, la carga resultante y su brazo deben obtenerse a partir de la geometría de ese diagrama; no siempre se puede usar directamente una expresión simplificada de carga uniforme.
-                        </p>
-                    </div>
-    
-                    <!-- Capacidad phi Mn -->
-                    <div class="w3-panel ce-panel-azul w3-padding w3-round" style="margin:0;">
-                        <strong style="color: var(--azul-profundo);"><i class="fa fa-shield"></i> Resistencia de Diseño (\( \phi M_n \))</strong>
-                        <p class="w3-small" style="margin-top: 5px; margin-bottom: 5px;">
-                            El acero se determina garantizando que la resistencia nominal ponderada (\( \phi M_n \)) iguale o supere la demanda (\( M_{u,y} \)). Verificando que se trata de una sección controlada por tracción (\( \phi = 0.90 \)):
-                        </p>
-                        <div class="math-scroll w3-center w3-small" style="background: rgba(255,255,255,0.5); padding: 5px; border-radius: 4px;">
-                            \[ \phi M_n = \phi A_s f_y \left( d - \frac{a}{2} \right) \ge M_{u,y} \]
-                            \[a=\frac{A_s f_y}{0.85 f'_c b}\]
-                        </div>
-                        <p class="w3-small" style="color: var(--gris-texto); margin-bottom: 0; line-height: 1.4;">
-                            De aquí se despeja el <strong>acero requerido por cálculo</strong> (\( A_{s,req} \)). Para el diseño, gobernará el mayor valor entre este \( A_{s,req} \) y el <strong>acero mínimo</strong> normativo exigido para elementos sometidos a flexión.
-                        </p>
-                    </div>
-                </div>
-                
-                Flexión longitudinal. Resultados del análisis estático para una franja de diseño unitaria de \( 1.0 \text{ m} \):
-                
-                <ul class="w3-ul w3-border w3-round ce-panel-gris" style="border-left:none;">
-                    <li><strong>Comb. 1.2D+1.6Live:</strong> \( q_{cara} = 189.9 \text{ kPa} \) \(\rightarrow\) \( M_{u,y} = 37.9 \text{ kNm/m} \)</li>
-                    <li><strong>Comb. 1.2D+E+Live:</strong> \( q_{cara} = 220.0 \text{ kPa} \) \(\rightarrow\) \( M_{u,y} = 53.7 \text{ kNm/m} \) (Crítico)</li>
-                </ul>
-    
-                <div class="w3-center w3-margin-top w3-margin-bottom ce-destacado w3-xlarge">
-                    \( M_{u,y,max} = \mathbf{53.7 \text{ kNm/m}} \)
-                </div>
-                <div class="ce-grid ce-grid-2">
-                    <div class="w3-panel w3-white w3-padding w3-round w3-center" style="border: 1px solid var(--gris-borde); margin:0;">
-                        <strong style="color: var(--naranja-estructural);">📐 Acero Requerido por Análisis</strong>
-                        <div class="math-scroll w3-large" style="margin: 5px 0;">
-                            \( A_{s,req} = \mathbf{344 \text{ mm}^2/m} \)
-                        </div>
-                        <span class="w3-small" style="margin-top: -5px; color: var(--gris-texto);">\( d = 417.1 \text{ mm} \); \( b = 1000 \text{ mm} \); \( f'_c \): \( 21 \text{ MPa} \); \( f_y \): \( 420 \text{ MPa} \)</span>
-                    </div>
-                    <div class="w3-panel ce-panel-azul w3-padding w3-round w3-center" style="margin:0;">
-                        <strong style="color: var(--azul-profundo);">📏 Refuerzo Mínimo a Flexión C.10.5.4 y Cuantía de Retracción</strong>
-                        <div class="math-scroll w3-large" style="margin: 5px 0;">
-                            \[ A_{s,min} = \mathbf{900 \text{ mm}^2/m} \]
-                            \[f_y= 420 \text{ MPa} \]
-                            \[ \phi M_n= 138 \text{ kNm/m} \]
-                        </div>
-                        <span class="w3-small" style="margin-top: -5px; color: var(--gris-texto);">\( A_{s,min} = 0.0018 \times b \times H\)</span><br>
-                        <span class="w3-small ce-alerta">Gobierna el refuerzo mínimo a flexión</span>
-                    </div>
-                </div>
-            </div>
-
-            
-            <!-- NOTA DE DISEÑO TRANSVERSAL -->
-            <div class="w3-panel ce-panel-gris w3-padding w3-round" style="border-left: 4px solid var(--azul-profundo); margin-bottom: 20px;">
-                <strong style="color: var(--azul-profundo); font-size: 1.05em; display: block; margin-bottom: 8px;">
-                    <i class="fa fa-expand-arrows-alt"></i> Criterio de Diseño Transversal (Dirección Y) bajo Gradiente Longitudinal
-                </strong>
-                
-                <p class="w3-small" style="margin-top: 0; margin-bottom: 10px; color: var(--gris-texto);">
-                    Aunque la columna no transmita momentos alrededor del eje X (\(M_{u,x} = 0\)), el voladizo transversal de la zapata debe resistir la reacción ascendente del terreno. Dado que existe un gradiente de presiones a lo largo de la dirección X (\(q_u(x) = mx + b\)), se adopta la presión máxima absoluta (\(q_{u,\max}\)) de la distribución factorizada para diseñar un <strong>refuerzo transversal uniforme</strong> en toda la cimentación, garantizando un diseño seguro y constructivamente simple.
-                </p>
-        
-                <div class="w3-padding-small w3-round" style="background: white; border: 1px solid #e2e8f0;">
-                    <strong style="color: #334155; font-size: 12px; display: block; margin-bottom: 6px;">Metodología Aplicada</strong>
-                    <ul class="w3-small" style="margin: 0; padding-left: 20px; color: var(--gris-texto);">
-                        <li style="margin-bottom: 6px;">
-                            <strong>1. Presión de diseño transversal:</strong> Se adopta \(q_{u,\max} = 337.6 \text{ kPa}\) (proveniente de la combinación sísmica \(1.2D + E + Live\)).
-                        </li>
-                        <li style="margin-bottom: 6px;">
-                            <strong>2. Voladizo transversal (\(a_y\)):</strong>
-                            <div style="margin: 4px 0; color: #1e40af; font-weight: bold;">
-                                \( a_y = \frac{B - c_y}{2} = \frac{1.60 - 0.40}{2} = \mathbf{0.60 \text{ m}} \)
-                            </div>
-                        </li>
-                        <li>
-                            <strong>3. Flexión Transversal Unitaria (\(M_{u,x}\)):</strong>
-                            <div style="margin: 4px 0; color: #1e40af; font-weight: bold;">
-                                \( M_{u,x} = \frac{q_{u,\max} \cdot a_y^2}{2} = \frac{337.6 \cdot 0.60^2}{2} = \mathbf{60.8 \text{ kNm/m}} \)
-                                \( A_{s,req} = \mathbf{406 \text{ mm}^2/m} \); \( d = 401.2 \text{ mm} \); controla \( A_{s,min} = \mathbf{900 \text{ mm}^2/m} \); \( \phi M_n= 133 \text{ kNm/m} \)
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            
-            <div class="w3-panel w3-padding-small w3-round w3-white w3-margin-top" style="border: 1px dashed var(--azul-profundo); font-size: 0.85em; color: var(--azul-profundo);">
-    
-                <!-- NOTA DE DISEÑO TRANSVERSAL -->
-                <div class="w3-panel ce-panel-gris w3-padding w3-round" style="border-left: 4px solid var(--azul-profundo); margin-bottom: 20px;">
-                    <strong style="color: var(--azul-profundo); font-size: 1.05em; display: block; margin-bottom: 8px;">
-                        <i class="fa fa-expand-arrows-alt"></i> Criterio de Diseño Transversal (Dirección Y) bajo Gradiente Longitudinal
-                    </strong>
-                    
-                    <p class="w3-small" style="margin-top: 0; margin-bottom: 10px; color: var(--gris-texto);">
-                        Aunque la columna no transmita momentos alrededor del eje X (\(M_{u,x} = 0\)), el voladizo transversal de la zapata debe resistir la reacción ascendente del terreno. Dado que existe un gradiente de presiones a lo largo de la dirección X (\(q_u(x) = mx + b\)), se adopta la presión máxima absoluta (\(q_{u,\max}\)) de la distribución factorizada para diseñar un <strong>refuerzo transversal uniforme</strong> en toda la cimentación, garantizando un diseño seguro y constructivamente simple.
-                    </p>
-            
-                    <div class="w3-padding-small w3-round" style="background: white; border: 1px solid #e2e8f0;">
-                        <strong style="color: #334155; font-size: 12px; display: block; margin-bottom: 6px;">Metodología Aplicada</strong>
-                        <ul class="w3-small" style="margin: 0; padding-left: 20px; color: var(--gris-texto);">
-                            <li style="margin-bottom: 6px;">
-                                <strong>1. Presión de diseño transversal:</strong> Se adopta \(q_{u,\max} = 337.6 \text{ kPa}\) (proveniente de la combinación sísmica \(1.2D + E + Live\)).
-                            </li>
-                            <li style="margin-bottom: 6px;">
-                                <strong>2. Voladizo transversal (\(a_y\)):</strong>
-                                <div style="margin: 4px 0; color: #1e40af; font-weight: bold;">
-                                    \( a_y = \frac{B - c_y}{2} = \frac{1.60 - 0.40}{2} = \mathbf{0.60 \text{ m}} \)
-                                </div>
-                            </li>
-                            <li>
-                                <strong>3. Flexión Transversal Unitaria (\(M_{u,x}\)):</strong>
-                                <div style="margin: 4px 0; color: #1e40af; font-weight: bold;">
-                                    \( M_{u,x} = \frac{q_{u,\max} \cdot a_y^2}{2} = \frac{337.6 \cdot 0.60^2}{2} = \mathbf{60.8 \text{ kNm/m}} \)
-                                </div>
-                                <div style="margin: 4px 0; color: #475569;">
-                                    \( A_{s,req} = \mathbf{406 \text{ mm}^2/m} \); \( d = 401.2 \text{ mm} \); controla \( A_{s,min} = \mathbf{900 \text{ mm}^2/m} \); \( \phi M_n= 133 \text{ kNm/m} \)
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            
                 <!-- CAJAS DE EXPLICACIÓN: DEMANDA Y CAPACIDAD A FLEXIÓN LONGITUDINAL -->
                 <div class="ce-grid ce-grid-2" style="margin-top: 15px; margin-bottom: 15px;">
                     
@@ -1105,6 +969,49 @@
                         <span class="w3-small ce-alerta" style="display:inline-block; margin-top: 4px;">Gobierna el refuerzo mínimo a flexión</span>
                     </div>
                 </div>
+            </div>
+
+            
+            
+
+            
+            <div class="w3-panel w3-padding-small w3-round w3-white w3-margin-top" style="border: 1px dashed var(--azul-profundo); font-size: 0.85em; color: var(--azul-profundo);">
+    
+                <!-- NOTA DE DISEÑO TRANSVERSAL -->
+                <div class="w3-panel ce-panel-gris w3-padding w3-round" style="border-left: 4px solid var(--azul-profundo); margin-bottom: 20px;">
+                    <strong style="color: var(--azul-profundo); font-size: 1.05em; display: block; margin-bottom: 8px;">
+                        <i class="fa fa-expand-arrows-alt"></i> Criterio de Diseño Transversal (Dirección Y) bajo Gradiente Longitudinal
+                    </strong>
+                    
+                    <p class="w3-small" style="margin-top: 0; margin-bottom: 10px; color: var(--gris-texto);">
+                        Aunque la columna no transmita momentos alrededor del eje X (\(M_{u,x} = 0\)), el voladizo transversal de la zapata debe resistir la reacción ascendente del terreno. Dado que existe un gradiente de presiones a lo largo de la dirección X (\(q_u(x) = mx + b\)), se adopta la presión máxima absoluta (\(q_{u,\max}\)) de la distribución factorizada para diseñar un <strong>refuerzo transversal uniforme</strong> en toda la cimentación, garantizando un diseño seguro y constructivamente simple.
+                    </p>
+            
+                    <div class="w3-padding-small w3-round" style="background: white; border: 1px solid #e2e8f0;">
+                        <strong style="color: #334155; font-size: 12px; display: block; margin-bottom: 6px;">Metodología Aplicada</strong>
+                        <ul class="w3-small" style="margin: 0; padding-left: 20px; color: var(--gris-texto);">
+                            <li style="margin-bottom: 6px;">
+                                <strong>1. Presión de diseño transversal:</strong> Se adopta \(q_{u,\max} = 337.6 \text{ kPa}\) (proveniente de la combinación sísmica \(1.2D + E + Live\)).
+                            </li>
+                            <li style="margin-bottom: 6px;">
+                                <strong>2. Voladizo transversal (\(a_y\)):</strong>
+                                <div style="margin: 4px 0; color: #1e40af; font-weight: bold;">
+                                    \( a_y = \frac{B - c_y}{2} = \frac{1.60 - 0.40}{2} = \mathbf{0.60 \text{ m}} \)
+                                </div>
+                            </li>
+                            <li>
+                                <strong>3. Flexión Transversal Unitaria (\(M_{u,x}\)):</strong>
+                                <div style="margin: 4px 0; color: #1e40af; font-weight: bold;">
+                                    \( M_{u,x} = \frac{q_{u,\max} \cdot a_y^2}{2} = \frac{337.6 \cdot 0.60^2}{2} = \mathbf{60.8 \text{ kNm/m}} \)
+                                </div>
+                                <div style="margin: 4px 0; color: #475569;">
+                                    \( A_{s,req} = \mathbf{406 \text{ mm}^2/m} \); \( d = 401.2 \text{ mm} \); controla \( A_{s,min} = \mathbf{900 \text{ mm}^2/m} \); \( \phi M_n= 133 \text{ kNm/m} \)
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>           
+                
             </div>
 
             <div class="w3-panel ce-panel-naranja w3-padding w3-round w3-margin-top">
