@@ -2108,8 +2108,8 @@
                             <strong style="color: #7c2d12;">• Flexión Longitudinal (\(M_{u,y}\)):</strong><br>
                             \(M_{u,y} = 27.3 \text{ kNm/m} \rightarrow\) Controla <strong>\(A_{s,min}\)</strong> <span style="color:#166534;">✔</span> <br>
                             <span style="color: #64748b; font-size: 11px; display:block; margin-top:3px; margin-bottom:4px; line-height:1.3;"><i>*Cálculo integrando el trapecio de presiones en el voladizo (\(L_{v,x}=0.50\text{ m}\)). Interpolando, la presión en la cara interior de la columna (\(x=0.2\text{ m}\)) es \(q=223.0\text{ kPa}\), y en el borde libre (\(x=0.7\text{ m}\)) es \(q=216.4\text{ kPa}\). Se calcula la fuerza resultante y la ubicación de su brazo para obtener el momento.</i></span>
-                            <span style="color: #c2410c; font-size: 11px; display:block; margin-bottom:4px; line-height:1.3;"><i><strong>Nota (Ver Concepto 01):</strong> En algunos procedimientos de diseño se omite la verificación de flexión longitudinal bajo el argumento de que la viga de enlace absorbe la totalidad de los esfuerzos en esa dirección y que la zapata trabaja exclusivamente en sentido transversal
-                                (\(M_{u,x}\)). Sin embargo, esta conclusión no debe asumirse automáticamente. La zapata conserva un voladizo físico respecto a la columna, sometido a las presiones de contacto del suelo, por lo que debe verificarse su comportamiento a flexión y justificarse el refuerzo correspondiente.</i></span>
+                            <span style="color: #c2410c; font-size: 11px; display:block; margin-bottom:4px; line-height:1.3;"><i><strong>Nota (Ver Concepto 01):</strong> Algunos procedimientos omiten la verificación de flexión longitudinal al asumir que la viga de enlace absorbe todos los esfuerzos en esa dirección y que la zapata trabaja exclusivamente en sentido transversal (\(M_{u,x}\)). 
+                                Sin embargo, la zapata conserva un voladizo físico sometido a las presiones del suelo, cuyo comportamiento a flexión y refuerzo deben verificarse.</i></span>
                             <span style="color: #1e40af; font-size: 11px;"><strong>Adopta: No. 5 @ 225 mm. </strong> (\(A_{s,min} = 810 \text{ mm}^2/\text{m} \mid \phi M_n = 119 \text{ kNm} \gg M_{u,y}\))</span>
                         </p>
                         <p class="w3-small" style="margin-bottom: 8px;">
@@ -2117,8 +2117,10 @@
                             Volado \(0.75 \text{ m} \rightarrow M_{u,x} = 64.2 \text{ kNm/m}\)<br>
                             Controla <strong>\(A_{s,min}\)</strong> (\(\rho = 0.0018\)) <span style="color:#166534;">✔</span> <br>
                             <span style="color: #64748b; font-size: 11px; display:block; margin-top:3px; margin-bottom:2px; line-height:1.3;"><i>*\(M_{u,x} \approx q_{max} \cdot L_{v,y}^2 / 2 = 228.2 \times 0.75^2 / 2\)</i></span>
-                            <span style="color: #854d0e; font-size: 10.5px; display:block; margin-bottom:4px; line-height:1.2;"><i><strong>Nota de simplificación:</strong> Nota de simplificación: A diferencia de la dirección longitudinal, aquí se adopta conservadoramente la presión máxima (\(q_{max}\)) 
-                                omo una presión uniforme sobre toda la franja del voladizo transversal. Esta aproximación permite simplificar el cálculo y obtener una estimación conservadora de la demanda a flexión. La verificación debe realizarse independientemente de que la columna transmita o no un momento en esta dirección, pues el voladizo transversal está sometido a la reacción del suelo.</i></span>
+                            <span style="color: #854d0e; font-size: 10.5px; display:block; margin-bottom:4px; line-height:1.2;"><i><strong>Nota de simplificación:</strong> 
+                                En este ejemplo no se considera un momento \(M_{u,x}\) transmitido por la columna. Si dicho momento está presente, debe evaluarse su efecto sobre 
+                                la distribución de presiones de contacto y los gradientes adicionales en la dirección transversal. Aquí se adopta conservadoramente \(q_{max}\) uniforme sobre toda la franja del voladizo.
+                                </i></span>
                             <span style="color: #1e40af; font-size: 11px;"><strong>Adopta: No. 5 @ 225 mm. </strong> (\(A_{s,min} = 810 \text{ mm}^2/\text{m} \mid \phi M_n = 119 \text{ kNm} \gg M_{u,x}\))</span>
                         </p>
                     </div>
