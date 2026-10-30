@@ -2185,7 +2185,7 @@
             <div class="w3-panel w3-padding w3-round w3-margin-top" style="background:#f0f9ff; border-left: 4px solid #0ea5e9; color: #0c4a6e;">
                 <strong style="color: #0369a1;"><i class="fa fa-wrench"></i> Nota de Detallado:</strong>
                 <p class="w3-small" style="margin-top: 5px; margin-bottom: 0;">
-                    Para ambas zapatas, se debe suministrar <strong>gancho estándar a 90°</strong> (según C.12.5) en los extremos de las barras para garantizar el desarrollo del refuerzo, dado que los volados son cortos respecto a la longitud de transferencia requerida.
+                    Para ambas zapatas, se dispone <strong>gancho estándar a 90°</strong> (según C.12.5) en los extremos de las barras para garantizar el desarrollo del refuerzo en los volados más cortos (0.50 m). <span style="color: #0369a1;"><i>Nota: Si se desea utilizar barra recta en volados de mayor dimensión (ej. 0.75 m), el diseñador debe verificar que la longitud de desarrollo (\(\ell_d\)) disponible sea suficiente, conforme a la norma.</i></span>
                 </p>
             </div>
 
@@ -2197,16 +2197,17 @@
             </div>
 
             <!-- CONCEPTOS DE DISEÑO -->
+            <!-- CONCEPTOS DE DISEÑO -->
             <div class="w3-panel w3-white w3-padding w3-round" style="border: 1px solid var(--gris-borde); box-shadow: 0 2px 5px rgba(0,0,0,0.02); margin-bottom: 15px;">
                 <div style="display:flex; align-items:center; margin-bottom:12px;">
                     <span class="w3-round w3-small" style="background-color: #4f46e5; color: white; padding: 4px 10px; font-weight: bold; margin-right: 10px;">CONCEPTO 01</span>
                     <strong style="color: var(--azul-profundo); font-size: 1.1em;">La Viga como "Soporte" de la Zapata</strong>
                 </div>
                 <p class="w3-small" style="color: var(--gris-texto); margin-bottom: 10px;">
-                    En el modelo de viga de enlace, asumimos que la viga es lo suficientemente rígida para "recoger" las presiones del suelo. Por lo tanto, el voladizo transversal de la zapata no nace en la cara de la columna (40 cm), sino en la <strong>cara de la viga (30 cm)</strong>.
+                    En el modelo adoptado, asumimos que la viga de enlace es suficientemente rígida para recoger las presiones del suelo y actuar como apoyo del voladizo transversal. Por tanto, aunque la <strong>NSR-10 (C.15.4.2)</strong> establece la sección crítica de referencia en la cara de la columna (40 cm), aquí se adopta, como criterio conservador de modelación, la <strong>cara de la viga (30 cm)</strong> como origen del voladizo transversal.
                 </p>
                 <p class="w3-small" style="color: var(--gris-texto); margin-bottom: 0;">
-                    <span class="ce-alerta">¿Por qué es más conservador?</span> Al medir desde la viga, el brazo de palanca aumenta de 0.70m a <strong>0.75m</strong>. Ese pequeño incremento del 7% en la longitud se traduce en un aumento del 15% en el momento flector (\(L^2\)). Diseñar así garantiza que la zapata no falle en la transición viga-losa.
+                    <span class="ce-alerta">¿Por qué es más conservador?</span> Medir desde la viga aumenta el brazo de palanca de 0.70 m a <strong>0.75 m</strong>. Ese incremento del 7% en longitud produce un aumento aproximado del 15% en el momento flector (\(L^2\)).
                 </p>
             </div>
 
