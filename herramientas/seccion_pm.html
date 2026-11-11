@@ -780,13 +780,92 @@ function calcularTodo() {
         let p2 = puntosEvaluados[i + 1];
 
         if ((p1.Pn <= 0 && p2.Pn >= 0) || (p1.Pn >= 0 && p2.Pn <= 0)) {
-            let t = Math.abs(p1.Pn) / (Math.abs(p1.Pn) + Math.abs(p2.Pn));
-            if (isNaN(t)) t = 0;
+            
+            // Función auxiliar para evaluar el equilibrio exacto dado c
+            let evaluarEnC = (c_test) => {
+                let a_test = beta1 * c_test;
+                let a_eff_t = Math.min(a_test, h);
+                let Cc_t = -0.85 * fc * a_eff_t * b / 1000.0;
+                let Pn_s_t = 0, Mn_s_t = 0, et_max_t = -1.0;
 
-            mnFlex = p1.Mn + t * (p2.Mn - p1.Mn);
-            phiFlex = p1.phi + t * (p2.phi - p1.phi);
-            phiMnFlex = p1.phiMn + t * (p2.phiMn - p1.phiMn);
-            cFlex = p1.c + t * (p2.c - p1.c);
+                capas.forEach(capa => {
+                    let eps_i = ecu * (capa.d - c_test) / c_test;
+                    let fs_i = Math.max(-fy, Math.min(fy, Es * eps_i));
+                    let fs_net = fs_i;
+                    if (capa.d <= a_eff_t && fs_i < 0) {
+                        fs_net = fs_i + (0.85 * fc);
+                    }
+                    let F_si = (capa.As * fs_net) / 1000.0;
+                    Pn_s_t += F_si;
+                    Mn_s_t += F_si * (h / 2.0 - capa.d) / 1000.0;
+                    if (eps_i > et_max_t) et_max_t = eps_i;
+                });
+
+                let Mn_c_t = Cc_t * (h / 2.0 - a_eff_t / 2.0) / 1000.0;
+                let Pn_t = Cc_t + Pn_s_t;
+                let Mn_t = Math.abs(Mn_c_t + Mn_s_t);
+                let phi_t = 0.65;
+                if (et_max_t >= 0.005) phi_t = 0.90;
+                else if (et_max_t > ey) phi_t = 0.65 + 0.25 * (et_max_t - ey) / (0.005 - ey);
+
+                return { Pn: Pn_t, Mn: Mn_t, phi: phi_t, phiMn: Mn_t * phi_t };
+            };
+
+            // A. Comprobar primero los extremos del intervalo antes de la bisección
+            let resP1 = evaluarEnC(p1.c);
+            let resP2 = evaluarEnC(p2.c);
+            let c_mid, resFinal;
+
+            if (Math.abs(resP1.Pn) < 1e-4) {
+                c_mid = p1.c;
+                resFinal = resP1;
+            } else if (Math.abs(resP2.Pn) < 1e-4) {
+                c_mid = p2.c;
+                resFinal = resP2;
+            } else if (Math.sign(resP1.Pn) === Math.sign(resP2.Pn)) {
+                // Si no hay cambio de signo real entre extremos, omitir y pasar al siguiente
+                continue;
+            } else {
+                // Bisección estándar con tolerancia estricta
+                let c_low = Math.min(p1.c, p2.c);
+                let c_high = Math.max(p1.c, p2.c);
+                c_mid = c_low;
+
+                for (let iter = 0; iter < 30; iter++) {
+                    c_mid = (c_low + c_high) / 2.0;
+                    let resMid = evaluarEnC(c_mid);
+                    let resLow = evaluarEnC(c_low);
+
+                    if (Math.abs(resMid.Pn) < 1e-5 || (c_high - c_low) < 1e-4) break;
+
+                    if (Math.sign(resMid.Pn) === Math.sign(resLow.Pn)) {
+                        c_low = c_mid;
+                    } else {
+                        c_high = c_mid;
+                    }
+                }
+                resFinal = evaluarEnC(c_mid);
+            }
+
+            // B. Control de convergencia y verificación de discontinuidades (Residuo Pn)
+            if (Math.abs(resFinal.Pn) > 1e-3) {
+                console.warn(
+                    "Flexión pura: no se alcanzó el equilibrio Pn = 0 por salto de discontinuidad en el acero.",
+                    { c: c_mid, Pn: resFinal.Pn }
+                );
+                // Fallback seguro a interpolación lineal si el residuo excede la tolerancia
+                let t = Math.abs(p1.Pn) / (Math.abs(p1.Pn) + Math.abs(p2.Pn));
+                if (isNaN(t)) t = 0;
+                mnFlex = p1.Mn + t * (p2.Mn - p1.Mn);
+                phiFlex = p1.phi + t * (p2.phi - p1.phi);
+                phiMnFlex = p1.phiMn + t * (p2.phiMn - p1.phiMn);
+                cFlex = p1.c + t * (p2.c - p1.c);
+            } else {
+                mnFlex = resFinal.Mn;
+                phiFlex = resFinal.phi;
+                phiMnFlex = resFinal.phiMn;
+                cFlex = c_mid;
+            }
             break;
         }
     }
