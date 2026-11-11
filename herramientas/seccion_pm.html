@@ -217,6 +217,80 @@
 </div>
 
 <script>
+// --- PERSISTENCIA DE DATOS CON LOCALSTORAGE ---
+const CLAVE_STORAGE = 'criterio_pm_config_v1';
+
+function guardarConfiguracion() {
+    let trs = document.querySelectorAll('#cuerpoFilas tr');
+    let filas = [];
+    trs.forEach(tr => {
+        let inpCfg = tr.querySelector('.cfg-acero');
+        let inpD = tr.querySelector('.d-pos');
+        if (inpCfg && inpD) {
+            filas.push({ cfg: inpCfg.value, d: parseFloat(inpD.value) });
+        }
+    });
+
+    let config = {
+        b: document.getElementById('inpB').value,
+        h: document.getElementById('inpH').value,
+        fc: document.getElementById('inpFc').value,
+        fy: document.getElementById('inpFy').value,
+        rec: document.getElementById('inpRec').value,
+        numFilas: document.getElementById('numFilas').value,
+        modoPos: document.getElementById('modoPos').value,
+        sv: document.getElementById('inpSv').value,
+        calibreEstribo: document.getElementById('calibreEstribo').value,
+        numRamas: document.getElementById('numRamas').value,
+        sepEstribo: document.getElementById('sepEstribo').value,
+        filas: filas
+    };
+
+    localStorage.setItem(CLAVE_STORAGE, JSON.stringify(config));
+}
+
+function cargarConfiguracion() {
+    let dataGuardada = localStorage.getItem(CLAVE_STORAGE);
+    if (!dataGuardada) return false;
+
+    try {
+        let config = JSON.parse(dataGuardada);
+        
+        if (config.b) document.getElementById('inpB').value = config.b;
+        if (config.h) document.getElementById('inpH').value = config.h;
+        if (config.fc) document.getElementById('inpFc').value = config.fc;
+        if (config.fy) document.getElementById('inpFy').value = config.fy;
+        if (config.rec) document.getElementById('inpRec').value = config.rec;
+        if (config.numFilas) document.getElementById('numFilas').value = config.numFilas;
+        if (config.modoPos) document.getElementById('modoPos').value = config.modoPos;
+        if (config.sv) document.getElementById('inpSv').value = config.sv;
+        if (config.calibreEstribo) document.getElementById('calibreEstribo').value = config.calibreEstribo;
+        if (config.numRamas) document.getElementById('numRamas').value = config.numRamas;
+        if (config.sepEstribo) document.getElementById('sepEstribo').value = config.sepEstribo;
+
+        // Reconstruir tabla de filas con las configuraciones guardadas
+        if (config.filas && config.filas.length > 0) {
+            let cuerpo = document.getElementById('cuerpoFilas');
+            cuerpo.innerHTML = '';
+            config.filas.forEach((fila, i) => {
+                let tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="font-weight:bold; text-align:center;">Fila ${i + 1}</td>
+                    <td><input type="text" class="cfg-acero" value="${fila.cfg}" onchange="calcularTodo()"></td>
+                    <td><input type="number" class="d-pos" value="${fila.d}" step="1" ${(config.modoPos !== 'manual') ? 'readonly style="background:#f1f5f9;"' : ''} onchange="calcularTodo()"></td>
+                    <td class="area-fila" style="font-weight:bold; text-align:right;">0</td>
+                    <td class="eps-fila" style="font-weight:bold; text-align:center;">-</td>
+                `;
+                cuerpo.appendChild(tr);
+            });
+        }
+        return true;
+    } catch (e) {
+        console.error("Error al cargar configuración:", e);
+        return false;
+    }
+}
+    
 // --- TABLA DE ÁREAS Y PARSER DE REFUERZO ---
 const AREAS_BARRAS = { '0': 0, '2': 31.6, '3': 71.2, '4': 129.0, '5': 199.0, '6': 285.0, '7': 387.1, '8': 510.0, '9': 645.0 };
 const DIAM_BARRAS = { '0': 0, '2': 6.35, '3': 9.53, '4': 12.7, '5': 15.88, '6': 19.05, '7': 22.23, '8': 25.4, '9': 28.65 };
@@ -563,6 +637,8 @@ function calcularTodo() {
     });
 
     renderizarGraficoPM(nominalM, nominalP, disenoM, disenoP, phiPn_max);
+    // Guardar estado actual en el navegador
+    guardarConfiguracion();
 }
 
 function renderizarGraficoPM(nM, nP, dM, dP, phiPn_max) {
@@ -586,7 +662,10 @@ function renderizarGraficoPM(nM, nP, dM, dP, phiPn_max) {
 }
 
 window.onload = () => {
-    actualizarEstructuraFilas();
+    let cargado = cargarConfiguracion();
+    if (!cargado) {
+        actualizarEstructuraFilas();
+    }
     calcularTodo();
 };
 </script>
