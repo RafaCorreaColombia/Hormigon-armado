@@ -11,25 +11,166 @@
     <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
 
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
         :root {
-            --azul-profundo: #1A2530;
-            --naranja-estructural: #E67E22;
-            --gris-claro: #F4F5F7;
-            --verde-traccion: #22c55e;
-            --rojo-compresion: #dc2626;
+            --primary: #4F46E5;      /* Indigo profesional */
+            --secondary: #0EA5E9;    /* Azul cielo alegre */
+            --accent: #10B981;       /* Esmeralda para éxito/tracción */
+            --warning: #F43F5E;      /* Rosa/Rojo moderno para alertas */
+            --text-main: #1E293B;    /* Gris pizarra muy oscuro */
+            --text-muted: #64748B;
+            --bg-gradient: linear-gradient(135deg, #F8FAFC 0%, #E2E8F0 100%);
+            --glass-bg: rgba(255, 255, 255, 0.65);
+            --glass-border: rgba(255, 255, 255, 0.8);
         }
 
-        body { background-color: var(--gris-claro); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: var(--azul-profundo); }
-        .contenedor-principal { max-width: 1300px; margin: 20px auto; background: white; border-radius: 12px; box-shadow: 0 8px 25px rgba(26,37,48,0.12); overflow: hidden; }
-        .header-ce { background: var(--azul-profundo); color: white; padding: 25px 20px; text-align: center; border-bottom: 4px solid var(--naranja-estructural); }
-        .brand-logo-header { max-width: 230px; margin-bottom: 10px; }
-        .panel-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 18px; margin-bottom: 15px; }
-        .titulo-seccion { border-bottom: 2px solid var(--naranja-estructural); padding-bottom: 5px; color: var(--azul-profundo); font-weight: bold; font-size: 1.1em; display: flex; justify-content: space-between; align-items: center;}
-        .caja-metrica { background: #fdf6f0; border-left: 5px solid var(--naranja-estructural); padding: 12px; border-radius: 6px; margin-bottom: 10px; }
-        .highlight { color: var(--naranja-estructural); font-weight: bold; }
-        .tabla-filas input { width: 100%; border: 1px solid #ccc; border-radius: 4px; padding: 4px 6px; font-size: 0.9em; }
-        .btn-ce { background-color: var(--azul-profundo); color: white; font-weight: bold; border-radius: 6px; transition: 0.3s; cursor: pointer; border: none; }
-        .btn-ce:hover { background-color: var(--naranja-estructural); color: white; }
+        body { 
+            background: var(--bg-gradient); 
+            background-attachment: fixed;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif; 
+            color: var(--text-main); 
+            min-height: 100vh;
+        }
+
+        .contenedor-principal { 
+            max-width: 1350px; 
+            margin: 30px auto; 
+            padding: 0 15px;
+        }
+
+        /* HEADER MODERNO */
+        .header-ce { 
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white; 
+            padding: 30px 20px; 
+            text-align: center; 
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(14, 165, 233, 0.2);
+            margin-bottom: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+        /* Brillo sutil en el header */
+        .header-ce::after {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        .brand-logo-header { max-width: 200px; margin-bottom: 12px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); }
+
+        /* PANELES GLASSMORPHISM */
+        .panel-card { 
+            background: var(--glass-bg); 
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border); 
+            border-radius: 16px; 
+            padding: 22px; 
+            margin-bottom: 20px; 
+            box-shadow: 0 8px 32px rgba(30, 41, 59, 0.05); 
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .panel-card:hover {
+            box-shadow: 0 12px 40px rgba(30, 41, 59, 0.08); 
+        }
+
+        .titulo-seccion { 
+            border-bottom: 2px solid rgba(14, 165, 233, 0.2); 
+            padding-bottom: 10px; 
+            color: var(--primary); 
+            font-weight: 700; 
+            font-size: 1.15em; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .titulo-seccion i { color: var(--secondary); margin-right: 8px; }
+
+        /* CAJAS DE RESULTADOS METRICAS */
+        .caja-metrica { 
+            background: rgba(255, 255, 255, 0.5); 
+            border-left: 4px solid var(--secondary); 
+            padding: 16px; 
+            border-radius: 10px; 
+            margin-bottom: 12px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+        .highlight { color: var(--primary); font-weight: 700; font-size: 1.1em;}
+
+        /* INPUTS MODERNOS */
+        label { font-weight: 600; color: var(--text-muted); font-size: 0.85em; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 5px; }
+        .w3-input, .w3-select { 
+            border: 1px solid rgba(148, 163, 184, 0.3) !important; 
+            background: rgba(255,255,255,0.7) !important; 
+            border-radius: 10px !important; 
+            padding: 8px 12px !important; 
+            transition: all 0.3s ease; 
+            color: var(--text-main) !important;
+            font-weight: 500;
+        }
+        .w3-input:focus, .w3-select:focus { 
+            outline: none; 
+            border-color: var(--secondary) !important; 
+            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15) !important; 
+            background: #ffffff !important;
+        }
+
+        /* TABLA MODERNA TIPO SaaS */
+        .w3-table-all { border: none !important; background: transparent !important; }
+        .w3-table-all tr:nth-child(even) { background: rgba(255,255,255,0.3) !important; }
+        .w3-table-all tr:nth-child(odd) { background: transparent !important; }
+        .w3-table-all th { 
+            background: rgba(241, 245, 249, 0.6) !important; 
+            color: var(--text-muted) !important; 
+            border-bottom: 2px solid rgba(148, 163, 184, 0.2); 
+            text-transform: uppercase; 
+            font-size: 0.8em; 
+            letter-spacing: 0.5px;
+            padding: 12px 8px !important;
+        }
+        .w3-table-all td { border-bottom: 1px solid rgba(148, 163, 184, 0.1); padding: 10px 8px !important; vertical-align: middle;}
+        .tabla-filas input { 
+            width: 100%; border: 1px solid rgba(148, 163, 184, 0.3); border-radius: 6px; padding: 6px 10px; font-size: 1em; 
+            background: rgba(255,255,255,0.6); transition: 0.2s;
+        }
+        .tabla-filas input:focus { border-color: var(--secondary); background: #fff; outline: none; }
+
+        /* BOTONES */
+        .btn-ce { 
+            background: linear-gradient(135deg, var(--primary), var(--secondary)); 
+            color: white !important; 
+            font-weight: 600; 
+            border-radius: 8px; 
+            transition: 0.3s; 
+            cursor: pointer; 
+            border: none;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+        }
+        .btn-ce:hover { 
+            box-shadow: 0 6px 16px rgba(79, 70, 229, 0.3); 
+            transform: translateY(-1px);
+        }
+
+        /* ALERTAS / BANNERS */
+        .alerta-glass {
+            background: rgba(254, 243, 199, 0.6) !important;
+            backdrop-filter: blur(10px);
+            border-left: 4px solid #F59E0B !important;
+            color: #92400E;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        }
+
+        /* FOOTER */
+        footer {
+            background: transparent !important;
+            border-top: 1px solid rgba(148, 163, 184, 0.2) !important;
+            margin-top: 30px;
+        }
     </style>
 </head>
 <body>
@@ -38,19 +179,19 @@
 
     <!-- HEADER INSTITUCIONAL -->
     <div class="header-ce">
-        <img src="../assets/IsotipoFOscuroT.png" alt="Criterio Estructural" class="brand-logo-header" onerror="this.style.display='none'">
-        <h1 class="w3-large" style="margin:0; font-weight: bold;">Análisis de Secciones de Concreto Reforzado (P–M / V)</h1>
-        <p class="w3-small" style="margin-top: 5px; color: #cbd5e1;">Flexocompresión Axial · Cortante · Verificación Normativa NSR-10 / ACI 318</p>
+        <img src="../assets/IsotipoFClaroT.png" alt="Criterio Estructural" class="brand-logo-header" onerror="this.style.display='none'">
+        <h1 class="w3-xlarge" style="margin:0; font-weight: 700; letter-spacing: -0.5px;">Análisis de Secciones de Concreto Reforzado</h1>
+        <p style="margin-top: 8px; color: rgba(255,255,255,0.85); font-weight: 300;">Flexocompresión Axial · Cortante · Verificación Normativa NSR-10 / ACI 318</p>
     </div>
 
     <!-- AVISO ACADÉMICO -->
-    <div class="w3-padding" style="padding-left: 25px; padding-right: 25px;">
-        <div class="w3-panel w3-amber w3-leftbar w3-border-orange w3-padding-12 w3-round-large w3-small" style="background-color: #fff8e1!important;">
-            <b>🚧 Herramienta de Verificación Técnica:</b> Esta aplicación resuelve el equilibrio de secciones rectangulares sujetas a flexocompresión y cortante. Requiere validación y memoria de cálculo por parte del diseñador responsable.
+    <div style="padding-bottom: 15px;">
+        <div class="w3-panel w3-padding-16 w3-small alerta-glass">
+            <b style="font-size: 1.1em;">🚧 Herramienta de Verificación Técnica:</b> Esta aplicación resuelve el equilibrio de secciones rectangulares sujetas a flexocompresión y cortante. Requiere validación y memoria de cálculo por parte del diseñador responsable.
         </div>
     </div>
 
-    <div class="w3-row-padding w3-padding-16">
+    <div class="w3-row-padding">
 
         <!-- COLUMNA IZQUIERDA: PARÁMETROS DE ENTRADA -->
         <div class="w3-col l5 m12">
@@ -58,37 +199,37 @@
             <!-- 01. GEOMETRÍA, MATERIALES Y ESTRIBOS -->
             <div class="panel-card">
                 <div class="titulo-seccion">
-                    <span><i class="fa fa-cubes w3-text-orange"></i> 01 / Geometría, Materiales y Estribos</span>
-                    <button class="w3-button w3-tiny w3-round btn-ce" onclick="restablecerValoresDefault()" style="padding: 4px 10px;"><i class="fa fa-refresh"></i> Reset</button>
+                    <span><i class="fa fa-cubes"></i> 01 / Geometría, Materiales y Estribos</span>
+                    <button class="w3-button w3-tiny btn-ce" onclick="restablecerValoresDefault()" style="padding: 6px 12px;"><i class="fa fa-refresh"></i> Reset</button>
                 </div>
                 
                 <div class="w3-row-padding w3-margin-top w3-small">
                     <div class="w3-col l3 m3 s6 w3-margin-bottom">
                         <label>Base <b>b</b> (mm):</label>
-                        <input type="number" id="inpB" value="300" step="10" class="w3-input w3-border w3-round" onchange="calcularTodo()">
+                        <input type="number" id="inpB" value="300" step="10" class="w3-input" onchange="calcularTodo()">
                     </div>
                     <div class="w3-col l3 m3 s6 w3-margin-bottom">
                         <label>Altura <b>h</b> (mm):</label>
-                        <input type="number" id="inpH" value="350" step="10" class="w3-input w3-border w3-round" onchange="calcularTodo()">
+                        <input type="number" id="inpH" value="350" step="10" class="w3-input" onchange="calcularTodo()">
                     </div>
                     <div class="w3-col l3 m3 s6 w3-margin-bottom">
                         <label><b>f'c</b> (MPa):</label>
-                        <input type="number" id="inpFc" value="28" step="1" class="w3-input w3-border w3-round" onchange="calcularTodo()">
+                        <input type="number" id="inpFc" value="28" step="1" class="w3-input" onchange="calcularTodo()">
                     </div>
                     <div class="w3-col l3 m3 s6 w3-margin-bottom">
                         <label><b>fy</b> (MPa):</label>
-                        <input type="number" id="inpFy" value="420" step="10" class="w3-input w3-border w3-round" onchange="calcularTodo()">
+                        <input type="number" id="inpFy" value="420" step="10" class="w3-input" onchange="calcularTodo()">
                     </div>
                 </div>
                 
                 <div class="w3-row-padding w3-small">
                     <div class="w3-col l3 m3 s6 w3-margin-bottom">
                         <label>Recub. <b>r<sub>c</sub></b> (mm):</label>
-                        <input type="number" id="inpRec" value="40" step="5" class="w3-input w3-border w3-round" onchange="recalcularPosiciones(); calcularTodo();">
+                        <input type="number" id="inpRec" value="40" step="5" class="w3-input" onchange="recalcularPosiciones(); calcularTodo();">
                     </div>
                     <div class="w3-col l3 m3 s6 w3-margin-bottom">
                         <label>Estribo:</label>
-                        <select id="calibreEstribo" class="w3-select w3-border w3-round" onchange="recalcularPosiciones(); calcularTodo();">
+                        <select id="calibreEstribo" class="w3-select" onchange="recalcularPosiciones(); calcularTodo();">
                             <option value="0">Sin Estribos</option>
                             <option value="2">N° 2</option>
                             <option value="3" selected>N° 3 (3/8")</option>
@@ -101,26 +242,26 @@
                     </div>
                     <div class="w3-col l3 m3 s6 w3-margin-bottom">
                         <label>N° Ramas:</label>
-                        <input type="number" id="numRamas" value="2" min="1" class="w3-input w3-border w3-round" onchange="calcularTodo()">
+                        <input type="number" id="numRamas" value="2" min="1" class="w3-input" onchange="calcularTodo()">
                     </div>
                     <div class="w3-col l3 m3 s6 w3-margin-bottom">
                         <label>Sep. <b>s</b> (mm):</label>
-                        <input type="number" id="sepEstribo" value="150" step="10" class="w3-input w3-border w3-round" onchange="calcularTodo()">
+                        <input type="number" id="sepEstribo" value="150" step="10" class="w3-input" onchange="calcularTodo()">
                     </div>
                 </div>
             </div>
 
             <!-- 02. REFUERZO LONGITUDINAL -->
             <div class="panel-card">
-                <div class="titulo-seccion"><span><i class="fa fa-bars w3-text-orange"></i> 02 / Distribución de Refuerzo Longitudinal</span></div>
+                <div class="titulo-seccion"><span><i class="fa fa-bars"></i> 02 / Distribución de Refuerzo Longitudinal</span></div>
                 <div class="w3-row-padding w3-margin-top w3-small">
-                    <div class="w3-half">
+                    <div class="w3-half w3-margin-bottom">
                         <label>Número de Filas:</label>
-                        <input type="number" id="numFilas" value="3" min="1" max="10" class="w3-input w3-border w3-round" onchange="actualizarEstructuraFilas(); calcularTodo();">
+                        <input type="number" id="numFilas" value="3" min="1" max="10" class="w3-input" onchange="actualizarEstructuraFilas(); calcularTodo();">
                     </div>
-                    <div class="w3-half">
+                    <div class="w3-half w3-margin-bottom">
                         <label>Modo Posicionamiento:</label>
-                        <select id="modoPos" class="w3-select w3-border w3-round" onchange="actualizarEstructuraFilas(); calcularTodo();">
+                        <select id="modoPos" class="w3-select" onchange="actualizarEstructuraFilas(); calcularTodo();">
                             <option value="auto">Automático (Uniforme)</option>
                             <option value="fijo">Separación Fija (s_v)</option>
                             <option value="manual">Manual (Definir d_i)</option>
@@ -129,19 +270,19 @@
                 </div>
 
                 <div id="divSepFija" class="w3-margin-top w3-small" style="display:none; padding: 0 8px;">
-                    <label>Separación vertical entre filas intermedias <b>s<sub>v</sub></b> (mm):</label>
-                    <input type="number" id="inpSv" value="115" step="5" class="w3-input w3-border w3-round" onchange="recalcularPosiciones(); calcularTodo();">
+                    <label>Separación vertical intermedias <b>s<sub>v</sub></b> (mm):</label>
+                    <input type="number" id="inpSv" value="115" step="5" class="w3-input" onchange="recalcularPosiciones(); calcularTodo();">
                 </div>
 
                 <div class="w3-responsive w3-margin-top">
                     <table class="w3-table-all w3-tiny tabla-filas" id="tablaFilas">
                         <thead>
-                            <tr class="w3-theme-d5" style="background:#1A2530; color:white;">
-                                <th>Fila</th>
+                            <tr>
+                                <th style="text-align:center;">Fila</th>
                                 <th>Configuración (ej: 3N6, 2N6+2N5)</th>
                                 <th>d<sub>i</sub> (mm)</th>
-                                <th>Área (mm²)</th>
-                                <th>ε<sub>s</sub> (P=0)</th>
+                                <th style="text-align:right;">Área (mm²)</th>
+                                <th style="text-align:center;">ε<sub>s</sub> (P=0)</th>
                             </tr>
                         </thead>
                         <tbody id="cuerpoFilas"></tbody>
@@ -156,48 +297,52 @@
 
             <!-- RESUMEN DE PROPIEDADES -->
             <div class="panel-card">
-                <div class="titulo-seccion"><span><i class="fa fa-calculator w3-text-orange"></i> Resumen de Sección, Flexión Pura y Cortante</span></div>
+                <div class="titulo-seccion"><span><i class="fa fa-calculator"></i> Resumen de Sección, Flexión Pura y Cortante</span></div>
                 <div class="w3-row-padding w3-margin-top w3-small">
                     
                     <!-- Columna 1: Geometría de Refuerzo -->
                     <div class="w3-col l4 m4 s12">
                         <div class="caja-metrica">
-                            <b>Área Total Acero (A<sub>st</sub>):</b> <span id="lblAst" class="highlight">0</span> mm²<br>
+                            <span style="display:block; color:var(--text-muted); font-size:0.85em; text-transform:uppercase; margin-bottom:4px;">Refuerzo</span>
+                            <b>Área (A<sub>st</sub>):</b> <span id="lblAst" class="highlight">0</span> mm²<br>
                             <b>Cuantía Bruta (ρ<sub>g</sub>):</b> <span id="lblCuantiaG" class="highlight">0.00 %</span><br>
                             <b>Cuantía Efec. (ρ<sub>d</sub>):</b> <span id="lblCuantiaD" class="highlight">0.00 %</span><br>
-                            <b>Peralte Ef. Máx. (d<sub>max</sub>):</b> <span id="lblDmax" class="highlight">0</span> mm
+                            <b>Peralte (d<sub>max</sub>):</b> <span id="lblDmax" class="highlight">0</span> mm
                         </div>
                     </div>
 
                     <!-- Columna 2: Flexión Pura (P = 0) -->
                     <div class="w3-col l4 m4 s12">
                         <div class="caja-metrica">
-                            <b>Flexión Pura (P = 0):</b><br>
+                            <span style="display:block; color:var(--text-muted); font-size:0.85em; text-transform:uppercase; margin-bottom:4px;">Flexión (P = 0)</span>
                             <b>M<sub>n</sub>:</b> <span id="lblMnFlex" class="highlight">0.0</span> kN·m<br>
                             <b>ϕ:</b> <span id="lblPhiFlex" class="highlight">0.900</span><br>
-                            <b>ϕM<sub>n</sub>:</b> <span id="lblPhiMnFlex" class="highlight">0.0</span> kN·m
+                            <b>ϕM<sub>n</sub>:</b> <span id="lblPhiMnFlex" class="highlight">0.0</span> kN·m<br>
+                            <span style="color:transparent;">-</span>
                         </div>
                     </div>
 
                     <!-- Columna 3: Cortante -->
                     <div class="w3-col l4 m4 s12">
                         <div class="caja-metrica">
+                            <span style="display:block; color:var(--text-muted); font-size:0.85em; text-transform:uppercase; margin-bottom:4px;">Cortante</span>
                             <b>Concreto (ϕV<sub>c</sub>):</b> <span id="lblPhiVc">0</span> kN<br>
                             <b>Estribos (ϕV<sub>s</sub>):</b> <span id="lblPhiVs">0</span> kN <span id="lblVsMax" class="w3-tiny w3-text-grey"></span><br>
-                            <b>Total (ϕV<sub>n</sub>):</b> <span id="lblPhiVn" class="highlight">0</span> kN
+                            <b>Total (ϕV<sub>n</sub>):</b> <span id="lblPhiVn" class="highlight" style="color:var(--accent);">0</span> kN<br>
+                            <span style="color:transparent;">-</span>
                         </div>
                     </div>
 
                 </div>
-                <div id="alertaVsMax" class="w3-tiny w3-text-red w3-margin-top" style="display:none; font-weight:bold;">
+                <div id="alertaVsMax" class="w3-tiny w3-text-red w3-margin-top" style="display:none; font-weight:bold; background: rgba(244, 63, 94, 0.1); padding: 8px; border-radius: 6px; border-left: 3px solid var(--warning);">
                     ⚠️ El aporte del acero supera el límite normativo (Vs > Vs_max = 0.66√f'c·b·d). Se limita la contribución.
                 </div>
             </div>
 
             <!-- DIAGRAMA DE INTERACCIÓN INTERACTIVO -->
-            <div class="panel-card">
-                <div class="titulo-seccion"><span><i class="fa fa-line-chart w3-text-orange"></i> Diagrama de Interacción P–M</span></div>
-                <div id="plotPM" style="width:100%; height:480px;" class="w3-margin-top"></div>
+            <div class="panel-card" style="padding-bottom: 5px;">
+                <div class="titulo-seccion"><span><i class="fa fa-line-chart"></i> Diagrama de Interacción P–M</span></div>
+                <div id="plotPM" style="width:100%; height:460px; border-radius: 10px; overflow:hidden;" class="w3-margin-top"></div>
             </div>
 
         </div>
@@ -205,11 +350,10 @@
     </div>
 
     <!-- FOOTER INSTITUCIONAL -->
-    <footer class="w3-container w3-padding-24 w3-center w3-text-grey w3-border-top" style="background-color: var(--gris-claro);">
-        <img src="../assets/IsotipoFClaroT.png" alt="Criterio Estructural" style="max-width: 160px;" onerror="this.style.display='none'">
-        <h5 style="margin: 5px 0 0 0; color: var(--azul-profundo);"><b>Ing. Rafael Antonio Correa Melano</b></h5>
-        <p class="w3-small" style="margin: 0;">Ingeniero Civil • M.IE. | Universidad Industrial de Santander</p>
-        <p class="w3-tiny w3-text-grey" style="margin-top: 10px;"><b>Criterio Estructural</b> © 2026. Todos los derechos reservados. Bucaramanga, Colombia 🇨🇴</p>
+    <footer class="w3-container w3-padding-32 w3-center w3-text-grey">
+        <h5 style="margin: 5px 0 0 0; color: var(--text-main); font-weight: 600;">Ing. Rafael Antonio Correa Melano</h5>
+        <p class="w3-small" style="margin: 4px 0 0 0;">Ingeniero Civil • M.IE. | Universidad Industrial de Santander</p>
+        <p class="w3-tiny" style="margin-top: 15px; color: var(--text-muted);"><b>Criterio Estructural</b> © 2026. Todos los derechos reservados. Bucaramanga, Colombia 🇨🇴</p>
     </footer>
 
 </div>
@@ -273,11 +417,11 @@ function cargarConfiguracion() {
             config.filas.forEach((fila, i) => {
                 let tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td style="font-weight:bold; text-align:center;">Fila ${i + 1}</td>
+                    <td style="font-weight:600; text-align:center; color: var(--primary);">Fila ${i + 1}</td>
                     <td><input type="text" class="cfg-acero" value="${fila.cfg}" onchange="calcularTodo()"></td>
-                    <td><input type="number" class="d-pos" value="${fila.d}" step="1" ${(config.modoPos !== 'manual') ? 'readonly style="background:#f1f5f9;"' : ''} onchange="calcularTodo()"></td>
-                    <td class="area-fila" style="font-weight:bold; text-align:right;">0</td>
-                    <td class="eps-fila" style="font-weight:bold; text-align:center;">-</td>
+                    <td><input type="number" class="d-pos" value="${fila.d}" step="1" ${(config.modoPos !== 'manual') ? 'readonly style="background:rgba(255,255,255,0.3); border:none;"' : ''} onchange="calcularTodo()"></td>
+                    <td class="area-fila" style="font-weight:600; text-align:right;">0</td>
+                    <td class="eps-fila" style="font-weight:600; text-align:center;">-</td>
                 `;
                 cuerpo.appendChild(tr);
             });
@@ -357,7 +501,7 @@ function obtenerDiametrosExtremos(b_mm) {
         }
     }
 
-    // Escanear de abajo hacia arriba (Para anclar la zona de tracción máxima)
+    // Escanear de abajo hacia arriba
     for (let i = trs.length - 1; i >= 0; i--) {
         let cfg = trs[i].querySelector('.cfg-acero').value;
         let area = parsearAcero(cfg, b_mm);
@@ -407,11 +551,11 @@ function actualizarEstructuraFilas() {
         let cfgVal = (filasGuardadas[i]) ? filasGuardadas[i].cfg : (defaultConfigs[i] || "2N5");
         
         tr.innerHTML = `
-            <td style="font-weight:bold; text-align:center;">Fila ${i + 1}</td>
+            <td style="font-weight:600; text-align:center; color: var(--primary);">Fila ${i + 1}</td>
             <td><input type="text" class="cfg-acero" value="${cfgVal}" onchange="calcularTodo()"></td>
-            <td><input type="number" class="d-pos" value="0" step="1" ${(modoPos !== 'manual') ? 'readonly style="background:#f1f5f9;"' : ''} onchange="calcularTodo()"></td>
-            <td class="area-fila" style="font-weight:bold; text-align:right;">0</td>
-            <td class="eps-fila" style="font-weight:bold; text-align:center;">-</td>
+            <td><input type="number" class="d-pos" value="0" step="1" ${(modoPos !== 'manual') ? 'readonly style="background:rgba(255,255,255,0.3); border:none;"' : ''} onchange="calcularTodo()"></td>
+            <td class="area-fila" style="font-weight:600; text-align:right;">0</td>
+            <td class="eps-fila" style="font-weight:600; text-align:center;">-</td>
         `;
         cuerpo.appendChild(tr);
     }
@@ -456,9 +600,8 @@ function recalcularPosiciones() {
             } else if (idx === nFilas - 1) {
                 inpD.value = dn.toFixed(1);
             } else {
-                // Posicionar filas intermedias con prioridad a la zona de tensión (abajo hacia arriba)
                 let nInter = nFilas - 2;
-                let num_top = Math.floor(nInter / 2); // Si es impar, le deja una fila extra al bucle inferior
+                let num_top = Math.floor(nInter / 2); 
                 
                 if (idx <= num_top) {
                     inpD.value = (d1 + idx * sv).toFixed(1);
@@ -630,7 +773,7 @@ function calcularTodo() {
             if (cellEps && cFlex > 0) {
                 let eps_i = ecu * (capa.d - cFlex) / cFlex;
                 let sign = (eps_i > 0) ? '+' : '';
-                let color = (eps_i > 0) ? '#22c55e' : ((eps_i < 0) ? '#dc2626' : '#64748b');
+                let color = (eps_i > 0) ? 'var(--accent)' : ((eps_i < 0) ? 'var(--warning)' : 'var(--text-muted)');
                 let valFormatted = `${sign}${(eps_i * 1000).toFixed(2)} ‰ (${sign}${eps_i.toFixed(4)})`;
                 cellEps.innerHTML = `<span style="color:${color}">${valFormatted}</span>`;
             }
@@ -642,22 +785,23 @@ function calcularTodo() {
 }
 
 function renderizarGraficoPM(nM, nP, dM, dP, phiPn_max) {
-    let traceNom = { x: nM, y: nP, mode: 'lines', name: 'Nominal (Pn, Mn)', line: { color: '#94a3b8', dash: 'dash', width: 2 } };
-    let traceDis = { x: dM, y: dP, mode: 'lines', name: 'Diseño (ϕPn, ϕMn)', line: { color: '#E67E22', width: 3 } };
+    let traceNom = { x: nM, y: nP, mode: 'lines', name: 'Nominal (Pn, Mn)', line: { color: '#94A3B8', dash: 'dash', width: 2 } };
+    let traceDis = { x: dM, y: dP, mode: 'lines', name: 'Diseño (ϕPn, ϕMn)', line: { color: '#4F46E5', width: 3.5 } };
     
     let maxM = Math.max(...nM) * 1.1;
-    let traceCap = { x: [0, maxM], y: [phiPn_max, phiPn_max], mode: 'lines', name: 'Límite ϕPn_max (0.80ϕP0)', line: { color: '#dc2626', dash: 'dot', width: 1.5 } };
+    let traceCap = { x: [0, maxM], y: [phiPn_max, phiPn_max], mode: 'lines', name: 'Límite ϕPn_max', line: { color: '#F43F5E', dash: 'dot', width: 2 } };
 
     let layout = {
-        title: { text: '<b>Diagrama de Interacción P–M</b>', font: { size: 14, color: '#1A2530' } },
-        xaxis: { title: 'Momento Flector Mn, ϕMn (kN·m)', gridcolor: '#e2e8f0' },
-        yaxis: { title: 'Carga Axial Pn, ϕPn (kN)', gridcolor: '#e2e8f0', zerolinecolor: '#1A2530', zerolinewidth: 1.5 },
-        legend: { orientation: 'h', y: -0.2 },
-        margin: { l: 50, r: 20, t: 40, b: 50 },
-        template: 'plotly_white'
+        title: { text: '<b>Curva de Capacidad P–M</b>', font: { size: 16, color: '#1E293B' } },
+        xaxis: { title: 'Momento Flector (kN·m)', gridcolor: 'rgba(148, 163, 184, 0.2)', zerolinecolor: '#1E293B', zerolinewidth: 2 },
+        yaxis: { title: 'Carga Axial (kN)', gridcolor: 'rgba(148, 163, 184, 0.2)', zerolinecolor: '#1E293B', zerolinewidth: 2 },
+        legend: { orientation: 'h', y: -0.2, font: { color: '#64748B' } },
+        margin: { l: 55, r: 20, t: 50, b: 50 },
+        paper_bgcolor: 'transparent',
+        plot_bgcolor: 'transparent'
     };
 
-    Plotly.newPlot('plotPM', [traceNom, traceDis, traceCap], layout, { responsive: true });
+    Plotly.newPlot('plotPM', [traceNom, traceDis, traceCap], layout, { responsive: true, displayModeBar: false });
 }
 
 window.onload = () => {
