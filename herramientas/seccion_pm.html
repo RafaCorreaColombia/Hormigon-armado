@@ -51,7 +51,6 @@
             position: relative;
             overflow: hidden;
         }
-        /* Brillo sutil en el header */
         .header-ce::after {
             content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
             background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
@@ -155,6 +154,21 @@
             transform: translateY(-1px);
         }
 
+        .btn-magico {
+            background: linear-gradient(135deg, #10B981, #0EA5E9);
+            color: white !important;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: 0.3s;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+        }
+        .btn-magico:hover {
+            box-shadow: 0 6px 16px rgba(16, 185, 129, 0.35);
+            transform: translateY(-1px);
+        }
+
         /* ALERTAS / BANNERS */
         .alerta-glass {
             background: rgba(254, 243, 199, 0.6) !important;
@@ -254,6 +268,17 @@
             <!-- 02. REFUERZO LONGITUDINAL -->
             <div class="panel-card">
                 <div class="titulo-seccion"><span><i class="fa fa-bars"></i> 02 / Distribución de Refuerzo Longitudinal</span></div>
+                
+                <!-- BOTÓN MÁGICO PARA INVERTIR ACERO (VIGAS SISMORRESISTENTES) -->
+                <div class="w3-margin-bottom" style="background: rgba(16, 185, 129, 0.08); padding: 12px; border-radius: 12px; border: 1px dashed var(--accent);">
+                    <button class="w3-button w3-small btn-magico w3-block" onclick="invertirAceroTraccionCompresion()" style="padding: 10px;">
+                        <i class="fa fa-exchange"></i> 🔄 Invertir Acero Tracción ⇄ Compresión
+                    </button>
+                    <div id="panelRelacionInversion" class="w3-tiny w3-margin-top" style="display:none; color: var(--text-main); font-weight: 500; line-height: 1.5;">
+                        <!-- Resultados inyectados dinámicamente -->
+                    </div>
+                </div>
+
                 <div class="w3-row-padding w3-margin-top w3-small">
                     <div class="w3-half w3-margin-bottom">
                         <label>Número de Filas:</label>
@@ -782,6 +807,55 @@ function calcularTodo() {
 
     renderizarGraficoPM(nominalM, nominalP, disenoM, disenoP, phiPn_max);
     guardarConfiguracion();
+}
+
+// --- FUNCIÓN DEL BOTÓN MÁGICO PARA INVERTIR ACERO (VIGAS / NUDOS) ---
+function invertirAceroTraccionCompresion() {
+    let trs = document.querySelectorAll('#cuerpoFilas tr');
+    if (trs.length < 2) return;
+
+    // 1. Calcular el phiMn de la configuración actual (Config 1) antes de alterar nada
+    // Para ello calculamos rápidamente o extraemos del label actual
+    let phiMnConfig1 = parseFloat(document.getElementById('lblPhiMnFlex').innerText);
+
+    // 2. Extraer las configuraciones de texto actuales de cada fila
+    let configsOriginales = [];
+    trs.forEach(tr => {
+        configsOriginales.push(tr.querySelector('.cfg-acero').value);
+    });
+
+    // 3. Invertir el arreglo de configuraciones (espejo: arriba <-> abajo)
+    let configsInvertidas = [...configsOriginales].reverse();
+
+    // 4. Aplicar temporalmente las configuraciones invertidas a los inputs y calcular
+    trs.forEach((tr, idx) => {
+        tr.querySelector('.cfg-acero').value = configsInvertidas[idx];
+    });
+
+    // Forzar cálculo temporal de la Config 2
+    calcularTodo();
+    let phiMnConfig2 = parseFloat(document.getElementById('lblPhiMnFlex').innerText);
+
+    // 5. Restaurar las configuraciones originales en la interfaz principal para no alterar el trabajo del usuario
+    trs.forEach((tr, idx) => {
+        tr.querySelector('.cfg-acero').value = configsOriginales[idx];
+    });
+    calcularTodo(); // Recalcular con la config original
+
+    // 6. Calcular relación porcentual (Config 2 / Config 1)
+    let relacion = (phiMnConfig1 > 0) ? (phiMnConfig2 / phiMnConfig1) * 100 : 0;
+
+    // 7. Mostrar resultados en el panel dedicado
+    let panel = document.getElementById('panelRelacionInversion');
+    panel.style.display = 'block';
+    panel.innerHTML = `
+        <div style="background: rgba(255,255,255,0.7); padding: 8px 10px; border-radius: 8px; border-left: 3px solid var(--primary);">
+            <b>📊 Verificación de Inversión (Nudo / Viga):</b><br>
+            • <b>Config 1 (Original):</b> ${phiMnConfig1.toFixed(2)} kN·m<br>
+            • <b>Config 2 (Invertida):</b> ${phiMnConfig2.toFixed(2)} kN·m<br>
+            • <b>Relación (Config 2 / Config 1):</b> <span style="color: var(--primary); font-weight:700;">${relacion.toFixed(1)} %</span>
+        </div>
+    `;
 }
 
 function renderizarGraficoPM(nM, nP, dM, dP, phiPn_max) {
