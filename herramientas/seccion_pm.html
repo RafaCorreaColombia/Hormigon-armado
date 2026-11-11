@@ -276,6 +276,28 @@ function actualizarEstructuraFilas() {
     recalcularPosiciones();
 }
 
+function obtenerDiametroMaximoLongitudinal() {
+    let trs = document.querySelectorAll('#cuerpoFilas tr');
+    let maxDiam = 0;
+    let regexBarras = /(\d+)[N#](\d+)/g;
+
+    trs.forEach(tr => {
+        let inputCfg = tr.querySelector('.cfg-acero');
+        if (!inputCfg) return;
+        let str = inputCfg.value.toUpperCase().replace(/\s+/g, '');
+        let match;
+        while ((match = regexBarras.exec(str)) !== null) {
+            let cal = match[2];
+            if (DIAM_BARRAS[cal] && DIAM_BARRAS[cal] > maxDiam) {
+                maxDiam = DIAM_BARRAS[cal];
+            }
+        }
+    });
+
+    // Si no detecta ninguna notación (ej. texto vacío o área directa), asume N°6 (19.05 mm) por defecto
+    return maxDiam > 0 ? maxDiam : 19.05;
+}
+
 function recalcularPosiciones() {
     let modoPos = document.getElementById('modoPos').value;
     let h = parseFloat(document.getElementById('inpH').value);
@@ -288,8 +310,14 @@ function recalcularPosiciones() {
 
     if (nFilas === 0) return;
 
-    let d1 = rec + d_estribo + 9.5; // Estimación centroide d1
-    let dn = h - (rec + d_estribo + 9.5);
+    // Obtener el diámetro de la barra más grande ingresada
+    let db_max = obtenerDiametroMaximoLongitudinal();
+    
+    // Centroide de la primera capa superior
+    let d1 = rec + d_estribo + (db_max / 2.0);
+    
+    // Centroide de la última capa extrema (Fórmula solicitada: H - rec - d_estribo - db_max/2)
+    let dn = h - rec - d_estribo - (db_max / 2.0);
 
     trs.forEach((tr, idx) => {
         let inpD = tr.querySelector('.d-pos');
@@ -309,6 +337,10 @@ function recalcularPosiciones() {
 
 // --- MOTOR MATEMÁTICO DEFINITIVO ---
 function calcularTodo() {
+    // Reajustar posiciones si el usuario cambió alguna barra en modo auto/fijo
+    if (document.getElementById('modoPos').value !== 'manual') {
+        recalcularPosiciones();
+    }
     let b = parseFloat(document.getElementById('inpB').value);
     let h = parseFloat(document.getElementById('inpH').value);
     let fc = parseFloat(document.getElementById('inpFc').value);
