@@ -157,22 +157,37 @@
 
             <!-- RESUMEN DE PROPIEDADES -->
             <div class="panel-card">
-                <div class="titulo-seccion"><i class="fa fa-calculator w3-text-orange"></i> Resumen de Sección y Resistencia a Cortante</div>
+                <div class="titulo-seccion"><i class="fa fa-calculator w3-text-orange"></i> Resumen de Sección, Flexión Pura y Cortante</div>
                 <div class="w3-row-padding w3-margin-top w3-small">
-                    <div class="w3-col l6 m6 s12">
+                    
+                    <!-- Columna 1: Geometría de Refuerzo -->
+                    <div class="w3-col l4 m4 s12">
                         <div class="caja-metrica">
-                            <b>Área Total de Acero (A<sub>st</sub>):</b> <span id="lblAst" class="highlight">0</span> mm²<br>
-                            <b>Cuantía Longitudinal (ρ):</b> <span id="lblCuantia" class="highlight">0.00 %</span><br>
-                            <b>Peralte Efectivo Máximo (d<sub>max</sub>):</b> <span id="lblDmax" class="highlight">0</span> mm
+                            <b>Área Total Acero (A<sub>st</sub>):</b> <span id="lblAst" class="highlight">0</span> mm²<br>
+                            <b>Cuantía Long. (ρ):</b> <span id="lblCuantia" class="highlight">0.00 %</span><br>
+                            <b>Peralte Ef. Máx. (d<sub>max</sub>):</b> <span id="lblDmax" class="highlight">0</span> mm
                         </div>
                     </div>
-                    <div class="w3-col l6 m6 s12">
+            
+                    <!-- Columna 2: Flexión Pura (P = 0) -->
+                    <div class="w3-col l4 m4 s12">
+                        <div class="caja-metrica">
+                            <b>Flexión Pura (P = 0):</b><br>
+                            <b>M<sub>n</sub>:</b> <span id="lblMnFlex" class="highlight">0.0</span> kN·m<br>
+                            <b>ϕ:</b> <span id="lblPhiFlex" class="highlight">0.900</span><br>
+                            <b>ϕM<sub>n</sub>:</b> <span id="lblPhiMnFlex" class="highlight">0.0</span> kN·m
+                        </div>
+                    </div>
+            
+                    <!-- Columna 3: Cortante -->
+                    <div class="w3-col l4 m4 s12">
                         <div class="caja-metrica">
                             <b>Concreto (ϕV<sub>c</sub>):</b> <span id="lblPhiVc">0</span> kN<br>
-                            <b>Acero Estribos (ϕV<sub>s</sub>):</b> <span id="lblPhiVs">0</span> kN <span id="lblVsMax" class="w3-tiny w3-text-grey"></span><br>
-                            <b>Resistencia Total (ϕV<sub>n</sub>):</b> <span id="lblPhiVn" class="highlight">0</span> kN
+                            <b>Estribos (ϕV<sub>s</sub>):</b> <span id="lblPhiVs">0</span> kN <span id="lblVsMax" class="w3-tiny w3-text-grey"></span><br>
+                            <b>Total (ϕV<sub>n</sub>):</b> <span id="lblPhiVn" class="highlight">0</span> kN
                         </div>
                     </div>
+            
                 </div>
                 <div id="alertaVsMax" class="w3-tiny w3-text-red w3-margin-top" style="display:none; font-weight:bold;">
                     ⚠️ El aporte del acero supera el límite normativo (Vs > Vs_max = 0.66√f'c·b·d). Se limita la contribución.
@@ -404,6 +419,7 @@ function calcularTodo() {
 
     let nominalP = [], nominalM = [];
     let disenoP = [], disenoM = [];
+    let puntosEvaluados = []; // Arreglo auxiliar para encontrar P = 0
 
     // Calcular Compresión Pura P0 y Pn_max
     let P0 = - (0.85 * fc * (b * h - Ast) + fy * Ast) / 1000.0; // Compresión (-)
@@ -454,13 +470,40 @@ function calcularTodo() {
         let phiPn = Pn * phi;
         let phiMn = Mn * phi;
 
-        // Truncar por límite de compresión axial
+        // Guardar valores sin truncar para la interpolación exacta de P = 0
+        puntosEvaluados.push({ Pn: Pn, Mn: Mn, phi: phi, phiMn: phiMn });
+
+        // Truncar por límite de compresión axial para la gráfica
         if (Pn < Pn_max) Pn = Pn_max;
         if (phiPn < phiPn_max) phiPn = phiPn_max;
 
         nominalP.push(Pn); nominalM.push(Mn);
         disenoP.push(phiPn); disenoM.push(phiMn);
     });
+
+    // --- CÁLCULO E INTERPOLACIÓN EN FLEXIÓN PURA (P = 0) ---
+    let mnFlex = 0, phiFlex = 0.90, phiMnFlex = 0;
+
+    for (let i = 0; i < puntosEvaluados.length - 1; i++) {
+        let p1 = puntosEvaluados[i];
+        let p2 = puntosEvaluados[i + 1];
+
+        // Buscar el cambio de signo de Pn (de compresión - a tracción +)
+        if ((p1.Pn <= 0 && p2.Pn >= 0) || (p1.Pn >= 0 && p2.Pn <= 0)) {
+            let t = Math.abs(p1.Pn) / (Math.abs(p1.Pn) + Math.abs(p2.Pn));
+            if (isNaN(t)) t = 0;
+
+            mnFlex = p1.Mn + t * (p2.Mn - p1.Mn);
+            phiFlex = p1.phi + t * (p2.phi - p1.phi);
+            phiMnFlex = p1.phiMn + t * (p2.phiMn - p1.phiMn);
+            break;
+        }
+    }
+
+    // Actualizar etiquetas en el DOM
+    document.getElementById('lblMnFlex').innerText = mnFlex.toFixed(2);
+    document.getElementById('lblPhiFlex').innerText = phiFlex.toFixed(3);
+    document.getElementById('lblPhiMnFlex').innerText = phiMnFlex.toFixed(2);
 
     renderizarGraficoPM(nominalM, nominalP, disenoM, disenoP, phiPn_max);
 }
