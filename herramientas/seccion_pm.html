@@ -115,6 +115,7 @@
                                 <th>Configuración (ej: 3N6, 2N6+2N5, M188)</th>
                                 <th>d<sub>i</sub> (mm)</th>
                                 <th>Área (mm²)</th>
+                                <th>ε<sub>s</sub> (P=0)</th>
                             </tr>
                         </thead>
                         <tbody id="cuerpoFilas"></tbody>
@@ -128,10 +129,10 @@
                 <div class="w3-row-padding w3-margin-top w3-small">
                     <div class="w3-third">
                         <label>Calibre:</label>
-                        <select id="calibreEstribo" class="w3-select w3-border w3-round" onchange="calcularTodo()">
+                        <select id="calibreEstribo" class="w3-select w3-border w3-round" onchange="recalcularPosiciones(); calcularTodo();">
                             <option value="0">Sin Estribos</option>
                             <option value="2">N° 2 (1/4")</option>
-                            <option value="3">N° 3 (3/8")</option>
+                            <option value="3" selected>N° 3 (3/8")</option>
                             <option value="4">N° 4 (1/2")</option>
                             <option value="5">N° 5 (5/8")</option>
                             <option value="6">N° 6 (3/4")</option>
@@ -164,11 +165,12 @@
                     <div class="w3-col l4 m4 s12">
                         <div class="caja-metrica">
                             <b>Área Total Acero (A<sub>st</sub>):</b> <span id="lblAst" class="highlight">0</span> mm²<br>
-                            <b>Cuantía Long. (ρ):</b> <span id="lblCuantia" class="highlight">0.00 %</span><br>
+                            <b>Cuantía Bruta (ρ<sub>g</sub>):</b> <span id="lblCuantiaG" class="highlight">0.00 %</span><br>
+                            <b>Cuantía Efec. (ρ<sub>d</sub>):</b> <span id="lblCuantiaD" class="highlight">0.00 %</span><br>
                             <b>Peralte Ef. Máx. (d<sub>max</sub>):</b> <span id="lblDmax" class="highlight">0</span> mm
                         </div>
                     </div>
-            
+
                     <!-- Columna 2: Flexión Pura (P = 0) -->
                     <div class="w3-col l4 m4 s12">
                         <div class="caja-metrica">
@@ -178,7 +180,7 @@
                             <b>ϕM<sub>n</sub>:</b> <span id="lblPhiMnFlex" class="highlight">0.0</span> kN·m
                         </div>
                     </div>
-            
+
                     <!-- Columna 3: Cortante -->
                     <div class="w3-col l4 m4 s12">
                         <div class="caja-metrica">
@@ -187,7 +189,7 @@
                             <b>Total (ϕV<sub>n</sub>):</b> <span id="lblPhiVn" class="highlight">0</span> kN
                         </div>
                     </div>
-            
+
                 </div>
                 <div id="alertaVsMax" class="w3-tiny w3-text-red w3-margin-top" style="display:none; font-weight:bold;">
                     ⚠️ El aporte del acero supera el límite normativo (Vs > Vs_max = 0.66√f'c·b·d). Se limita la contribución.
@@ -216,8 +218,8 @@
 
 <script>
 // --- TABLA DE ÁREAS Y PARSER DE REFUERZO ---
-const AREAS_BARRAS = { '2': 31.6, '3': 71.2, '4': 129.0, '5': 199.0, '6': 285.0, '7': 387.1, '8': 510.0, '9': 645.0 };
-const DIAM_BARRAS = { '2': 6.35, '3': 9.53, '4': 12.7, '5': 15.88, '6': 19.05, '7': 22.23, '8': 25.4, '9': 28.65 };
+const AREAS_BARRAS = { '0': 0, '2': 31.6, '3': 71.2, '4': 129.0, '5': 199.0, '6': 285.0, '7': 387.1, '8': 510.0, '9': 645.0 };
+const DIAM_BARRAS = { '0': 0, '2': 6.35, '3': 9.53, '4': 12.7, '5': 15.88, '6': 19.05, '7': 22.23, '8': 25.4, '9': 28.65 };
 
 function parsearAcero(texto, b_mm) {
     let str = String(texto).toUpperCase().replace(/\s+/g, '');
@@ -254,6 +256,56 @@ function parsearAcero(texto, b_mm) {
     return areaTotal;
 }
 
+// --- ESCANEO DE DIÁMETROS DE FILAS EXTREMAS ACTIVAS ---
+function obtenerDiametrosExtremos(b_mm) {
+    let trs = document.querySelectorAll('#cuerpoFilas tr');
+    let regexBarras = /(\d+)[N#](\d+)/g;
+    
+    let db_top = 0;
+    let db_bottom = 0;
+
+    // Escanear de arriba hacia abajo la primera fila activa (As > 0)
+    for (let i = 0; i < trs.length; i++) {
+        let cfg = trs[i].querySelector('.cfg-acero').value;
+        let area = parsearAcero(cfg, b_mm);
+        if (area > 0) {
+            let str = cfg.toUpperCase().replace(/\s+/g, '');
+            let match;
+            while ((match = regexBarras.exec(str)) !== null) {
+                let cal = match[2];
+                if (DIAM_BARRAS[cal] && DIAM_BARRAS[cal] > db_top) {
+                    db_top = DIAM_BARRAS[cal];
+                }
+            }
+            if (db_top === 0) db_top = 19.05; // Fallback si fue número directo
+            break;
+        }
+    }
+
+    // Escanear de abajo hacia arriba la primera fila activa de mayor tracción (As > 0)
+    for (let i = trs.length - 1; i >= 0; i--) {
+        let cfg = trs[i].querySelector('.cfg-acero').value;
+        let area = parsearAcero(cfg, b_mm);
+        if (area > 0) {
+            let str = cfg.toUpperCase().replace(/\s+/g, '');
+            let match;
+            while ((match = regexBarras.exec(str)) !== null) {
+                let cal = match[2];
+                if (DIAM_BARRAS[cal] && DIAM_BARRAS[cal] > db_bottom) {
+                    db_bottom = DIAM_BARRAS[cal];
+                }
+            }
+            if (db_bottom === 0) db_bottom = 19.05; // Fallback si fue número directo
+            break;
+        }
+    }
+
+    if (db_top === 0) db_top = 19.05;
+    if (db_bottom === 0) db_bottom = 19.05;
+
+    return { db_top, db_bottom };
+}
+
 // --- MANEJO DE ESTRUCTURA DE FILAS ---
 function actualizarEstructuraFilas() {
     let nFilas = parseInt(document.getElementById('numFilas').value);
@@ -285,54 +337,34 @@ function actualizarEstructuraFilas() {
             <td><input type="text" class="cfg-acero" value="${cfgVal}" onchange="calcularTodo()"></td>
             <td><input type="number" class="d-pos" value="0" step="1" ${(modoPos !== 'manual') ? 'readonly style="background:#f1f5f9;"' : ''} onchange="calcularTodo()"></td>
             <td class="area-fila" style="font-weight:bold; text-align:right;">0</td>
+            <td class="eps-fila" style="font-weight:bold; text-align:center;">-</td>
         `;
         cuerpo.appendChild(tr);
     }
     recalcularPosiciones();
 }
 
-function obtenerDiametroMaximoLongitudinal() {
-    let trs = document.querySelectorAll('#cuerpoFilas tr');
-    let maxDiam = 0;
-    let regexBarras = /(\d+)[N#](\d+)/g;
-
-    trs.forEach(tr => {
-        let inputCfg = tr.querySelector('.cfg-acero');
-        if (!inputCfg) return;
-        let str = inputCfg.value.toUpperCase().replace(/\s+/g, '');
-        let match;
-        while ((match = regexBarras.exec(str)) !== null) {
-            let cal = match[2];
-            if (DIAM_BARRAS[cal] && DIAM_BARRAS[cal] > maxDiam) {
-                maxDiam = DIAM_BARRAS[cal];
-            }
-        }
-    });
-
-    // Si no detecta ninguna notación (ej. texto vacío o área directa), asume N°6 (19.05 mm) por defecto
-    return maxDiam > 0 ? maxDiam : 19.05;
-}
-
 function recalcularPosiciones() {
     let modoPos = document.getElementById('modoPos').value;
+    let b = parseFloat(document.getElementById('inpB').value);
     let h = parseFloat(document.getElementById('inpH').value);
     let rec = parseFloat(document.getElementById('inpRec').value);
     let estriboCal = document.getElementById('calibreEstribo').value;
-    let d_estribo = DIAM_BARRAS[estriboCal] || 9.53;
+    let d_estribo = (estriboCal === '0') ? 0 : (DIAM_BARRAS[estriboCal] || 0);
 
     let trs = document.querySelectorAll('#cuerpoFilas tr');
     let nFilas = trs.length;
 
     if (nFilas === 0) return;
 
-    // Obtener el diámetro de la barra más grande ingresada
-    let db_max = obtenerDiametroMaximoLongitudinal();
-    
+    // Obtener los diámetros de las filas activas extremas
+    let { db_top, db_bottom } = obtenerDiametrosExtremos(b);
+
     // Centroide de la primera capa superior
-    let d1 = rec + d_estribo + (db_max / 2.0);
+    let d1 = rec + d_estribo + (db_top / 2.0);
     
-    // Centroide de la última capa extrema (Fórmula solicitada: H - rec - d_estribo - db_max/2)
-    let dn = h - rec - d_estribo - (db_max / 2.0);
+    // Centroide de la última capa extrema de mayor tracción
+    let dn = h - rec - d_estribo - (db_bottom / 2.0);
 
     trs.forEach((tr, idx) => {
         let inpD = tr.querySelector('.d-pos');
@@ -360,6 +392,7 @@ function calcularTodo() {
     let h = parseFloat(document.getElementById('inpH').value);
     let fc = parseFloat(document.getElementById('inpFc').value);
     let fy = parseFloat(document.getElementById('inpFy').value);
+    let rec = parseFloat(document.getElementById('inpRec').value);
     let Es = 200000.0;
     let ecu = 0.003;
 
@@ -381,24 +414,32 @@ function calcularTodo() {
         
         capas.push({ d: d_i, As: area_i });
         Ast += area_i;
-        if (d_i > d_max) d_max = d_i;
+        if (area_i > 0 && d_i > d_max) d_max = d_i;
     });
 
-    let cuantia = (Ast / (b * h)) * 100;
+    let calibreEst = document.getElementById('calibreEstribo').value;
+    let d_estribo = (calibreEst === '0') ? 0 : (DIAM_BARRAS[calibreEst] || 0);
+
+    // Si ninguna capa tiene acero, fallback a d_max teórico
+    if (d_max === 0) d_max = h - rec - d_estribo - 9.5;
+
+    let cuantiaG = (Ast / (b * h)) * 100;
+    let cuantiaD = (d_max > 0) ? (Ast / (b * d_max)) * 100 : 0;
+
     document.getElementById('lblAst').innerText = Ast.toFixed(1);
-    document.getElementById('lblCuantia').innerText = cuantia.toFixed(2) + " %";
+    document.getElementById('lblCuantiaG').innerText = cuantiaG.toFixed(2) + " %";
+    document.getElementById('lblCuantiaD').innerText = cuantiaD.toFixed(2) + " %";
     document.getElementById('lblDmax').innerText = d_max.toFixed(1);
 
     // Cortante
-    let calibreEst = document.getElementById('calibreEstribo').value;
     let nRamas = parseInt(document.getElementById('numRamas').value);
     let sEst = parseFloat(document.getElementById('sepEstribo').value);
 
-    let area1Estribo = AREAS_BARRAS[calibreEst] || 71.2;
-    let Av = nRamas * area1Estribo;
+    let area1Estribo = (calibreEst === '0') ? 0 : (AREAS_BARRAS[calibreEst] || 0);
+    let Av = (calibreEst === '0') ? 0 : nRamas * area1Estribo;
 
     let Vc = 0.17 * Math.sqrt(fc) * b * d_max / 1000.0;
-    let Vs = (sEst > 0) ? (Av * fy * d_max / sEst) / 1000.0 : 0;
+    let Vs = (calibreEst !== '0' && sEst > 0) ? (Av * fy * d_max / sEst) / 1000.0 : 0;
     let Vs_max = 0.66 * Math.sqrt(fc) * b * d_max / 1000.0;
 
     let Vs_util = Math.min(Vs, Vs_max);
@@ -409,8 +450,8 @@ function calcularTodo() {
     document.getElementById('lblPhiVc').innerText = phiVc.toFixed(1);
     document.getElementById('lblPhiVs').innerText = phiVs.toFixed(1);
     document.getElementById('lblPhiVn').innerText = phiVn.toFixed(1);
-    document.getElementById('lblVsMax').innerText = `(Vs_max: ${Vs_max.toFixed(1)} kN)`;
-    document.getElementById('alertaVsMax').style.display = (Vs > Vs_max) ? 'block' : 'none';
+    document.getElementById('lblVsMax').innerText = (calibreEst !== '0') ? `(Vs_max: ${Vs_max.toFixed(1)} kN)` : '';
+    document.getElementById('alertaVsMax').style.display = (Vs > Vs_max && calibreEst !== '0') ? 'block' : 'none';
 
     // Barrido P-M
     let c_vals = [10000.0];
@@ -471,7 +512,7 @@ function calcularTodo() {
         let phiMn = Mn * phi;
 
         // Guardar valores sin truncar para la interpolación exacta de P = 0
-        puntosEvaluados.push({ Pn: Pn, Mn: Mn, phi: phi, phiMn: phiMn });
+        puntosEvaluados.push({ c: c, Pn: Pn, Mn: Mn, phi: phi, phiMn: phiMn });
 
         // Truncar por límite de compresión axial para la gráfica
         if (Pn < Pn_max) Pn = Pn_max;
@@ -482,7 +523,7 @@ function calcularTodo() {
     });
 
     // --- CÁLCULO E INTERPOLACIÓN EN FLEXIÓN PURA (P = 0) ---
-    let mnFlex = 0, phiFlex = 0.90, phiMnFlex = 0;
+    let mnFlex = 0, phiFlex = 0.90, phiMnFlex = 0, cFlex = 0;
 
     for (let i = 0; i < puntosEvaluados.length - 1; i++) {
         let p1 = puntosEvaluados[i];
@@ -496,6 +537,7 @@ function calcularTodo() {
             mnFlex = p1.Mn + t * (p2.Mn - p1.Mn);
             phiFlex = p1.phi + t * (p2.phi - p1.phi);
             phiMnFlex = p1.phiMn + t * (p2.phiMn - p1.phiMn);
+            cFlex = p1.c + t * (p2.c - p1.c);
             break;
         }
     }
@@ -504,6 +546,21 @@ function calcularTodo() {
     document.getElementById('lblMnFlex').innerText = mnFlex.toFixed(2);
     document.getElementById('lblPhiFlex').innerText = phiFlex.toFixed(3);
     document.getElementById('lblPhiMnFlex').innerText = phiMnFlex.toFixed(2);
+
+    // Actualizar la deformación eps_s (P=0) en la tabla
+    let trsTable = document.querySelectorAll('#cuerpoFilas tr');
+    capas.forEach((capa, idx) => {
+        if (trsTable[idx]) {
+            let cellEps = trsTable[idx].querySelector('.eps-fila');
+            if (cellEps && cFlex > 0) {
+                let eps_i = ecu * (capa.d - cFlex) / cFlex; // Tracción +, Compresión -
+                let sign = (eps_i > 0) ? '+' : '';
+                let color = (eps_i > 0) ? '#22c55e' : ((eps_i < 0) ? '#dc2626' : '#64748b');
+                let valFormatted = `${sign}${(eps_i * 1000).toFixed(2)} ‰ (${sign}${eps_i.toFixed(4)})`;
+                cellEps.innerHTML = `<span style="color:${color}">${valFormatted}</span>`;
+            }
+        }
+    });
 
     renderizarGraficoPM(nominalM, nominalP, disenoM, disenoP, phiPn_max);
 }
