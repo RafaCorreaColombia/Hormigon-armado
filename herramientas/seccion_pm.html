@@ -345,6 +345,10 @@
                             <b>ϕM<sub>n</sub>:</b> <span id="lblPhiMnFlex" class="highlight">0.0</span> kN·m<br>
                             <span style="color:transparent;">-</span>
                         </div>
+                        <!-- ALERTA DE CONTROL A TENSIÓN (ϕ != 0.9) -->
+                        <div id="alertaControlTension" class="w3-tiny w3-margin-top" style="display:none; font-weight:bold; background: rgba(245, 158, 11, 0.12); padding: 10px; border-radius: 8px; border-left: 4px solid #F59E0B; color: #B45309;">
+                            ⚠️ <b>Aviso Normativo (Flexión Pura):</b> La sección NO está controlada a tensión pura ($\phi \neq 0.90$, $\phi = $<span id="valPhiAlerta">0.00</span>). El acero extremo en tracción no alcanza el límite de fluencia requerido ($\varepsilon_t < 0.005$).
+                        </div>
                     </div>
 
                     <!-- Columna 3: Cortante -->
@@ -790,6 +794,15 @@ function calcularTodo() {
     document.getElementById('lblMnFlex').innerText = mnFlex.toFixed(2);
     document.getElementById('lblPhiFlex').innerText = phiFlex.toFixed(3);
     document.getElementById('lblPhiMnFlex').innerText = phiMnFlex.toFixed(2);
+    
+    let alertaTension = document.getElementById('alertaControlTension');
+    let spanValPhi = document.getElementById('valPhiAlerta');
+    if (phiFlex < 0.899) {
+        alertaTension.style.display = 'block';
+        spanValPhi.innerText = phiFlex.toFixed(3);
+    } else {
+        alertaTension.style.display = 'none';
+    }
 
     let trsTable = document.querySelectorAll('#cuerpoFilas tr');
     capas.forEach((capa, idx) => {
@@ -809,53 +822,48 @@ function calcularTodo() {
     guardarConfiguracion();
 }
 
-// --- FUNCIÓN DEL BOTÓN MÁGICO PARA INVERTIR ACERO (VIGAS / NUDOS) ---
+// --- FUNCIÓN DEL BOTÓN MÁGICO PARA INVERTIR ACERO (INDEFINIDAMENTE) ---
 function invertirAceroTraccionCompresion() {
     let trs = document.querySelectorAll('#cuerpoFilas tr');
     if (trs.length < 2) return;
 
-    // 1. Calcular el phiMn de la configuración actual (Config 1) antes de alterar nada
-    // Para ello calculamos rápidamente o extraemos del label actual
+    // 1. Calcular el phiMn de la configuración actual en pantalla (Config 1)
     let phiMnConfig1 = parseFloat(document.getElementById('lblPhiMnFlex').innerText);
 
-    // 2. Extraer las configuraciones de texto actuales de cada fila
-    let configsOriginales = [];
+    // 2. Extraer los textos actuales de los inputs de las filas directamente del DOM
+    let configsActuales = [];
     trs.forEach(tr => {
-        configsOriginales.push(tr.querySelector('.cfg-acero').value);
+        configsActuales.push(tr.querySelector('.cfg-acero').value);
     });
 
-    // 3. Invertir el arreglo de configuraciones (espejo: arriba <-> abajo)
-    let configsInvertidas = [...configsOriginales].reverse();
+    // 3. Invertir el arreglo en espejo para simular la inversión tracción <-> compresión
+    let configsInvertidas = [...configsActuales].reverse();
 
-    // 4. Aplicar temporalmente las configuraciones invertidas a los inputs y calcular
+    // 4. Asignar las invertidas de forma permanente a los inputs (permite clics infinitos)
     trs.forEach((tr, idx) => {
         tr.querySelector('.cfg-acero').value = configsInvertidas[idx];
     });
 
-    // Forzar cálculo temporal de la Config 2
+    // Calcular la capacidad de esta nueva configuración (Config 2)
     calcularTodo();
     let phiMnConfig2 = parseFloat(document.getElementById('lblPhiMnFlex').innerText);
 
-    // 5. Restaurar las configuraciones originales en la interfaz principal para no alterar el trabajo del usuario
-    trs.forEach((tr, idx) => {
-        tr.querySelector('.cfg-acero').value = configsOriginales[idx];
-    });
-    calcularTodo(); // Recalcular con la config original
-
-    // 6. Calcular relación porcentual (Config 2 / Config 1)
+    // 5. Calcular relación porcentual
     let relacion = (phiMnConfig1 > 0) ? (phiMnConfig2 / phiMnConfig1) * 100 : 0;
 
-    // 7. Mostrar resultados en el panel dedicado
+    // 6. Mostrar resultados en el panel dedicado
     let panel = document.getElementById('panelRelacionInversion');
     panel.style.display = 'block';
     panel.innerHTML = `
         <div style="background: rgba(255,255,255,0.7); padding: 8px 10px; border-radius: 8px; border-left: 3px solid var(--primary);">
             <b>📊 Verificación de Inversión (Nudo / Viga):</b><br>
-            • <b>Config 1 (Original):</b> ${phiMnConfig1.toFixed(2)} kN·m<br>
-            • <b>Config 2 (Invertida):</b> ${phiMnConfig2.toFixed(2)} kN·m<br>
+            • <b>Config Anterior (1):</b> ${phiMnConfig1.toFixed(2)} kN·m<br>
+            • <b>Config Invertida (2):</b> ${phiMnConfig2.toFixed(2)} kN·m<br>
             • <b>Relación (Config 2 / Config 1):</b> <span style="color: var(--primary); font-weight:700;">${relacion.toFixed(1)} %</span>
         </div>
     `;
+    
+    guardarConfiguracion();
 }
 
 function renderizarGraficoPM(nM, nP, dM, dP, phiPn_max) {
