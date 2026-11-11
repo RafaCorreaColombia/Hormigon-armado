@@ -24,11 +24,11 @@
         .header-ce { background: var(--azul-profundo); color: white; padding: 25px 20px; text-align: center; border-bottom: 4px solid var(--naranja-estructural); }
         .brand-logo-header { max-width: 230px; margin-bottom: 10px; }
         .panel-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 18px; margin-bottom: 15px; }
-        .titulo-seccion { border-bottom: 2px solid var(--naranja-estructural); padding-bottom: 5px; color: var(--azul-profundo); font-weight: bold; font-size: 1.1em; }
+        .titulo-seccion { border-bottom: 2px solid var(--naranja-estructural); padding-bottom: 5px; color: var(--azul-profundo); font-weight: bold; font-size: 1.1em; display: flex; justify-content: space-between; align-items: center;}
         .caja-metrica { background: #fdf6f0; border-left: 5px solid var(--naranja-estructural); padding: 12px; border-radius: 6px; margin-bottom: 10px; }
         .highlight { color: var(--naranja-estructural); font-weight: bold; }
         .tabla-filas input { width: 100%; border: 1px solid #ccc; border-radius: 4px; padding: 4px 6px; font-size: 0.9em; }
-        .btn-ce { background-color: var(--azul-profundo); color: white; font-weight: bold; border-radius: 6px; transition: 0.3s; }
+        .btn-ce { background-color: var(--azul-profundo); color: white; font-weight: bold; border-radius: 6px; transition: 0.3s; cursor: pointer; border: none; }
         .btn-ce:hover { background-color: var(--naranja-estructural); color: white; }
     </style>
 </head>
@@ -55,38 +55,64 @@
         <!-- COLUMNA IZQUIERDA: PARÁMETROS DE ENTRADA -->
         <div class="w3-col l5 m12">
             
-            <!-- 01. GEOMETRÍA Y MATERIALES -->
+            <!-- 01. GEOMETRÍA, MATERIALES Y ESTRIBOS -->
             <div class="panel-card">
-                <div class="titulo-seccion"><i class="fa fa-cubes w3-text-orange"></i> 01 / Geometría y Materiales</div>
+                <div class="titulo-seccion">
+                    <span><i class="fa fa-cubes w3-text-orange"></i> 01 / Geometría, Materiales y Estribos</span>
+                    <button class="w3-button w3-tiny w3-round btn-ce" onclick="restablecerValoresDefault()" style="padding: 4px 10px;"><i class="fa fa-refresh"></i> Reset</button>
+                </div>
+                
                 <div class="w3-row-padding w3-margin-top w3-small">
-                    <div class="w3-half">
+                    <div class="w3-col l3 m3 s6 w3-margin-bottom">
                         <label>Base <b>b</b> (mm):</label>
                         <input type="number" id="inpB" value="300" step="10" class="w3-input w3-border w3-round" onchange="calcularTodo()">
                     </div>
-                    <div class="w3-half">
+                    <div class="w3-col l3 m3 s6 w3-margin-bottom">
                         <label>Altura <b>h</b> (mm):</label>
                         <input type="number" id="inpH" value="350" step="10" class="w3-input w3-border w3-round" onchange="calcularTodo()">
                     </div>
-                </div>
-                <div class="w3-row-padding w3-margin-top w3-small">
-                    <div class="w3-third">
+                    <div class="w3-col l3 m3 s6 w3-margin-bottom">
                         <label><b>f'c</b> (MPa):</label>
                         <input type="number" id="inpFc" value="28" step="1" class="w3-input w3-border w3-round" onchange="calcularTodo()">
                     </div>
-                    <div class="w3-third">
+                    <div class="w3-col l3 m3 s6 w3-margin-bottom">
                         <label><b>fy</b> (MPa):</label>
                         <input type="number" id="inpFy" value="420" step="10" class="w3-input w3-border w3-round" onchange="calcularTodo()">
                     </div>
-                    <div class="w3-third">
+                </div>
+                
+                <div class="w3-row-padding w3-small">
+                    <div class="w3-col l3 m3 s6 w3-margin-bottom">
                         <label>Recub. <b>r<sub>c</sub></b> (mm):</label>
                         <input type="number" id="inpRec" value="40" step="5" class="w3-input w3-border w3-round" onchange="recalcularPosiciones(); calcularTodo();">
+                    </div>
+                    <div class="w3-col l3 m3 s6 w3-margin-bottom">
+                        <label>Estribo:</label>
+                        <select id="calibreEstribo" class="w3-select w3-border w3-round" onchange="recalcularPosiciones(); calcularTodo();">
+                            <option value="0">Sin Estribos</option>
+                            <option value="2">N° 2</option>
+                            <option value="3" selected>N° 3 (3/8")</option>
+                            <option value="4">N° 4</option>
+                            <option value="5">N° 5</option>
+                            <option value="6">N° 6</option>
+                            <option value="7">N° 7</option>
+                            <option value="8">N° 8</option>
+                        </select>
+                    </div>
+                    <div class="w3-col l3 m3 s6 w3-margin-bottom">
+                        <label>N° Ramas:</label>
+                        <input type="number" id="numRamas" value="2" min="1" class="w3-input w3-border w3-round" onchange="calcularTodo()">
+                    </div>
+                    <div class="w3-col l3 m3 s6 w3-margin-bottom">
+                        <label>Sep. <b>s</b> (mm):</label>
+                        <input type="number" id="sepEstribo" value="150" step="10" class="w3-input w3-border w3-round" onchange="calcularTodo()">
                     </div>
                 </div>
             </div>
 
             <!-- 02. REFUERZO LONGITUDINAL -->
             <div class="panel-card">
-                <div class="titulo-seccion"><i class="fa fa-bars w3-text-orange"></i> 02 / Distribución de Refuerzo Longitudinal</div>
+                <div class="titulo-seccion"><span><i class="fa fa-bars w3-text-orange"></i> 02 / Distribución de Refuerzo Longitudinal</span></div>
                 <div class="w3-row-padding w3-margin-top w3-small">
                     <div class="w3-half">
                         <label>Número de Filas:</label>
@@ -102,8 +128,8 @@
                     </div>
                 </div>
 
-                <div id="divSepFija" class="w3-margin-top w3-small" style="display:none;">
-                    <label>Separación vertical entre filas <b>s<sub>v</sub></b> (mm):</label>
+                <div id="divSepFija" class="w3-margin-top w3-small" style="display:none; padding: 0 8px;">
+                    <label>Separación vertical entre filas intermedias <b>s<sub>v</sub></b> (mm):</label>
                     <input type="number" id="inpSv" value="115" step="5" class="w3-input w3-border w3-round" onchange="recalcularPosiciones(); calcularTodo();">
                 </div>
 
@@ -112,7 +138,7 @@
                         <thead>
                             <tr class="w3-theme-d5" style="background:#1A2530; color:white;">
                                 <th>Fila</th>
-                                <th>Configuración (ej: 3N6, 2N6+2N5, M188)</th>
+                                <th>Configuración (ej: 3N6, 2N6+2N5)</th>
                                 <th>d<sub>i</sub> (mm)</th>
                                 <th>Área (mm²)</th>
                                 <th>ε<sub>s</sub> (P=0)</th>
@@ -123,34 +149,6 @@
                 </div>
             </div>
 
-            <!-- 03. REFUERZO TRANSVERSAL (ESTRIBOS) -->
-            <div class="panel-card">
-                <div class="titulo-seccion"><i class="fa fa-shield w3-text-orange"></i> 03 / Refuerzo a Cortante (Estribos)</div>
-                <div class="w3-row-padding w3-margin-top w3-small">
-                    <div class="w3-third">
-                        <label>Calibre:</label>
-                        <select id="calibreEstribo" class="w3-select w3-border w3-round" onchange="recalcularPosiciones(); calcularTodo();">
-                            <option value="0">Sin Estribos</option>
-                            <option value="2">N° 2 (1/4")</option>
-                            <option value="3" selected>N° 3 (3/8")</option>
-                            <option value="4">N° 4 (1/2")</option>
-                            <option value="5">N° 5 (5/8")</option>
-                            <option value="6">N° 6 (3/4")</option>
-                            <option value="7">N° 7 (7/8")</option>
-                            <option value="8">N° 8 (1")</option>
-                        </select>
-                    </div>
-                    <div class="w3-third">
-                        <label>N° Ramas:</label>
-                        <input type="number" id="numRamas" value="2" min="1" class="w3-input w3-border w3-round" onchange="calcularTodo()">
-                    </div>
-                    <div class="w3-third">
-                        <label>Sep. <b>s</b> (mm):</label>
-                        <input type="number" id="sepEstribo" value="150" step="10" class="w3-input w3-border w3-round" onchange="calcularTodo()">
-                    </div>
-                </div>
-            </div>
-
         </div>
 
         <!-- COLUMNA DERECHA: RESULTADOS Y DIAGRAMA -->
@@ -158,7 +156,7 @@
 
             <!-- RESUMEN DE PROPIEDADES -->
             <div class="panel-card">
-                <div class="titulo-seccion"><i class="fa fa-calculator w3-text-orange"></i> Resumen de Sección, Flexión Pura y Cortante</div>
+                <div class="titulo-seccion"><span><i class="fa fa-calculator w3-text-orange"></i> Resumen de Sección, Flexión Pura y Cortante</span></div>
                 <div class="w3-row-padding w3-margin-top w3-small">
                     
                     <!-- Columna 1: Geometría de Refuerzo -->
@@ -198,7 +196,7 @@
 
             <!-- DIAGRAMA DE INTERACCIÓN INTERACTIVO -->
             <div class="panel-card">
-                <div class="titulo-seccion"><i class="fa fa-line-chart w3-text-orange"></i> Diagrama de Interacción P–M</div>
+                <div class="titulo-seccion"><span><i class="fa fa-line-chart w3-text-orange"></i> Diagrama de Interacción P–M</span></div>
                 <div id="plotPM" style="width:100%; height:480px;" class="w3-margin-top"></div>
             </div>
 
@@ -268,7 +266,7 @@ function cargarConfiguracion() {
         if (config.numRamas) document.getElementById('numRamas').value = config.numRamas;
         if (config.sepEstribo) document.getElementById('sepEstribo').value = config.sepEstribo;
 
-        // Reconstruir tabla de filas con las configuraciones guardadas
+        // Reconstruir tabla de filas
         if (config.filas && config.filas.length > 0) {
             let cuerpo = document.getElementById('cuerpoFilas');
             cuerpo.innerHTML = '';
@@ -286,8 +284,14 @@ function cargarConfiguracion() {
         }
         return true;
     } catch (e) {
-        console.error("Error al cargar configuración:", e);
         return false;
+    }
+}
+
+function restablecerValoresDefault() {
+    if (confirm("¿Deseas restablecer los parámetros a la plantilla original?")) {
+        localStorage.removeItem(CLAVE_STORAGE);
+        location.reload();
     }
 }
     
@@ -299,7 +303,6 @@ function parsearAcero(texto, b_mm) {
     let str = String(texto).toUpperCase().replace(/\s+/g, '');
     let areaTotal = 0;
     
-    // Parsear barras tipo 3N6, 2#5, 2N6+2N5
     let regexBarras = /(\d+)[N#](\d+)/g;
     let match;
     let matchesCount = 0;
@@ -312,16 +315,14 @@ function parsearAcero(texto, b_mm) {
         }
     }
     
-    // Parsear Mallas tipo M188
     let regexMalla = /M(\d+)/g;
     let matchMalla = regexMalla.exec(str);
     if (matchMalla) {
-        let cuantiaMalla = parseFloat(matchMalla[1]); // mm2/m
+        let cuantiaMalla = parseFloat(matchMalla[1]);
         areaTotal += cuantiaMalla * (b_mm / 1000.0);
         matchesCount++;
     }
     
-    // Si no hizo match con notaciones, intentar número directo en mm2
     if (matchesCount === 0) {
         let numDirecto = parseFloat(str);
         if (!isNaN(numDirecto)) areaTotal = numDirecto;
@@ -338,7 +339,7 @@ function obtenerDiametrosExtremos(b_mm) {
     let db_top = 0;
     let db_bottom = 0;
 
-    // Escanear de arriba hacia abajo la primera fila activa (As > 0)
+    // Escanear de arriba hacia abajo
     for (let i = 0; i < trs.length; i++) {
         let cfg = trs[i].querySelector('.cfg-acero').value;
         let area = parsearAcero(cfg, b_mm);
@@ -351,12 +352,12 @@ function obtenerDiametrosExtremos(b_mm) {
                     db_top = DIAM_BARRAS[cal];
                 }
             }
-            if (db_top === 0) db_top = 19.05; // Fallback si fue número directo
+            if (db_top === 0) db_top = 19.05; 
             break;
         }
     }
 
-    // Escanear de abajo hacia arriba la primera fila activa de mayor tracción (As > 0)
+    // Escanear de abajo hacia arriba (Para anclar la zona de tracción máxima)
     for (let i = trs.length - 1; i >= 0; i--) {
         let cfg = trs[i].querySelector('.cfg-acero').value;
         let area = parsearAcero(cfg, b_mm);
@@ -369,7 +370,7 @@ function obtenerDiametrosExtremos(b_mm) {
                     db_bottom = DIAM_BARRAS[cal];
                 }
             }
-            if (db_bottom === 0) db_bottom = 19.05; // Fallback si fue número directo
+            if (db_bottom === 0) db_bottom = 19.05; 
             break;
         }
     }
@@ -399,7 +400,6 @@ function actualizarEstructuraFilas() {
 
     cuerpo.innerHTML = '';
     
-    // Valores por defecto iniciales
     let defaultConfigs = ["3N6+2N5", "2N6", "3N6+2N5", "2N5", "2N5"];
 
     for (let i = 0; i < nFilas; i++) {
@@ -431,34 +431,48 @@ function recalcularPosiciones() {
 
     if (nFilas === 0) return;
 
-    // Obtener los diámetros de las filas activas extremas
     let { db_top, db_bottom } = obtenerDiametrosExtremos(b);
 
-    // Centroide de la primera capa superior
+    // Centroide fila 1 (Superior)
     let d1 = rec + d_estribo + (db_top / 2.0);
     
-    // Centroide de la última capa extrema de mayor tracción
+    // Centroide fila extrema (Mayor tracción)
     let dn = h - rec - d_estribo - (db_bottom / 2.0);
 
     trs.forEach((tr, idx) => {
         let inpD = tr.querySelector('.d-pos');
         if (modoPos === 'auto') {
-            if (nFilas === 1) inpD.value = ((d1 + dn) / 2).toFixed(1);
-            else {
+            if (nFilas === 1) {
+                inpD.value = ((d1 + dn) / 2).toFixed(1);
+            } else {
                 let d_calc = d1 + idx * ((dn - d1) / (nFilas - 1));
                 inpD.value = d_calc.toFixed(1);
             }
         } else if (modoPos === 'fijo') {
             let sv = parseFloat(document.getElementById('inpSv').value);
-            let d_calc = d1 + idx * sv;
-            inpD.value = d_calc.toFixed(1);
+            
+            if (idx === 0) {
+                inpD.value = d1.toFixed(1);
+            } else if (idx === nFilas - 1) {
+                inpD.value = dn.toFixed(1);
+            } else {
+                // Posicionar filas intermedias con prioridad a la zona de tensión (abajo hacia arriba)
+                let nInter = nFilas - 2;
+                let num_top = Math.floor(nInter / 2); // Si es impar, le deja una fila extra al bucle inferior
+                
+                if (idx <= num_top) {
+                    inpD.value = (d1 + idx * sv).toFixed(1);
+                } else {
+                    let distDesdeFondo = (nFilas - 1) - idx;
+                    inpD.value = (dn - distDesdeFondo * sv).toFixed(1);
+                }
+            }
         }
     });
 }
 
 // --- MOTOR MATEMÁTICO DEFINITIVO ---
 function calcularTodo() {
-    // Reajustar posiciones si el usuario cambió alguna barra en modo auto/fijo
     if (document.getElementById('modoPos').value !== 'manual') {
         recalcularPosiciones();
     }
@@ -473,7 +487,6 @@ function calcularTodo() {
     let beta1 = Math.max(0.65, Math.min(0.85, 0.85 - 0.05 * (fc - 28) / 7.0));
     let ey = fy / Es;
 
-    // Leer capas de acero
     let capas = [];
     let Ast = 0;
     let d_max = 0;
@@ -494,7 +507,6 @@ function calcularTodo() {
     let calibreEst = document.getElementById('calibreEstribo').value;
     let d_estribo = (calibreEst === '0') ? 0 : (DIAM_BARRAS[calibreEst] || 0);
 
-    // Si ninguna capa tiene acero, fallback a d_max teórico
     if (d_max === 0) d_max = h - rec - d_estribo - 9.5;
 
     let cuantiaG = (Ast / (b * h)) * 100;
@@ -534,10 +546,9 @@ function calcularTodo() {
 
     let nominalP = [], nominalM = [];
     let disenoP = [], disenoM = [];
-    let puntosEvaluados = []; // Arreglo auxiliar para encontrar P = 0
+    let puntosEvaluados = [];
 
-    // Calcular Compresión Pura P0 y Pn_max
-    let P0 = - (0.85 * fc * (b * h - Ast) + fy * Ast) / 1000.0; // Compresión (-)
+    let P0 = - (0.85 * fc * (b * h - Ast) + fy * Ast) / 1000.0; 
     let Pn_max = 0.80 * P0;
     let phiPn_max = 0.65 * Pn_max;
 
@@ -545,7 +556,6 @@ function calcularTodo() {
         let a = beta1 * c;
         let a_eff = Math.min(a, h);
 
-        // Bloque Concreto (Compresión Negativa)
         let Cc = -0.85 * fc * a_eff * b / 1000.0;
 
         let Pn_s = 0;
@@ -556,11 +566,9 @@ function calcularTodo() {
             let d_i = capa.d;
             let As_i = capa.As;
 
-            // Deformación (Tracción +, Compresión -)
             let eps_i = ecu * (d_i - c) / c;
             let fs_i = Math.max(-fy, Math.min(fy, Es * eps_i));
 
-            // Corrección de Concreto Desplazado
             let fs_net = fs_i;
             if (d_i <= a_eff && fs_i < 0) {
                 fs_net = fs_i + (0.85 * fc);
@@ -577,7 +585,6 @@ function calcularTodo() {
         let Pn = Cc + Pn_s;
         let Mn = Math.abs(Mn_c + Mn_s);
 
-        // Factor Phi
         let phi = 0.65;
         if (et_max >= 0.005) phi = 0.90;
         else if (et_max > ey) phi = 0.65 + 0.25 * (et_max - ey) / (0.005 - ey);
@@ -585,10 +592,8 @@ function calcularTodo() {
         let phiPn = Pn * phi;
         let phiMn = Mn * phi;
 
-        // Guardar valores sin truncar para la interpolación exacta de P = 0
         puntosEvaluados.push({ c: c, Pn: Pn, Mn: Mn, phi: phi, phiMn: phiMn });
 
-        // Truncar por límite de compresión axial para la gráfica
         if (Pn < Pn_max) Pn = Pn_max;
         if (phiPn < phiPn_max) phiPn = phiPn_max;
 
@@ -596,14 +601,12 @@ function calcularTodo() {
         disenoP.push(phiPn); disenoM.push(phiMn);
     });
 
-    // --- CÁLCULO E INTERPOLACIÓN EN FLEXIÓN PURA (P = 0) ---
     let mnFlex = 0, phiFlex = 0.90, phiMnFlex = 0, cFlex = 0;
 
     for (let i = 0; i < puntosEvaluados.length - 1; i++) {
         let p1 = puntosEvaluados[i];
         let p2 = puntosEvaluados[i + 1];
 
-        // Buscar el cambio de signo de Pn (de compresión - a tracción +)
         if ((p1.Pn <= 0 && p2.Pn >= 0) || (p1.Pn >= 0 && p2.Pn <= 0)) {
             let t = Math.abs(p1.Pn) / (Math.abs(p1.Pn) + Math.abs(p2.Pn));
             if (isNaN(t)) t = 0;
@@ -616,18 +619,16 @@ function calcularTodo() {
         }
     }
 
-    // Actualizar etiquetas en el DOM
     document.getElementById('lblMnFlex').innerText = mnFlex.toFixed(2);
     document.getElementById('lblPhiFlex').innerText = phiFlex.toFixed(3);
     document.getElementById('lblPhiMnFlex').innerText = phiMnFlex.toFixed(2);
 
-    // Actualizar la deformación eps_s (P=0) en la tabla
     let trsTable = document.querySelectorAll('#cuerpoFilas tr');
     capas.forEach((capa, idx) => {
         if (trsTable[idx]) {
             let cellEps = trsTable[idx].querySelector('.eps-fila');
             if (cellEps && cFlex > 0) {
-                let eps_i = ecu * (capa.d - cFlex) / cFlex; // Tracción +, Compresión -
+                let eps_i = ecu * (capa.d - cFlex) / cFlex;
                 let sign = (eps_i > 0) ? '+' : '';
                 let color = (eps_i > 0) ? '#22c55e' : ((eps_i < 0) ? '#dc2626' : '#64748b');
                 let valFormatted = `${sign}${(eps_i * 1000).toFixed(2)} ‰ (${sign}${eps_i.toFixed(4)})`;
@@ -637,7 +638,6 @@ function calcularTodo() {
     });
 
     renderizarGraficoPM(nominalM, nominalP, disenoM, disenoP, phiPn_max);
-    // Guardar estado actual en el navegador
     guardarConfiguracion();
 }
 
@@ -645,7 +645,6 @@ function renderizarGraficoPM(nM, nP, dM, dP, phiPn_max) {
     let traceNom = { x: nM, y: nP, mode: 'lines', name: 'Nominal (Pn, Mn)', line: { color: '#94a3b8', dash: 'dash', width: 2 } };
     let traceDis = { x: dM, y: dP, mode: 'lines', name: 'Diseño (ϕPn, ϕMn)', line: { color: '#E67E22', width: 3 } };
     
-    // Línea de corte de compresión máxima
     let maxM = Math.max(...nM) * 1.1;
     let traceCap = { x: [0, maxM], y: [phiPn_max, phiPn_max], mode: 'lines', name: 'Límite ϕPn_max (0.80ϕP0)', line: { color: '#dc2626', dash: 'dot', width: 1.5 } };
 
