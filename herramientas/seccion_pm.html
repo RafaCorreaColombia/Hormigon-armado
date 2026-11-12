@@ -250,8 +250,8 @@
         /* AVISO FINAL */
         .aviso-informativo {
             background: #F8FAFC !important; 
-            border: 1px solid #E2E8F0 !important;
-            border-left: 4px solid var(--secondary) !important;
+            /* border: 1px solid #E2E8F0 !important; <-- APAGADO */
+            /* border-left: 4px solid var(--secondary) !important; <-- APAGADO */
             color: var(--text-muted);
             border-radius: 4px;
             padding: 14px 18px;
@@ -266,7 +266,7 @@
             padding: 6px 10px;
             border-radius: 4px;
             margin-top: 6px;
-            border-left: 2px solid var(--secondary);
+            /* border-left: 2px solid var(--secondary); <-- APAGADO */
         }
 
         #panelRelacionInversion > div {
@@ -299,7 +299,7 @@
 
     <div class="w3-row-padding" style="margin-top: 10px;">
 
-        <!-- COLUMNA IZQUIERDA: PARÁMETROS DE ENTRADA -->
+        <!-- COLUMNA IZQUIERDA: PARÁMETROS GEOMETRÍA Y RESULTADOS -->
         <div class="w3-col l5 m12">
             
             <!-- 01. GEOMETRÍA Y MATERIALES -->
@@ -359,118 +359,120 @@
                 </div>
             </div>
 
-            <!-- 02. REFUERZO LONGITUDINAL -->
+            <!-- RESUMEN DE PROPIEDADES Y CORTANTE -->
             <div class="panel-card">
-                <div class="titulo-seccion"><span><i class="fa fa-bars"></i> Refuerzo Longitudinal</span></div>
+                <div class="titulo-seccion"><span><i class="fa fa-calculator"></i> Resumen de Resultados</span></div>
                 
-                <!-- BOTÓN MÁGICO PARA INVERTIR ACERO -->
-                <div class="w3-margin-bottom">
-                    <button class="w3-button w3-small btn-magico w3-block" onclick="invertirAceroTraccionCompresion()">
-                        <i class="fa fa-exchange"></i> 🔄 Invertir Acero (Tracción ⇄ Compresión)
-                    </button>
-                    <div id="panelRelacionInversion" class="w3-tiny w3-margin-top" style="display:none;"></div>
-                </div>
-
-                <div class="w3-row-padding w3-margin-top w3-small">
-                    <div class="w3-half w3-margin-bottom">
-                        <label>Número de Filas:</label>
-                        <input type="number" id="numFilas" value="3" min="1" max="10" class="w3-input" onchange="actualizarEstructuraFilas(); calcularTodo();">
-                    </div>
-                    <div class="w3-half w3-margin-bottom">
-                        <label>Modo Posicionamiento:</label>
-                        <select id="modoPos" class="w3-select" onchange="actualizarEstructuraFilas(); calcularTodo();">
-                            <option value="auto">Automático (Uniforme)</option>
-                            <option value="fijo">Separación Fija (\(s_v\))</option>
-                            <option value="manual">Manual (Definir \(d_i\))</option>
-                        </select>
-                        
-                        <!-- NOTAS EXPLICATIVAS -->
-                        <div id="notaAuto" class="nota-modo" style="display:none;">Distribución uniforme. La Fila 1 es la más cercana a la zona de compresión.</div>
-                        <div id="notaFijo" class="nota-modo" style="display:none;">Separación fija simétrica respecto de la fila extrema a tensión y compresión.</div>
-                        <div id="notaManual" class="nota-modo" style="display:none;">Defina los \(d_i\) con cuidado para evitar configuraciones de sección irreales.</div>
-                    </div>
-                </div>
-
-                <div id="divSepFija" class="w3-margin-top w3-small" style="display:none; padding: 0 8px;">
-                    <label>Separación vertical intermedias \(s_v\) (mm):</label>
-                    <input type="number" id="inpSv" value="115" step="5" class="w3-input" onchange="recalcularPosiciones(); calcularTodo();">
-                </div>
-
-                <div class="w3-responsive w3-margin-top">
-                    <table class="w3-table-all w3-tiny tabla-filas" id="tablaFilas">
-                        <thead>
-                            <tr>
-                                <th style="text-align:center;">Fila</th>
-                                <th>Configuración</th>
-                                <th>\(d_i\) (mm)</th>
-                                <th style="text-align:right;">Área (mm\(^2\))</th>
-                                <th style="text-align:center;">\(\varepsilon_s\) (\(P=0\))</th>
-                            </tr>
-                        </thead>
-                        <tbody id="cuerpoFilas"></tbody>
-                    </table>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- COLUMNA DERECHA: RESULTADOS Y DIAGRAMA -->
-        <div class="w3-col l7 m12">
-
-            <!-- RESUMEN DE PROPIEDADES -->
-            <div class="panel-card">
-                <div class="titulo-seccion"><span><i class="fa fa-calculator"></i> Resumen de Sección, Flexión Pura y Cortante</span></div>
-                <div class="w3-row-padding w3-small">
+                <!-- Minicard 1: Refuerzo y Flexión unificados -->
+                <div id="cajaRefuerzoFlexion" class="caja-metrica">
+                    <span style="display:block; color:var(--secondary); font-weight:600; font-size:0.85em; text-transform:uppercase; margin-bottom:6px;">Refuerzo y Flexión (\(P = 0\))</span>
                     
-                    <!-- Columna 1: Geometría de Refuerzo -->
-                    <div class="w3-col l4 m4 s12">
-                        <div id="cajaRefuerzo" class="caja-metrica">
-                            <span style="display:block; color:var(--secondary); font-weight:600; font-size:0.85em; text-transform:uppercase; margin-bottom:6px;">Refuerzo</span>
+                    <div class="w3-row">
+                        <!-- Mitad datos de acero -->
+                        <div class="w3-col s6" style="padding-right: 10px;">
                             <div class="valor-sutil">Área Total (\(A_{st}\)): <span id="lblAst">0</span> mm²</div>
                             <div class="valor-sutil">Área Tensión (\(A_s\)): <span id="lblAsTension">0</span> mm²</div>
                             <div class="valor-sutil">Cuantía Bruta (\(\rho_g\)): <span id="lblCuantiaG">0.00</span> %</div>
                             <div class="valor-sutil">Cuantía Flex. (\(\rho\)): <span id="lblCuantiaD">0.00</span> %</div>
                             <div class="valor-sutil">Peralte Real (\(d\)): <span id="lblDreal">0</span> mm</div>
-                            
-                            <!-- Alerta de Cuantía -->
-                            <div id="alertaCuantia" class="alerta-interna" style="display:none;">
-                                ⚠️ Cuantía superada (\(\rho > 0.025\)). Revisar sección.
-                            </div>
                         </div>
-                    </div>
-
-                    <!-- Columna 2: Flexión Pura (P = 0) -->
-                    <div class="w3-col l4 m4 s12">
-                        <div id="cajaFlexion" class="caja-metrica">
-                            <span style="display:block; color:var(--secondary); font-weight:600; font-size:0.85em; text-transform:uppercase; margin-bottom:6px;">Flexión (\(P = 0\))</span>
-                            
+                        
+                        <!-- Mitad datos de flexión -->
+                        <div class="w3-col s6" style="padding-left: 10px; border-left: 1px solid rgba(0,0,0,0.05);">
                             <div class="valor-sutil">\(M_n\): <span id="lblMnFlex">0.0</span> kN·m</div>
                             <div class="valor-sutil">\(\phi\): <span id="lblPhiFlex">0.900</span></div>
                             <div style="margin-top: 6px; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 6px;">
-                                <span class="valor-sutil">\(\phi M_n\):</span> <span id="lblPhiMnFlex" class="valor-protag">0.0</span> <span style="font-weight:600; color:var(--primary);">kN·m</span>
+                                <span class="valor-sutil">\(\phi M_n\):</span> <br> <span id="lblPhiMnFlex" class="valor-protag">0.0</span> <span style="font-weight:600; color:var(--primary);">kN·m</span>
                             </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Alertas combinadas -->
+                    <div id="alertaCuantia" class="alerta-interna" style="display:none;">
+                        ⚠️ Cuantía superada (\(\rho > 0.025\)). Revisar sección.
+                    </div>
+                    <div id="alertaControlTension" class="alerta-interna" style="display:none;">
+                        ⚠️ Sección no controlada a tensión (\(\phi < 0.90\)). Revisar acero a compresión o cuantías.
+                    </div>
+                </div>
 
-                            <!-- Alerta de Tensión -->
-                            <div id="alertaControlTension" class="alerta-interna" style="display:none;">
-                                ⚠️ Sección no controlada a tensión (\(\phi < 0.90\)). Revisar acero a compresión o cuantías.
+                <!-- Minicard 2: Cortante -->
+                <div id="cajaCortante" class="caja-metrica w3-margin-top">
+                    <span style="display:block; color:var(--secondary); font-weight:600; font-size:0.85em; text-transform:uppercase; margin-bottom:6px;">Cortante Total</span>
+                    
+                    <div class="w3-row">
+                        <div class="w3-col s6" style="padding-right: 10px;">
+                            <div class="valor-sutil">Concreto (\(\phi V_c\)): <span id="lblPhiVc">0</span> kN</div>
+                            <div class="valor-sutil">Estribos (\(\phi V_s\)): <span id="lblPhiVs">0</span> kN</div>
+                        </div>
+                        <div class="w3-col s6" style="padding-left: 10px; border-left: 1px solid rgba(0,0,0,0.05);">
+                            <div style="margin-top: 4px;">
+                                <span class="valor-sutil">Total (\(\phi V_n\)):</span> <br> <span id="lblPhiVn" class="valor-protag">0</span> <span style="font-weight:600; color:var(--primary);">kN</span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Columna 3: Cortante -->
-                    <div class="w3-col l4 m4 s12">
-                        <div id="cajaCortante" class="caja-metrica">
-                            <span style="display:block; color:var(--secondary); font-weight:600; font-size:0.85em; text-transform:uppercase; margin-bottom:6px;">Cortante</span>
-                            <div class="valor-sutil">Concreto (\(\phi V_c\)): <span id="lblPhiVc">0</span> kN</div>
-                            <div class="valor-sutil">Estribos (\(\phi V_s\)): <span id="lblPhiVs">0</span> kN</div>
-                            <div style="margin-top: 6px; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 6px;">
-                                <span class="valor-sutil">Total (\(\phi V_n\)):</span> <span id="lblPhiVn" class="valor-protag">0</span> <span style="font-weight:600; color:var(--primary);">kN</span>
-                            </div>
+                    <div id="alertaVsMax" class="alerta-interna" style="display:none;">
+                        ⚠️ \(V_s > V_{s,max}\). Se limita \(V_s\) a \(V_{s,max}\). Revisar distribución de estribos o sección.
+                    </div>
+                </div>
 
-                            <!-- Alerta de Cortante Maximo -->
-                            <div id="alertaVsMax" class="alerta-interna" style="display:none;">
-                                ⚠️ \(V_s > V_{s,max}\). Se limita \(V_s\) a \(V_{s,max}\). Revisar distribución de estribos o sección.
-                            </div>
+            </div>
+
+        </div>
+
+        <!-- COLUMNA DERECHA: TABLA DE ACERO Y DIAGRAMA -->
+        <div class="w3-col l7 m12">
+
+            <!-- 02. REFUERZO LONGITUDINAL -->
+            <div class="panel-card">
+                <div class="titulo-seccion"><span><i class="fa fa-bars"></i> Refuerzo Longitudinal</span></div>
+                
+                <div class="w3-row-padding w3-small" style="margin: 0 -8px;">
+                    
+                    <!-- Lado izquierdo: Parámetros y Botones -->
+                    <div class="w3-col l4 m12 w3-margin-bottom">
+                        <button class="w3-button w3-small btn-magico w3-block w3-margin-bottom" onclick="invertirAceroTraccionCompresion()">
+                            <i class="fa fa-exchange"></i> 🔄 Invertir Acero
+                        </button>
+                        <div id="panelRelacionInversion" class="w3-tiny w3-margin-bottom" style="display:none;"></div>
+
+                        <label>Número de Filas:</label>
+                        <input type="number" id="numFilas" value="3" min="1" max="10" class="w3-input w3-margin-bottom" onchange="actualizarEstructuraFilas(); calcularTodo();">
+
+                        <label>Modo Posicionamiento:</label>
+                        <select id="modoPos" class="w3-select w3-margin-bottom" onchange="actualizarEstructuraFilas(); calcularTodo();">
+                            <option value="auto">Automático (Uniforme)</option>
+                            <option value="fijo">Separación Fija (\(s_v\))</option>
+                            <option value="manual">Manual (Definir \(d_i\))</option>
+                        </select>
+                        
+                        <!-- Notas explicativas sin borde -->
+                        <div id="notaAuto" class="nota-modo" style="display:none;">Distribución uniforme. Fila 1 = Compresión.</div>
+                        <div id="notaFijo" class="nota-modo" style="display:none;">Separación fija simétrica (\(s_v\)).</div>
+                        <div id="notaManual" class="nota-modo" style="display:none;">Definición manual de peraltes \(d_i\).</div>
+
+                        <div id="divSepFija" class="w3-margin-top w3-small" style="display:none;">
+                            <label>Separación \(s_v\) (mm):</label>
+                            <input type="number" id="inpSv" value="115" step="5" class="w3-input" onchange="recalcularPosiciones(); calcularTodo();">
+                        </div>
+                    </div>
+
+                    <!-- Lado derecho: Tabla de Acero -->
+                    <div class="w3-col l8 m12">
+                        <div class="w3-responsive">
+                            <table class="w3-table-all w3-tiny tabla-filas" id="tablaFilas">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align:center;">Fila</th>
+                                        <th>Configuración</th>
+                                        <th>\(d_i\) (mm)</th>
+                                        <th style="text-align:right;">Área (mm\(^2\))</th>
+                                        <th style="text-align:center;">\(\varepsilon_s\) (\(P=0\))</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="cuerpoFilas"></tbody>
+                            </table>
                         </div>
                     </div>
 
@@ -831,7 +833,7 @@ function calcularTodo() {
 
         puntosEvaluados.push({ c: c, Pn: Pn, Mn: Mn, phi: phi, phiMn: phiMn });
 
-        // NO LIMITAMOS Pn NOMINAL (Curva sube completa), SOLO LIMITAMOS DISEÑO
+        // NO LIMITAMOS Pn NOMINAL
         if (phiPn < phiPn_max) phiPn = phiPn_max;
 
         nominalP.push(Pn); nominalM.push(Mn);
@@ -936,7 +938,6 @@ function calcularTodo() {
         }
     });
     
-    // Si no hay acero en tensión o cFlex es incalculable, se usa el d_max como fallback
     let d_real = (As_tension > 0) ? (sum_As_d / As_tension) : d_max;
     if (d_real === 0) d_real = h - rec - d_estribo - 9.5; 
 
@@ -950,14 +951,36 @@ function calcularTodo() {
     document.getElementById('lblCuantiaD').innerText = cuantiaD.toFixed(2);
     document.getElementById('lblDreal').innerText = d_real.toFixed(1);
 
-    let cajaRefuerzo = document.getElementById('cajaRefuerzo');
+    // Lógica unificada para cambiar color a la minicard de Refuerzo/Flexión
+    let cajaRefFlex = document.getElementById('cajaRefuerzoFlexion');
     let alertaCuantia = document.getElementById('alertaCuantia');
+    let alertaTension = document.getElementById('alertaControlTension');
+    
+    let errorRefFlex = false;
+
     if (cuantiaD > 2.5) { 
-        cajaRefuerzo.classList.add('caja-alerta');
         alertaCuantia.style.display = 'block';
+        errorRefFlex = true;
     } else {
-        cajaRefuerzo.classList.remove('caja-alerta');
         alertaCuantia.style.display = 'none';
+    }
+
+    // Actualización de variables de Flexión
+    document.getElementById('lblMnFlex').innerText = Math.abs(mnFlex).toFixed(2);
+    document.getElementById('lblPhiFlex').innerText = phiFlex.toFixed(3);
+    document.getElementById('lblPhiMnFlex').innerText = Math.abs(phiMnFlex).toFixed(2);
+
+    if (phiFlex < 0.899) {
+        alertaTension.style.display = 'block';
+        errorRefFlex = true;
+    } else {
+        alertaTension.style.display = 'none';
+    }
+
+    if (errorRefFlex) {
+        cajaRefFlex.classList.add('caja-alerta');
+    } else {
+        cajaRefFlex.classList.remove('caja-alerta');
     }
 
     // --- 5. CÁLCULO DE CORTANTE USANDO D REAL ---
@@ -989,21 +1012,7 @@ function calcularTodo() {
         alertaVsMax.style.display = 'none';
     }
 
-    // --- 6. ACTUALIZACIÓN FINAL DE FLEXIÓN Y TABLA ---
-    document.getElementById('lblMnFlex').innerText = Math.abs(mnFlex).toFixed(2);
-    document.getElementById('lblPhiFlex').innerText = phiFlex.toFixed(3);
-    document.getElementById('lblPhiMnFlex').innerText = Math.abs(phiMnFlex).toFixed(2);
-    
-    let cajaFlexion = document.getElementById('cajaFlexion');
-    let alertaTension = document.getElementById('alertaControlTension');
-    if (phiFlex < 0.899) {
-        cajaFlexion.classList.add('caja-alerta');
-        alertaTension.style.display = 'block';
-    } else {
-        cajaFlexion.classList.remove('caja-alerta');
-        alertaTension.style.display = 'none';
-    }
-
+    // --- 6. ACTUALIZAR DEFORMACIONES EN TABLA ---
     let trsTable = document.querySelectorAll('#cuerpoFilas tr');
     capas.forEach((capa, idx) => {
         if (trsTable[idx]) {
@@ -1062,9 +1071,6 @@ function renderizarGraficoPM(nM, nP, dM, dP, phiPn_max) {
     let traceNom = { x: nM, y: nP, mode: 'lines', name: 'Nominal (Pn, Mn)', line: { color: '#94A3B8', dash: 'dash', width: 2 } };
     let traceDis = { x: dM, y: dP, mode: 'lines', name: 'Diseño (ϕPn, ϕMn)', line: { color: '#2563EB', width: 3.5 } };
     
-    // Curva roja de trazos apagada temporalmente.
-    // let traceCap = { x: [minM, maxM], y: [phiPn_max, phiPn_max], mode: 'lines', name: 'Límite ϕPn_max', line: { color: '#F43F5E', dash: 'dot', width: 2 } };
-
     let layout = {
         title: { text: '<b>Curva de Capacidad P–M</b>', font: { size: 16, color: '#1E293B' } },
         xaxis: { title: 'Momento Flector (kN·m)', gridcolor: 'rgba(148, 163, 184, 0.2)', zerolinecolor: '#1E293B', zerolinewidth: 2 },
