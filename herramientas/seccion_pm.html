@@ -5,32 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Análisis P–M y Cortante | Criterio Estructural</title>
     
-    <!-- CSS Institucional -->
+    <!-- CSS Institucional y W3 para grillas -->
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
         :root {
-            --primary: #4F46E5;      /* Indigo profesional */
-            --secondary: #0EA5E9;    /* Azul cielo alegre */
-            --accent: #10B981;       /* Esmeralda para éxito/tracción */
-            --warning: #F43F5E;      /* Rosa/Rojo moderno para alertas */
-            --text-main: #1E293B;    /* Gris pizarra muy oscuro */
-            --text-muted: #64748B;
-            --bg-gradient: linear-gradient(135deg, #F8FAFC 0%, #E2E8F0 100%);
-            --glass-bg: rgba(255, 255, 255, 0.65);
-            --glass-border: rgba(255, 255, 255, 0.8);
+            /* PALETA TÉCNICA CONTEMPORÁNEA */
+            --primary: #1A2530;      /* Azul grisáceo oscuro para texto y header */
+            --secondary: #5C6D7E;    /* Gris azulado medio para labels y datos secundarios */
+            --accent: #E67E22;       /* Naranja técnico para acciones principales y alertas */
+            --warning: #D9534F;      /* Rojo técnico (usado en JS) */
+            
+            --text-main: #1A2530;
+            --text-muted: #637381;
+            
+            --bg-main: #F3F5F7;      /* Fondo general gris muy suave */
+            --bg-panel: #FFFFFF;     /* Paneles blancos */
+            --border-light: #E2E7EC; /* Bordes discretos */
         }
 
         body { 
-            background: var(--bg-gradient); 
-            background-attachment: fixed;
+            background: var(--bg-main); 
             font-family: 'Inter', system-ui, -apple-system, sans-serif; 
             color: var(--text-main); 
             min-height: 100vh;
+            /* Números tabulares para alinear correctamente cifras y decimales */
+            font-variant-numeric: tabular-nums; 
+            line-height: 1.5;
         }
 
         .contenedor-principal { 
@@ -39,173 +44,215 @@
             padding: 0 15px;
         }
 
-        /* HEADER MODERNO */
+        /* HEADER TÉCNICO */
         .header-ce { 
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white; 
-            padding: 30px 20px; 
-            text-align: center; 
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(14, 165, 233, 0.2);
-            margin-bottom: 25px;
-            position: relative;
-            overflow: hidden;
+            background: var(--primary);
+            color: #FFFFFF; 
+            padding: 24px 24px; 
+            border-radius: 6px;
+            margin-bottom: 24px;
+            border-top: 4px solid var(--accent);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
         }
-        .header-ce::after {
-            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
-            pointer-events: none;
+        .header-ce h1 {
+            margin: 0; 
+            font-weight: 600; 
+            font-size: 1.5em;
+            letter-spacing: -0.5px;
         }
-        .brand-logo-header { max-width: 200px; margin-bottom: 12px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); }
+        .header-ce p {
+            margin: 4px 0 0 0; 
+            color: #A0ABB5; 
+            font-size: 0.9em;
+            font-weight: 400;
+        }
 
-        /* PANELES GLASSMORPHISM */
+        /* PANELES LIMPIOS */
         .panel-card { 
-            background: var(--glass-bg); 
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--glass-border); 
-            border-radius: 16px; 
-            padding: 22px; 
+            background: var(--bg-panel); 
+            border: 1px solid var(--border-light); 
+            border-radius: 6px; 
+            padding: 20px; 
             margin-bottom: 20px; 
-            box-shadow: 0 8px 32px rgba(30, 41, 59, 0.05); 
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .panel-card:hover {
-            box-shadow: 0 12px 40px rgba(30, 41, 59, 0.08); 
+            box-shadow: 0 2px 4px rgba(26, 37, 48, 0.02); 
         }
 
         .titulo-seccion { 
-            border-bottom: 2px solid rgba(14, 165, 233, 0.2); 
-            padding-bottom: 10px; 
+            border-bottom: 1px solid var(--border-light); 
+            padding-bottom: 12px; 
             color: var(--primary); 
-            font-weight: 700; 
-            font-size: 1.15em; 
+            font-weight: 600; 
+            font-size: 1.05em; 
             display: flex; 
             justify-content: space-between; 
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
-        .titulo-seccion i { color: var(--secondary); margin-right: 8px; }
+        .titulo-seccion i { 
+            color: var(--secondary); 
+            margin-right: 8px; 
+        }
 
-        /* CAJAS DE RESULTADOS METRICAS */
+        /* CAJAS DE RESULTADOS (TARJETAS MÉTRICAS) */
         .caja-metrica { 
-            background: rgba(255, 255, 255, 0.5); 
-            border-left: 4px solid var(--secondary); 
-            padding: 16px; 
-            border-radius: 10px; 
+            background: #FAFBFC; 
+            border: 1px solid var(--border-light); 
+            border-left: 3px solid var(--secondary); 
+            padding: 12px 16px; 
+            border-radius: 4px; 
             margin-bottom: 12px; 
-            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
-            font-size: 0.95em;
-            line-height: 1.6;
+            font-size: 0.9em;
         }
-        .highlight { color: var(--primary); font-weight: 700; font-size: 1.1em;}
+        .caja-metrica span.highlight { 
+            color: var(--primary); 
+            font-weight: 700; 
+            font-size: 1.15em;
+        }
 
-        /* INPUTS MODERNOS */
-        label { font-weight: 600; color: var(--text-muted); font-size: 0.85em; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 5px; }
+        /* INPUTS Y SELECTS (ESTILO SOFTWARE) */
+        label { 
+            font-weight: 600; 
+            color: var(--secondary); 
+            font-size: 0.75em; 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px; 
+            display: block; 
+            margin-bottom: 6px; 
+        }
         .w3-input, .w3-select { 
-            border: 1px solid rgba(148, 163, 184, 0.3) !important; 
-            background: rgba(255,255,255,0.7) !important; 
-            border-radius: 10px !important; 
-            padding: 8px 12px !important; 
-            transition: all 0.3s ease; 
+            border: 1px solid var(--border-light) !important; 
+            background: #FFFFFF !important; 
+            border-radius: 4px !important; 
+            padding: 8px 10px !important; 
+            transition: all 0.2s ease; 
             color: var(--text-main) !important;
             font-weight: 500;
+            font-size: 0.9em !important;
         }
         .w3-input:focus, .w3-select:focus { 
             outline: none; 
-            border-color: var(--secondary) !important; 
-            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15) !important; 
-            background: #ffffff !important;
+            border-color: var(--accent) !important; 
+            box-shadow: 0 0 0 2px rgba(230, 126, 34, 0.15) !important; 
         }
 
-        /* TABLA MODERNA TIPO SaaS */
-        .w3-table-all { border: none !important; background: transparent !important; }
-        .w3-table-all tr:nth-child(even) { background: rgba(255,255,255,0.3) !important; }
-        .w3-table-all tr:nth-child(odd) { background: transparent !important; }
+        /* TABLA TÉCNICA */
+        .w3-table-all { 
+            border: 1px solid var(--border-light) !important; 
+            background: #FFFFFF !important;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .w3-table-all tr:nth-child(even) { background: #FAFBFC !important; }
+        .w3-table-all tr:nth-child(odd) { background: #FFFFFF !important; }
         .w3-table-all th { 
-            background: rgba(241, 245, 249, 0.6) !important; 
-            color: var(--text-muted) !important; 
-            border-bottom: 2px solid rgba(148, 163, 184, 0.2); 
+            background: #F3F5F7 !important; 
+            color: var(--secondary) !important; 
+            border-bottom: 1px solid var(--border-light); 
             text-transform: uppercase; 
-            font-size: 0.8em; 
+            font-size: 0.75em; 
             letter-spacing: 0.5px;
-            padding: 12px 8px !important;
+            padding: 10px 8px !important;
+            font-weight: 600;
         }
-        .w3-table-all td { border-bottom: 1px solid rgba(148, 163, 184, 0.1); padding: 10px 8px !important; vertical-align: middle;}
+        .w3-table-all td { 
+            border-bottom: 1px solid var(--border-light); 
+            padding: 8px !important; 
+            vertical-align: middle;
+        }
         .tabla-filas input { 
-            width: 100%; border: 1px solid rgba(148, 163, 184, 0.3); border-radius: 6px; padding: 6px 10px; font-size: 1em; 
-            background: rgba(255,255,255,0.6); transition: 0.2s;
+            width: 100%; 
+            border: 1px solid var(--border-light); 
+            border-radius: 4px; 
+            padding: 6px 8px; 
+            font-size: 0.95em; 
+            background: #FFFFFF; 
+            transition: 0.2s;
+            color: var(--text-main);
         }
-        .tabla-filas input:focus { border-color: var(--secondary); background: #fff; outline: none; }
+        .tabla-filas input:focus { 
+            border-color: var(--accent); 
+            outline: none; 
+            box-shadow: 0 0 0 2px rgba(230, 126, 34, 0.15); 
+        }
 
         /* BOTONES */
         .btn-ce { 
-            background: linear-gradient(135deg, var(--primary), var(--secondary)); 
-            color: white !important; 
-            font-weight: 600; 
-            border-radius: 8px; 
-            transition: 0.3s; 
+            background: var(--bg-main); 
+            color: var(--primary) !important; 
+            font-weight: 500; 
+            border: 1px solid var(--border-light);
+            border-radius: 4px; 
+            transition: 0.2s; 
             cursor: pointer; 
-            border: none;
-            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+            padding: 6px 12px;
         }
         .btn-ce:hover { 
-            box-shadow: 0 6px 16px rgba(79, 70, 229, 0.3); 
-            transform: translateY(-1px);
+            background: var(--border-light);
         }
 
         .btn-magico {
-            background: linear-gradient(135deg, #10B981, #0EA5E9);
-            color: white !important;
+            background: var(--accent);
+            color: #FFFFFF !important;
             font-weight: 600;
-            border-radius: 8px;
-            transition: 0.3s;
+            border-radius: 4px;
+            transition: 0.2s;
             cursor: pointer;
             border: none;
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+            padding: 10px;
         }
         .btn-magico:hover {
-            box-shadow: 0 6px 16px rgba(16, 185, 129, 0.35);
-            transform: translateY(-1px);
+            background: #D67118;
         }
 
-        /* ALERTAS / BANNERS */
-        .alerta-glass {
-            background: rgba(254, 243, 199, 0.6) !important;
-            backdrop-filter: blur(10px);
-            border-left: 4px solid #F59E0B !important;
+        /* ALERTAS (Sin colores estridentes, tono de advertencia suave) */
+        .alerta-tecnica {
+            background: #FFF8F1 !important; 
+            border: 1px solid #FDE6D2 !important;
+            border-left: 4px solid var(--accent) !important;
             color: #92400E;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            border-radius: 4px;
+            padding: 12px 16px;
+            font-size: 0.9em;
+            margin-bottom: 16px;
+        }
+
+        /* OVERRIDE PARA EL PANEL INYECTADO POR JS (Inversión de acero) */
+        #panelRelacionInversion > div {
+            background: #FAFBFC !important;
+            border: 1px solid var(--border-light) !important;
+            border-left: 3px solid var(--accent) !important;
+            border-radius: 4px !important;
+            padding: 12px !important;
+            font-size: 0.9em !important;
+            color: var(--text-main) !important;
         }
 
         /* FOOTER */
         footer {
-            background: transparent !important;
-            border-top: 1px solid rgba(148, 163, 184, 0.2) !important;
-            margin-top: 30px;
+            border-top: 1px solid var(--border-light) !important;
+            margin-top: 40px;
+            padding-top: 20px;
         }
     </style>
 </head>
 <body>
 
-<div class="contenedor-principal w3-animate-opacity">
+<div class="contenedor-principal">
 
-    <!-- HEADER INSTITUCIONAL -->
+    <!-- HEADER TÉCNICO -->
     <div class="header-ce">
-        <img src="../assets/IsotipoFOscuroT.png" alt="Criterio Estructural" class="brand-logo-header" onerror="this.style.display='none'">
-        <h1 class="w3-xlarge" style="margin:0; font-weight: 700; letter-spacing: -0.5px;">Análisis de Secciones de Concreto Reforzado</h1>
-        <p style="margin-top: 8px; color: rgba(255,255,255,0.85); font-weight: 300;">Flexocompresión Axial · Cortante · Verificación Normativa NSR-10 / ACI 318</p>
+        <h1>Análisis de Secciones de Concreto Reforzado</h1>
+        <p>Flexocompresión Axial · Cortante · Verificación Normativa NSR-10 / ACI 318</p>
     </div>
 
     <!-- AVISO ACADÉMICO -->
-    <div style="padding-bottom: 15px;">
-        <div class="w3-panel w3-padding-16 w3-small alerta-glass">
-            <b style="font-size: 1.1em;">🚧 Herramienta de Verificación Técnica:</b> Esta aplicación resuelve el equilibrio de secciones rectangulares sujetas a flexocompresión y cortante. Requiere validación y memoria de cálculo por parte del diseñador responsable.
-        </div>
+    <div class="alerta-tecnica">
+        <b style="font-weight: 600;">🚧 Herramienta de Verificación Técnica:</b> Esta aplicación resuelve el equilibrio de secciones rectangulares sujetas a flexocompresión y cortante. Requiere validación y memoria de cálculo por parte del diseñador responsable.
     </div>
 
-    <div class="w3-row-padding">
+    <div class="w3-row-padding" style="margin-top: 10px;">
 
         <!-- COLUMNA IZQUIERDA: PARÁMETROS DE ENTRADA -->
         <div class="w3-col l5 m12">
@@ -213,36 +260,38 @@
             <!-- 01. GEOMETRÍA, MATERIALES Y ESTRIBOS -->
             <div class="panel-card">
                 <div class="titulo-seccion">
-                    <span><i class="fa fa-cubes"></i> 01 / Geometría, Materiales y Estribos</span>
-                    <button class="w3-button w3-tiny btn-ce" onclick="restablecerValoresDefault()" style="padding: 6px 12px;"><i class="fa fa-refresh"></i> Reset</button>
+                    <span><i class="fa fa-cubes"></i> Geometría y Materiales</span>
+                    <button class="w3-button w3-tiny btn-ce" onclick="restablecerValoresDefault()">
+                        <i class="fa fa-refresh"></i> Reset
+                    </button>
                 </div>
                 
-                <div class="w3-row-padding w3-margin-top w3-small">
+                <div class="w3-row-padding w3-small">
                     <div class="w3-col l3 m3 s6 w3-margin-bottom">
-                        <label>Base <b>b</b> (mm):</label>
+                        <label>Base <b>b</b> (mm)</label>
                         <input type="number" id="inpB" value="300" step="10" class="w3-input" onchange="calcularTodo()">
                     </div>
                     <div class="w3-col l3 m3 s6 w3-margin-bottom">
-                        <label>Altura <b>h</b> (mm):</label>
+                        <label>Altura <b>h</b> (mm)</label>
                         <input type="number" id="inpH" value="350" step="10" class="w3-input" onchange="calcularTodo()">
                     </div>
                     <div class="w3-col l3 m3 s6 w3-margin-bottom">
-                        <label><b>f'c</b> (MPa):</label>
+                        <label><b>f'c</b> (MPa)</label>
                         <input type="number" id="inpFc" value="28" step="1" class="w3-input" onchange="calcularTodo()">
                     </div>
                     <div class="w3-col l3 m3 s6 w3-margin-bottom">
-                        <label><b>fy</b> (MPa):</label>
+                        <label><b>fy</b> (MPa)</label>
                         <input type="number" id="inpFy" value="420" step="10" class="w3-input" onchange="calcularTodo()">
                     </div>
                 </div>
                 
                 <div class="w3-row-padding w3-small">
                     <div class="w3-col l3 m3 s6 w3-margin-bottom">
-                        <label>Recub. <b>r<sub>c</sub></b> (mm):</label>
+                        <label>Recub. <b>r<sub>c</sub></b> (mm)</label>
                         <input type="number" id="inpRec" value="40" step="5" class="w3-input" onchange="recalcularPosiciones(); calcularTodo();">
                     </div>
                     <div class="w3-col l3 m3 s6 w3-margin-bottom">
-                        <label>Estribo:</label>
+                        <label>Estribo</label>
                         <select id="calibreEstribo" class="w3-select" onchange="recalcularPosiciones(); calcularTodo();">
                             <option value="0">Sin Estribos</option>
                             <option value="2">N° 2</option>
@@ -255,11 +304,11 @@
                         </select>
                     </div>
                     <div class="w3-col l3 m3 s6 w3-margin-bottom">
-                        <label>N° Ramas:</label>
+                        <label>N° Ramas</label>
                         <input type="number" id="numRamas" value="2" min="1" class="w3-input" onchange="calcularTodo()">
                     </div>
                     <div class="w3-col l3 m3 s6 w3-margin-bottom">
-                        <label>Sep. <b>s</b> (mm):</label>
+                        <label>Sep. <b>s</b> (mm)</label>
                         <input type="number" id="sepEstribo" value="150" step="10" class="w3-input" onchange="calcularTodo()">
                     </div>
                 </div>
@@ -267,14 +316,14 @@
 
             <!-- 02. REFUERZO LONGITUDINAL -->
             <div class="panel-card">
-                <div class="titulo-seccion"><span><i class="fa fa-bars"></i> 02 / Distribución de Refuerzo Longitudinal</span></div>
+                <div class="titulo-seccion"><span><i class="fa fa-bars"></i> Refuerzo Longitudinal</span></div>
                 
-                <!-- BOTÓN MÁGICO PARA INVERTIR ACERO (VIGAS SISMORRESISTENTES) -->
-                <div class="w3-margin-bottom" style="background: rgba(16, 185, 129, 0.08); padding: 12px; border-radius: 12px; border: 1px dashed var(--accent);">
-                    <button class="w3-button w3-small btn-magico w3-block" onclick="invertirAceroTraccionCompresion()" style="padding: 10px;">
-                        <i class="fa fa-exchange"></i> 🔄 Invertir Acero Tracción ⇄ Compresión
+                <!-- BOTÓN MÁGICO PARA INVERTIR ACERO -->
+                <div class="w3-margin-bottom">
+                    <button class="w3-button w3-small btn-magico w3-block" onclick="invertirAceroTraccionCompresion()">
+                        <i class="fa fa-exchange"></i> 🔄 Invertir Acero (Tracción ⇄ Compresión)
                     </button>
-                    <div id="panelRelacionInversion" class="w3-tiny w3-margin-top" style="display:none; color: var(--text-main); font-weight: 500; line-height: 1.5;">
+                    <div id="panelRelacionInversion" class="w3-tiny w3-margin-top" style="display:none;">
                         <!-- Resultados inyectados dinámicamente -->
                     </div>
                 </div>
@@ -323,12 +372,12 @@
             <!-- RESUMEN DE PROPIEDADES -->
             <div class="panel-card">
                 <div class="titulo-seccion"><span><i class="fa fa-calculator"></i> Resumen de Sección, Flexión Pura y Cortante</span></div>
-                <div class="w3-row-padding w3-margin-top w3-small">
+                <div class="w3-row-padding w3-small">
                     
                     <!-- Columna 1: Geometría de Refuerzo -->
                     <div class="w3-col l4 m4 s12">
                         <div class="caja-metrica">
-                            <span style="display:block; color:var(--text-muted); font-size:0.85em; text-transform:uppercase; margin-bottom:4px;">Refuerzo</span>
+                            <span style="display:block; color:var(--secondary); font-weight:600; font-size:0.85em; text-transform:uppercase; margin-bottom:6px;">Refuerzo</span>
                             <b>Área (A<sub>st</sub>):</b> <span id="lblAst" class="highlight">0</span> mm²<br>
                             <b>Cuantía Bruta (ρ<sub>g</sub>):</b> <span id="lblCuantiaG" class="highlight">0.00 %</span><br>
                             <b>Cuantía Efec. (ρ<sub>d</sub>):</b> <span id="lblCuantiaD" class="highlight">0.00 %</span><br>
@@ -339,22 +388,22 @@
                     <!-- Columna 2: Flexión Pura (P = 0) -->
                     <div class="w3-col l4 m4 s12">
                         <div class="caja-metrica">
-                            <span style="display:block; color:var(--text-muted); font-size:0.85em; text-transform:uppercase; margin-bottom:4px;">Flexión (P = 0)</span>
+                            <span style="display:block; color:var(--secondary); font-weight:600; font-size:0.85em; text-transform:uppercase; margin-bottom:6px;">Flexión (P = 0)</span>
                             <b>M<sub>n</sub>:</b> <span id="lblMnFlex" class="highlight">0.0</span> kN·m<br>
                             <b>ϕ:</b> <span id="lblPhiFlex" class="highlight">0.900</span><br>
                             <b>ϕM<sub>n</sub>:</b> <span id="lblPhiMnFlex" class="highlight">0.0</span> kN·m<br>
                             <span style="color:transparent;">-</span>
                         </div>
-                        <!-- ALERTA DE CONTROL A TENSIÓN (ϕ != 0.9) -->
-                        <div id="alertaControlTension" class="w3-tiny w3-margin-top" style="display:none; font-weight:bold; background: rgba(245, 158, 11, 0.12); padding: 10px; border-radius: 8px; border-left: 4px solid #F59E0B; color: #B45309;">
-                            ⚠️ <b>Aviso Normativo (Flexión Pura):</b> La sección NO está controlada a tensión pura ($\phi \neq 0.90$, $\phi = $<span id="valPhiAlerta">0.00</span>). El acero extremo en tracción no alcanza el límite de fluencia requerido ($\varepsilon_t < 0.005$).
+                        <!-- ALERTA DE CONTROL A TENSIÓN -->
+                        <div id="alertaControlTension" class="alerta-tecnica" style="display:none; padding: 8px 12px; margin-top: 8px;">
+                            ⚠️ <b>Aviso:</b> Sección no controlada a tensión ($\phi = $<span id="valPhiAlerta">0.00</span>).
                         </div>
                     </div>
 
                     <!-- Columna 3: Cortante -->
                     <div class="w3-col l4 m4 s12">
                         <div class="caja-metrica">
-                            <span style="display:block; color:var(--text-muted); font-size:0.85em; text-transform:uppercase; margin-bottom:4px;">Cortante</span>
+                            <span style="display:block; color:var(--secondary); font-weight:600; font-size:0.85em; text-transform:uppercase; margin-bottom:6px;">Cortante</span>
                             <b>Concreto (ϕV<sub>c</sub>):</b> <span id="lblPhiVc">0</span> kN<br>
                             <b>Estribos (ϕV<sub>s</sub>):</b> <span id="lblPhiVs">0</span> kN <span id="lblVsMax" class="w3-tiny w3-text-grey"></span><br>
                             <b>Total (ϕV<sub>n</sub>):</b> <span id="lblPhiVn" class="highlight" style="color:var(--accent);">0</span> kN<br>
@@ -363,15 +412,16 @@
                     </div>
 
                 </div>
-                <div id="alertaVsMax" class="w3-tiny w3-text-red w3-margin-top" style="display:none; font-weight:bold; background: rgba(244, 63, 94, 0.1); padding: 8px; border-radius: 6px; border-left: 3px solid var(--warning);">
-                    ⚠️ El aporte del acero supera el límite normativo (Vs > Vs_max = 0.66√f'c·b·d). Se limita la contribución.
+                <!-- ALERTA Vs Max -->
+                <div id="alertaVsMax" class="alerta-tecnica w3-margin-top" style="display:none; padding: 8px 12px;">
+                    ⚠️ El aporte del acero supera el límite (Vs > Vs_max = 0.66√f'c·b·d). Se limita la contribución.
                 </div>
             </div>
 
-            <!-- DIAGRAMA DE INTERACCIÓN INTERACTIVO -->
-            <div class="panel-card" style="padding-bottom: 5px;">
-                <div class="titulo-seccion"><span><i class="fa fa-line-chart"></i> Diagrama de Interacción P–M</span></div>
-                <div id="plotPM" style="width:100%; height:460px; border-radius: 10px; overflow:hidden;" class="w3-margin-top"></div>
+            <!-- DIAGRAMA DE INTERACCIÓN -->
+            <div class="panel-card">
+                <div class="titulo-seccion" style="border-bottom: none; margin-bottom: 0;"><span><i class="fa fa-line-chart"></i> Diagrama de Interacción P–M</span></div>
+                <div id="plotPM" style="width:100%; height:460px; border-radius: 4px; overflow:hidden;" class="w3-margin-top"></div>
             </div>
 
         </div>
@@ -379,10 +429,10 @@
     </div>
 
     <!-- FOOTER INSTITUCIONAL -->
-    <footer class="w3-container w3-padding-32 w3-center w3-text-grey">
+    <footer class="w3-container w3-center">
         <h5 style="margin: 5px 0 0 0; color: var(--text-main); font-weight: 600;">Ing. Rafael Antonio Correa Melano</h5>
-        <p class="w3-small" style="margin: 4px 0 0 0;">Ingeniero Civil • M.IE. | Universidad Industrial de Santander</p>
-        <p class="w3-tiny" style="margin-top: 15px; color: var(--text-muted);"><b>Criterio Estructural</b> © 2026. Todos los derechos reservados. Bucaramanga, Colombia 🇨🇴</p>
+        <p class="w3-small" style="margin: 4px 0 0 0; color: var(--secondary);">Ingeniero Civil • M.IE. | Universidad Industrial de Santander</p>
+        <p class="w3-tiny" style="margin-top: 10px; color: var(--text-muted);"><b>Criterio Estructural</b> © 2026. Todos los derechos reservados. Bucaramanga, Colombia</p>
     </footer>
 
 </div>
