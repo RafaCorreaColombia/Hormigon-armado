@@ -404,6 +404,8 @@
                         <div class="w3-col s6" style="padding-right: 10px;">
                             <div class="valor-sutil">Concreto (\(\phi V_c\)): <span id="lblPhiVc">0</span> kN</div>
                             <div class="valor-sutil">Estribos (\(\phi V_s\)): <span id="lblPhiVs">0</span> kN</div>
+                            <div class="valor-sutil" style="color: gray;">(\(\V_{s,max}\)): <span id="lblVsmax"</span> kN</div>
+                            
                         </div>
                         <div class="w3-col s6" style="padding-left: 10px; border-left: 1px solid rgba(0,0,0,0.05);">
                             <div style="margin-top: 4px;">
@@ -1001,6 +1003,7 @@ function calcularTodo() {
     document.getElementById('lblPhiVc').innerText = phiVc.toFixed(1);
     document.getElementById('lblPhiVs').innerText = phiVs.toFixed(1);
     document.getElementById('lblPhiVn').innerText = phiVn.toFixed(1);
+    document.getElementById('lblVsmax').innerText = Vs_max.toFixed(1);
 
     let cajaCortante = document.getElementById('cajaCortante');
     let alertaVsMax = document.getElementById('alertaVsMax');
