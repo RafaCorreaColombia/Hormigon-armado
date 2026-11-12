@@ -85,7 +85,7 @@
         /* PANELES LIMPIOS */
         .panel-card { 
             background: var(--bg-panel); 
-            border: 1px solid var(--border-light); 
+            /* border: 1px solid var(--border-light);  <-- APAGADO TEMPORALMENTE */
             border-radius: 6px; 
             padding: 20px; 
             margin-bottom: 20px; 
@@ -111,8 +111,8 @@
         /* CAJAS DE RESULTADOS (TARJETAS MÉTRICAS Y ALERTAS) */
         .caja-metrica { 
             background: #FAFBFC; 
-            border: 1px solid var(--border-light); 
-            border-left: 3px solid var(--secondary); 
+            /* border: 1px solid var(--border-light); <-- APAGADO TEMPORALMENTE */
+            /* border-left: 3px solid var(--secondary); <-- APAGADO TEMPORALMENTE */
             padding: 12px 16px; 
             border-radius: 4px; 
             margin-bottom: 12px; 
@@ -247,7 +247,7 @@
             background: #D67118;
         }
 
-        /* AVISO FINAL (Informativo y neutro) */
+        /* AVISO FINAL */
         .aviso-informativo {
             background: #F8FAFC !important; 
             border: 1px solid #E2E8F0 !important;
@@ -271,8 +271,8 @@
 
         #panelRelacionInversion > div {
             background: #FAFBFC !important;
-            border: 1px solid var(--border-light) !important;
-            border-left: 3px solid var(--accent) !important;
+            /* border: 1px solid var(--border-light) !important; <-- APAGADO */
+            /* border-left: 3px solid var(--accent) !important; <-- APAGADO */
             border-radius: 4px !important;
             padding: 12px !important;
             font-size: 0.9em !important;
@@ -426,10 +426,11 @@
                     <div class="w3-col l4 m4 s12">
                         <div id="cajaRefuerzo" class="caja-metrica">
                             <span style="display:block; color:var(--secondary); font-weight:600; font-size:0.85em; text-transform:uppercase; margin-bottom:6px;">Refuerzo</span>
-                            <div class="valor-sutil">Área (\(A_{st}\)): <span id="lblAst">0</span> mm²</div>
+                            <div class="valor-sutil">Área Total (\(A_{st}\)): <span id="lblAst">0</span> mm²</div>
+                            <div class="valor-sutil">Área Tensión (\(A_s\)): <span id="lblAsTension">0</span> mm²</div>
                             <div class="valor-sutil">Cuantía Bruta (\(\rho_g\)): <span id="lblCuantiaG">0.00</span> %</div>
-                            <div class="valor-sutil">Cuantía Efec. (\(\rho_d\)): <span id="lblCuantiaD">0.00</span> %</div>
-                            <div class="valor-sutil">Peralte (\(d_{max}\)): <span id="lblDmax">0</span> mm</div>
+                            <div class="valor-sutil">Cuantía Flex. (\(\rho\)): <span id="lblCuantiaD">0.00</span> %</div>
+                            <div class="valor-sutil">Peralte Real (\(d\)): <span id="lblDreal">0</span> mm</div>
                             
                             <!-- Alerta de Cuantía -->
                             <div id="alertaCuantia" class="alerta-interna" style="display:none;">
@@ -665,7 +666,6 @@ function actualizarEstructuraFilas() {
     
     document.getElementById('divSepFija').style.display = (modoPos === 'fijo') ? 'block' : 'none';
 
-    // Manejo de las notas explicativas en bloque 
     document.getElementById('notaAuto').style.display = (modoPos === 'auto') ? 'block' : 'none';
     document.getElementById('notaFijo').style.display = (modoPos === 'fijo') ? 'block' : 'none';
     document.getElementById('notaManual').style.display = (modoPos === 'manual') ? 'block' : 'none';
@@ -782,58 +782,9 @@ function calcularTodo() {
 
     let calibreEst = document.getElementById('calibreEstribo').value;
     let d_estribo = (calibreEst === '0') ? 0 : (DIAM_BARRAS[calibreEst] || 0);
-
     if (d_max === 0) d_max = h - rec - d_estribo - 9.5;
 
-    let cuantiaG = (Ast / (b * h)) * 100;
-    let cuantiaD = (d_max > 0) ? (Ast / (b * d_max)) * 100 : 0;
-
-    document.getElementById('lblAst').innerText = Ast.toFixed(1);
-    document.getElementById('lblCuantiaG').innerText = cuantiaG.toFixed(2);
-    document.getElementById('lblCuantiaD').innerText = cuantiaD.toFixed(2);
-    document.getElementById('lblDmax').innerText = d_max.toFixed(1);
-
-    // LÓGICA DE ALERTA PARA CUANTÍA
-    let cajaRefuerzo = document.getElementById('cajaRefuerzo');
-    let alertaCuantia = document.getElementById('alertaCuantia');
-    if (cuantiaD > 2.5) { 
-        cajaRefuerzo.classList.add('caja-alerta');
-        alertaCuantia.style.display = 'block';
-    } else {
-        cajaRefuerzo.classList.remove('caja-alerta');
-        alertaCuantia.style.display = 'none';
-    }
-
-    let nRamas = parseInt(document.getElementById('numRamas').value);
-    let sEst = parseFloat(document.getElementById('sepEstribo').value);
-
-    let area1Estribo = (calibreEst === '0') ? 0 : (AREAS_BARRAS[calibreEst] || 0);
-    let Av = (calibreEst === '0') ? 0 : nRamas * area1Estribo;
-
-    let Vc = 0.17 * Math.sqrt(fc) * b * d_max / 1000.0;
-    let Vs = (calibreEst !== '0' && sEst > 0) ? (Av * fy * d_max / sEst) / 1000.0 : 0;
-    let Vs_max = 0.66 * Math.sqrt(fc) * b * d_max / 1000.0;
-
-    let Vs_util = Math.min(Vs, Vs_max);
-    let phiVc = 0.75 * Vc;
-    let phiVs = 0.75 * Vs_util;
-    let phiVn = phiVc + phiVs;
-
-    document.getElementById('lblPhiVc').innerText = phiVc.toFixed(1);
-    document.getElementById('lblPhiVs').innerText = phiVs.toFixed(1);
-    document.getElementById('lblPhiVn').innerText = phiVn.toFixed(1);
-
-    // LÓGICA DE ALERTA PARA CORTANTE
-    let cajaCortante = document.getElementById('cajaCortante');
-    let alertaVsMax = document.getElementById('alertaVsMax');
-    if (Vs > Vs_max && calibreEst !== '0') {
-        cajaCortante.classList.add('caja-alerta');
-        alertaVsMax.style.display = 'block';
-    } else {
-        cajaCortante.classList.remove('caja-alerta');
-        alertaVsMax.style.display = 'none';
-    }
-
+    // --- 1. BARRIDO P-M (Diagrama de Interacción) ---
     let c_vals = [10000.0];
     for (let c_temp = h * 2.0; c_temp >= 1.0; c_temp -= 2.0) c_vals.push(c_temp);
     c_vals.push(0.1);
@@ -854,28 +805,21 @@ function calcularTodo() {
         let Pn_s = 0, Mn_s = 0, et_max = -1.0;
 
         capas.forEach(capa => {
-            let d_i = capa.d;
-            let As_i = capa.As;
-
-            let eps_i = ecu * (d_i - c) / c;
+            let eps_i = ecu * (capa.d - c) / c;
             let fs_i = Math.max(-fy, Math.min(fy, Es * eps_i));
-
             let fs_net = fs_i;
-            if (d_i <= a_eff && fs_i < 0) {
+            if (capa.d <= a_eff && fs_i < 0) {
                 fs_net = fs_i + (0.85 * fc);
             }
-
-            let F_si = (As_i * fs_net) / 1000.0;
+            let F_si = (capa.As * fs_net) / 1000.0;
             Pn_s += F_si;
-            Mn_s += F_si * (h / 2.0 - d_i) / 1000.0;
+            Mn_s += F_si * (h / 2.0 - capa.d) / 1000.0;
 
             if (eps_i > et_max) et_max = eps_i;
         });
 
         let Mn_c = Cc * (h / 2.0 - a_eff / 2.0) / 1000.0;
         let Pn = Cc + Pn_s;
-        
-        // INVERTIMOS LA CONVENCIÓN DE SIGNOS PARA QUE LA FLEXIÓN ESTÁNDAR DÉ POSITIVA
         let Mn = -(Mn_c + Mn_s); 
 
         let phi = 0.65;
@@ -887,15 +831,15 @@ function calcularTodo() {
 
         puntosEvaluados.push({ c: c, Pn: Pn, Mn: Mn, phi: phi, phiMn: phiMn });
 
-        if (Pn < Pn_max) Pn = Pn_max;
+        // NO LIMITAMOS Pn NOMINAL (Curva sube completa), SOLO LIMITAMOS DISEÑO
         if (phiPn < phiPn_max) phiPn = phiPn_max;
 
         nominalP.push(Pn); nominalM.push(Mn);
         disenoP.push(phiPn); disenoM.push(phiMn);
     });
 
+    // --- 2. BÚSQUEDA DEL EJE NEUTRO EN FLEXIÓN PURA (P=0) ---
     let mnFlex = 0, phiFlex = 0.90, phiMnFlex = 0, cFlex = 0;
-
     for (let i = 0; i < puntosEvaluados.length - 1; i++) {
         let p1 = puntosEvaluados[i];
         let p2 = puntosEvaluados[i + 1];
@@ -923,8 +867,6 @@ function calcularTodo() {
 
                 let Mn_c_t = Cc_t * (h / 2.0 - a_eff_t / 2.0) / 1000.0;
                 let Pn_t = Cc_t + Pn_s_t;
-                
-                // INVERTIMOS LA CONVENCIÓN DE SIGNOS AQUÍ TAMBIÉN
                 let Mn_t = -(Mn_c_t + Mn_s_t);
                 
                 let phi_t = 0.65;
@@ -984,12 +926,74 @@ function calcularTodo() {
         }
     }
 
-    // APLICAMOS Math.abs() SOLO PARA LA VISUALIZACIÓN EN LA CAJA, DE FORMA QUE SIEMPRE MUESTRE MAGNITUD POSITIVA
+    // --- 3. CÁLCULO DEL D REAL BASADO EN EL EJE NEUTRO DE FLEXIÓN ---
+    let As_tension = 0;
+    let sum_As_d = 0;
+    capas.forEach(capa => {
+        if (capa.d > cFlex) {
+            As_tension += capa.As;
+            sum_As_d += (capa.As * capa.d);
+        }
+    });
+    
+    // Si no hay acero en tensión o cFlex es incalculable, se usa el d_max como fallback
+    let d_real = (As_tension > 0) ? (sum_As_d / As_tension) : d_max;
+    if (d_real === 0) d_real = h - rec - d_estribo - 9.5; 
+
+    // --- 4. ACTUALIZAR CUANTÍAS CON EL D REAL Y ÁREA EN TENSIÓN ---
+    let cuantiaG = (Ast / (b * h)) * 100;
+    let cuantiaD = (d_real > 0) ? (As_tension / (b * d_real)) * 100 : 0;
+
+    document.getElementById('lblAst').innerText = Ast.toFixed(1);
+    document.getElementById('lblAsTension').innerText = As_tension.toFixed(1);
+    document.getElementById('lblCuantiaG').innerText = cuantiaG.toFixed(2);
+    document.getElementById('lblCuantiaD').innerText = cuantiaD.toFixed(2);
+    document.getElementById('lblDreal').innerText = d_real.toFixed(1);
+
+    let cajaRefuerzo = document.getElementById('cajaRefuerzo');
+    let alertaCuantia = document.getElementById('alertaCuantia');
+    if (cuantiaD > 2.5) { 
+        cajaRefuerzo.classList.add('caja-alerta');
+        alertaCuantia.style.display = 'block';
+    } else {
+        cajaRefuerzo.classList.remove('caja-alerta');
+        alertaCuantia.style.display = 'none';
+    }
+
+    // --- 5. CÁLCULO DE CORTANTE USANDO D REAL ---
+    let nRamas = parseInt(document.getElementById('numRamas').value);
+    let sEst = parseFloat(document.getElementById('sepEstribo').value);
+    let area1Estribo = (calibreEst === '0') ? 0 : (AREAS_BARRAS[calibreEst] || 0);
+    let Av = (calibreEst === '0') ? 0 : nRamas * area1Estribo;
+
+    let Vc = 0.17 * Math.sqrt(fc) * b * d_real / 1000.0;
+    let Vs = (calibreEst !== '0' && sEst > 0) ? (Av * fy * d_real / sEst) / 1000.0 : 0;
+    let Vs_max = 0.66 * Math.sqrt(fc) * b * d_real / 1000.0;
+
+    let Vs_util = Math.min(Vs, Vs_max);
+    let phiVc = 0.75 * Vc;
+    let phiVs = 0.75 * Vs_util;
+    let phiVn = phiVc + phiVs;
+
+    document.getElementById('lblPhiVc').innerText = phiVc.toFixed(1);
+    document.getElementById('lblPhiVs').innerText = phiVs.toFixed(1);
+    document.getElementById('lblPhiVn').innerText = phiVn.toFixed(1);
+
+    let cajaCortante = document.getElementById('cajaCortante');
+    let alertaVsMax = document.getElementById('alertaVsMax');
+    if (Vs > Vs_max && calibreEst !== '0') {
+        cajaCortante.classList.add('caja-alerta');
+        alertaVsMax.style.display = 'block';
+    } else {
+        cajaCortante.classList.remove('caja-alerta');
+        alertaVsMax.style.display = 'none';
+    }
+
+    // --- 6. ACTUALIZACIÓN FINAL DE FLEXIÓN Y TABLA ---
     document.getElementById('lblMnFlex').innerText = Math.abs(mnFlex).toFixed(2);
     document.getElementById('lblPhiFlex').innerText = phiFlex.toFixed(3);
     document.getElementById('lblPhiMnFlex').innerText = Math.abs(phiMnFlex).toFixed(2);
     
-    // LÓGICA DE ALERTA PARA FLEXIÓN PURA (Tensión)
     let cajaFlexion = document.getElementById('cajaFlexion');
     let alertaTension = document.getElementById('alertaControlTension');
     if (phiFlex < 0.899) {
@@ -1058,11 +1062,8 @@ function renderizarGraficoPM(nM, nP, dM, dP, phiPn_max) {
     let traceNom = { x: nM, y: nP, mode: 'lines', name: 'Nominal (Pn, Mn)', line: { color: '#94A3B8', dash: 'dash', width: 2 } };
     let traceDis = { x: dM, y: dP, mode: 'lines', name: 'Diseño (ϕPn, ϕMn)', line: { color: '#2563EB', width: 3.5 } };
     
-    let minM = Math.min(...nM) * 1.1;
-    let maxM = Math.max(...nM) * 1.1;
-    if (minM > 0) minM = 0;
-
-    let traceCap = { x: [minM, maxM], y: [phiPn_max, phiPn_max], mode: 'lines', name: 'Límite ϕPn_max', line: { color: '#F43F5E', dash: 'dot', width: 2 } };
+    // Curva roja de trazos apagada temporalmente.
+    // let traceCap = { x: [minM, maxM], y: [phiPn_max, phiPn_max], mode: 'lines', name: 'Límite ϕPn_max', line: { color: '#F43F5E', dash: 'dot', width: 2 } };
 
     let layout = {
         title: { text: '<b>Curva de Capacidad P–M</b>', font: { size: 16, color: '#1E293B' } },
@@ -1074,7 +1075,7 @@ function renderizarGraficoPM(nM, nP, dM, dP, phiPn_max) {
         plot_bgcolor: 'transparent'
     };
 
-    Plotly.newPlot('plotPM', [traceNom, traceDis, traceCap], layout, { responsive: true, displayModeBar: false });
+    Plotly.newPlot('plotPM', [traceNom, traceDis], layout, { responsive: true, displayModeBar: false });
 }
 
 window.onload = () => {
