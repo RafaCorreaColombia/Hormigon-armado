@@ -384,7 +384,7 @@
                             <option value="manual">Manual (Definir \(d_i\))</option>
                         </select>
                         
-                        <!-- NOTAS EXPLICATIVAS (Se renderizan con MathJax y solo alternamos su visibilidad) -->
+                        <!-- NOTAS EXPLICATIVAS -->
                         <div id="notaAuto" class="nota-modo" style="display:none;">Distribución uniforme. La Fila 1 es la más cercana a la zona de compresión.</div>
                         <div id="notaFijo" class="nota-modo" style="display:none;">Separación fija simétrica respecto de la fila extrema a tensión y compresión.</div>
                         <div id="notaManual" class="nota-modo" style="display:none;">Defina los \(d_i\) con cuidado para evitar configuraciones de sección irreales.</div>
@@ -665,7 +665,7 @@ function actualizarEstructuraFilas() {
     
     document.getElementById('divSepFija').style.display = (modoPos === 'fijo') ? 'block' : 'none';
 
-    // Manejo de las notas explicativas en bloque (ya renderizadas con MathJax)
+    // Manejo de las notas explicativas en bloque 
     document.getElementById('notaAuto').style.display = (modoPos === 'auto') ? 'block' : 'none';
     document.getElementById('notaFijo').style.display = (modoPos === 'fijo') ? 'block' : 'none';
     document.getElementById('notaManual').style.display = (modoPos === 'manual') ? 'block' : 'none';
@@ -796,7 +796,7 @@ function calcularTodo() {
     // LÓGICA DE ALERTA PARA CUANTÍA
     let cajaRefuerzo = document.getElementById('cajaRefuerzo');
     let alertaCuantia = document.getElementById('alertaCuantia');
-    if (cuantiaD > 2.5) { // Representa 0.025 en ratio decimal
+    if (cuantiaD > 2.5) { 
         cajaRefuerzo.classList.add('caja-alerta');
         alertaCuantia.style.display = 'block';
     } else {
@@ -875,8 +875,8 @@ function calcularTodo() {
         let Mn_c = Cc * (h / 2.0 - a_eff / 2.0) / 1000.0;
         let Pn = Cc + Pn_s;
         
-        // MOMENTO SIN MATH.ABS PARA PODER GRAFICAR NEGATIVOS
-        let Mn = Mn_c + Mn_s; 
+        // INVERTIMOS LA CONVENCIÓN DE SIGNOS PARA QUE LA FLEXIÓN ESTÁNDAR DÉ POSITIVA
+        let Mn = -(Mn_c + Mn_s); 
 
         let phi = 0.65;
         if (et_max >= 0.005) phi = 0.90;
@@ -923,7 +923,9 @@ function calcularTodo() {
 
                 let Mn_c_t = Cc_t * (h / 2.0 - a_eff_t / 2.0) / 1000.0;
                 let Pn_t = Cc_t + Pn_s_t;
-                let Mn_t = Mn_c_t + Mn_s_t; // Sin Math.abs
+                
+                // INVERTIMOS LA CONVENCIÓN DE SIGNOS AQUÍ TAMBIÉN
+                let Mn_t = -(Mn_c_t + Mn_s_t);
                 
                 let phi_t = 0.65;
                 if (et_max_t >= 0.005) phi_t = 0.90;
@@ -982,9 +984,10 @@ function calcularTodo() {
         }
     }
 
-    document.getElementById('lblMnFlex').innerText = mnFlex.toFixed(2);
+    // APLICAMOS Math.abs() SOLO PARA LA VISUALIZACIÓN EN LA CAJA, DE FORMA QUE SIEMPRE MUESTRE MAGNITUD POSITIVA
+    document.getElementById('lblMnFlex').innerText = Math.abs(mnFlex).toFixed(2);
     document.getElementById('lblPhiFlex').innerText = phiFlex.toFixed(3);
-    document.getElementById('lblPhiMnFlex').innerText = phiMnFlex.toFixed(2);
+    document.getElementById('lblPhiMnFlex').innerText = Math.abs(phiMnFlex).toFixed(2);
     
     // LÓGICA DE ALERTA PARA FLEXIÓN PURA (Tensión)
     let cajaFlexion = document.getElementById('cajaFlexion');
@@ -1005,7 +1008,6 @@ function calcularTodo() {
                 let eps_i = ecu * (capa.d - cFlex) / cFlex;
                 let sign = (eps_i > 0) ? '+' : '';
                 let color = (eps_i > 0) ? 'var(--accent)' : ((eps_i < 0) ? 'var(--warning)' : 'var(--text-muted)');
-                // Texto estático, no necesitamos re-renderizar Latex de nuevo acá
                 let valFormatted = `${sign}${(eps_i * 1000).toFixed(2)} ‰`;
                 cellEps.innerHTML = `<span style="color:${color}">${valFormatted}</span>`;
             }
@@ -1036,7 +1038,6 @@ function invertirAceroTraccionCompresion() {
     calcularTodo();
     let phiMnConfig2 = parseFloat(document.getElementById('lblPhiMnFlex').innerText);
 
-    // Prevenir divisiones por cero si phiMn1 es muy bajo (o negativo)
     let relacion = (Math.abs(phiMnConfig1) > 0.1) ? (phiMnConfig2 / phiMnConfig1) * 100 : 0;
 
     let panel = document.getElementById('panelRelacionInversion');
@@ -1055,10 +1056,8 @@ function invertirAceroTraccionCompresion() {
 
 function renderizarGraficoPM(nM, nP, dM, dP, phiPn_max) {
     let traceNom = { x: nM, y: nP, mode: 'lines', name: 'Nominal (Pn, Mn)', line: { color: '#94A3B8', dash: 'dash', width: 2 } };
-    // AZUL REY TÉCNICO (Sin violeta)
     let traceDis = { x: dM, y: dP, mode: 'lines', name: 'Diseño (ϕPn, ϕMn)', line: { color: '#2563EB', width: 3.5 } };
     
-    // Dejar graficar momentos negativos adaptando el dominio del límite axial
     let minM = Math.min(...nM) * 1.1;
     let maxM = Math.max(...nM) * 1.1;
     if (minM > 0) minM = 0;
