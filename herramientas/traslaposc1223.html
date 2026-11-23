@@ -91,6 +91,18 @@
         }
         .pill-calculo span { color: var(--naranja-estructural); }
 
+        /* ALERTA DE VALIDACIÓN */
+        .alerta-validacion {
+            background: #fef2f2;
+            border: 1px solid #f87171;
+            border-left: 6px solid #dc2626;
+            color: #991b1b;
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin-top: 15px;
+            font-size: 0.9em;
+        }
+
         /* TABLA DE REFERENCIA SÍSMICA C.21 */
         .tabla-c21 { width: 100%; border-collapse: collapse; font-size: 0.85em; margin-top: 8px; background: white; }
         .tabla-c21 th { background: #2c3e50; color: white; padding: 7px 10px; text-align: left; }
@@ -114,6 +126,7 @@
         .estado-pendiente { background: #f1f5f9; border-left: 4px solid #64748b; color: #334155; }
         .estado-ok { background: #ecfdf5; border-left: 4px solid #10b981; color: #065f46; }
         .estado-alerta { background: #fef2f2; border-left: 4px solid #dc2626; color: #991b1b; }
+        .estado-aviso-hx { background: #fffbeb; border-left: 4px solid #f59e0b; color: #92400e; }
 
         /* TABLA DE DESPIECE */
         .tabla-container { overflow-x: auto; width: 100%; border-radius: 6px; box-shadow: 0 0 5px rgba(0,0,0,0.05); }
@@ -184,24 +197,24 @@
     <div class="header-rc no-print">
         <img src="../assets/IsotipoFOscuroT.png" alt="Logotipo Criterio Estructural - Guía de Detallamiento" class="brand-logo-header" onerror="this.src='https://via.placeholder.com/250x80/1A2530/FFFFFF?text=CRITERIO+ESTRUCTURAL'"><br>
         
-        <div class="badge-version">Método  NSR-10 C.12.2.3 · Confinamiento Transversal ($A_{tr}$ y $K_{tr}$)</div>
+        <div class="badge-version">Método Detallado NSR-10 C.12.2.3 · Confinamiento Transversal ($A_{tr}$ y $K_{tr}$)</div>
 
         <div class="lema-global">
             Guía de Detallamiento Estructural <br>
             <span>Aprender haciendo. Comprender antes de detallar.</span>
         </div>
         
-        <h1 class="w3-xxlarge" style="margin: 0; font-weight: bold;">Calculadora de Traslapos — Método  C.12.2.3 | DES–DMO</h1>
+        <h1 class="w3-xxlarge" style="margin: 0; font-weight: bold;">Calculadora de Traslapos — Método Detallado C.12.2.3 | DES–DMO</h1>
         <div style="font-size: 1.05em; color: #cbd5e1; margin-top: 8px;">Evaluación explícita de $c_b$ y $K_{tr}$ en Vigas y Columnas · NSR-10 C.12 / C.21 · ACI 318 Cap. 25</div>
         
         <div class="flujo-conceptual">
             <span class="flujo-item">CONFINAMIENTO REAL ($c_b + K_{tr}$)</span>
             <i class="fa fa-arrow-right flujo-flecha-c"></i>
-            <span class="flujo-item">DESARROLLO  ($l_d$)</span>
+            <span class="flujo-item">DESARROLLO DETALLADO ($l_d$)</span>
             <i class="fa fa-arrow-right flujo-flecha-c"></i>
             <span class="flujo-item">EMPALME (C.12.15)</span>
             <i class="fa fa-arrow-right flujo-flecha-c" style="margin: 0 5px;"></i>
-            <span class="flujo-item" style="color: white; border-color: var(--naranja-estructural);">↳ TRASLAPO </span>
+            <span class="flujo-item" style="color: white; border-color: var(--naranja-estructural);">↳ TRASLAPO DETALLADO</span>
         </div>
 
         <div class="ruta-aprendizaje">
@@ -260,17 +273,19 @@
                     <select id="selSismo" class="w3-select w3-border w3-round" onchange="actualizarContexto()">
                         <option value="DES" selected>DES (Especial)</option>
                         <option value="DMO">DMO (Moderada)</option>
-                        <option value="DMI">DMI (Mínima / General)</option>
                     </select>
                 </div>
             </div>
+
+            <!-- ALERTA DE VALIDACIÓN DE ENTRADAS -->
+            <div id="panelErrorValidacion" class="alerta-validacion oculto"></div>
 
             <!-- SUBPANEL A: GEOMETRÍA Y CONFINAMIENTO TRANSVERSAL (Ktr y cb) -->
             <div class="subpanel-tecnico">
                 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 12px;">
                     <b style="color: var(--azul-profundo); font-size: 0.95em;">A. REFUERZO TRANSVERSAL ($A_{tr}$) Y GEOMETRÍA PARA $c_b$ Y $K_{tr}$ (C.12.2.3)</b>
                     <div class="pill-calculo">
-                        $A_{tr}$ = <span id="lblAtr">142</span> mm² &nbsp;|&nbsp; $K_{tr}$ = <span id="lblKtr">28.40</span> mm &nbsp;|&nbsp; $\sqrt{f'_c}$ usado = <span id="lblSqrtFc">5.29</span> MPa
+                        $A_{tr}$ = <span id="lblAtr">142</span> mm² &nbsp;|&nbsp; $K_{tr}$ = <span id="lblKtr">28.40</span> mm &nbsp;|&nbsp; $c_c$ = <span id="lblCc">49.5</span> mm &nbsp;|&nbsp; $\sqrt{f'_c}$ = <span id="lblSqrtFc">5.29</span> MPa
                     </div>
                 </div>
 
@@ -278,15 +293,15 @@
                     <div class="w3-col l2 m4 s6 w3-margin-bottom">
                         <label class="w3-tiny w3-text-grey w3-block"><b>ESTRIBO (CALIBRE)</b></label>
                         <select id="selEstribo" class="w3-select w3-border w3-round w3-small" onchange="generarTabla()">
-                            <option value="71" selected>N.º 3 (71 mm²)</option>
-                            <option value="129">N.º 4 (129 mm²)</option>
-                            <option value="199">N.º 5 (199 mm²)</option>
+                            <option value="3" selected>N.º 3 (71 mm² · 9.5 mm)</option>
+                            <option value="4">N.º 4 (129 mm² · 12.7 mm)</option>
+                            <option value="5">N.º 5 (199 mm² · 15.9 mm)</option>
                         </select>
                     </div>
 
                     <div class="w3-col l2 m4 s6 w3-margin-bottom">
                         <label class="w3-tiny w3-text-grey w3-block"><b>RAMAS EFECTIVAS</b></label>
-                        <input type="number" id="inpRamas" class="w3-input w3-border w3-round w3-small" value="2" min="1" max="10" onchange="generarTabla()">
+                        <input type="number" id="inpRamas" class="w3-input w3-border w3-round w3-small" value="2" min="1" max="12" step="1" onchange="generarTabla()">
                     </div>
 
                     <div class="w3-col l2 m4 s6 w3-margin-bottom">
@@ -296,27 +311,27 @@
 
                     <div class="w3-col l2 m4 s6 w3-margin-bottom">
                         <label class="w3-tiny w3-text-grey w3-block"><b>BARRAS EN PLANO ($n$)</b></label>
-                        <input type="number" id="inpNumBarras" class="w3-input w3-border w3-round w3-small" value="2" min="1" max="20" onchange="generarTabla()">
+                        <input type="number" id="inpNumBarras" class="w3-input w3-border w3-round w3-small" value="2" min="1" max="30" step="1" onchange="generarTabla()">
                     </div>
 
                     <div class="w3-col l2 m4 s6 w3-margin-bottom">
-                        <label class="w3-tiny w3-text-grey w3-block"><b>RECUB. A BARRA $c_c$ (mm)</b></label>
-                        <input type="number" id="inpRecubrimiento" class="w3-input w3-border w3-round w3-small" value="50" min="15" max="150" onchange="generarTabla()">
+                        <label class="w3-tiny w3-text-grey w3-block"><b>RECUB. LIBRE ESTRIBO $r$ (mm)</b></label>
+                        <input type="number" id="inpRecubrimiento" class="w3-input w3-border w3-round w3-small" value="40" min="15" max="150" step="1" onchange="generarTabla()">
                     </div>
 
                     <div class="w3-col l2 m4 s6 w3-margin-bottom">
                         <label class="w3-tiny w3-text-grey w3-block"><b>SEP. EJES BARRAS $s_b$ (mm)</b></label>
-                        <input type="number" id="inpSepBarras" class="w3-input w3-border w3-round w3-small" value="120" min="30" max="500" onchange="generarTabla()">
+                        <input type="number" id="inpSepBarras" class="w3-input w3-border w3-round w3-small" value="120" min="25" max="500" step="1" onchange="generarTabla()">
                     </div>
                 </div>
 
-                <!-- ADVERTENCIAS TÉCNICAS DE PRECAUCIÓN SOBRE ATR Y N -->
+                <!-- ADVERTENCIAS TÉCNICAS DE PRECAUCIÓN SOBRE ATR, N Y CC -->
                 <div class="w3-panel w3-white w3-leftbar w3-border-orange w3-padding-small w3-round w3-tiny" style="margin: 6px 0 8px 0; line-height: 1.55;">
                     <b>⚠️ Precauciones críticas sobre el plano potencial de hendimiento (NSR-10 C.12.2.3):</b>
                     <ul style="margin: 4px 0 0 18px; padding: 0;">
                         <li><b>Ramas efectivas ($A_{tr} = N_{\text{ramas efectivas}} A_b$):</b> El valor inicial de <b>2 ramas</b> es válido <i>únicamente</i> cuando ambas ramas del estribo cerrado cruzan el plano de hendimiento considerado. No contabilice automáticamente todas las ramas físicas de la sección (precaución especial en <b>columnas con barras distribuidas en sus cuatro caras</b>).</li>
                         <li><b>Número de barras ($n$):</b> El valor inicial de <b>$n = 2$</b> corresponde a una disposición típica de dos barras empalmadas en una misma capa, pero <b>no es universal ni necesariamente conservador</b>: aumentar $n$ reduce $K_{tr}$ y aumenta $l_d$, mientras que si el plano real contiene una sola barra ($n = 1$), usar $n = 2$ sobrestimaría $K_{tr}$ y reduciría artificialmente $l_d$. Confirme el plano de hendimiento real de la sección.</li>
-                        <li><b>Espaciamiento $s$ vs. $s_b$:</b> $s$ es el espaciamiento centro a centro del refuerzo transversal efectivo a lo largo de la barra desarrollada (`C.12.2.3`); $s_b$ es la separación centro a centro entre barras longitudinales para determinar $c_b = \min(c_c + d_b/2,\; s_b/2)$, donde $c_c$ es el recubrimiento libre hasta la barra longitudinal ($r_{\text{libre}} + d_{b,\text{estribo}}$).</li>
+                        <li><b>Cálculo detallado de $c_c$ y $c_b$:</b> A partir del recubrimiento libre al estribo ($r_{\text{libre}}$) y el diámetro del estribo seleccionado ($d_{b,\text{est}}$), se calcula el recubrimiento libre a la barra longitudinal como $c_c = r_{\text{libre}} + d_{b,\text{est}}$, y se determina $c_b = \min(c_c + d_b/2,\; s_b/2)$.</li>
                     </ul>
                 </div>
 
@@ -325,7 +340,7 @@
                     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
                         <label style="cursor: pointer; font-size: 0.85em; font-weight: bold; color: var(--azul-profundo);">
                             <input type="checkbox" id="chkVerificarC21" onchange="toggleVerificadorC21()">
-                            &nbsp;Activar Verificador Geométrico de Espaciamiento Máximo $s_{\max}$ (NSR-10 C.21)
+                            &nbsp;Activar Verificador Geométrico de Espaciamiento Longitudinal Máximo $s_{\max}$ (NSR-10 C.21)
                         </label>
                         <span class="w3-tiny w3-text-grey">Opcional · Requiere dimensiones de la sección transversal</span>
                     </div>
@@ -339,7 +354,7 @@
                         <div id="camposVigaDES" class="w3-row-padding oculto" style="margin: 0 -16px;">
                             <div class="w3-col l4 m6 w3-margin-bottom">
                                 <label class="w3-tiny w3-text-grey w3-block"><b>ALTURA EFECTIVA $d$ (mm)</b></label>
-                                <input type="number" id="inpDVigaDES" class="w3-input w3-border w3-round w3-small" value="440" min="100" onchange="evaluarSmaxC21()">
+                                <input type="number" id="inpDVigaDES" class="w3-input w3-border w3-round w3-small" value="440" min="100" max="3000" onchange="evaluarSmaxC21()">
                             </div>
                             <div class="w3-col l8 m6 w3-tiny w3-text-grey" style="padding-top: 14px;">
                                 Criterio <b>C.21.5.2.3</b> (Viga DES en zona de traslapo): $s_{\max} = \min(d/4,\; 100\text{ mm})$.
@@ -350,18 +365,18 @@
                         <div id="camposColumnaDES" class="w3-row-padding oculto" style="margin: 0 -16px;">
                             <div class="w3-col l3 m6 w3-margin-bottom">
                                 <label class="w3-tiny w3-text-grey w3-block"><b>DIMENSIÓN MENOR $b_{\min}$ (mm)</b></label>
-                                <input type="number" id="inpBminDES" class="w3-input w3-border w3-round w3-small" value="400" min="150" onchange="evaluarSmaxC21()">
+                                <input type="number" id="inpBminDES" class="w3-input w3-border w3-round w3-small" value="400" min="150" max="3000" onchange="evaluarSmaxC21()">
                             </div>
                             <div class="w3-col l3 m6 w3-margin-bottom">
                                 <label class="w3-tiny w3-text-grey w3-block"><b>BARRA LONG. MÍNIMA ($d_{b,\min}$)</b></label>
                                 <select id="selDbMinDES" class="w3-select w3-border w3-round w3-small" onchange="evaluarSmaxC21()"></select>
                             </div>
                             <div class="w3-col l3 m6 w3-margin-bottom">
-                                <label class="w3-tiny w3-text-grey w3-block"><b>SEP. RAMAS $h_x$ (mm) [para $s_o$]</b></label>
-                                <input type="number" id="inpHxDES" class="w3-input w3-border w3-round w3-small" value="250" min="50" max="350" onchange="evaluarSmaxC21()">
+                                <label class="w3-tiny w3-text-grey w3-block"><b>SEP. RAMAS $h_x$ (mm) [C.21.6.4.2]</b></label>
+                                <input type="number" id="inpHxDES" class="w3-input w3-border w3-round w3-small" value="250" min="50" max="1000" onchange="evaluarSmaxC21()">
                             </div>
-                            <div class="w3-col l3 m6 w3-tiny w3-text-grey" style="padding-top: 12px;">
-                                Criterio <b>C.21.6.4.3</b>: $s_{\max} = \min(b_{\min}/4,\; 6d_{b,\min},\; s_o)$, con $s_o = 100 + \frac{350-h_x}{3} \in [100, 150]\text{ mm}$.
+                            <div class="w3-col l3 m6 w3-tiny w3-text-grey" style="padding-top: 10px;">
+                                Criterio <b>C.21.6.4.3</b>: $s_{\max} = \min(b_{\min}/4,\; 6d_{b,\min},\; s_o)$, con $s_o = 100 + \frac{350-h_x}{3} \in [100, 150]\text{ mm}$ y $h_x \le 350\text{ mm}$.
                             </div>
                         </div>
 
@@ -376,7 +391,7 @@
                             </div>
                             <div class="w3-col l4 m6 w3-margin-bottom">
                                 <label class="w3-tiny w3-text-grey w3-block"><b>ALTURA EFECTIVA $d$ (mm)</b></label>
-                                <input type="number" id="inpDVigaDMO" class="w3-input w3-border w3-round w3-small" value="440" min="100" onchange="evaluarSmaxC21()">
+                                <input type="number" id="inpDVigaDMO" class="w3-input w3-border w3-round w3-small" value="440" min="100" max="3000" onchange="evaluarSmaxC21()">
                             </div>
                             <div class="w3-col l4 m6 w3-margin-bottom">
                                 <label class="w3-tiny w3-text-grey w3-block"><b>BARRA LONG. MÍNIMA ($d_{b,\min}$)</b></label>
@@ -384,31 +399,50 @@
                             </div>
                         </div>
 
-                        <!-- Campos Columna DMO -->
-                        <div id="camposColumnaDMO" class="w3-row-padding oculto" style="margin: 0 -16px;">
-                            <div class="w3-col l4 m6 w3-margin-bottom">
-                                <label class="w3-tiny w3-text-grey w3-block"><b>UBICACIÓN RESPECTO A $\ell_o$</b></label>
-                                <select id="selRegionColDMO" class="w3-select w3-border w3-round w3-small" onchange="evaluarSmaxC21()">
-                                    <option value="fueraLo" selected>Fuera de longitud confinada $\ell_o$ — mitad central (C.21.3.5.11)</option>
-                                    <option value="dentroLo">Dentro de longitud confinada $\ell_o$ (C.21.3.5.6)</option>
-                                </select>
+                        <!-- Campos Columna DMO (Con condición C.21.3.2 Pu / (Ag f'c)) -->
+                        <div id="camposColumnaDMO" class="oculto">
+                            <div class="w3-row-padding" style="margin: 0 -16px;">
+                                <div class="w3-col l3 m6 w3-margin-bottom">
+                                    <label class="w3-tiny w3-text-grey w3-block"><b>RELACIÓN AXIAL $P_u / (A_g f'_c)$ [C.21.3.2]</b></label>
+                                    <input type="number" id="inpPuRatioDMO" class="w3-input w3-border w3-round w3-small" value="0.15" min="0" max="1.2" step="0.01" onchange="evaluarSmaxC21()">
+                                </div>
+                                <div class="w3-col l3 m6 w3-margin-bottom">
+                                    <label class="w3-tiny w3-text-grey w3-block"><b>UBICACIÓN RESPECTO A $\ell_o$</b></label>
+                                    <select id="selRegionColDMO" class="w3-select w3-border w3-round w3-small" onchange="evaluarSmaxC21()">
+                                        <option value="fueraLo" selected>Fuera de longitud confinada $\ell_o$ — mitad central</option>
+                                        <option value="dentroLo">Dentro de longitud confinada $\ell_o$</option>
+                                    </select>
+                                </div>
+                                <div class="w3-col l3 m6 w3-margin-bottom" id="wrapBminColDMO">
+                                    <label class="w3-tiny w3-text-grey w3-block"><b>DIMENSIÓN MENOR $b_{\min}$ (mm)</b></label>
+                                    <input type="number" id="inpBminDMO" class="w3-input w3-border w3-round w3-small" value="350" min="150" max="3000" onchange="evaluarSmaxC21()">
+                                </div>
+                                <div class="w3-col l3 m6 w3-margin-bottom oculto" id="wrapDColDMO">
+                                    <label class="w3-tiny w3-text-grey w3-block"><b>ALTURA EFECTIVA $d$ (mm) [C.21.3.4]</b></label>
+                                    <input type="number" id="inpDColDMO" class="w3-input w3-border w3-round w3-small" value="300" min="100" max="3000" onchange="evaluarSmaxC21()">
+                                </div>
+                                <div class="w3-col l3 m6 w3-margin-bottom">
+                                    <label class="w3-tiny w3-text-grey w3-block"><b>BARRA LONG. MÍNIMA ($d_{b,\min}$)</b></label>
+                                    <select id="selDbMinColDMO" class="w3-select w3-border w3-round w3-small" onchange="evaluarSmaxC21()"></select>
+                                </div>
                             </div>
-                            <div class="w3-col l4 m6 w3-margin-bottom">
-                                <label class="w3-tiny w3-text-grey w3-block"><b>DIMENSIÓN MENOR $b_{\min}$ (mm)</b></label>
-                                <input type="number" id="inpBminDMO" class="w3-input w3-border w3-round w3-small" value="350" min="150" onchange="evaluarSmaxC21()">
+                            <div class="w3-row-padding" style="margin: 0 -16px;" id="wrapHxColDMO">
+                                <div class="w3-col l3 m6 w3-margin-bottom">
+                                    <label class="w3-tiny w3-text-grey w3-block"><b>SEP. RAMAS $h_x$ (mm) [C.21.3.5.8]</b></label>
+                                    <input type="number" id="inpHxDMO" class="w3-input w3-border w3-round w3-small" value="250" min="50" max="1000" onchange="evaluarSmaxC21()">
+                                </div>
+                                <div class="w3-col l9 m6 w3-tiny w3-text-grey" style="padding-top: 12px;">
+                                    Según <b>C.21.3.2</b>: si $P_u &gt; 0.10 A_g f'_c$ aplica <b>C.21.3.5</b> ($s_o \le \min(8d_{b,\min}, 16d_{b,\text{est}}, b_{\min}/3, 150)$ dentro de $\ell_o$; $s_{\max} \le 2s_o$ fuera de $\ell_o$; $h_x \le 350\text{ mm}$). Si $P_u \le 0.10 A_g f'_c$, aplica <b>C.21.3.4</b>.
+                                </div>
                             </div>
-                            <div class="w3-col l4 m6 w3-margin-bottom">
-                                <label class="w3-tiny w3-text-grey w3-block"><b>BARRA LONG. MÍNIMA ($d_{b,\min}$)</b></label>
-                                <select id="selDbMinColDMO" class="w3-select w3-border w3-round w3-small" onchange="evaluarSmaxC21()"></select>
-                            </div>
-                        </div>
-
-                        <!-- Campos DMI -->
-                        <div id="camposDMI" class="w3-tiny w3-text-grey oculto">
-                            En sistema <b>DMI</b> aplican los requisitos generales de confinamiento transversal del Capítulo C.7 (`C.7.10` / `C.7.11`) y `C.12.15`.
                         </div>
 
                         <div id="resultadoVerificadorC21" class="estado-smax estado-ok oculto"></div>
+                        <div id="avisoTransversalHx" class="estado-smax estado-aviso-hx oculto"></div>
+
+                        <div class="w3-tiny w3-text-grey" style="margin-top: 8px; font-style: italic; line-height: 1.45;">
+                            <b>Alcance del verificador:</b> Esta verificación comprueba únicamente el límite de espaciamiento longitudinal $s$ evaluado; <b>no sustituye</b> la revisión de cuantía de confinamiento ($A_{sh}$), configuración de estribos cerrados, ganchos suplementarios, soporte lateral ni ubicación permitida de los empalmes.
+                        </div>
                     </div>
                 </div>
             </div>
@@ -470,17 +504,17 @@
                             <tr id="rowRefColDES">
                                 <td><b>Columna DES</b></td>
                                 <td><b>C.21.6.4.3 / C.21.6.3.2</b></td>
-                                <td>$s \le \min(b_{\min}/4,\; 6d_b,\; s_o)$. Empalmes permitidos únicamente en la mitad central de la longitud libre y diseñados como empalmes a tracción.</td>
+                                <td>$s \le \min(b_{\min}/4,\; 6d_{b,\min},\; s_o)$ con $h_x \le 350\text{ mm}$ (`C.21.6.4.2`). Empalmes permitidos únicamente en la mitad central de la longitud libre y diseñados como empalmes a tracción.</td>
                             </tr>
                             <tr id="rowRefVigaDMO">
                                 <td><b>Viga DMO</b></td>
                                 <td><b>C.21.3.4.6 y .8</b></td>
-                                <td>Depende de la región del elemento: dentro de zonas confinadas ($2h$) aplica C.21.3.4.6; fuera de ellas aplica C.21.3.4.8 ($s \le d/2$). No existe una regla general única de $d/2$ para traslapos.</td>
+                                <td>Depende de la región del elemento: dentro de zonas confinadas ($2h$) aplica C.21.3.4.6 ($\min(d/4, 8d_{b,\min}, 24d_{b,\text{est}}, 300)$); fuera de ellas aplica C.21.3.4.8 ($s \le d/2$). No existe una regla general única de $d/2$ para traslapos.</td>
                             </tr>
                             <tr id="rowRefColDMO">
                                 <td><b>Columna DMO</b></td>
-                                <td><b>C.21.3.5.3, .6 y .11</b></td>
-                                <td>Empalmes únicamente en la mitad central y diseñados a tracción (`C.21.3.5.3`). El límite de $s$ depende de si el tramo queda dentro (`C.21.3.5.6`) o fuera (`C.21.3.5.11`) de la longitud confinada $\ell_o$.</td>
+                                <td><b>C.21.3.2 / .5.3, .6 y .11</b></td>
+                                <td>Si $P_u &gt; 0.10 A_g f'_c$ (`C.21.3.5`): $s_o \le \min(8d_{b,\min},\; 16d_{b,\text{est}},\; b_{\min}/3,\; 150\text{ mm})$ en $\ell_o$, $s_{\max} \le 2s_o$ fuera de $\ell_o$, y $h_x \le 350\text{ mm}$. Si $P_u \le 0.10 A_g f'_c$, rige `C.21.3.4`. Empalmes únicamente en la mitad central y a tracción.</td>
                             </tr>
                         </tbody>
                     </table>
@@ -490,10 +524,6 @@
             <!-- ALERTAS CONTEXTUALES DINÁMICAS -->
             <div id="msgColumnaSismica" class="w3-panel w3-pale-red w3-leftbar w3-border-red w3-padding-small w3-round w3-small w3-margin-top oculto">
                 <b>⚠️ Disposición Sísmica en Columnas DES / DMO (C.21.6.3.2 / C.21.3.5.3):</b> Los empalmes por traslapo deben ubicarse únicamente en la <b>mitad central</b> de la longitud libre de la columna y deben diseñarse como <b>empalmes a tracción</b> (no aplica empalme a compresión). La <b>Clase A</b> solo procede si se cumplen simultáneamente las condiciones de C.12.15.2.
-            </div>
-            
-            <div id="msgColumnaDMI" class="w3-panel w3-light-grey w3-leftbar w3-border-grey w3-padding-small w3-round w3-small w3-margin-top oculto">
-                <b>💡 Columnas DMI / General (NSR-10 C.12.17):</b> Verifique el estado de esfuerzo de la barra bajo las combinaciones de carga: si todas las barras están a compresión $\rightarrow$ C.12.16 ($l_{sc}$); si tracción $\le 0.5f_y \rightarrow$ C.12.17.2.2; si tracción $> 0.5f_y \rightarrow$ Clase B.
             </div>
         </div>
 
@@ -568,7 +598,7 @@
         <!-- MÓDULO: BARRAS DIFERENTES -->
         <div class="panel-control no-print w3-margin-top">
             <h4 style="margin-top:0; font-weight: bold; color: var(--azul-profundo);">3. EMPALME DE BARRAS DE DIFERENTE DIÁMETRO (C.12.15.3)</h4>
-            <p class="w3-small w3-text-grey">Según NSR-10 C.12.15.3, cuando se empalman por traslapo barras de diferente diámetro a tracción, la longitud de empalme debe ser el mayor valor entre $l_d$ de la barra mayor y la longitud de empalme por traslapo (Clase A o Clase B) de la barra menor, calculadas ambas con sus parámetros detallados C.12.2.3.</p>
+            <p class="w3-small w3-text-grey">Según NSR-10 C.12.15.3, cuando se empalman por traslapo barras de diferente diámetro a tracción, la longitud de empalme debe ser el mayor valor entre $l_d$ de la barra mayor y la longitud de empalme por traslapo de la barra menor. Este módulo evalúa de forma conservadora el <b>empalme Clase B ($1.3 l_d$)</b> para la barra menor ($\max(l_{d,\text{mayor}},\; 1.3 l_{d,\text{menor}},\; 300\text{ mm})$) y no evalúa la excepción de Clase A.</p>
             
             <div class="w3-row-padding">
                 <div class="w3-col m4 w3-margin-bottom">
@@ -612,7 +642,8 @@
                         <p>$$K_{tr} = \frac{40 A_{tr}}{s \cdot n} \qquad \text{sujeto a:} \quad \frac{c_b + K_{tr}}{d_b} \le 2.50, \quad \psi_t \psi_e \le 1.70, \quad \sqrt{f'_c} \le 8.3\text{ MPa (C.12.1.2)}$$</p>
                     </div>
                     <ul>
-                        <li>$c_b = \min\left(c_c + \frac{d_b}{2},\; \frac{s_b}{2}\right)$, donde $c_c$ es el recubrimiento libre hasta la barra longitudinal y $s_b$ es la separación centro a centro entre barras longitudinales.</li>
+                        <li>$c_c = r_{\text{libre}} + d_{b,\text{estribo}}$, donde $r_{\text{libre}}$ es el recubrimiento libre hasta el borde exterior del estribo.</li>
+                        <li>$c_b = \min\left(c_c + \frac{d_b}{2},\; \frac{s_b}{2}\right)$, donde $s_b$ es la separación centro a centro entre barras longitudinales.</li>
                         <li>$A_{tr} = N_{\text{ramas efectivas}} \cdot A_{b,\text{estribo}}$ dentro del espaciamiento $s$ que atraviesan el plano potencial de hendimiento.</li>
                     </ul>
                 </div>
@@ -626,6 +657,7 @@
                     <ul style="margin-top:0;">
                         <li><b>$K_{tr}$ (Índice de confinamiento transversal):</b> Cuantifica la restricción aportada por las ramas de estribos que cruzan el plano potencial de hendimiento longitudinal del concreto.</li>
                         <li><b>$n$ (Barras empalmadas en el plano):</b> Número de barras que se desarrollan o traslapan simultáneamente a lo largo del plano de hendimiento considerado.</li>
+                        <li><b>$c_c$ (Recubrimiento libre a barra longitudinal):</b> Calculado como la suma del recubrimiento libre al estribo ($r_{\text{libre}}$) más el diámetro del estribo ($d_{b,\text{est}}$).</li>
                         <li><b>$\psi_t$ (Ubicación):</b> $1.3$ cuando se vacían más de $300\text{ mm}$ de concreto fresco debajo del refuerzo horizontal; $1.0$ en otros casos.</li>
                         <li><b>$\psi_e$ (Epóxico):</b> $1.5$ o $1.2$ para barras con recubrimiento epóxico; $1.0$ para barras sin recubrimiento ($\psi_t \psi_e \le 1.7$).</li>
                         <li><b>$\psi_s$ (Tamaño de barra):</b> $0.8$ para barras N.º 6 o menores; $1.0$ para barras N.º 7 o mayores.</li>
@@ -646,8 +678,8 @@
         <div class="w3-panel w3-sand w3-leftbar w3-border-red w3-padding-16 w3-margin-top no-print" style="max-width: 1000px; margin: 20px auto; font-style: italic;">
             <h5 class="w3-text-dark-grey" style="margin-top: 0;"><b>⚠️ Protocolo de Integridad Técnica y Académica</b></h5>
             <p class="w3-small w3-margin-0">
-                Esta herramienta implementa la ecuación general <b>NSR-10 C.12.2.3</b> para el cálculo detallado de longitudes de desarrollo y empalmes por traslapo en vigas y columnas. 
-                Es responsabilidad del ingeniero diseñador verificar el plano potencial de hendimiento real, las ramas efectivas que lo atraviesan ($A_{tr}$), el número real de barras empalmadas ($n$) y los requisitos sísmicos de espaciamiento de <b>NSR-10 Capítulo C.21</b>. <b>Todo proyecto constructivo debe contar con la revisión y firma de un ingeniero estructural con matrícula profesional vigente.</b>
+                Esta herramienta implementa la ecuación general <b>NSR-10 C.12.2.3</b> para el cálculo detallado de longitudes de desarrollo y empalmes por traslapo en vigas y columnas DES–DMO. 
+                Es responsabilidad del ingeniero diseñador verificar el plano potencial de hendimiento real, las ramas efectivas que lo atraviesan ($A_{tr}$), el número real de barras empalmadas ($n$) y los requisitos sísmicos integrales de <b>NSR-10 Capítulo C.21</b>. <b>Todo proyecto constructivo debe contar con la revisión y firma de un ingeniero estructural con matrícula profesional vigente.</b>
             </p>
         </div>
 
@@ -699,7 +731,7 @@
 </div>
 
 <script>
-    // BASE DE DATOS DE BARRAS
+    // BASE DE DATOS DE BARRAS LONGITUDINALES
     const barras = [
         { name: "N° 3", n: 3, db: 9.53 },
         { name: "N° 4", n: 4, db: 12.70 },
@@ -711,6 +743,13 @@
         { name: "N° 10", n: 10, db: 32.26 },
         { name: "N° 11", n: 11, db: 35.81 }
     ];
+
+    // BASE DE DATOS DE ESTRIBOS (ÁREA Y DIÁMETRO NOMINAL)
+    const estribosDB = {
+        "3": { name: "N.º 3", area: 71, db: 9.53 },
+        "4": { name: "N.º 4", area: 129, db: 12.70 },
+        "5": { name: "N.º 5", area: 199, db: 15.88 }
+    };
 
     // CONJUNTO DE BARRAS DESTACADAS
     let calibresDestacados = new Set();
@@ -773,87 +812,163 @@
         }
     }
 
-    // EVALUACIÓN GEOMÉTRICA DE SMAX SEGÚN C.21
+    // EVALUACIÓN GEOMÉTRICA DE SMAX SEGÚN C.21 (RETORNA OBJETO DE ESTADO PARA INTERFAZ Y PDF)
     function evaluarSmaxC21() {
-        if (!document.getElementById('chkVerificarC21').checked) return;
+        const activo = document.getElementById('chkVerificarC21').checked;
+        if (!activo) {
+            return {
+                activo: false,
+                cumple: null,
+                textoPlano: "No activado en interfaz (el diseñador debe verificar s_max según NSR-10 C.21)."
+            };
+        }
 
         const elemento = document.getElementById('selElemento').value;
         const sismo = document.getElementById('selSismo').value;
-        const sIngresado = parseFloat(document.getElementById('inpSepEstribos').value) || 100;
+        const sIngresado = parseFloat(document.getElementById('inpSepEstribos').value);
+        const estKey = document.getElementById('selEstribo').value;
+        const dbEst = estribosDB[estKey].db;
+
         const resDiv = document.getElementById('resultadoVerificadorC21');
+        const avisoHxDiv = document.getElementById('avisoTransversalHx');
 
         // Ocultar subcampos primero
         document.getElementById('camposVigaDES').classList.add('oculto');
         document.getElementById('camposColumnaDES').classList.add('oculto');
         document.getElementById('camposVigaDMO').classList.add('oculto');
         document.getElementById('camposColumnaDMO').classList.add('oculto');
-        document.getElementById('camposDMI').classList.add('oculto');
         resDiv.classList.add('oculto');
-
-        if (sismo === 'DMI') {
-            document.getElementById('camposDMI').classList.remove('oculto');
-            return;
-        }
+        avisoHxDiv.classList.add('oculto');
 
         let smax = 0;
-        let detalle = "";
+        let detalleHTML = "";
+        let detalleTexto = "";
+        let errorGeom = null;
 
         if (elemento === 'viga' && sismo === 'DES') {
             document.getElementById('camposVigaDES').classList.remove('oculto');
-            const d = parseFloat(document.getElementById('inpDVigaDES').value) || 440;
-            smax = Math.min(d / 4, 100);
-            detalle = `C.21.5.2.3 (Viga DES): $s_{\\max} = \\min(d/4 = ${(d/4).toFixed(1)}\\text{ mm},\\; 100\\text{ mm}) = \\mathbf{${smax.toFixed(1)}\\text{ mm}}$`;
+            const d = parseFloat(document.getElementById('inpDVigaDES').value);
+            if (isNaN(d) || d < 100 || d > 3000) {
+                errorGeom = "La altura efectiva d en Viga DES debe estar entre 100 mm y 3000 mm.";
+            } else {
+                smax = Math.min(d / 4, 100);
+                detalleHTML = `C.21.5.2.3 (Viga DES): $s_{\\max} = \\min(d/4 = ${(d/4).toFixed(1)}\\text{ mm},\\; 100\\text{ mm}) = \\mathbf{${smax.toFixed(1)}\\text{ mm}}$`;
+                detalleTexto = `C.21.5.2.3 (Viga DES): s_max = min(d/4 = ${(d/4).toFixed(1)} mm, 100 mm) = ${smax.toFixed(1)} mm`;
+            }
         } else if (elemento === 'columna' && sismo === 'DES') {
             document.getElementById('camposColumnaDES').classList.remove('oculto');
-            const bmin = parseFloat(document.getElementById('inpBminDES').value) || 400;
-            const dbmin = parseFloat(document.getElementById('selDbMinDES').value) || 15.88;
-            const hx = parseFloat(document.getElementById('inpHxDES').value) || 250;
-            const soRaw = 100 + ((350 - hx) / 3);
-            const so = Math.min(Math.max(soRaw, 100), 150);
-            smax = Math.min(bmin / 4, 6 * dbmin, so);
-            detalle = `C.21.6.4.3 (Columna DES): $s_{\\max} = \\min(b_{\\min}/4 = ${(bmin/4).toFixed(1)}\\text{ mm},\\; 6d_{b,\\min} = ${(6*dbmin).toFixed(1)}\\text{ mm},\\; s_o = ${so.toFixed(1)}\\text{ mm}) = \\mathbf{${smax.toFixed(1)}\\text{ mm}}$`;
+            const bmin = parseFloat(document.getElementById('inpBminDES').value);
+            const dbmin = parseFloat(document.getElementById('selDbMinDES').value);
+            const hx = parseFloat(document.getElementById('inpHxDES').value);
+            if (isNaN(bmin) || bmin < 150 || bmin > 3000 || isNaN(hx) || hx < 50 || hx > 1000) {
+                errorGeom = "Verifique b_min (150–3000 mm) y h_x (50–1000 mm) en Columna DES.";
+            } else {
+                const soRaw = 100 + ((350 - hx) / 3);
+                const so = Math.min(Math.max(soRaw, 100), 150);
+                smax = Math.min(bmin / 4, 6 * dbmin, so);
+                detalleHTML = `C.21.6.4.3 (Columna DES): $s_{\\max} = \\min(b_{\\min}/4 = ${(bmin/4).toFixed(1)}\\text{ mm},\\; 6d_{b,\\min} = ${(6*dbmin).toFixed(1)}\\text{ mm},\\; s_o = ${so.toFixed(1)}\\text{ mm}) = \\mathbf{${smax.toFixed(1)}\\text{ mm}}$`;
+                detalleTexto = `C.21.6.4.3 (Columna DES): s_max = min(b_min/4 = ${(bmin/4).toFixed(1)} mm, 6*db_min = ${(6*dbmin).toFixed(1)} mm, s_o = ${so.toFixed(1)} mm) = ${smax.toFixed(1)} mm`;
+
+                if (hx > 350) {
+                    avisoHxDiv.classList.remove('oculto');
+                    avisoHxDiv.innerHTML = `⚠️ <b>Alerta Transversal (NSR-10 C.21.6.4.2):</b> La separación entre ramas o ganchos suplementarios ingresada ($h_x = ${hx}\\text{ mm}$) excede el límite máximo normativo de <b>350 mm</b>.`;
+                }
+            }
         } else if (elemento === 'viga' && sismo === 'DMO') {
             document.getElementById('camposVigaDMO').classList.remove('oculto');
             const region = document.getElementById('selRegionVigaDMO').value;
-            const d = parseFloat(document.getElementById('inpDVigaDMO').value) || 440;
-            const dbmin = parseFloat(document.getElementById('selDbMinVigaDMO').value) || 15.88;
-            const areaEst = parseFloat(document.getElementById('selEstribo').value) || 71;
-            const dbEst = areaEst === 71 ? 9.53 : (areaEst === 129 ? 12.70 : 15.88);
-            if (region === 'fuera2h') {
+            const d = parseFloat(document.getElementById('inpDVigaDMO').value);
+            const dbmin = parseFloat(document.getElementById('selDbMinVigaDMO').value);
+            if (isNaN(d) || d < 100 || d > 3000) {
+                errorGeom = "La altura efectiva d en Viga DMO debe estar entre 100 mm y 3000 mm.";
+            } else if (region === 'fuera2h') {
                 smax = d / 2;
-                detalle = `C.21.3.4.8 (Viga DMO fuera de $2h$): $s_{\\max} = d/2 = \\mathbf{${smax.toFixed(1)}\\text{ mm}}$`;
+                detalleHTML = `C.21.3.4.8 (Viga DMO fuera de $2h$): $s_{\\max} = d/2 = \\mathbf{${smax.toFixed(1)}\\text{ mm}}$`;
+                detalleTexto = `C.21.3.4.8 (Viga DMO fuera de 2h): s_max = d/2 = ${smax.toFixed(1)} mm`;
             } else {
                 smax = Math.min(d / 4, 8 * dbmin, 24 * dbEst, 300);
-                detalle = `C.21.3.4.6 (Viga DMO dentro de $2h$): $s_{\\max} = \\min(d/4, 8d_b, 24d_{b,\\text{est}}, 300) = \\mathbf{${smax.toFixed(1)}\\text{ mm}}$`;
+                detalleHTML = `C.21.3.4.6 (Viga DMO dentro de $2h$): $s_{\\max} = \\min(d/4, 8d_{b,\\min}, 24d_{b,\\text{est}}, 300) = \\mathbf{${smax.toFixed(1)}\\text{ mm}}$`;
+                detalleTexto = `C.21.3.4.6 (Viga DMO dentro de 2h): s_max = min(d/4, 8*db_min, 24*db_est, 300) = ${smax.toFixed(1)} mm`;
             }
         } else if (elemento === 'columna' && sismo === 'DMO') {
             document.getElementById('camposColumnaDMO').classList.remove('oculto');
+            const puRatio = parseFloat(document.getElementById('inpPuRatioDMO').value);
             const region = document.getElementById('selRegionColDMO').value;
-            const bmin = parseFloat(document.getElementById('inpBminDMO').value) || 350;
-            const dbmin = parseFloat(document.getElementById('selDbMinColDMO').value) || 15.88;
-            const areaEst = parseFloat(document.getElementById('selEstribo').value) || 71;
-            const dbEst = areaEst === 71 ? 9.53 : (areaEst === 129 ? 12.70 : 15.88);
-            if (region === 'dentroLo') {
-                smax = Math.min(8 * dbmin, 24 * dbEst, bmin / 2, 300);
-                detalle = `C.21.3.5.6 (Columna DMO dentro de $\\ell_o$): $s_{\\max} = \\min(8d_b, 24d_{b,\\text{est}}, b_{\\min}/2, 300) = \\mathbf{${smax.toFixed(1)}\\text{ mm}}$`;
+            const dbmin = parseFloat(document.getElementById('selDbMinColDMO').value);
+
+            if (isNaN(puRatio) || puRatio < 0 || puRatio > 1.2) {
+                errorGeom = "La relación axial Pu / (Ag·f'c) debe ser un número entre 0.00 y 1.20.";
+            } else if (puRatio <= 0.10) {
+                // C.21.3.2: Pu <= 0.10 Ag f'c -> aplica C.21.3.4
+                document.getElementById('wrapBminColDMO').classList.add('oculto');
+                document.getElementById('wrapHxColDMO').classList.add('oculto');
+                document.getElementById('wrapDColDMO').classList.remove('oculto');
+                const dCol = parseFloat(document.getElementById('inpDColDMO').value);
+                if (isNaN(dCol) || dCol < 100 || dCol > 3000) {
+                    errorGeom = "La altura efectiva d para columna DMO con Pu ≤ 0.10 Ag·f'c debe estar entre 100 mm y 3000 mm.";
+                } else if (region === 'dentroLo') {
+                    smax = Math.min(dCol / 4, 8 * dbmin, 24 * dbEst, 300);
+                    detalleHTML = `C.21.3.2 / C.21.3.4.6 (Columna DMO con $P_u \\le 0.10 A_g f'_c$, dentro de $\\ell_o$): $s_{\\max} = \\min(d/4, 8d_{b,\\min}, 24d_{b,\\text{est}}, 300) = \\mathbf{${smax.toFixed(1)}\\text{ mm}}$`;
+                    detalleTexto = `C.21.3.2 / C.21.3.4.6 (Columna DMO Pu <= 0.10 Ag f'c, dentro de lo): s_max = ${smax.toFixed(1)} mm`;
+                } else {
+                    smax = dCol / 2;
+                    detalleHTML = `C.21.3.2 / C.21.3.4.8 (Columna DMO con $P_u \\le 0.10 A_g f'_c$, fuera de $\\ell_o$): $s_{\\max} = d/2 = \\mathbf{${smax.toFixed(1)}\\text{ mm}}$`;
+                    detalleTexto = `C.21.3.2 / C.21.3.4.8 (Columna DMO Pu <= 0.10 Ag f'c, fuera de lo): s_max = d/2 = ${smax.toFixed(1)} mm`;
+                }
             } else {
-                smax = Math.min(16 * dbmin, 48 * dbEst, bmin, 300);
-                detalle = `C.21.3.5.11 / C.7.10.5 (Columna DMO fuera de $\\ell_o$, mitad central): $s_{\\max} \\le \\mathbf{${smax.toFixed(1)}\\text{ mm}}$ (verifique disposiciones de C.21.3.5.11)`;
+                // C.21.3.2: Pu > 0.10 Ag f'c -> aplica C.21.3.5
+                document.getElementById('wrapBminColDMO').classList.remove('oculto');
+                document.getElementById('wrapHxColDMO').classList.remove('oculto');
+                document.getElementById('wrapDColDMO').classList.add('oculto');
+                const bmin = parseFloat(document.getElementById('inpBminDMO').value);
+                const hxDMO = parseFloat(document.getElementById('inpHxDMO').value);
+                if (isNaN(bmin) || bmin < 150 || bmin > 3000 || isNaN(hxDMO) || hxDMO < 50 || hxDMO > 1000) {
+                    errorGeom = "Verifique b_min (150–3000 mm) y h_x (50–1000 mm) en Columna DMO.";
+                } else {
+                    const soDMO = Math.min(8 * dbmin, 16 * dbEst, bmin / 3, 150);
+                    if (region === 'dentroLo') {
+                        smax = soDMO;
+                        detalleHTML = `C.21.3.5.6 (Columna DMO $P_u &gt; 0.10 A_g f'_c$ dentro de $\\ell_o$): $s_o = \\min(8d_{b,\\min},\\; 16d_{b,\\text{est}},\\; b_{\\min}/3,\\; 150) = \\mathbf{${smax.toFixed(1)}\\text{ mm}}$`;
+                        detalleTexto = `C.21.3.5.6 (Columna DMO Pu > 0.10 Ag f'c dentro de lo): s_o = min(8*db_min, 16*db_est, b_min/3, 150) = ${smax.toFixed(1)} mm`;
+                    } else {
+                        smax = Math.min(16 * dbmin, 32 * dbEst, (2 * bmin) / 3, 300);
+                        detalleHTML = `C.21.3.5.11 (Columna DMO $P_u &gt; 0.10 A_g f'_c$ fuera de $\\ell_o$): $s_{\\max} \\le 2s_o = \\min(16d_{b,\\min},\\; 32d_{b,\\text{est}},\\; 2b_{\\min}/3,\\; 300) = \\mathbf{${smax.toFixed(1)}\\text{ mm}}$`;
+                        detalleTexto = `C.21.3.5.11 (Columna DMO Pu > 0.10 Ag f'c fuera de lo): s_max <= 2*s_o = ${smax.toFixed(1)} mm`;
+                    }
+
+                    if (hxDMO > 350) {
+                        avisoHxDiv.classList.remove('oculto');
+                        avisoHxDiv.innerHTML = `⚠️ <b>Alerta Transversal (NSR-10 C.21.3.5.8):</b> La separación entre ramas o ganchos suplementarios ingresada ($h_x = ${hxDMO}\\text{ mm}$) excede el límite máximo normativo de <b>350 mm</b>.`;
+                    }
+                }
             }
         }
 
         resDiv.classList.remove('oculto');
-        if (sIngresado <= smax + 0.01) {
+        if (errorGeom) {
+            resDiv.className = "estado-smax estado-alerta";
+            resDiv.innerHTML = `❌ <b>Dato geométrico inválido:</b> ${errorGeom}`;
+            return { activo: true, cumple: false, textoPlano: `Error geométrico: ${errorGeom}` };
+        }
+
+        const cumple = (!isNaN(sIngresado) && sIngresado <= smax + 0.01);
+        if (cumple) {
             resDiv.className = "estado-smax estado-ok";
-            resDiv.innerHTML = `✅ <b>Cumple criterio geométrico:</b> El espaciamiento ingresado ($s = ${sIngresado}\\text{ mm}$) no excede ${detalle}.`;
+            resDiv.innerHTML = `✅ <b>Cumple el límite de espaciamiento longitudinal evaluado:</b> El espaciamiento ingresado ($s = ${sIngresado}\\text{ mm}$) no excede ${detalleHTML}.`;
         } else {
             resDiv.className = "estado-smax estado-alerta";
-            resDiv.innerHTML = `⚠️ <b>Excede límite sísmico:</b> El espaciamiento ingresado ($s = ${sIngresado}\\text{ mm}$) supera ${detalle}. Ajuste $s$ en el panel superior.`;
+            resDiv.innerHTML = `⚠️ <b>Excede límite de espaciamiento longitudinal:</b> El espaciamiento ingresado ($s = ${sIngresado}\\text{ mm}$) supera ${detalleHTML}. Ajuste $s$ en el panel superior.`;
         }
 
         if (window.MathJax && MathJax.typesetPromise) {
             MathJax.typesetPromise([document.getElementById('panelCamposC21')]);
         }
+
+        return {
+            activo: true,
+            cumple,
+            textoPlano: `${cumple ? "CUMPLE LÍMITE DE ESPACIAMIENTO" : "EXCEDE LÍMITE"} (s = ${sIngresado} mm vs. ${detalleTexto})`
+        };
     }
 
     // LÓGICA DE INTERFAZ DINÁMICA
@@ -873,61 +988,88 @@
         if (elemento === 'viga' && sismo === 'DMO') document.getElementById('rowRefVigaDMO').classList.add('fila-c21-activa');
         if (elemento === 'columna' && sismo === 'DMO') document.getElementById('rowRefColDMO').classList.add('fila-c21-activa');
 
-        // Alertas específicas de columna
-        document.getElementById('msgColumnaSismica').classList.add('oculto');
-        document.getElementById('msgColumnaDMI').classList.add('oculto');
-
+        // Alerta específica de columna DES / DMO
+        const msgCol = document.getElementById('msgColumnaSismica');
         if (elemento === 'viga') {
             panelPos.style.opacity = '1';
             document.getElementById('selPsiT').disabled = false;
+            msgCol.classList.add('oculto');
         } else {
             // En columnas las barras son verticales -> psi_t = 1.0 siempre
             document.getElementById('selPsiT').value = "1.0";
             document.getElementById('selPsiT').disabled = true;
             panelPos.style.opacity = '0.6';
-
-            if (sismo === 'DES' || sismo === 'DMO') {
-                document.getElementById('msgColumnaSismica').classList.remove('oculto');
-            } else {
-                document.getElementById('msgColumnaDMI').classList.remove('oculto');
-            }
+            msgCol.classList.remove('oculto');
         }
         
-        evaluarSmaxC21();
         generarTabla();
     }
 
-    // OBTENER PARÁMETROS DETALLADOS ACTUALES
+    // VALIDAR Y OBTENER PARÁMETROS DETALLADOS ACTUALES
     function obtenerParametrosDetallados() {
         const fc = parseFloat(document.getElementById('selFc').value);
         const fy = parseFloat(document.getElementById('selFy').value);
         const elemento = document.getElementById('selElemento').value;
         const sismo = document.getElementById('selSismo').value;
 
+        const estKey = document.getElementById('selEstribo').value;
+        const estriboObj = estribosDB[estKey];
+
+        const rawRamas = parseFloat(document.getElementById('inpRamas').value);
+        const rawSepEst = parseFloat(document.getElementById('inpSepEstribos').value);
+        const rawNumBarras = parseFloat(document.getElementById('inpNumBarras').value);
+        const rawRecEst = parseFloat(document.getElementById('inpRecubrimiento').value);
+        const rawSepBarras = parseFloat(document.getElementById('inpSepBarras').value);
+
+        const errores = [];
+        if (isNaN(rawRamas) || !Number.isInteger(rawRamas) || rawRamas < 1 || rawRamas > 12) {
+            errores.push("El número de ramas efectivas debe ser un entero entre 1 y 12.");
+        }
+        if (isNaN(rawNumBarras) || !Number.isInteger(rawNumBarras) || rawNumBarras < 1 || rawNumBarras > 30) {
+            errores.push("El número de barras en el plano de hendimiento (n) debe ser un entero entre 1 y 30.");
+        }
+        if (isNaN(rawSepEst) || rawSepEst < 25 || rawSepEst > 500) {
+            errores.push("El espaciamiento de estribos (s) debe estar entre 25 mm y 500 mm.");
+        }
+        if (isNaN(rawRecEst) || rawRecEst < 15 || rawRecEst > 150) {
+            errores.push("El recubrimiento libre al estribo (r) debe estar entre 15 mm y 150 mm.");
+        }
+        if (isNaN(rawSepBarras) || rawSepBarras < 25 || rawSepBarras > 500) {
+            errores.push("La separación entre ejes de barras longitudinales (sb) debe estar entre 25 mm y 500 mm.");
+        }
+
+        if (errores.length > 0) {
+            return { valido: false, errores };
+        }
+
+        const numRamas = Math.floor(rawRamas);
+        const numBarras = Math.floor(rawNumBarras);
+        const sepEstribos = rawSepEst;
+        const recEstribo = rawRecEst;
+        const sb = rawSepBarras;
+
+        // Cálculo detallado de cc = recubrimiento libre al estribo + diámetro del estribo
+        const cc = recEstribo + estriboObj.db;
+
         // Tope NSR-10 C.12.1.2: sqrt(f'c) <= 8.3 MPa
         const sqrtFc = Math.min(Math.sqrt(fc), 8.3);
 
-        const areaEstribo = parseFloat(document.getElementById('selEstribo').value) || 71;
-        const numRamas = Math.max(1, parseFloat(document.getElementById('inpRamas').value) || 2);
-        const sepEstribos = Math.max(10, parseFloat(document.getElementById('inpSepEstribos').value) || 100);
-        const numBarras = Math.max(1, parseFloat(document.getElementById('inpNumBarras').value) || 2);
-        const cc = Math.max(10, parseFloat(document.getElementById('inpRecubrimiento').value) || 50);
-        const sb = Math.max(20, parseFloat(document.getElementById('inpSepBarras').value) || 120);
-
-        const psi_t = (elemento === 'columna') ? 1.0 : (parseFloat(document.getElementById('selPsiT').value) || 1.0);
-        const psi_e = parseFloat(document.getElementById('selPsiE').value) || 1.0;
-        const lambda = parseFloat(document.getElementById('selLambda').value) || 1.0;
+        const psi_t = (elemento === 'columna') ? 1.0 : parseFloat(document.getElementById('selPsiT').value);
+        const psi_e = parseFloat(document.getElementById('selPsiE').value);
+        const lambda = parseFloat(document.getElementById('selLambda').value);
 
         // Límite C.12.2.4: psi_t * psi_e <= 1.7
         const psi_te = Math.min(psi_t * psi_e, 1.7);
 
         // Ecuación C.12-2: Ktr = 40 * Atr / (s * n)
-        const Atr = numRamas * areaEstribo;
+        const Atr = numRamas * estriboObj.area;
         const Ktr = (40 * Atr) / (sepEstribos * numBarras);
 
         return {
+            valido: true,
             fc, sqrtFc, fy, elemento, sismo,
-            areaEstribo, numRamas, sepEstribos, numBarras, cc, sb,
+            estriboObj, numRamas, sepEstribos, numBarras,
+            recEstribo, cc, sb,
             psi_t, psi_e, psi_te, lambda,
             Atr, Ktr
         };
@@ -971,15 +1113,29 @@
     // MOTOR DE CÁLCULO NORMATIVO
     function generarTabla() {
         const p = obtenerParametrosDetallados();
+        const panelError = document.getElementById('panelErrorValidacion');
+        let tbody = document.getElementById('tbodyResultados');
+
+        if (!p.valido) {
+            panelError.classList.remove('oculto');
+            panelError.innerHTML = `<b>❌ Error de validación en los datos ingresados (cálculo detenido):</b><ul style="margin: 5px 0 0 20px;">${p.errores.map(e => `<li>${e}</li>`).join('')}</ul>`;
+            tbody.innerHTML = `<tr><td colspan="9" style="color: #dc2626; font-weight: bold; padding: 20px;">Corrija los parámetros marcados arriba para generar la tabla de despiece.</td></tr>`;
+            document.getElementById('resMixto').innerText = "--";
+            return;
+        }
+
+        panelError.classList.add('oculto');
+
         const modo = document.getElementById('selRedondeo').value; 
         const unidad = document.getElementById('selUnidades').value;
 
         // Actualizar indicadores superiores
         document.getElementById('lblAtr').innerText = p.Atr.toFixed(0);
         document.getElementById('lblKtr').innerText = p.Ktr.toFixed(2);
+        document.getElementById('lblCc').innerText = p.cc.toFixed(1);
         document.getElementById('lblSqrtFc').innerText = p.sqrtFc.toFixed(2) + (Math.sqrt(p.fc) > 8.3 ? " (tope C.12.1.2)" : "");
 
-        const isColumnaSismica = (p.elemento === 'columna' && (p.sismo === 'DMO' || p.sismo === 'DES'));
+        const isColumna = (p.elemento === 'columna');
         
         // Renderizar Encabezados
         const thead = document.getElementById('theadTabla');
@@ -999,13 +1155,12 @@
 
         const thComp = document.getElementById('thCompresion');
         if (thComp) {
-            thComp.style.opacity = isColumnaSismica ? '0.35' : '1';
-            thComp.innerHTML = isColumnaSismica 
+            thComp.style.opacity = isColumna ? '0.35' : '1';
+            thComp.innerHTML = isColumna 
                 ? `Compresión<br><span style="font-size:0.75em;">(No Aplica C.21)</span>` 
                 : `Compresión<br><span style="font-size:0.8em; font-weight:normal;">($l_{sc}$) [${unidad}]</span>`;
         }
 
-        let tbody = document.getElementById('tbodyResultados');
         tbody.innerHTML = '';
 
         barras.forEach(b => {
@@ -1037,7 +1192,7 @@
             if (calibresDestacados.has(b.n)) {
                 tr.className = "fila-destacada";
             }
-            let compStyle = isColumnaSismica ? 'color: #cbd5e1; text-decoration: line-through;' : '';
+            let compStyle = isColumna ? 'color: #cbd5e1; text-decoration: line-through;' : '';
             
             tr.innerHTML = `
                 <td><b>${b.name}</b></td>
@@ -1064,6 +1219,8 @@
     // CÁLCULO DE BARRAS MIXTAS
     function calcularEmpalmeMixto() {
         const p = obtenerParametrosDetallados();
+        if (!p.valido) return;
+
         const modo = document.getElementById('selRedondeo').value; 
         const unidad = document.getElementById('selUnidades').value;
         
@@ -1091,22 +1248,27 @@
     // COPIAR A PORTAPAPELES
     function copiarTabla() {
         const p = obtenerParametrosDetallados();
+        if (!p.valido) {
+            alert("Corrija los errores de validación antes de copiar la tabla.");
+            return;
+        }
+
         const selElem = document.getElementById('selElemento');
         const elemento = selElem.options[selElem.selectedIndex].text.toUpperCase();
         const un = document.getElementById('selUnidades').value;
         const modoSelect = document.getElementById('selRedondeo');
         const modoText = modoSelect.options[modoSelect.selectedIndex].text;
-        const estriboSelect = document.getElementById('selEstribo');
-        const estriboText = estriboSelect.options[estriboSelect.selectedIndex].text;
+        const verifC21 = evaluarSmaxC21();
         
         let texto = "CRITERIO ESTRUCTURAL\nCalculadora de Traslapos — Método Detallado C.12.2.3 | DES–DMO\n";
         texto += `-------------------------------------------------------------------\n`;
         texto += `ELEMENTO: ${elemento} (${p.sismo})\n`;
         texto += `f'c: ${p.fc} MPa (√f'c usado = ${p.sqrtFc.toFixed(2)} MPa, tope C.12.1.2) | fy: ${p.fy} MPa | λ: ${p.lambda}\n`;
-        texto += `Estribos: ${p.numRamas} ramas efectivas ${estriboText} @ s = ${p.sepEstribos} mm (Atr = ${p.Atr} mm²)\n`;
+        texto += `Estribos: ${p.numRamas} ramas efectivas ${p.estriboObj.name} (${p.estriboObj.area} mm², db=${p.estriboObj.db} mm) @ s = ${p.sepEstribos} mm (Atr = ${p.Atr} mm²)\n`;
         texto += `Barras en plano de hendimiento (n): ${p.numBarras} | Ktr: ${p.Ktr.toFixed(2)} mm\n`;
-        texto += `Recubrimiento libre a barra (cc): ${p.cc} mm | Sep. ejes barras (sb): ${p.sb} mm\n`;
+        texto += `Recub. libre estribo (r): ${p.recEstribo} mm -> Recub. libre a barra cc: ${p.cc.toFixed(1)} mm | Sep. ejes barras (sb): ${p.sb} mm\n`;
         texto += `Factores: ψt = ${p.psi_t} | ψe = ${p.psi_e} (ψt·ψe usado = ${p.psi_te.toFixed(2)})\n`;
+        texto += `Control s_max (C.21): ${verifC21.textoPlano}\n`;
         texto += `Modo: ${modoText}\n`;
         texto += `-------------------------------------------------------------------\n\n`;
         
@@ -1140,19 +1302,23 @@
 
     // EXPORTAR PDF MEDIANTE IMPRESIÓN
     function exportarPDF() {
+        const p = obtenerParametrosDetallados();
+        if (!p.valido) {
+            alert("Corrija los errores de validación antes de generar la memoria PDF.");
+            return;
+        }
+
         const btn = document.querySelector('.btn-imprimir');
         const originalText = btn.innerHTML;
         btn.innerHTML = "<i class='fa fa-spinner fa-spin'></i> Preparando...";
 
-        const p = obtenerParametrosDetallados();
         const selElem = document.getElementById('selElemento');
         const elemento = selElem.options[selElem.selectedIndex].text.toUpperCase();
         const un = document.getElementById('selUnidades').value;
         const modoSelect = document.getElementById('selRedondeo');
         const modoText = modoSelect.options[modoSelect.selectedIndex].text;
-        const estriboSelect = document.getElementById('selEstribo');
-        const estriboText = estriboSelect.options[estriboSelect.selectedIndex].text;
         const logoSrc = document.querySelector('.brand-logo-footer').src;
+        const verifC21 = evaluarSmaxC21();
         
         const filas = Array.from(document.querySelectorAll('#tbodyResultados tr'));
         let filasPDF = '';
@@ -1318,12 +1484,15 @@
                     <td><b>Factores (ψt · ψe / λ):</b> ${p.psi_t} · ${p.psi_e} (usado ${p.psi_te.toFixed(2)}) / ${p.lambda}</td>
                 </tr>
                 <tr>
-                    <td><b>Refuerzo Transversal:</b> ${p.numRamas} ramas efectivas ${estriboText} @ s = ${p.sepEstribos} mm</td>
+                    <td><b>Refuerzo Transversal:</b> ${p.numRamas} ramas efectivas ${p.estriboObj.name} (${p.estriboObj.area} mm², d<sub>b,est</sub> = ${p.estriboObj.db.toFixed(1)} mm) @ s = ${p.sepEstribos} mm</td>
                     <td><b>Área Atr / Índice Ktr:</b> A<sub>tr</sub> = ${p.Atr.toFixed(0)} mm² &nbsp;|&nbsp; K<sub>tr</sub> = ${p.Ktr.toFixed(2)} mm</td>
                 </tr>
                 <tr>
                     <td><b>Barras en Plano (n):</b> ${p.numBarras} barras en plano de hendimiento</td>
-                    <td><b>Geometría (c<sub>c</sub> / s<sub>b</sub>):</b> c<sub>c</sub> = ${p.cc} mm &nbsp;|&nbsp; s<sub>b</sub> = ${p.sb} mm</td>
+                    <td><b>Geometría (r<sub>libre</sub> → c<sub>c</sub> / s<sub>b</sub>):</b> r = ${p.recEstribo} mm → c<sub>c</sub> = ${p.cc.toFixed(1)} mm &nbsp;|&nbsp; s<sub>b</sub> = ${p.sb} mm</td>
+                </tr>
+                <tr>
+                    <td colspan="2"><b>Control Espaciamiento Longitudinal s<sub>max</sub> (NSR-10 C.21):</b> ${verifC21.textoPlano}</td>
                 </tr>
                 <tr>
                     <td colspan="2"><b>Criterio de Presentación / Redondeo:</b> ${modoText}</td>
@@ -1355,17 +1524,17 @@
             </tbody>
         </table>
 
-        <div style="font-size: 9px; color: #64748b; margin-top: -8px; margin-bottom: 12px; font-style: italic;">
-            * Topes normativos aplicados: (c<sub>b</sub> + K<sub>tr</sub>)/d<sub>b</sub> ≤ 2.50 (C.12.2.3), ψ<sub>t</sub>·ψ<sub>e</sub> ≤ 1.70 (C.12.2.4) y √f'c ≤ 8.3 MPa (C.12.1.2).
+        <div style="font-size: 9px; color: #64748b; margin-top: -8px; margin-bottom: 12px; font-style: italic; line-height: 1.5;">
+            * Topes normativos aplicados: (c<sub>b</sub> + K<sub>tr</sub>)/d<sub>b</sub> ≤ 2.50 (C.12.2.3), ψ<sub>t</sub>·ψ<sub>e</sub> ≤ 1.70 (C.12.2.4) y √f'c ≤ 8.3 MPa (C.12.1.2).<br>
+            * Nota sobre barras de distinto diámetro (C.12.15.3): El módulo de empalmes mixtos evalúa el criterio conservador de empalme Clase B (1.3 l<sub>d</sub> para la barra menor) y no evalúa la excepción de Clase A.
         </div>
 
         <div class="pdf-warning">
             <b>⚠️ NOTA DE RESPONSABILIDAD PROFESIONAL</b>
             <p>
                 Los valores presentados constituyen una memoria de cálculo basada en el método detallado NSR-10 C.12.2.3. 
-                El ingeniero estructural responsable debe garantizar que los planos de despiece reflejen fielmente el espaciamiento de estribos (s), 
-                las ramas efectivas que cruzan el plano potencial de hendimiento (A<sub>tr</sub>), el recubrimiento (c<sub>c</sub>), el número real de barras empalmadas en dicho plano (n) 
-                y los requisitos sísmicos de NSR-10 Capítulo C.21.
+                La verificación de s<sub>max</sub> evalúa únicamente el espaciamiento longitudinal de estribos y no sustituye la revisión integral de cuantía de confinamiento (A<sub>sh</sub>), 
+                configuración de estribos cerrados, ganchos suplementarios (h<sub>x</sub> ≤ 350 mm), soporte lateral ni ubicación permitida de los empalmes según NSR-10 Capítulo C.21.
             </p>
             <p style="margin-top: 6px;">
                 <b>Todo proyecto constructivo debe contar con la revisión y firma de un ingeniero estructural con matrícula profesional vigente.</b>
