@@ -1,0 +1,1403 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Calculadora de Traslapos — Método Detallado NSR-10 C.12.2.3 | DES–DMO. Evaluación cuantitativa del confinamiento transversal mediante Atr y Ktr.">
+    <meta name="keywords" content="traslapo detallado, C.12.2.3, Ktr, Atr, DES, DMO, NSR-10, ACI 318, longitud desarrollo, vigas, columnas, criterio estructural">
+    <meta name="author" content="Ing. Rafael Antonio Correa Melano">
+    
+    <title>Calculadora de Traslapos — Método Detallado C.12.2.3 | DES–DMO - Criterio Estructural</title>
+    
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <!-- Librerías Asíncronas (MathJax únicamente) -->
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']] }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        /* PALETA DE COLORES DE LA MARCA */
+        :root {
+            --azul-profundo: #1A2530;
+            --naranja-estructural: #E67E22;
+            --gris-claro: #F4F5F7;
+        }
+
+        body { background-color: var(--gris-claro); font-family: 'Segoe UI', sans-serif; color: var(--azul-profundo); }
+        .contenedor-principal {
+            max-width: 1250px; margin: 30px auto; border-radius: 12px;
+            background: white; padding: 0; overflow: hidden;
+            box-shadow: 0 8px 25px rgba(26,37,48,0.15);
+        }
+        
+        /* HEADER Y MANIFIESTO */
+        .header-rc { background: var(--azul-profundo); color: white; padding: 30px 20px; text-align: center; position: relative; }
+        .brand-logo-header { max-width: 250px; height: auto; margin-bottom: 10px; display: inline-block; }
+        .lema-global { font-size: 0.9em; letter-spacing: 2px; color: #a0aec0; text-transform: uppercase; margin-bottom: 20px; font-weight: bold; }
+        .lema-global span { color: var(--naranja-estructural); }
+
+        .badge-version {
+            display: inline-block;
+            background: rgba(230, 126, 34, 0.2);
+            border: 1px solid var(--naranja-estructural);
+            color: #fbd38d;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        /* RUTA DE APRENDIZAJE */
+        .ruta-aprendizaje {
+            display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 20px;
+            font-size: 0.85em; color: #a0aec0;
+        }
+        .ruta-item { padding: 4px 12px; border-radius: 20px; border: 1px solid #4a5568; background: rgba(255,255,255,0.05); }
+        .ruta-activa { border-color: var(--naranja-estructural); color: white; background: rgba(230, 126, 34, 0.2); font-weight: bold; }
+        .ruta-flecha { color: #4a5568; font-size: 0.8em; }
+
+        /* FLUJO CONCEPTUAL */
+        .flujo-conceptual {
+            display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 15px; margin-top: 25px; margin-bottom: 15px;
+            font-size: 0.9em; font-weight: bold; letter-spacing: 1px; color: #a0aec0;
+        }
+        .flujo-item { padding: 8px 16px; border-radius: 4px; background: rgba(255,255,255,0.05); border: 1px solid #4a5568;}
+        .flujo-flecha-c { color: var(--naranja-estructural); }
+
+        .contenido-body { padding: 40px; }
+        
+        /* CAJAS Y RESALTADOS */
+        .panel-control { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .subpanel-tecnico { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; margin-top: 15px; }
+        .dato-box { border-left: 6px solid var(--naranja-estructural); background: #fdf6f0; } 
+        h3 { color: var(--azul-profundo); border-bottom: 2px solid var(--naranja-estructural); padding-bottom: 8px; margin-top: 35px; font-weight: bold; }
+        
+        .pill-calculo {
+            display: inline-block;
+            background: var(--azul-profundo);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.85em;
+            font-weight: bold;
+        }
+        .pill-calculo span { color: var(--naranja-estructural); }
+
+        /* TABLA DE REFERENCIA SÍSMICA C.21 */
+        .tabla-c21 { width: 100%; border-collapse: collapse; font-size: 0.85em; margin-top: 8px; background: white; }
+        .tabla-c21 th { background: #2c3e50; color: white; padding: 7px 10px; text-align: left; }
+        .tabla-c21 td { padding: 7px 10px; border-bottom: 1px solid #e2e8f0; }
+        .fila-c21-activa td { background-color: #fdf6f0 !important; font-weight: bold; color: var(--azul-profundo); }
+
+        /* VERIFICADOR GEOMÉTRICO SMAX */
+        .caja-verificador {
+            background: #ffffff;
+            border: 1px dashed #94a3b8;
+            border-radius: 6px;
+            padding: 12px;
+            margin-top: 12px;
+        }
+        .estado-smax {
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            margin-top: 8px;
+        }
+        .estado-pendiente { background: #f1f5f9; border-left: 4px solid #64748b; color: #334155; }
+        .estado-ok { background: #ecfdf5; border-left: 4px solid #10b981; color: #065f46; }
+        .estado-alerta { background: #fef2f2; border-left: 4px solid #dc2626; color: #991b1b; }
+
+        /* TABLA DE DESPIECE */
+        .tabla-container { overflow-x: auto; width: 100%; border-radius: 6px; box-shadow: 0 0 5px rgba(0,0,0,0.05); }
+        .tabla-traslapos { width: 100%; border-collapse: collapse; font-size: 0.92em; min-width: 920px; }
+        .tabla-traslapos th { background-color: var(--azul-profundo) !important; color: white !important; padding: 12px 8px; text-align: center; }
+        .tabla-traslapos td { padding: 10px 8px; text-align: center; border-bottom: 1px solid #e2e8f0; transition: background-color 0.3s; }
+        .tabla-traslapos tr:hover td { background-color: #f8fafc; }
+        .col-ld { background-color: rgba(26, 37, 48, 0.04); font-weight: bold;}
+        .col-claseb { background-color: rgba(230, 126, 34, 0.08); font-weight: bold; color: #c0392b;}
+        .col-conf { background-color: #f1f5f9; font-weight: bold; color: var(--azul-profundo); }
+
+        /* SISTEMA DE RESALTADO DE CALIBRES */
+        .chip-calibre {
+            display: inline-block; padding: 3px 10px; border: 1px solid #cbd5e1;
+            border-radius: 15px; font-size: 0.8em; cursor: pointer; color: #475569;
+            background: white; transition: all 0.2s; user-select: none;
+        }
+        .chip-calibre:hover { background: #f1f5f9; border-color: #94a3b8; }
+        .chip-calibre.activo {
+            background: var(--naranja-estructural); color: white;
+            border-color: var(--naranja-estructural); font-weight: bold;
+            box-shadow: 0 2px 4px rgba(230, 126, 34, 0.3);
+        }
+        .fila-destacada td {
+            background-color: rgba(230, 126, 34, 0.08) !important; 
+        }
+        .fila-destacada td:first-child {
+            border-left: 5px solid var(--naranja-estructural);
+            color: var(--naranja-estructural);
+        }
+
+        .btn-accion { padding: 8px 16px; border-radius: 6px; border: none; cursor: pointer; font-weight: bold; transition: 0.2s; }
+        .btn-copiar { background-color: var(--azul-profundo); color: white; }
+        .btn-copiar:hover { background-color: #2c3e50; }
+        .btn-imprimir { background-color: white; color: var(--azul-profundo); border: 1px solid var(--azul-profundo); }
+        .btn-imprimir:hover { background-color: #f1f5f9; }
+
+        /* LOGO FOOTER */
+        .brand-logo-footer { max-width: 200px; height: auto; margin-bottom: 15px; display: inline-block; }
+        footer { background-color: var(--gris-claro) !important; }
+
+        /* OVERRIDES W3.CSS */
+        .w3-text-red { color: var(--naranja-estructural) !important; }
+        .w3-border-red { border-color: var(--naranja-estructural) !important; }
+        .w3-red { background-color: var(--naranja-estructural) !important; color: white !important; }
+        .w3-pale-red { background-color: #fdf6f0 !important; }
+        .w3-blue { background-color: var(--azul-profundo) !important; color: white !important; }
+        .w3-text-blue { color: var(--azul-profundo) !important; }
+        .w3-dark-grey { background-color: var(--azul-profundo) !important; color: white !important; }
+        .w3-light-grey { background-color: var(--gris-claro) !important; color: var(--azul-profundo) !important; }
+
+        .oculto { display: none !important; }
+        summary:focus { outline: none; }
+        
+        .math-scroll { overflow-x: auto; padding: 10px 0; }
+
+        @media (max-width: 1250px) {
+            .contenedor-principal { width: 100% !important; margin: 0 !important; border-radius: 0 !important; box-shadow: none; padding: 0 !important; }
+            .contenido-body { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="contenedor-principal w3-animate-opacity">
+    
+    <!-- HEADER Y NARRATIVA GLOBAL -->
+    <div class="header-rc no-print">
+        <img src="../assets/IsotipoFOscuroT.png" alt="Logotipo Criterio Estructural - Guía de Detallamiento" class="brand-logo-header" onerror="this.src='https://via.placeholder.com/250x80/1A2530/FFFFFF?text=CRITERIO+ESTRUCTURAL'"><br>
+        
+        <div class="badge-version">Método Detallado NSR-10 C.12.2.3 · Confinamiento Transversal ($A_{tr}$ y $K_{tr}$)</div>
+
+        <div class="lema-global">
+            Guía de Detallamiento Estructural <br>
+            <span>Aprender haciendo. Comprender antes de detallar.</span>
+        </div>
+        
+        <h1 class="w3-xxlarge" style="margin: 0; font-weight: bold;">Calculadora de Traslapos — Método Detallado C.12.2.3 | DES–DMO</h1>
+        <div style="font-size: 1.05em; color: #cbd5e1; margin-top: 8px;">Evaluación explícita de $c_b$ y $K_{tr}$ en Vigas y Columnas · NSR-10 C.12 / C.21 · ACI 318 Cap. 25</div>
+        
+        <div class="flujo-conceptual">
+            <span class="flujo-item">CONFINAMIENTO REAL ($c_b + K_{tr}$)</span>
+            <i class="fa fa-arrow-right flujo-flecha-c"></i>
+            <span class="flujo-item">DESARROLLO DETALLADO ($l_d$)</span>
+            <i class="fa fa-arrow-right flujo-flecha-c"></i>
+            <span class="flujo-item">EMPALME (C.12.15)</span>
+            <i class="fa fa-arrow-right flujo-flecha-c" style="margin: 0 5px;"></i>
+            <span class="flujo-item" style="color: white; border-color: var(--naranja-estructural);">↳ TRASLAPO DETALLADO</span>
+        </div>
+
+        <div class="ruta-aprendizaje">
+            <span class="ruta-item">1. Análisis</span> <i class="fa fa-chevron-right ruta-flecha"></i>
+            <span class="ruta-item">2. Diseño</span> <i class="fa fa-chevron-right ruta-flecha"></i>
+            <span class="ruta-item ruta-activa">📐 3. Detallamiento Detallado C.12.2.3</span> <i class="fa fa-chevron-right ruta-flecha"></i>
+            <span class="ruta-item">4. Despiece Final</span>
+        </div>
+    </div>
+
+    <div class="contenido-body">
+
+        <!-- NOTA DIFERENCIADORA DE CRITERIO INGENIERIL -->
+        <div class="w3-panel dato-box w3-padding-small w3-round w3-small no-print" style="margin-top: 0;">
+            <b>📌 Diferencia con la Guía Simplificada (C.12.2.2):</b> Mientras la herramienta base emplea la expresión simplificada de <b>C.12.2.2</b> (que omite el aporte explícito de los estribos), esta calculadora implementa la <b>ecuación general C.12.2.3</b>. Su propósito no es simplemente obtener traslapos más cortos, sino <b>reconocer cuantitativamente el confinamiento transversal que realmente existe en el detalle constructivo</b> mediante $A_{tr}$ y $K_{tr}$.
+        </div>
+
+        <!-- PANEL DE CONFIGURACIÓN -->
+        <div class="panel-control no-print">
+            <h4 style="margin-top:0; font-weight: bold; color: var(--azul-profundo);">1. PARÁMETROS DEL PROYECTO Y ELEMENTO</h4>
+            
+            <div class="w3-row-padding" style="margin: 0 -16px;">
+                <!-- MATERIALES -->
+                <div class="w3-col l3 m6 w3-margin-bottom">
+                    <label class="w3-small w3-text-grey w3-block"><b>CONCRETO ($f'_c$)</b></label>
+                    <select id="selFc" class="w3-select w3-border w3-round" onchange="generarTabla()">
+                        <option value="21">21 MPa</option>
+                        <option value="28" selected>28 MPa</option>
+                        <option value="35">35 MPa</option>
+                        <option value="42">42 MPa</option>
+                        <option value="49">49 MPa</option>
+                        <option value="56">56 MPa</option>
+                        <option value="70">70 MPa (aplica tope C.12.1.2)</option>
+                    </select>
+                </div>
+                
+                <div class="w3-col l3 m6 w3-margin-bottom">
+                    <label class="w3-small w3-text-grey w3-block"><b>ACERO ($f_y$)</b></label>
+                    <select id="selFy" class="w3-select w3-border w3-round" onchange="generarTabla()">
+                        <option value="420" selected>420 MPa</option>
+                    </select>
+                </div>
+
+                <!-- ELEMENTO -->
+                <div class="w3-col l3 m6 w3-margin-bottom">
+                    <label class="w3-small w3-text-grey w3-block"><b>ELEMENTO A DETALLAR</b></label>
+                    <select id="selElemento" class="w3-select w3-border w3-round" onchange="actualizarContexto()">
+                        <option value="viga" selected>Viga</option>
+                        <option value="columna">Columna</option>
+                    </select>
+                </div>
+
+                <!-- SISTEMA SÍSMICO -->
+                <div class="w3-col l3 m6 w3-margin-bottom">
+                    <label class="w3-small w3-text-grey w3-block"><b>CAPACIDAD DE DISIPACIÓN</b></label>
+                    <select id="selSismo" class="w3-select w3-border w3-round" onchange="actualizarContexto()">
+                        <option value="DES" selected>DES (Especial)</option>
+                        <option value="DMO">DMO (Moderada)</option>
+                        <option value="DMI">DMI (Mínima / General)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- SUBPANEL A: GEOMETRÍA Y CONFINAMIENTO TRANSVERSAL (Ktr y cb) -->
+            <div class="subpanel-tecnico">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 12px;">
+                    <b style="color: var(--azul-profundo); font-size: 0.95em;">A. REFUERZO TRANSVERSAL ($A_{tr}$) Y GEOMETRÍA PARA $c_b$ Y $K_{tr}$ (C.12.2.3)</b>
+                    <div class="pill-calculo">
+                        $A_{tr}$ = <span id="lblAtr">142</span> mm² &nbsp;|&nbsp; $K_{tr}$ = <span id="lblKtr">28.40</span> mm &nbsp;|&nbsp; $\sqrt{f'_c}$ usado = <span id="lblSqrtFc">5.29</span> MPa
+                    </div>
+                </div>
+
+                <div class="w3-row-padding" style="margin: 0 -16px;">
+                    <div class="w3-col l2 m4 s6 w3-margin-bottom">
+                        <label class="w3-tiny w3-text-grey w3-block"><b>ESTRIBO (CALIBRE)</b></label>
+                        <select id="selEstribo" class="w3-select w3-border w3-round w3-small" onchange="generarTabla()">
+                            <option value="71" selected>N.º 3 (71 mm²)</option>
+                            <option value="129">N.º 4 (129 mm²)</option>
+                            <option value="199">N.º 5 (199 mm²)</option>
+                        </select>
+                    </div>
+
+                    <div class="w3-col l2 m4 s6 w3-margin-bottom">
+                        <label class="w3-tiny w3-text-grey w3-block"><b>RAMAS EFECTIVAS</b></label>
+                        <input type="number" id="inpRamas" class="w3-input w3-border w3-round w3-small" value="2" min="1" max="10" onchange="generarTabla()">
+                    </div>
+
+                    <div class="w3-col l2 m4 s6 w3-margin-bottom">
+                        <label class="w3-tiny w3-text-grey w3-block"><b>ESPAC. ESTRIBOS $s$ (mm)</b></label>
+                        <input type="number" id="inpSepEstribos" class="w3-input w3-border w3-round w3-small" value="100" min="25" max="500" step="5" onchange="generarTabla()">
+                    </div>
+
+                    <div class="w3-col l2 m4 s6 w3-margin-bottom">
+                        <label class="w3-tiny w3-text-grey w3-block"><b>BARRAS EN PLANO ($n$)</b></label>
+                        <input type="number" id="inpNumBarras" class="w3-input w3-border w3-round w3-small" value="2" min="1" max="20" onchange="generarTabla()">
+                    </div>
+
+                    <div class="w3-col l2 m4 s6 w3-margin-bottom">
+                        <label class="w3-tiny w3-text-grey w3-block"><b>RECUB. A BARRA $c_c$ (mm)</b></label>
+                        <input type="number" id="inpRecubrimiento" class="w3-input w3-border w3-round w3-small" value="50" min="15" max="150" onchange="generarTabla()">
+                    </div>
+
+                    <div class="w3-col l2 m4 s6 w3-margin-bottom">
+                        <label class="w3-tiny w3-text-grey w3-block"><b>SEP. EJES BARRAS $s_b$ (mm)</b></label>
+                        <input type="number" id="inpSepBarras" class="w3-input w3-border w3-round w3-small" value="120" min="30" max="500" onchange="generarTabla()">
+                    </div>
+                </div>
+
+                <!-- ADVERTENCIAS TÉCNICAS DE PRECAUCIÓN SOBRE ATR Y N -->
+                <div class="w3-panel w3-white w3-leftbar w3-border-orange w3-padding-small w3-round w3-tiny" style="margin: 6px 0 8px 0; line-height: 1.55;">
+                    <b>⚠️ Precauciones críticas sobre el plano potencial de hendimiento (NSR-10 C.12.2.3):</b>
+                    <ul style="margin: 4px 0 0 18px; padding: 0;">
+                        <li><b>Ramas efectivas ($A_{tr} = N_{\text{ramas efectivas}} A_b$):</b> El valor inicial de <b>2 ramas</b> es válido <i>únicamente</i> cuando ambas ramas del estribo cerrado cruzan el plano de hendimiento considerado. No contabilice automáticamente todas las ramas físicas de la sección (precaución especial en <b>columnas con barras distribuidas en sus cuatro caras</b>).</li>
+                        <li><b>Número de barras ($n$):</b> El valor inicial de <b>$n = 2$</b> corresponde a una disposición típica de dos barras empalmadas en una misma capa, pero <b>no es universal ni necesariamente conservador</b>: aumentar $n$ reduce $K_{tr}$ y aumenta $l_d$, mientras que si el plano real contiene una sola barra ($n = 1$), usar $n = 2$ sobrestimaría $K_{tr}$ y reduciría artificialmente $l_d$. Confirme el plano de hendimiento real de la sección.</li>
+                        <li><b>Espaciamiento $s$ vs. $s_b$:</b> $s$ es el espaciamiento centro a centro del refuerzo transversal efectivo a lo largo de la barra desarrollada (`C.12.2.3`); $s_b$ es la separación centro a centro entre barras longitudinales para determinar $c_b = \min(c_c + d_b/2,\; s_b/2)$, donde $c_c$ es el recubrimiento libre hasta la barra longitudinal ($r_{\text{libre}} + d_{b,\text{estribo}}$).</li>
+                    </ul>
+                </div>
+
+                <!-- VERIFICADOR GEOMÉTRICO OPCIONAL DE SMAX (C.21) -->
+                <div class="caja-verificador">
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+                        <label style="cursor: pointer; font-size: 0.85em; font-weight: bold; color: var(--azul-profundo);">
+                            <input type="checkbox" id="chkVerificarC21" onchange="toggleVerificadorC21()">
+                            &nbsp;Activar Verificador Geométrico de Espaciamiento Máximo $s_{\max}$ (NSR-10 C.21)
+                        </label>
+                        <span class="w3-tiny w3-text-grey">Opcional · Requiere dimensiones de la sección transversal</span>
+                    </div>
+
+                    <div id="estadoSmaxPendiente" class="estado-smax estado-pendiente">
+                        <b>ℹ️ Control de espaciamiento $s$:</b> Este módulo no emite una aprobación automática de $s$ mientras no se ingresen los datos geométricos del elemento. Verifique manualmente el límite aplicable en la tabla normativa inferior o active el verificador geométrico.
+                    </div>
+
+                    <div id="panelCamposC21" class="oculto" style="margin-top: 10px; border-top: 1px solid #e2e8f0; padding-top: 10px;">
+                        <!-- Campos Viga DES -->
+                        <div id="camposVigaDES" class="w3-row-padding oculto" style="margin: 0 -16px;">
+                            <div class="w3-col l4 m6 w3-margin-bottom">
+                                <label class="w3-tiny w3-text-grey w3-block"><b>ALTURA EFECTIVA $d$ (mm)</b></label>
+                                <input type="number" id="inpDVigaDES" class="w3-input w3-border w3-round w3-small" value="440" min="100" onchange="evaluarSmaxC21()">
+                            </div>
+                            <div class="w3-col l8 m6 w3-tiny w3-text-grey" style="padding-top: 14px;">
+                                Criterio <b>C.21.5.2.3</b> (Viga DES en zona de traslapo): $s_{\max} = \min(d/4,\; 100\text{ mm})$.
+                            </div>
+                        </div>
+
+                        <!-- Campos Columna DES -->
+                        <div id="camposColumnaDES" class="w3-row-padding oculto" style="margin: 0 -16px;">
+                            <div class="w3-col l3 m6 w3-margin-bottom">
+                                <label class="w3-tiny w3-text-grey w3-block"><b>DIMENSIÓN MENOR $b_{\min}$ (mm)</b></label>
+                                <input type="number" id="inpBminDES" class="w3-input w3-border w3-round w3-small" value="400" min="150" onchange="evaluarSmaxC21()">
+                            </div>
+                            <div class="w3-col l3 m6 w3-margin-bottom">
+                                <label class="w3-tiny w3-text-grey w3-block"><b>BARRA LONG. MÍNIMA ($d_{b,\min}$)</b></label>
+                                <select id="selDbMinDES" class="w3-select w3-border w3-round w3-small" onchange="evaluarSmaxC21()"></select>
+                            </div>
+                            <div class="w3-col l3 m6 w3-margin-bottom">
+                                <label class="w3-tiny w3-text-grey w3-block"><b>SEP. RAMAS $h_x$ (mm) [para $s_o$]</b></label>
+                                <input type="number" id="inpHxDES" class="w3-input w3-border w3-round w3-small" value="250" min="50" max="350" onchange="evaluarSmaxC21()">
+                            </div>
+                            <div class="w3-col l3 m6 w3-tiny w3-text-grey" style="padding-top: 12px;">
+                                Criterio <b>C.21.6.4.3</b>: $s_{\max} = \min(b_{\min}/4,\; 6d_{b,\min},\; s_o)$, con $s_o = 100 + \frac{350-h_x}{3} \in [100, 150]\text{ mm}$.
+                            </div>
+                        </div>
+
+                        <!-- Campos Viga DMO -->
+                        <div id="camposVigaDMO" class="w3-row-padding oculto" style="margin: 0 -16px;">
+                            <div class="w3-col l4 m6 w3-margin-bottom">
+                                <label class="w3-tiny w3-text-grey w3-block"><b>REGIÓN DEL ELEMENTO (C.21.3.4)</b></label>
+                                <select id="selRegionVigaDMO" class="w3-select w3-border w3-round w3-small" onchange="evaluarSmaxC21()">
+                                    <option value="fuera2h" selected>Fuera de zona confinada 2h (C.21.3.4.8)</option>
+                                    <option value="dentro2h">Dentro de zona confinada 2h (C.21.3.4.6)</option>
+                                </select>
+                            </div>
+                            <div class="w3-col l4 m6 w3-margin-bottom">
+                                <label class="w3-tiny w3-text-grey w3-block"><b>ALTURA EFECTIVA $d$ (mm)</b></label>
+                                <input type="number" id="inpDVigaDMO" class="w3-input w3-border w3-round w3-small" value="440" min="100" onchange="evaluarSmaxC21()">
+                            </div>
+                            <div class="w3-col l4 m6 w3-margin-bottom">
+                                <label class="w3-tiny w3-text-grey w3-block"><b>BARRA LONG. MÍNIMA ($d_{b,\min}$)</b></label>
+                                <select id="selDbMinVigaDMO" class="w3-select w3-border w3-round w3-small" onchange="evaluarSmaxC21()"></select>
+                            </div>
+                        </div>
+
+                        <!-- Campos Columna DMO -->
+                        <div id="camposColumnaDMO" class="w3-row-padding oculto" style="margin: 0 -16px;">
+                            <div class="w3-col l4 m6 w3-margin-bottom">
+                                <label class="w3-tiny w3-text-grey w3-block"><b>UBICACIÓN RESPECTO A $\ell_o$</b></label>
+                                <select id="selRegionColDMO" class="w3-select w3-border w3-round w3-small" onchange="evaluarSmaxC21()">
+                                    <option value="fueraLo" selected>Fuera de longitud confinada $\ell_o$ — mitad central (C.21.3.5.11)</option>
+                                    <option value="dentroLo">Dentro de longitud confinada $\ell_o$ (C.21.3.5.6)</option>
+                                </select>
+                            </div>
+                            <div class="w3-col l4 m6 w3-margin-bottom">
+                                <label class="w3-tiny w3-text-grey w3-block"><b>DIMENSIÓN MENOR $b_{\min}$ (mm)</b></label>
+                                <input type="number" id="inpBminDMO" class="w3-input w3-border w3-round w3-small" value="350" min="150" onchange="evaluarSmaxC21()">
+                            </div>
+                            <div class="w3-col l4 m6 w3-margin-bottom">
+                                <label class="w3-tiny w3-text-grey w3-block"><b>BARRA LONG. MÍNIMA ($d_{b,\min}$)</b></label>
+                                <select id="selDbMinColDMO" class="w3-select w3-border w3-round w3-small" onchange="evaluarSmaxC21()"></select>
+                            </div>
+                        </div>
+
+                        <!-- Campos DMI -->
+                        <div id="camposDMI" class="w3-tiny w3-text-grey oculto">
+                            En sistema <b>DMI</b> aplican los requisitos generales de confinamiento transversal del Capítulo C.7 (`C.7.10` / `C.7.11`) y `C.12.15`.
+                        </div>
+
+                        <div id="resultadoVerificadorC21" class="estado-smax estado-ok oculto"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SUBPANEL B: FACTORES DE MODIFICACIÓN C.12.2.4 Y C.12.1.2 -->
+            <div class="subpanel-tecnico">
+                <b style="color: var(--azul-profundo); font-size: 0.95em; display: block; margin-bottom: 12px;">B. FACTORES DE MODIFICACIÓN Y LÍMITES NORMATIVOS (NSR-10 C.12.2.4 y C.12.1.2)</b>
+                
+                <div class="w3-row-padding" style="margin: 0 -16px;">
+                    <div class="w3-col l4 m6 w3-margin-bottom" id="panelPosicion">
+                        <label class="w3-tiny w3-text-grey w3-block"><b>UBICACIÓN DEL REFUERZO ($\psi_t$)</b></label>
+                        <select id="selPsiT" class="w3-select w3-border w3-round w3-small" onchange="generarTabla()">
+                            <option value="1.0" selected>Normal / Inferior ($\psi_t = 1.0$)</option>
+                            <option value="1.3">Superior: &gt; 300 mm concreto fresco debajo ($\psi_t = 1.3$)</option>
+                        </select>
+                    </div>
+
+                    <div class="w3-col l4 m6 w3-margin-bottom">
+                        <label class="w3-tiny w3-text-grey w3-block"><b>RECUBRIMIENTO EPÓXICO ($\psi_e$)</b></label>
+                        <select id="selPsiE" class="w3-select w3-border w3-round w3-small" onchange="generarTabla()">
+                            <option value="1.0" selected>Sin recubrimiento epóxico ($\psi_e = 1.0$)</option>
+                            <option value="1.2">Epóxico con recub. $\ge 3d_b$ y sep. $\ge 6d_b$ ($\psi_e = 1.2$)</option>
+                            <option value="1.5">Otros casos con recubrimiento epóxico ($\psi_e = 1.5$)</option>
+                        </select>
+                    </div>
+
+                    <div class="w3-col l4 m12 w3-margin-bottom">
+                        <label class="w3-tiny w3-text-grey w3-block"><b>TIPO DE CONCRETO ($\lambda$)</b></label>
+                        <select id="selLambda" class="w3-select w3-border w3-round w3-small" onchange="generarTabla()">
+                            <option value="1.0" selected>Concreto de peso normal ($\lambda = 1.0$)</option>
+                            <option value="0.75">Concreto liviano ($\lambda \le 0.75$, salvo ensayo $f_{ct}$)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="w3-tiny w3-text-grey" style="line-height: 1.5;">
+                    • <b>Factor de tamaño ($\psi_s$):</b> Asignado automáticamente: <b>$0.8$</b> para barras N.º 6 o menores y <b>$1.0$</b> para barras N.º 7 o mayores.<br>
+                    • <b>Topes obligatorios aplicados automáticamente:</b> $\psi_t \cdot \psi_e \le 1.7$ (`C.12.2.4`), $\sqrt{f'_c} \le 8.3\text{ MPa}$ (`C.12.1.2`), y $\frac{c_b + K_{tr}}{d_b} \le 2.50$ (`C.12.2.3`).
+                </div>
+            </div>
+
+            <!-- TABLA COMPARATIVA DE LÍMITES SÍSMICOS C.21 -->
+            <div class="subpanel-tecnico">
+                <b style="color: var(--azul-profundo); font-size: 0.9em; display: block; margin-bottom: 6px;">C. REFERENCIA NORMATIVA DE ESPACIAMIENTO $s$ Y DISPOSICIONES SÍSMICAS (NSR-10 CAPÍTULO C.21)</b>
+                <div style="overflow-x: auto;">
+                    <table class="tabla-c21" id="tablaRefC21">
+                        <thead>
+                            <tr>
+                                <th>Elemento</th>
+                                <th>Referencia NSR-10</th>
+                                <th>Criterio de Espaciamiento $s$ y Detallamiento</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr id="rowRefVigaDES">
+                                <td><b>Viga DES</b></td>
+                                <td><b>C.21.5.2.3</b></td>
+                                <td>$s \le \min(d/4,\; 100\text{ mm})$ con estribos cerrados de confinamiento en toda la longitud del traslapo. Prohibido en nudos, a menos de $2h$ del nudo o en zonas de fluencia por flexión.</td>
+                            </tr>
+                            <tr id="rowRefColDES">
+                                <td><b>Columna DES</b></td>
+                                <td><b>C.21.6.4.3 / C.21.6.3.2</b></td>
+                                <td>$s \le \min(b_{\min}/4,\; 6d_b,\; s_o)$. Empalmes permitidos únicamente en la mitad central de la longitud libre y diseñados como empalmes a tracción.</td>
+                            </tr>
+                            <tr id="rowRefVigaDMO">
+                                <td><b>Viga DMO</b></td>
+                                <td><b>C.21.3.4.6 y .8</b></td>
+                                <td>Depende de la región del elemento: dentro de zonas confinadas ($2h$) aplica C.21.3.4.6; fuera de ellas aplica C.21.3.4.8 ($s \le d/2$). No existe una regla general única de $d/2$ para traslapos.</td>
+                            </tr>
+                            <tr id="rowRefColDMO">
+                                <td><b>Columna DMO</b></td>
+                                <td><b>C.21.3.5.3, .6 y .11</b></td>
+                                <td>Empalmes únicamente en la mitad central y diseñados a tracción (`C.21.3.5.3`). El límite de $s$ depende de si el tramo queda dentro (`C.21.3.5.6`) o fuera (`C.21.3.5.11`) de la longitud confinada $\ell_o$.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ALERTAS CONTEXTUALES DINÁMICAS -->
+            <div id="msgColumnaSismica" class="w3-panel w3-pale-red w3-leftbar w3-border-red w3-padding-small w3-round w3-small w3-margin-top oculto">
+                <b>⚠️ Disposición Sísmica en Columnas DES / DMO (C.21.6.3.2 / C.21.3.5.3):</b> Los empalmes por traslapo deben ubicarse únicamente en la <b>mitad central</b> de la longitud libre de la columna y deben diseñarse como <b>empalmes a tracción</b> (no aplica empalme a compresión). La <b>Clase A</b> solo procede si se cumplen simultáneamente las condiciones de C.12.15.2.
+            </div>
+            
+            <div id="msgColumnaDMI" class="w3-panel w3-light-grey w3-leftbar w3-border-grey w3-padding-small w3-round w3-small w3-margin-top oculto">
+                <b>💡 Columnas DMI / General (NSR-10 C.12.17):</b> Verifique el estado de esfuerzo de la barra bajo las combinaciones de carga: si todas las barras están a compresión $\rightarrow$ C.12.16 ($l_{sc}$); si tracción $\le 0.5f_y \rightarrow$ C.12.17.2.2; si tracción $> 0.5f_y \rightarrow$ Clase B.
+            </div>
+        </div>
+
+        <!-- EXPLICACIÓN CLASES DE EMPALME -->
+        <div class="w3-panel w3-pale-blue w3-leftbar w3-border-blue w3-padding-small w3-round w3-small w3-margin-top no-print">
+            <b>💡 ¿Cuándo usar Clase A o Clase B? (NSR-10 C.12.15)</b>
+            <ul style="margin: 5px 0 0 20px;">
+                <li><b>Clase A (1.0 $l_d$):</b> Se permite <b>SOLO</b> cuando se cumplen simultáneamente estas dos condiciones: el área proporcionada es $\ge 2 \times$ la requerida por cálculo, <b>Y</b> se empalma el 50% o menos del refuerzo total dentro del traslapo.</li>
+                <li><b>Clase B (1.3 $l_d$):</b> Es el caso general exigido por la norma cuando no se cumplen las condiciones anteriores.</li>
+            </ul>
+        </div>
+
+        <!-- TABLA DE RESULTADOS -->
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 40px; border-bottom: 2px solid var(--azul-profundo); padding-bottom: 10px; flex-wrap: wrap; gap: 15px;">
+            <div>
+                <h3 style="border: none; margin: 0; padding: 0;">2. TABLA PARA DESPIECE (MÉTODO DETALLADO C.12.2.3)</h3>
+                <span class="w3-small w3-text-grey" id="txtEcuacion">Evaluación explícita de $c_b$ y $K_{tr} = \frac{40 A_{tr}}{s n}$ con $\frac{c_b + K_{tr}}{d_b} \le 2.50$ y $\sqrt{f'_c} \le 8.3\text{ MPa}$</span>
+            </div>
+            
+            <div class="no-print" style="display: flex; gap: 20px; flex-wrap: wrap; align-items: flex-end;">
+                <!-- SECCIÓN DE CHIPS PARA RESALTAR -->
+                <div>
+                    <label class="w3-small w3-text-grey w3-block" style="margin-bottom: 5px;"><b>RESALTAR BARRAS:</b></label>
+                    <div id="contenedorChips" style="display: flex; flex-wrap: wrap; gap: 4px;">
+                        <!-- Chips generados por JS -->
+                    </div>
+                </div>
+
+                <div>
+                    <label class="w3-small w3-text-grey w3-block"><b>MOSTRAR VALORES:</b></label>
+                    <select id="selRedondeo" class="w3-select w3-border w3-round w3-small" style="width: auto;" onchange="generarTabla()">
+                        <option value="obra10" selected>Adoptado para despiece — 10 cm</option>
+                        <option value="obra5">Adoptado para despiece — 5 cm</option>
+                        <option value="norma">Calculados exactos de norma</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="w3-small w3-text-grey w3-block"><b>UNIDADES:</b></label>
+                    <select id="selUnidades" class="w3-select w3-border w3-round w3-small" style="width: auto;" onchange="generarTabla()">
+                        <option value="cm" selected>Centímetros (cm)</option>
+                        <option value="mm">Milímetros (mm)</option>
+                        <option value="m">Metros (m)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="tabla-container">
+            <table class="tabla-traslapos" id="tablaMain">
+                <thead id="theadTabla">
+                    <!-- Encabezados dinámicos por JS -->
+                </thead>
+                <tbody id="tbodyResultados">
+                    <!-- Filas generadas por JS -->
+                </tbody>
+            </table>
+        </div>
+
+        <div id="noteConf" class="w3-small w3-text-grey w3-margin-top" style="font-style: italic;">
+            * Cuando el índice calculado $\frac{c_b + K_{tr}}{d_b}$ supera <b>2.50</b>, se limita automáticamente a <b>2.50</b> conforme a NSR-10 C.12.2.3 para prevenir falla por arrancamiento (pullout).
+        </div>
+
+        <div class="w3-panel w3-sand w3-leftbar w3-border-orange w3-padding-small w3-round w3-small w3-margin-top no-print">
+            <b>⚠️ Nota para barras de mayor diámetro (N.º 9 a N.º 11):</b> Verifique que las ramas contabilizadas en $A_{tr}$ crucen efectivamente el plano de hendimiento de estas barras y evalúe empalmes mecánicos o soldados cuando exista congestión de refuerzo. (NSR-10 C.12.14.2.1 prohíbe empalmes por traslapo en barras mayores a N.º 11).
+        </div>
+
+        <div class="w3-margin-top no-print" style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <button class="btn-accion btn-copiar" onclick="copiarTabla()"><i class="fa fa-copy"></i> Copiar a Excel</button>
+            <button class="btn-accion btn-imprimir" onclick="exportarPDF()"><i class="fa fa-file-pdf-o"></i> Generar Memoria PDF</button>
+        </div>
+
+        <!-- MÓDULO: BARRAS DIFERENTES -->
+        <div class="panel-control no-print w3-margin-top">
+            <h4 style="margin-top:0; font-weight: bold; color: var(--azul-profundo);">3. EMPALME DE BARRAS DE DIFERENTE DIÁMETRO (C.12.15.3)</h4>
+            <p class="w3-small w3-text-grey">Según NSR-10 C.12.15.3, cuando se empalman por traslapo barras de diferente diámetro a tracción, la longitud de empalme debe ser el mayor valor entre $l_d$ de la barra mayor y la longitud de empalme por traslapo (Clase A o Clase B) de la barra menor, calculadas ambas con sus parámetros detallados C.12.2.3.</p>
+            
+            <div class="w3-row-padding">
+                <div class="w3-col m4 w3-margin-bottom">
+                    <label class="w3-tiny"><b>Barra 1 (Menor)</b></label>
+                    <select id="selBarra1" class="w3-select w3-border w3-round w3-small" onchange="calcularEmpalmeMixto()"></select>
+                </div>
+                <div class="w3-col m4 w3-margin-bottom">
+                    <label class="w3-tiny"><b>Barra 2 (Mayor)</b></label>
+                    <select id="selBarra2" class="w3-select w3-border w3-round w3-small" onchange="calcularEmpalmeMixto()"></select>
+                </div>
+                <div class="w3-col m4">
+                    <div class="w3-card w3-round w3-padding w3-center" style="background: #fdf6f0; border-left: 3px solid var(--naranja-estructural);">
+                        <span class="w3-tiny">TRASLAPO CLASE B REQUERIDO</span><br>
+                        <b class="w3-xlarge w3-text-red" id="resMixto">--</b>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN PEDAGÓGICA -->
+        <div class="w3-row-padding w3-margin-top no-print" style="margin-top: 50px !important;">
+            <div class="w3-col l12">
+                <blockquote style="border-left: 5px solid var(--azul-profundo); padding: 15px 20px; background: white; font-style: italic; font-size: 1.1em; color: #475569; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.02);">
+                    "El método detallado C.12.2.3 no es un recurso para acortar traslapos por conveniencia: es la herramienta normativa para cuantificar el confinamiento transversal que realmente existe en el detalle constructivo."
+                </blockquote>
+            </div>
+        </div>
+
+        <!-- CASOS DE ESTUDIO Y GLOSARIO -->
+        <div class="w3-row-padding w3-margin-top no-print">
+            <details class="w3-panel w3-border w3-round w3-white" style="cursor: pointer;">
+                <summary style="font-weight: bold; padding: 12px 10px; color: var(--azul-profundo);">
+                    🧩 Formulación Normativa Aplicada (NSR-10 C.12.1.2 y C.12.2.3)
+                </summary>
+                <div class="w3-padding w3-small" style="border-top: 1px solid #eee;">
+                    <div class="math-scroll">
+                        <p><b>Ecuación General de Longitud de Desarrollo (C.12-1):</b></p>
+                        <p>$$l_d = \left( \frac{f_y}{1.1 \lambda \sqrt{f'_c}} \cdot \frac{\psi_t \psi_e \psi_s}{\left(\frac{c_b + K_{tr}}{d_b}\right)} \right) d_b \ge 300\text{ mm}$$</p>
+                        
+                        <p><b>Índice de Confinamiento Transversal (C.12-2) y Límites Normativos:</b></p>
+                        <p>$$K_{tr} = \frac{40 A_{tr}}{s \cdot n} \qquad \text{sujeto a:} \quad \frac{c_b + K_{tr}}{d_b} \le 2.50, \quad \psi_t \psi_e \le 1.70, \quad \sqrt{f'_c} \le 8.3\text{ MPa (C.12.1.2)}$$</p>
+                    </div>
+                    <ul>
+                        <li>$c_b = \min\left(c_c + \frac{d_b}{2},\; \frac{s_b}{2}\right)$, donde $c_c$ es el recubrimiento libre hasta la barra longitudinal y $s_b$ es la separación centro a centro entre barras longitudinales.</li>
+                        <li>$A_{tr} = N_{\text{ramas efectivas}} \cdot A_{b,\text{estribo}}$ dentro del espaciamiento $s$ que atraviesan el plano potencial de hendimiento.</li>
+                    </ul>
+                </div>
+            </details>
+
+            <details class="w3-panel w3-border w3-round w3-white" style="cursor: pointer; margin-top: 10px;">
+                <summary style="font-weight: bold; padding: 12px 10px; color: var(--azul-profundo);">
+                    📖 Glosario de Factores y Parámetros Detallados
+                </summary>
+                <div class="w3-padding w3-small" style="border-top: 1px solid #eee;">
+                    <ul style="margin-top:0;">
+                        <li><b>$K_{tr}$ (Índice de confinamiento transversal):</b> Cuantifica la restricción aportada por las ramas de estribos que cruzan el plano potencial de hendimiento longitudinal del concreto.</li>
+                        <li><b>$n$ (Barras empalmadas en el plano):</b> Número de barras que se desarrollan o traslapan simultáneamente a lo largo del plano de hendimiento considerado.</li>
+                        <li><b>$\psi_t$ (Ubicación):</b> $1.3$ cuando se vacían más de $300\text{ mm}$ de concreto fresco debajo del refuerzo horizontal; $1.0$ en otros casos.</li>
+                        <li><b>$\psi_e$ (Epóxico):</b> $1.5$ o $1.2$ para barras con recubrimiento epóxico; $1.0$ para barras sin recubrimiento ($\psi_t \psi_e \le 1.7$).</li>
+                        <li><b>$\psi_s$ (Tamaño de barra):</b> $0.8$ para barras N.º 6 o menores; $1.0$ para barras N.º 7 o mayores.</li>
+                        <li><b>$\lambda$ (Concreto liviano):</b> Máximo $0.75$ para concreto liviano (salvo determinación mediante $f_{ct}$); $1.0$ para concreto de peso normal.</li>
+                    </ul>
+                </div>
+            </details>
+        </div>
+
+        <hr style="border: 0; height: 1px; background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(230, 126, 34, 0.75), rgba(0, 0, 0, 0)); margin-top: 50px;">
+        
+        <!-- NAVEGACIÓN INFERIOR -->
+        <div class="w3-center w3-padding-32 no-print">
+            <a href="../index.html" class="w3-button w3-light-grey w3-round-large w3-border"><i class="fa fa-home"></i> Inicio</a>
+        </div>
+
+        <!-- PROTOCOLO DE INTEGRIDAD -->
+        <div class="w3-panel w3-sand w3-leftbar w3-border-red w3-padding-16 w3-margin-top no-print" style="max-width: 1000px; margin: 20px auto; font-style: italic;">
+            <h5 class="w3-text-dark-grey" style="margin-top: 0;"><b>⚠️ Protocolo de Integridad Técnica y Académica</b></h5>
+            <p class="w3-small w3-margin-0">
+                Esta herramienta implementa la ecuación general <b>NSR-10 C.12.2.3</b> para el cálculo detallado de longitudes de desarrollo y empalmes por traslapo en vigas y columnas. 
+                Es responsabilidad del ingeniero diseñador verificar el plano potencial de hendimiento real, las ramas efectivas que lo atraviesan ($A_{tr}$), el número real de barras empalmadas ($n$) y los requisitos sísmicos de espaciamiento de <b>NSR-10 Capítulo C.21</b>. <b>Todo proyecto constructivo debe contar con la revisión y firma de un ingeniero estructural con matrícula profesional vigente.</b>
+            </p>
+        </div>
+
+        <!-- UTTERANCES (COMENTARIOS GITHUB) -->
+        <div class="w3-container w3-margin-top w3-padding-32 no-print">
+            <h3 class="w3-border-red">Consultas y Discusión Técnica</h3>
+            <p class="w3-small w3-text-grey">Inicia sesión con tu cuenta de GitHub para dejar una pregunta o comentario técnico sobre el método detallado C.12.2.3.</p>
+            <script src="https://utteranc.es/client.js"
+                repo="rafacorreacolombia/Hormigon-armado"
+                issue-term="pathname"
+                theme="github-light"
+                crossorigin="anonymous"
+                async>
+            </script>                                        
+        </div>
+
+        <div class="no-print" style="max-width: 800px; margin: auto; padding: 0 15px;">
+            <hr style="border: 0; height: 1px; background-color: #ddd; margin: 40px 0;">
+        </div>
+                        
+    </div>
+       
+    <footer class="w3-container w3-padding-32 w3-center w3-text-grey w3-light-grey w3-margin-top no-print">
+        <div class="w3-border-top w3-border-grey w3-padding-24" style="max-width: 500px; margin: auto;">
+            <img src="../assets/IsotipoFClaroT.png" alt="Logotipo Criterio Estructural - Pie de página" class="brand-logo-footer" onerror="this.src='https://via.placeholder.com/200x60/F4F5F7/1A2530?text=CRITERIO+ESTRUCTURAL'">
+            <p class="w3-medium"><b>Autor</b></p>
+
+            <h4 style="margin:0;">
+                <b>Ing. Rafael Antonio Correa Melano</b>
+            </h4>
+            
+            <p class="w3-small">
+                Ingeniero Civil • M.IE.<br>
+                Universidad Industrial de Santander
+            </p>
+            
+            <hr style="opacity:0.2">
+            
+            <p class="w3-small w3-text-grey">
+                <b>Criterio Estructural</b><br>
+                © 2026 Rafael Antonio Correa Melano.<br>
+                Todos los derechos reservados.
+            </p>
+            <div class="w3-margin-top">
+                <span class="w3-tag w3-round w3-white w3-border w3-border-red w3-text-red w3-small">Bucaramanga, Colombia 🇨🇴</span>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<script>
+    // BASE DE DATOS DE BARRAS
+    const barras = [
+        { name: "N° 3", n: 3, db: 9.53 },
+        { name: "N° 4", n: 4, db: 12.70 },
+        { name: "N° 5", n: 5, db: 15.88 },
+        { name: "N° 6", n: 6, db: 19.05 },
+        { name: "N° 7", n: 7, db: 22.23 },
+        { name: "N° 8", n: 8, db: 25.40 },
+        { name: "N° 9", n: 9, db: 28.65 },
+        { name: "N° 10", n: 10, db: 32.26 },
+        { name: "N° 11", n: 11, db: 35.81 }
+    ];
+
+    // CONJUNTO DE BARRAS DESTACADAS
+    let calibresDestacados = new Set();
+
+    // INICIALIZACIÓN
+    window.onload = function() {
+        let sel1 = document.getElementById('selBarra1');
+        let sel2 = document.getElementById('selBarra2');
+        let selDbDES = document.getElementById('selDbMinDES');
+        let selDbVigaDMO = document.getElementById('selDbMinVigaDMO');
+        let selDbColDMO = document.getElementById('selDbMinColDMO');
+
+        barras.forEach((b, index) => {
+            sel1.innerHTML += `<option value="${index}" ${b.n===5 ? 'selected':''}>${b.name}</option>`;
+            sel2.innerHTML += `<option value="${index}" ${b.n===8 ? 'selected':''}>${b.name}</option>`;
+            let optDb = `<option value="${b.db}" ${b.n===5 ? 'selected':''}>${b.name} (${b.db.toFixed(1)} mm)</option>`;
+            selDbDES.innerHTML += optDb;
+            selDbVigaDMO.innerHTML += optDb;
+            selDbColDMO.innerHTML += optDb;
+        });
+        
+        inicializarChips();
+        actualizarContexto();
+    };
+
+    // GENERAR CHIPS DE SELECCIÓN
+    function inicializarChips() {
+        const container = document.getElementById('contenedorChips');
+        barras.forEach(b => {
+            let chip = document.createElement('span');
+            chip.className = 'chip-calibre';
+            chip.innerText = b.name;
+            chip.onclick = function() {
+                if (calibresDestacados.has(b.n)) {
+                    calibresDestacados.delete(b.n);
+                    chip.classList.remove('activo');
+                } else {
+                    calibresDestacados.add(b.n);
+                    chip.classList.add('activo');
+                }
+                generarTabla(); 
+            };
+            container.appendChild(chip);
+        });
+    }
+
+    // TOGGLE DEL VERIFICADOR GEOMÉTRICO C.21
+    function toggleVerificadorC21() {
+        const activo = document.getElementById('chkVerificarC21').checked;
+        const pendiente = document.getElementById('estadoSmaxPendiente');
+        const panelCampos = document.getElementById('panelCamposC21');
+
+        if (activo) {
+            pendiente.classList.add('oculto');
+            panelCampos.classList.remove('oculto');
+            evaluarSmaxC21();
+        } else {
+            pendiente.classList.remove('oculto');
+            panelCampos.classList.add('oculto');
+        }
+    }
+
+    // EVALUACIÓN GEOMÉTRICA DE SMAX SEGÚN C.21
+    function evaluarSmaxC21() {
+        if (!document.getElementById('chkVerificarC21').checked) return;
+
+        const elemento = document.getElementById('selElemento').value;
+        const sismo = document.getElementById('selSismo').value;
+        const sIngresado = parseFloat(document.getElementById('inpSepEstribos').value) || 100;
+        const resDiv = document.getElementById('resultadoVerificadorC21');
+
+        // Ocultar subcampos primero
+        document.getElementById('camposVigaDES').classList.add('oculto');
+        document.getElementById('camposColumnaDES').classList.add('oculto');
+        document.getElementById('camposVigaDMO').classList.add('oculto');
+        document.getElementById('camposColumnaDMO').classList.add('oculto');
+        document.getElementById('camposDMI').classList.add('oculto');
+        resDiv.classList.add('oculto');
+
+        if (sismo === 'DMI') {
+            document.getElementById('camposDMI').classList.remove('oculto');
+            return;
+        }
+
+        let smax = 0;
+        let detalle = "";
+
+        if (elemento === 'viga' && sismo === 'DES') {
+            document.getElementById('camposVigaDES').classList.remove('oculto');
+            const d = parseFloat(document.getElementById('inpDVigaDES').value) || 440;
+            smax = Math.min(d / 4, 100);
+            detalle = `C.21.5.2.3 (Viga DES): $s_{\\max} = \\min(d/4 = ${(d/4).toFixed(1)}\\text{ mm},\\; 100\\text{ mm}) = \\mathbf{${smax.toFixed(1)}\\text{ mm}}$`;
+        } else if (elemento === 'columna' && sismo === 'DES') {
+            document.getElementById('camposColumnaDES').classList.remove('oculto');
+            const bmin = parseFloat(document.getElementById('inpBminDES').value) || 400;
+            const dbmin = parseFloat(document.getElementById('selDbMinDES').value) || 15.88;
+            const hx = parseFloat(document.getElementById('inpHxDES').value) || 250;
+            const soRaw = 100 + ((350 - hx) / 3);
+            const so = Math.min(Math.max(soRaw, 100), 150);
+            smax = Math.min(bmin / 4, 6 * dbmin, so);
+            detalle = `C.21.6.4.3 (Columna DES): $s_{\\max} = \\min(b_{\\min}/4 = ${(bmin/4).toFixed(1)}\\text{ mm},\\; 6d_{b,\\min} = ${(6*dbmin).toFixed(1)}\\text{ mm},\\; s_o = ${so.toFixed(1)}\\text{ mm}) = \\mathbf{${smax.toFixed(1)}\\text{ mm}}$`;
+        } else if (elemento === 'viga' && sismo === 'DMO') {
+            document.getElementById('camposVigaDMO').classList.remove('oculto');
+            const region = document.getElementById('selRegionVigaDMO').value;
+            const d = parseFloat(document.getElementById('inpDVigaDMO').value) || 440;
+            const dbmin = parseFloat(document.getElementById('selDbMinVigaDMO').value) || 15.88;
+            const areaEst = parseFloat(document.getElementById('selEstribo').value) || 71;
+            const dbEst = areaEst === 71 ? 9.53 : (areaEst === 129 ? 12.70 : 15.88);
+            if (region === 'fuera2h') {
+                smax = d / 2;
+                detalle = `C.21.3.4.8 (Viga DMO fuera de $2h$): $s_{\\max} = d/2 = \\mathbf{${smax.toFixed(1)}\\text{ mm}}$`;
+            } else {
+                smax = Math.min(d / 4, 8 * dbmin, 24 * dbEst, 300);
+                detalle = `C.21.3.4.6 (Viga DMO dentro de $2h$): $s_{\\max} = \\min(d/4, 8d_b, 24d_{b,\\text{est}}, 300) = \\mathbf{${smax.toFixed(1)}\\text{ mm}}$`;
+            }
+        } else if (elemento === 'columna' && sismo === 'DMO') {
+            document.getElementById('camposColumnaDMO').classList.remove('oculto');
+            const region = document.getElementById('selRegionColDMO').value;
+            const bmin = parseFloat(document.getElementById('inpBminDMO').value) || 350;
+            const dbmin = parseFloat(document.getElementById('selDbMinColDMO').value) || 15.88;
+            const areaEst = parseFloat(document.getElementById('selEstribo').value) || 71;
+            const dbEst = areaEst === 71 ? 9.53 : (areaEst === 129 ? 12.70 : 15.88);
+            if (region === 'dentroLo') {
+                smax = Math.min(8 * dbmin, 24 * dbEst, bmin / 2, 300);
+                detalle = `C.21.3.5.6 (Columna DMO dentro de $\\ell_o$): $s_{\\max} = \\min(8d_b, 24d_{b,\\text{est}}, b_{\\min}/2, 300) = \\mathbf{${smax.toFixed(1)}\\text{ mm}}$`;
+            } else {
+                smax = Math.min(16 * dbmin, 48 * dbEst, bmin, 300);
+                detalle = `C.21.3.5.11 / C.7.10.5 (Columna DMO fuera de $\\ell_o$, mitad central): $s_{\\max} \\le \\mathbf{${smax.toFixed(1)}\\text{ mm}}$ (verifique disposiciones de C.21.3.5.11)`;
+            }
+        }
+
+        resDiv.classList.remove('oculto');
+        if (sIngresado <= smax + 0.01) {
+            resDiv.className = "estado-smax estado-ok";
+            resDiv.innerHTML = `✅ <b>Cumple criterio geométrico:</b> El espaciamiento ingresado ($s = ${sIngresado}\\text{ mm}$) no excede ${detalle}.`;
+        } else {
+            resDiv.className = "estado-smax estado-alerta";
+            resDiv.innerHTML = `⚠️ <b>Excede límite sísmico:</b> El espaciamiento ingresado ($s = ${sIngresado}\\text{ mm}$) supera ${detalle}. Ajuste $s$ en el panel superior.`;
+        }
+
+        if (window.MathJax && MathJax.typesetPromise) {
+            MathJax.typesetPromise([document.getElementById('panelCamposC21')]);
+        }
+    }
+
+    // LÓGICA DE INTERFAZ DINÁMICA
+    function actualizarContexto() {
+        const elemento = document.getElementById('selElemento').value;
+        const sismo = document.getElementById('selSismo').value;
+        const panelPos = document.getElementById('panelPosicion');
+        
+        // Resaltar fila activa en la tabla normativa C.21
+        document.getElementById('rowRefVigaDES').classList.remove('fila-c21-activa');
+        document.getElementById('rowRefColDES').classList.remove('fila-c21-activa');
+        document.getElementById('rowRefVigaDMO').classList.remove('fila-c21-activa');
+        document.getElementById('rowRefColDMO').classList.remove('fila-c21-activa');
+
+        if (elemento === 'viga' && sismo === 'DES') document.getElementById('rowRefVigaDES').classList.add('fila-c21-activa');
+        if (elemento === 'columna' && sismo === 'DES') document.getElementById('rowRefColDES').classList.add('fila-c21-activa');
+        if (elemento === 'viga' && sismo === 'DMO') document.getElementById('rowRefVigaDMO').classList.add('fila-c21-activa');
+        if (elemento === 'columna' && sismo === 'DMO') document.getElementById('rowRefColDMO').classList.add('fila-c21-activa');
+
+        // Alertas específicas de columna
+        document.getElementById('msgColumnaSismica').classList.add('oculto');
+        document.getElementById('msgColumnaDMI').classList.add('oculto');
+
+        if (elemento === 'viga') {
+            panelPos.style.opacity = '1';
+            document.getElementById('selPsiT').disabled = false;
+        } else {
+            // En columnas las barras son verticales -> psi_t = 1.0 siempre
+            document.getElementById('selPsiT').value = "1.0";
+            document.getElementById('selPsiT').disabled = true;
+            panelPos.style.opacity = '0.6';
+
+            if (sismo === 'DES' || sismo === 'DMO') {
+                document.getElementById('msgColumnaSismica').classList.remove('oculto');
+            } else {
+                document.getElementById('msgColumnaDMI').classList.remove('oculto');
+            }
+        }
+        
+        evaluarSmaxC21();
+        generarTabla();
+    }
+
+    // OBTENER PARÁMETROS DETALLADOS ACTUALES
+    function obtenerParametrosDetallados() {
+        const fc = parseFloat(document.getElementById('selFc').value);
+        const fy = parseFloat(document.getElementById('selFy').value);
+        const elemento = document.getElementById('selElemento').value;
+        const sismo = document.getElementById('selSismo').value;
+
+        // Tope NSR-10 C.12.1.2: sqrt(f'c) <= 8.3 MPa
+        const sqrtFc = Math.min(Math.sqrt(fc), 8.3);
+
+        const areaEstribo = parseFloat(document.getElementById('selEstribo').value) || 71;
+        const numRamas = Math.max(1, parseFloat(document.getElementById('inpRamas').value) || 2);
+        const sepEstribos = Math.max(10, parseFloat(document.getElementById('inpSepEstribos').value) || 100);
+        const numBarras = Math.max(1, parseFloat(document.getElementById('inpNumBarras').value) || 2);
+        const cc = Math.max(10, parseFloat(document.getElementById('inpRecubrimiento').value) || 50);
+        const sb = Math.max(20, parseFloat(document.getElementById('inpSepBarras').value) || 120);
+
+        const psi_t = (elemento === 'columna') ? 1.0 : (parseFloat(document.getElementById('selPsiT').value) || 1.0);
+        const psi_e = parseFloat(document.getElementById('selPsiE').value) || 1.0;
+        const lambda = parseFloat(document.getElementById('selLambda').value) || 1.0;
+
+        // Límite C.12.2.4: psi_t * psi_e <= 1.7
+        const psi_te = Math.min(psi_t * psi_e, 1.7);
+
+        // Ecuación C.12-2: Ktr = 40 * Atr / (s * n)
+        const Atr = numRamas * areaEstribo;
+        const Ktr = (40 * Atr) / (sepEstribos * numBarras);
+
+        return {
+            fc, sqrtFc, fy, elemento, sismo,
+            areaEstribo, numRamas, sepEstribos, numBarras, cc, sb,
+            psi_t, psi_e, psi_te, lambda,
+            Atr, Ktr
+        };
+    }
+
+    // CALCULAR ld BASE EN MM SEGÚN C.12.2.3
+    function calcularLdBarra(b, p) {
+        const cb1 = p.cc + (b.db / 2);
+        const cb2 = p.sb / 2;
+        const cb = Math.min(cb1, cb2);
+
+        const indice_raw = (cb + p.Ktr) / b.db;
+        const indice_capped = Math.min(indice_raw, 2.5);
+        const psi_s = (b.n <= 6) ? 0.8 : 1.0;
+
+        // Ecuación C.12-1 con sqrt(f'c) <= 8.3 MPa (C.12.1.2)
+        const ld_mm = (p.fy / (1.1 * p.lambda * p.sqrtFc)) * ((p.psi_te * psi_s) / indice_capped) * b.db;
+
+        return {
+            cb,
+            psi_s,
+            indice_raw,
+            indice_capped,
+            ld_mm
+        };
+    }
+
+    // UTILIDAD DE REDONDEO Y FORMATEO DE UNIDADES
+    const redondearCm = (mm, incrementoCm) => {
+        let cm = mm / 10;
+        return Math.ceil(cm / incrementoCm) * incrementoCm;
+    };
+
+    const formatearUnidad = (mm_val, unidad) => {
+        if (unidad === 'mm') return mm_val.toFixed(0);
+        if (unidad === 'cm') return (mm_val / 10).toFixed(1).replace('.0', '');
+        if (unidad === 'm') return (mm_val / 1000).toFixed(2);
+        return mm_val;
+    };
+
+    // MOTOR DE CÁLCULO NORMATIVO
+    function generarTabla() {
+        const p = obtenerParametrosDetallados();
+        const modo = document.getElementById('selRedondeo').value; 
+        const unidad = document.getElementById('selUnidades').value;
+
+        // Actualizar indicadores superiores
+        document.getElementById('lblAtr').innerText = p.Atr.toFixed(0);
+        document.getElementById('lblKtr').innerText = p.Ktr.toFixed(2);
+        document.getElementById('lblSqrtFc').innerText = p.sqrtFc.toFixed(2) + (Math.sqrt(p.fc) > 8.3 ? " (tope C.12.1.2)" : "");
+
+        const isColumnaSismica = (p.elemento === 'columna' && (p.sismo === 'DMO' || p.sismo === 'DES'));
+        
+        // Renderizar Encabezados
+        const thead = document.getElementById('theadTabla');
+        thead.innerHTML = `
+            <tr>
+                <th>Barra</th>
+                <th>$d_b$<br><span style="font-size:0.8em; font-weight:normal;">(mm)</span></th>
+                <th>$\\psi_s$</th>
+                <th>$c_b$<br><span style="font-size:0.8em; font-weight:normal;">(mm)</span></th>
+                <th class="col-conf">$\\frac{c_b + K_{tr}}{d_b}$</th>
+                <th class="col-ld" id="thDesarrollo">Desarrollo<br><span style="font-size:0.8em; font-weight:normal;">($l_d$) [${unidad}]</span></th>
+                <th id="thClaseA">Traslapo Clase A<br><span style="font-size:0.8em; font-weight:normal;">(1.0 $l_d$) [${unidad}]</span></th>
+                <th class="col-claseb" id="thClaseB">Traslapo Clase B<br><span style="font-size:0.8em; font-weight:normal;">(1.3 $l_d$) [${unidad}]</span></th>
+                <th id="thCompresion">Compresión<br><span style="font-size:0.8em; font-weight:normal;">($l_{sc}$) [${unidad}]</span></th>
+            </tr>
+        `;
+
+        const thComp = document.getElementById('thCompresion');
+        if (thComp) {
+            thComp.style.opacity = isColumnaSismica ? '0.35' : '1';
+            thComp.innerHTML = isColumnaSismica 
+                ? `Compresión<br><span style="font-size:0.75em;">(No Aplica C.21)</span>` 
+                : `Compresión<br><span style="font-size:0.8em; font-weight:normal;">($l_{sc}$) [${unidad}]</span>`;
+        }
+
+        let tbody = document.getElementById('tbodyResultados');
+        tbody.innerHTML = '';
+
+        barras.forEach(b => {
+            const calc = calcularLdBarra(b, p);
+            const conf_str = calc.indice_raw > 2.5 ? "2.50*" : calc.indice_raw.toFixed(2);
+
+            let ld_final_mm = Math.max(calc.ld_mm, 300);
+            let claseA_mm = Math.max(calc.ld_mm * 1.0, 300);
+            let claseB_mm = Math.max(calc.ld_mm * 1.3, 300);
+
+            let lsc_mm = (p.fy <= 420) ? (0.071 * p.fy * b.db) : ((0.13 * p.fy - 24) * b.db);
+            lsc_mm = Math.max(lsc_mm, 300);
+
+            let ld_out, cla_out, clb_out, lsc_out;
+            if (modo.startsWith('obra')) {
+                let multiploCm = modo === 'obra10' ? 10 : 5; 
+                ld_out = formatearUnidad(redondearCm(ld_final_mm, multiploCm) * 10, unidad);
+                cla_out = formatearUnidad(redondearCm(claseA_mm, multiploCm) * 10, unidad);
+                clb_out = formatearUnidad(redondearCm(claseB_mm, multiploCm) * 10, unidad);
+                lsc_out = formatearUnidad(redondearCm(lsc_mm, multiploCm) * 10, unidad);
+            } else {
+                ld_out = formatearUnidad(ld_final_mm, unidad);
+                cla_out = formatearUnidad(claseA_mm, unidad);
+                clb_out = formatearUnidad(claseB_mm, unidad);
+                lsc_out = formatearUnidad(lsc_mm, unidad);
+            }
+
+            let tr = document.createElement('tr');
+            if (calibresDestacados.has(b.n)) {
+                tr.className = "fila-destacada";
+            }
+            let compStyle = isColumnaSismica ? 'color: #cbd5e1; text-decoration: line-through;' : '';
+            
+            tr.innerHTML = `
+                <td><b>${b.name}</b></td>
+                <td>${b.db.toFixed(1)}</td>
+                <td>${calc.psi_s.toFixed(1)}</td>
+                <td>${calc.cb.toFixed(1)}</td>
+                <td class="col-conf">${conf_str}</td>
+                <td class="col-ld">${ld_out}</td>
+                <td>${cla_out}</td>
+                <td class="col-claseb">${clb_out}</td>
+                <td style="${compStyle}">${lsc_out}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+        evaluarSmaxC21();
+        calcularEmpalmeMixto();
+        
+        if (window.MathJax && MathJax.typesetPromise) {
+            MathJax.typesetPromise([document.getElementById('tablaMain')]);
+        }
+    }
+
+    // CÁLCULO DE BARRAS MIXTAS
+    function calcularEmpalmeMixto() {
+        const p = obtenerParametrosDetallados();
+        const modo = document.getElementById('selRedondeo').value; 
+        const unidad = document.getElementById('selUnidades').value;
+        
+        let idx1 = parseInt(document.getElementById('selBarra1').value);
+        let idx2 = parseInt(document.getElementById('selBarra2').value);
+        let bMenor = barras[Math.min(idx1, idx2)];
+        let bMayor = barras[Math.max(idx1, idx2)];
+
+        const ld_mayor_base = calcularLdBarra(bMayor, p).ld_mm;
+        const ld_menor_base = calcularLdBarra(bMenor, p).ld_mm;
+
+        let traslapo_menor_base = ld_menor_base * 1.3;
+        let empalme_req_mm = Math.max(Math.max(ld_mayor_base, traslapo_menor_base), 300);
+        
+        let resultado = "";
+        if (modo.startsWith('obra')) {
+            let multiploCm = modo === 'obra10' ? 10 : 5;
+            resultado = formatearUnidad(redondearCm(empalme_req_mm, multiploCm) * 10, unidad) + ` ${unidad}`;
+        } else {
+            resultado = formatearUnidad(empalme_req_mm, unidad) + ` ${unidad}`;
+        }
+        document.getElementById('resMixto').innerText = resultado;
+    }
+
+    // COPIAR A PORTAPAPELES
+    function copiarTabla() {
+        const p = obtenerParametrosDetallados();
+        const selElem = document.getElementById('selElemento');
+        const elemento = selElem.options[selElem.selectedIndex].text.toUpperCase();
+        const un = document.getElementById('selUnidades').value;
+        const modoSelect = document.getElementById('selRedondeo');
+        const modoText = modoSelect.options[modoSelect.selectedIndex].text;
+        const estriboSelect = document.getElementById('selEstribo');
+        const estriboText = estriboSelect.options[estriboSelect.selectedIndex].text;
+        
+        let texto = "CRITERIO ESTRUCTURAL\nCalculadora de Traslapos — Método Detallado C.12.2.3 | DES–DMO\n";
+        texto += `-------------------------------------------------------------------\n`;
+        texto += `ELEMENTO: ${elemento} (${p.sismo})\n`;
+        texto += `f'c: ${p.fc} MPa (√f'c usado = ${p.sqrtFc.toFixed(2)} MPa, tope C.12.1.2) | fy: ${p.fy} MPa | λ: ${p.lambda}\n`;
+        texto += `Estribos: ${p.numRamas} ramas efectivas ${estriboText} @ s = ${p.sepEstribos} mm (Atr = ${p.Atr} mm²)\n`;
+        texto += `Barras en plano de hendimiento (n): ${p.numBarras} | Ktr: ${p.Ktr.toFixed(2)} mm\n`;
+        texto += `Recubrimiento libre a barra (cc): ${p.cc} mm | Sep. ejes barras (sb): ${p.sb} mm\n`;
+        texto += `Factores: ψt = ${p.psi_t} | ψe = ${p.psi_e} (ψt·ψe usado = ${p.psi_te.toFixed(2)})\n`;
+        texto += `Modo: ${modoText}\n`;
+        texto += `-------------------------------------------------------------------\n\n`;
+        
+        let tabla = document.getElementById('tablaMain');
+        texto += `Barra\tdb (mm)\tψs\tcb (mm)\t(cb+Ktr)/db\tDesarrollo (${un})\tClase A (${un})\tClase B (${un})\tCompresión (${un})\n`;
+        
+        for (let i = 1; i < tabla.rows.length; i++) {
+            let fila = tabla.rows[i];
+            let celdas = fila.cells;
+            let esDestacada = fila.classList.contains('fila-destacada');
+            
+            for (let j = 0; j < celdas.length; j++) {
+                let celdaText = celdas[j].innerText;
+                if(j === 0 && esDestacada) celdaText = celdaText + " (*)";
+                texto += celdaText + (j < celdas.length - 1 ? "\t" : "");
+            }
+            texto += "\n";
+        }
+
+        if (calibresDestacados.size > 0) {
+            texto += `\n(*) Filas resaltadas en la interfaz de usuario.\n`;
+        }
+
+        navigator.clipboard.writeText(texto).then(() => {
+            let btn = document.querySelector('.btn-copiar');
+            let original = btn.innerHTML;
+            btn.innerHTML = "<i class='fa fa-check'></i> ¡Copiado a Excel!";
+            setTimeout(() => { btn.innerHTML = original; }, 2000);
+        });
+    }
+
+    // EXPORTAR PDF MEDIANTE IMPRESIÓN
+    function exportarPDF() {
+        const btn = document.querySelector('.btn-imprimir');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = "<i class='fa fa-spinner fa-spin'></i> Preparando...";
+
+        const p = obtenerParametrosDetallados();
+        const selElem = document.getElementById('selElemento');
+        const elemento = selElem.options[selElem.selectedIndex].text.toUpperCase();
+        const un = document.getElementById('selUnidades').value;
+        const modoSelect = document.getElementById('selRedondeo');
+        const modoText = modoSelect.options[modoSelect.selectedIndex].text;
+        const estriboSelect = document.getElementById('selEstribo');
+        const estriboText = estriboSelect.options[estriboSelect.selectedIndex].text;
+        const logoSrc = document.querySelector('.brand-logo-footer').src;
+        
+        const filas = Array.from(document.querySelectorAll('#tbodyResultados tr'));
+        let filasPDF = '';
+        filas.forEach(fila => {
+            const celdas = Array.from(fila.cells);
+            const esDestacada = fila.classList.contains('fila-destacada');
+            const bgDestacada = esDestacada ? 'background: #fff4ed;' : '';
+            const boldDestacada = esDestacada ? 'font-weight: 800; color: #E67E22; border-left: 4px solid #E67E22;' : '';
+
+            filasPDF += `
+                <tr>
+                    <td style="${bgDestacada} ${boldDestacada}">${celdas[0].innerText}</td>
+                    <td style="${bgDestacada}">${celdas[1].innerText}</td>
+                    <td style="${bgDestacada}">${celdas[2].innerText}</td>
+                    <td style="${bgDestacada}">${celdas[3].innerText}</td>
+                    <td style="${bgDestacada} background-color: ${esDestacada? '#fff4ed' : '#f8fafc'}; font-weight: bold;">${celdas[4].innerText}</td>
+                    <td style="${bgDestacada} background-color: ${esDestacada? '#fff4ed' : '#f1f3f5'}; font-weight: bold;">${celdas[5].innerText}</td>
+                    <td style="${bgDestacada}">${celdas[6].innerText}</td>
+                    <td style="${bgDestacada} background-color: ${esDestacada? '#fcece3' : '#fdf2ee'}; font-weight: bold; color: #c0392b;">${celdas[7].innerText}</td>
+                    <td style="${bgDestacada}">${celdas[8].innerText}</td>
+                </tr>
+            `;
+        });
+
+        const printWindow = window.open('', '_blank', 'width=900,height=650');
+        
+        printWindow.document.write(`
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <title>Traslapos Método Detallado C.12.2.3 - Criterio Estructural</title>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&display=swap" rel="stylesheet">
+        <style>
+            * { margin: 0; padding: 0; box-sizing: border-box; }
+            body { 
+                font-family: Arial, Helvetica, sans-serif; 
+                color: #1A2530; 
+                background: white;
+                padding: 25px;
+                line-height: 1.4;
+            }
+            .pdf-header { 
+                text-align: center; 
+                border-bottom: 3px solid #E67E22; 
+                padding-bottom: 12px; 
+                margin-bottom: 20px; 
+            }
+            .pdf-brand { 
+                font-family: 'Montserrat', sans-serif;
+                font-size: 22px; 
+                font-weight: 800; 
+                letter-spacing: 1px; 
+                color: #1A2530; 
+            }
+            .pdf-title { 
+                font-family: 'Montserrat', sans-serif;
+                font-size: 17px; 
+                font-weight: 700; 
+                margin-top: 6px; 
+            }
+            .pdf-subtitle { 
+                font-size: 11px; 
+                font-weight: 700; 
+                margin-top: 6px; 
+                color: #E67E22; 
+            }
+            .pdf-parameters { 
+                border: 1px solid #dce2e8; 
+                background: #F4F5F7; 
+                padding: 12px; 
+                margin-bottom: 18px; 
+                border-radius: 6px; 
+            }
+            .pdf-section-title { 
+                font-size: 12px; 
+                font-weight: 800; 
+                letter-spacing: 0.5px; 
+                color: #1A2530; 
+                margin-bottom: 8px; 
+            }
+            .pdf-param-table { 
+                width: 100%; 
+                border-collapse: collapse; 
+                font-size: 10.5px; 
+            }
+            .pdf-param-table td { 
+                width: 50%; 
+                padding: 6px 8px; 
+                border: 1px solid #dce2e8; 
+                vertical-align: top; 
+            }
+            .tabla-title { 
+                margin-top: 15px;
+                margin-bottom: 8px; 
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .pdf-main-table { 
+                width: 100%; 
+                border-collapse: collapse; 
+                font-size: 10.5px; 
+                margin-bottom: 14px;
+            }
+            .pdf-main-table th { 
+                background: #1A2530; 
+                color: white; 
+                padding: 8px 5px; 
+                text-align: center; 
+                border: 1px solid #1A2530; 
+                font-weight: 700; 
+            }
+            .pdf-main-table td { 
+                padding: 7px 5px; 
+                text-align: center; 
+                border: 1px solid #dce2e8; 
+            }
+            .pdf-main-table tr:nth-child(even) td:not([style*="background: #fff4ed"]) { 
+                background: #f8fafc; 
+            }
+            .pdf-warning { 
+                margin-top: 18px; 
+                padding: 12px; 
+                border-left: 5px solid #E67E22; 
+                background: #fdf6f0; 
+                font-size: 9.5px; 
+                line-height: 1.5; 
+            }
+            .pdf-warning b { 
+                display: block; 
+                margin-bottom: 5px; 
+                font-size: 10.5px;
+            }
+            .pdf-footer { 
+                margin-top: 22px; 
+                padding-top: 10px; 
+                border-top: 1px solid #dce2e8; 
+                text-align: center; 
+                font-size: 9px; 
+                line-height: 1.5; 
+                color: #94a3b8; 
+            }
+            @media print {
+                body { padding: 12px; }
+                .no-print { display: none !important; }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="pdf-header">
+            <img src="${logoSrc}" alt="Logo Criterio Estructural" style="max-width: 180px; height: auto; margin-bottom: 8px;">
+            <div class="pdf-brand">CRITERIO ESTRUCTURAL</div>
+            <div class="pdf-title">CALCULADORA DE TRASLAPOS — MÉTODO DETALLADO C.12.2.3 | DES–DMO</div>
+            <div class="pdf-subtitle">ELEMENTO: ${elemento} · CAPACIDAD DE DISIPACIÓN: ${p.sismo}</div>
+        </div>
+
+        <div class="pdf-parameters">
+            <div class="pdf-section-title">PARÁMETROS DEL PROYECTO Y CONFINAMIENTO TRANSVERSAL</div>
+            <table class="pdf-param-table">
+                <tr>
+                    <td><b>Concreto (f'c) / Acero (fy):</b> ${p.fc} MPa (√f'c = ${p.sqrtFc.toFixed(2)} MPa) / ${p.fy} MPa</td>
+                    <td><b>Factores (ψt · ψe / λ):</b> ${p.psi_t} · ${p.psi_e} (usado ${p.psi_te.toFixed(2)}) / ${p.lambda}</td>
+                </tr>
+                <tr>
+                    <td><b>Refuerzo Transversal:</b> ${p.numRamas} ramas efectivas ${estriboText} @ s = ${p.sepEstribos} mm</td>
+                    <td><b>Área Atr / Índice Ktr:</b> A<sub>tr</sub> = ${p.Atr.toFixed(0)} mm² &nbsp;|&nbsp; K<sub>tr</sub> = ${p.Ktr.toFixed(2)} mm</td>
+                </tr>
+                <tr>
+                    <td><b>Barras en Plano (n):</b> ${p.numBarras} barras en plano de hendimiento</td>
+                    <td><b>Geometría (c<sub>c</sub> / s<sub>b</sub>):</b> c<sub>c</sub> = ${p.cc} mm &nbsp;|&nbsp; s<sub>b</sub> = ${p.sb} mm</td>
+                </tr>
+                <tr>
+                    <td colspan="2"><b>Criterio de Presentación / Redondeo:</b> ${modoText}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="pdf-section-title tabla-title">
+            <span>TABLA DE DESPIECE DETALLADA (Unidades: ${un})</span>
+            <span style="font-size: 9.5px; font-weight: normal; color: #64748b;">Ecuación General NSR-10 C.12.2.3</span>
+        </div>
+
+        <table class="pdf-main-table">
+            <thead>
+                <tr>
+                    <th>Barra</th>
+                    <th>d<sub>b</sub> (mm)</th>
+                    <th>ψ<sub>s</sub></th>
+                    <th>c<sub>b</sub> (mm)</th>
+                    <th>(c<sub>b</sub>+K<sub>tr</sub>)/d<sub>b</sub></th>
+                    <th>Desarrollo<br>l<sub>d</sub></th>
+                    <th>Clase A<br>1.0 l<sub>d</sub></th>
+                    <th>Clase B<br>1.3 l<sub>d</sub></th>
+                    <th>Compresión<br>l<sub>sc</sub></th>
+                </tr>
+            </thead>
+            <tbody>
+                ${filasPDF}
+            </tbody>
+        </table>
+
+        <div style="font-size: 9px; color: #64748b; margin-top: -8px; margin-bottom: 12px; font-style: italic;">
+            * Topes normativos aplicados: (c<sub>b</sub> + K<sub>tr</sub>)/d<sub>b</sub> ≤ 2.50 (C.12.2.3), ψ<sub>t</sub>·ψ<sub>e</sub> ≤ 1.70 (C.12.2.4) y √f'c ≤ 8.3 MPa (C.12.1.2).
+        </div>
+
+        <div class="pdf-warning">
+            <b>⚠️ NOTA DE RESPONSABILIDAD PROFESIONAL</b>
+            <p>
+                Los valores presentados constituyen una memoria de cálculo basada en el método detallado NSR-10 C.12.2.3. 
+                El ingeniero estructural responsable debe garantizar que los planos de despiece reflejen fielmente el espaciamiento de estribos (s), 
+                las ramas efectivas que cruzan el plano potencial de hendimiento (A<sub>tr</sub>), el recubrimiento (c<sub>c</sub>), el número real de barras empalmadas en dicho plano (n) 
+                y los requisitos sísmicos de NSR-10 Capítulo C.21.
+            </p>
+            <p style="margin-top: 6px;">
+                <b>Todo proyecto constructivo debe contar con la revisión y firma de un ingeniero estructural con matrícula profesional vigente.</b>
+            </p>
+        </div>
+
+        <div class="pdf-footer">
+            Criterio Estructural · Calculadora de Traslapos — Método Detallado C.12.2.3 | DES–DMO<br>
+            Generado el ${new Date().toLocaleString('es-CO', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            })}
+        </div>
+    </body>
+    </html>
+        `);
+
+        printWindow.document.close();
+        
+        printWindow.onload = function() {
+            printWindow.focus();
+            setTimeout(() => {
+                printWindow.print();
+                btn.innerHTML = originalText;
+            }, 250);
+        };
+    }
+
+</script>
+
+</body>
+</html>
