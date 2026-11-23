@@ -30,7 +30,7 @@
 
         body { background-color: var(--gris-claro); font-family: 'Segoe UI', sans-serif; color: var(--azul-profundo); }
         .contenedor-principal {
-            max-width: 1250px; margin: 30px auto; border-radius: 12px;
+            max-width: 1280px; margin: 30px auto; border-radius: 12px;
             background: white; padding: 0; overflow: hidden;
             box-shadow: 0 8px 25px rgba(26,37,48,0.15);
         }
@@ -86,7 +86,7 @@
             color: white;
             padding: 6px 12px;
             border-radius: 6px;
-            font-size: 0.85em;
+            font-size: 0.84em;
             font-weight: bold;
         }
         .pill-calculo span { color: var(--naranja-estructural); }
@@ -130,13 +130,14 @@
 
         /* TABLA DE DESPIECE */
         .tabla-container { overflow-x: auto; width: 100%; border-radius: 6px; box-shadow: 0 0 5px rgba(0,0,0,0.05); }
-        .tabla-traslapos { width: 100%; border-collapse: collapse; font-size: 0.92em; min-width: 920px; }
+        .tabla-traslapos { width: 100%; border-collapse: collapse; font-size: 0.90em; min-width: 1020px; }
         .tabla-traslapos th { background-color: var(--azul-profundo) !important; color: white !important; padding: 12px 8px; text-align: center; }
         .tabla-traslapos td { padding: 10px 8px; text-align: center; border-bottom: 1px solid #e2e8f0; transition: background-color 0.3s; }
         .tabla-traslapos tr:hover td { background-color: #f8fafc; }
         .col-ld { background-color: rgba(26, 37, 48, 0.04); font-weight: bold;}
         .col-claseb { background-color: rgba(230, 126, 34, 0.08); font-weight: bold; color: #c0392b;}
         .col-conf { background-color: #f1f5f9; font-weight: bold; color: var(--azul-profundo); }
+        .col-cap { background-color: rgba(16, 185, 129, 0.07); font-weight: bold; color: #065f46; }
 
         /* SISTEMA DE RESALTADO DE CALIBRES */
         .chip-calibre {
@@ -183,9 +184,16 @@
         
         .math-scroll { overflow-x: auto; padding: 10px 0; }
 
-        @media (max-width: 1250px) {
+        @media (max-width: 1280px) {
             .contenedor-principal { width: 100% !important; margin: 0 !important; border-radius: 0 !important; box-shadow: none; padding: 0 !important; }
             .contenido-body { padding: 20px; }
+        }
+
+        @media print {
+            body { background: white !important; }
+            .no-print { display: none !important; }
+            .contenedor-principal { box-shadow: none !important; margin: 0 !important; max-width: 100% !important; }
+            .contenido-body { padding: 10px !important; }
         }
     </style>
 </head>
@@ -205,7 +213,7 @@
         </div>
         
         <h1 class="w3-xxlarge" style="margin: 0; font-weight: bold;">Calculadora de Traslapos — Método Detallado C.12.2.3 | DES–DMO</h1>
-        <div style="font-size: 1.05em; color: #cbd5e1; margin-top: 8px;">Evaluación explícita de $c_b$ y $K_{tr}$ en Vigas y Columnas · NSR-10 C.12 / C.21 · ACI 318 Cap. 25</div>
+        <div style="font-size: 1.05em; color: #cbd5e1; margin-top: 8px;">Evaluación explícita de $c_b$ crítico, $K_{tr}$ y capacidad de barras en sección · NSR-10 C.7 / C.12 / C.21</div>
         
         <div class="flujo-conceptual">
             <span class="flujo-item">CONFINAMIENTO REAL ($c_b + K_{tr}$)</span>
@@ -214,7 +222,7 @@
             <i class="fa fa-arrow-right flujo-flecha-c"></i>
             <span class="flujo-item">EMPALME (C.12.15)</span>
             <i class="fa fa-arrow-right flujo-flecha-c" style="margin: 0 5px;"></i>
-            <span class="flujo-item" style="color: white; border-color: var(--naranja-estructural);">↳ TRASLAPO DETALLADO</span>
+            <span class="flujo-item" style="color: white; border-color: var(--naranja-estructural);">↳ TRASLAPO Y CABIDA</span>
         </div>
 
         <div class="ruta-aprendizaje">
@@ -229,12 +237,12 @@
 
         <!-- NOTA DIFERENCIADORA DE CRITERIO INGENIERIL -->
         <div class="w3-panel dato-box w3-padding-small w3-round w3-small no-print" style="margin-top: 0;">
-            <b>📌 Diferencia con la Guía Simplificada (C.12.2.2):</b> Mientras la herramienta base emplea la expresión simplificada de <b>C.12.2.2</b> (que omite el aporte explícito de los estribos), esta calculadora implementa la <b>ecuación general C.12.2.3</b>. Su propósito no es simplemente obtener traslapos más cortos, sino <b>reconocer cuantitativamente el confinamiento transversal que realmente existe en el detalle constructivo</b> mediante $A_{tr}$ y $K_{tr}$.
+            <b>📌 Criterio Ingenieril (C.12.2.3 + C.7.6.4):</b> Esta calculadora implementa la <b>ecuación general NSR-10 C.12.2.3</b> reconociendo el confinamiento transversal real ($A_{tr}$ y $K_{tr}$) y evaluando <b>automáticamente el $c_b$ más conservador en zona de traslapo</b> (contabilizando la barra compañera $d_b$ pegada al lado más la separación libre mínima normativa de <b>C.7.6</b>). Además, a partir de las dimensiones de la sección, estima el <b>número máximo de barras</b> que caben cumpliendo separación mínima en la zona empalmada.
         </div>
 
         <!-- PANEL DE CONFIGURACIÓN -->
         <div class="panel-control no-print">
-            <h4 style="margin-top:0; font-weight: bold; color: var(--azul-profundo);">1. PARÁMETROS DEL PROYECTO Y ELEMENTO</h4>
+            <h4 style="margin-top:0; font-weight: bold; color: var(--azul-profundo);">1. PARÁMETROS DEL PROYECTO, REFUERZO TRANSVERSAL Y SECCIÓN</h4>
             
             <div class="w3-row-padding" style="margin: 0 -16px;">
                 <!-- MATERIALES -->
@@ -280,18 +288,19 @@
             <!-- ALERTA DE VALIDACIÓN DE ENTRADAS -->
             <div id="panelErrorValidacion" class="alerta-validacion oculto"></div>
 
-            <!-- SUBPANEL A: GEOMETRÍA Y CONFINAMIENTO TRANSVERSAL (Ktr y cb) -->
+            <!-- SUBPANEL A: REFUERZO TRANSVERSAL (Ktr) Y GEOMETRÍA DE SECCIÓN -->
             <div class="subpanel-tecnico">
                 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 12px;">
-                    <b style="color: var(--azul-profundo); font-size: 0.95em;">A. REFUERZO TRANSVERSAL ($A_{tr}$) Y GEOMETRÍA PARA $c_b$ Y $K_{tr}$ (C.12.2.3)</b>
+                    <b style="color: var(--azul-profundo); font-size: 0.95em;">A. REFUERZO TRANSVERSAL ($A_{tr}$, $K_{tr}$) Y GEOMETRÍA DE LA SECCIÓN (C.12.2.3 y C.7.6)</b>
                     <div class="pill-calculo">
                         $A_{tr}$ = <span id="lblAtr">142</span> mm² &nbsp;|&nbsp; $K_{tr}$ = <span id="lblKtr">28.40</span> mm &nbsp;|&nbsp; $c_c$ = <span id="lblCc">49.5</span> mm &nbsp;|&nbsp; $\sqrt{f'_c}$ = <span id="lblSqrtFc">5.29</span> MPa
                     </div>
                 </div>
 
+                <!-- FILA 1: ESTRIBOS, RAMAS, ESPACIAMIENTO, N Y RECUBRIMIENTO -->
                 <div class="w3-row-padding" style="margin: 0 -16px;">
-                    <div class="w3-col l2 m4 s6 w3-margin-bottom">
-                        <label class="w3-tiny w3-text-grey w3-block"><b>ESTRIBO (CALIBRE)</b></label>
+                    <div class="w3-col l3 m4 s6 w3-margin-bottom">
+                        <label class="w3-tiny w3-text-grey w3-block"><b>ESTRIBO / ESPIRAL (CALIBRE)</b></label>
                         <select id="selEstribo" class="w3-select w3-border w3-round w3-small" onchange="generarTabla()">
                             <option value="3" selected>N.º 3 (71 mm² · 9.5 mm)</option>
                             <option value="4">N.º 4 (129 mm² · 12.7 mm)</option>
@@ -309,29 +318,71 @@
                         <input type="number" id="inpSepEstribos" class="w3-input w3-border w3-round w3-small" value="100" min="25" max="500" step="5" onchange="generarTabla()">
                     </div>
 
-                    <div class="w3-col l2 m4 s6 w3-margin-bottom">
+                    <div class="w3-col l2 m6 s6 w3-margin-bottom">
                         <label class="w3-tiny w3-text-grey w3-block"><b>BARRAS EN PLANO ($n$)</b></label>
                         <input type="number" id="inpNumBarras" class="w3-input w3-border w3-round w3-small" value="2" min="1" max="30" step="1" onchange="generarTabla()">
                     </div>
 
-                    <div class="w3-col l2 m4 s6 w3-margin-bottom">
+                    <div class="w3-col l3 m6 s12 w3-margin-bottom">
                         <label class="w3-tiny w3-text-grey w3-block"><b>RECUB. LIBRE ESTRIBO $r$ (mm)</b></label>
                         <input type="number" id="inpRecubrimiento" class="w3-input w3-border w3-round w3-small" value="40" min="15" max="150" step="1" onchange="generarTabla()">
                     </div>
+                </div>
 
-                    <div class="w3-col l2 m4 s6 w3-margin-bottom">
-                        <label class="w3-tiny w3-text-grey w3-block"><b>SEP. EJES BARRAS $s_b$ (mm)</b></label>
-                        <input type="number" id="inpSepBarras" class="w3-input w3-border w3-round w3-small" value="120" min="25" max="500" step="1" onchange="generarTabla()">
+                <!-- FILA 2: DIMENSIONES DE LA SECCIÓN PARA CABIDA DE BARRAS -->
+                <div class="w3-row-padding" style="margin: 4px -16px 0 -16px; padding-top: 10px; border-top: 1px dashed #cbd5e1;">
+                    <!-- DIMENSIONES VIGA -->
+                    <div id="grupoGeomViga">
+                        <div class="w3-col l3 m4 s12 w3-margin-bottom">
+                            <label class="w3-tiny w3-text-grey w3-block"><b>ANCHO DE VIGA $b_w$ (mm)</b></label>
+                            <input type="number" id="inpBwViga" class="w3-input w3-border w3-round w3-small" value="300" min="150" max="2500" step="10" onchange="generarTabla()">
+                        </div>
+                        <div class="w3-col l9 m8 s12 w3-tiny w3-text-grey" style="padding-top: 10px;">
+                            <b>Criterio automático de $c_b$ y cabida en Viga (`NSR-10 C.7.6.1` + `C.7.6.4`):</b> En zona de traslapo se contabiliza la barra compañera $d_b$ pegada al lado más la separación libre mínima $s_{\text{libre,mín}} = \max(d_b,\; 25\text{ mm})$, adoptando $c_b = \min\left(c_c + \frac{d_b}{2},\; \frac{d_b + s_{\text{libre,mín}}}{2}\right)$ (valor más conservador para $l_d$) y calculando las barras máximas en una fila con traslapo horizontal dentro de $b_{\text{disp}} = b_w - 2c_c$.
+                        </div>
+                    </div>
+
+                    <!-- DIMENSIONES COLUMNA -->
+                    <div id="grupoGeomColumna" class="oculto">
+                        <div class="w3-col l3 m4 s6 w3-margin-bottom">
+                            <label class="w3-tiny w3-text-grey w3-block"><b>SECCIÓN DE COLUMNA</b></label>
+                            <select id="selTipoColumna" class="w3-select w3-border w3-round w3-small" onchange="cambiarTipoColumna()">
+                                <option value="rectangular" selected>Rectangular ($b \times h$)</option>
+                                <option value="circular">Circular (Diámetro $D$)</option>
+                            </select>
+                        </div>
+
+                        <div id="wrapColRect">
+                            <div class="w3-col l2 m4 s6 w3-margin-bottom">
+                                <label class="w3-tiny w3-text-grey w3-block"><b>LADO $b$ (mm)</b></label>
+                                <input type="number" id="inpColB" class="w3-input w3-border w3-round w3-small" value="400" min="200" max="3000" step="10" onchange="generarTabla()">
+                            </div>
+                            <div class="w3-col l2 m4 s6 w3-margin-bottom">
+                                <label class="w3-tiny w3-text-grey w3-block"><b>LADO $h$ (mm)</b></label>
+                                <input type="number" id="inpColH" class="w3-input w3-border w3-round w3-small" value="400" min="200" max="3000" step="10" onchange="generarTabla()">
+                            </div>
+                        </div>
+
+                        <div id="wrapColCirc" class="oculto">
+                            <div class="w3-col l4 m8 s6 w3-margin-bottom">
+                                <label class="w3-tiny w3-text-grey w3-block"><b>DIÁMETRO COLUMNA $D$ (mm)</b></label>
+                                <input type="number" id="inpColD" class="w3-input w3-border w3-round w3-small" value="450" min="250" max="3000" step="10" onchange="generarTabla()">
+                            </div>
+                        </div>
+
+                        <div class="w3-col l5 m12 s12 w3-tiny w3-text-grey" style="padding-top: 8px;">
+                            <b>Criterio en Columna (`NSR-10 C.7.6.3` + `C.7.6.4`):</b> Sep. libre mínima en traslapo $s_{\text{libre,mín}} = \max(1.5d_b,\; 40\text{ mm})$, adoptando $c_b = \min\left(c_c + \frac{d_b}{2},\; \frac{d_b + s_{\text{libre,mín}}}{2}\right)$ y evaluando cabida perimetral con barra traslapada <b>paralela</b> o <b>perpendicular</b> al estribo/espiral.
+                        </div>
                     </div>
                 </div>
 
-                <!-- ADVERTENCIAS TÉCNICAS DE PRECAUCIÓN SOBRE ATR, N Y CC -->
+                <!-- ADVERTENCIAS TÉCNICAS DE PRECAUCIÓN SOBRE ATR, N Y SEPARACIÓN EN TRASLAPO -->
                 <div class="w3-panel w3-white w3-leftbar w3-border-orange w3-padding-small w3-round w3-tiny" style="margin: 6px 0 8px 0; line-height: 1.55;">
-                    <b>⚠️ Precauciones críticas sobre el plano potencial de hendimiento (NSR-10 C.12.2.3):</b>
+                    <b>⚠️ Advertencias normativas sobre plano de hendimiento y separación mínima en traslapos (NSR-10 C.12.2.3 y C.7.6.4):</b>
                     <ul style="margin: 4px 0 0 18px; padding: 0;">
-                        <li><b>Ramas efectivas ($A_{tr} = N_{\text{ramas efectivas}} A_b$):</b> El valor inicial de <b>2 ramas</b> es válido <i>únicamente</i> cuando ambas ramas del estribo cerrado cruzan el plano de hendimiento considerado. No contabilice automáticamente todas las ramas físicas de la sección (precaución especial en <b>columnas con barras distribuidas en sus cuatro caras</b>).</li>
-                        <li><b>Número de barras ($n$):</b> El valor inicial de <b>$n = 2$</b> corresponde a una disposición típica de dos barras empalmadas en una misma capa, pero <b>no es universal ni necesariamente conservador</b>: aumentar $n$ reduce $K_{tr}$ y aumenta $l_d$, mientras que si el plano real contiene una sola barra ($n = 1$), usar $n = 2$ sobrestimaría $K_{tr}$ y reduciría artificialmente $l_d$. Confirme el plano de hendimiento real de la sección.</li>
-                        <li><b>Cálculo detallado de $c_c$ y $c_b$:</b> A partir del recubrimiento libre al estribo ($r_{\text{libre}}$) y el diámetro del estribo seleccionado ($d_{b,\text{est}}$), se calcula el recubrimiento libre a la barra longitudinal como $c_c = r_{\text{libre}} + d_{b,\text{est}}$, y se determina $c_b = \min(c_c + d_b/2,\; s_b/2)$.</li>
+                        <li><b>Separación mínima obligatoria incluso en zonas de traslapo (`C.7.6.4`):</b> La distancia libre entre un empalme por traslapo y los empalmes o barras adyacentes debe cumplir $s_{\text{libre}} \ge \max(d_b,\; 25\text{ mm})$ en <b>vigas (`C.7.6.1`)</b> y $s_{\text{libre}} \ge \max(1.5d_b,\; 40\text{ mm})$ en <b>columnas (`C.7.6.3`)</b>. Esta herramienta aplica dicho límite crítico para calcular $c_b$ (contabilizando el diámetro $d_b$ de la barra pegada al lado más $s_{\text{libre,mín}}$) y determinar la cabida máxima de barras.</li>
+                        <li><b>Ramas efectivas ($A_{tr} = N_{\text{ramas efectivas}} A_b$):</b> El valor inicial de <b>2 ramas</b> es válido <i>únicamente</i> cuando ambas ramas del estribo cerrado cruzan el plano de hendimiento considerado (precaución especial en columnas con barras en sus cuatro caras).</li>
+                        <li><b>Número de barras ($n$):</b> El valor inicial de <b>$n = 2$</b> corresponde a dos barras empalmadas en una misma capa, pero <b>no es universal ni necesariamente conservador</b>: si el plano real contiene una sola barra ($n = 1$), usar $n = 2$ sobrestimaría $K_{tr}$ y reduciría artificialmente $l_d$. Confirme el plano de hendimiento real de la sección.</li>
                     </ul>
                 </div>
 
@@ -364,7 +415,7 @@
                         <!-- Campos Columna DES -->
                         <div id="camposColumnaDES" class="w3-row-padding oculto" style="margin: 0 -16px;">
                             <div class="w3-col l3 m6 w3-margin-bottom">
-                                <label class="w3-tiny w3-text-grey w3-block"><b>DIMENSIÓN MENOR $b_{\min}$ (mm)</b></label>
+                                <label class="w3-tiny w3-text-grey w3-block"><b>DIMENSIÓN MENOR $b_{\min}$ / $D$ (mm)</b></label>
                                 <input type="number" id="inpBminDES" class="w3-input w3-border w3-round w3-small" value="400" min="150" max="3000" onchange="evaluarSmaxC21()">
                             </div>
                             <div class="w3-col l3 m6 w3-margin-bottom">
@@ -414,7 +465,7 @@
                                     </select>
                                 </div>
                                 <div class="w3-col l3 m6 w3-margin-bottom" id="wrapBminColDMO">
-                                    <label class="w3-tiny w3-text-grey w3-block"><b>DIMENSIÓN MENOR $b_{\min}$ (mm)</b></label>
+                                    <label class="w3-tiny w3-text-grey w3-block"><b>DIMENSIÓN MENOR $b_{\min}$ / $D$ (mm)</b></label>
                                     <input type="number" id="inpBminDMO" class="w3-input w3-border w3-round w3-small" value="350" min="150" max="3000" onchange="evaluarSmaxC21()">
                                 </div>
                                 <div class="w3-col l3 m6 w3-margin-bottom oculto" id="wrapDColDMO">
@@ -470,10 +521,11 @@
                     </div>
 
                     <div class="w3-col l4 m12 w3-margin-bottom">
-                        <label class="w3-tiny w3-text-grey w3-block"><b>TIPO DE CONCRETO ($\lambda$)</b></label>
+                        <label class="w3-tiny w3-text-grey w3-block"><b>TIPO DE CONCRETO ($\lambda$) [C.12.2.4(d)]</b></label>
                         <select id="selLambda" class="w3-select w3-border w3-round w3-small" onchange="generarTabla()">
                             <option value="1.0" selected>Concreto de peso normal ($\lambda = 1.0$)</option>
-                            <option value="0.75">Concreto liviano ($\lambda \le 0.75$, salvo ensayo $f_{ct}$)</option>
+                            <option value="0.85">Concreto liviano con arena de peso normal ($\lambda = 0.85$)</option>
+                            <option value="0.75">Otros concretos livianos ($\lambda \le 0.75$, salvo ensayo $f_{ct}$)</option>
                         </select>
                     </div>
                 </div>
@@ -514,7 +566,7 @@
                             <tr id="rowRefColDMO">
                                 <td><b>Columna DMO</b></td>
                                 <td><b>C.21.3.2 / .5.3, .6 y .11</b></td>
-                                <td>Si $P_u &gt; 0.10 A_g f'_c$ (`C.21.3.5`): $s_o \le \min(8d_{b,\min},\; 16d_{b,\text{est}},\; b_{\min}/3,\; 150\text{ mm})$ en $\ell_o$, $s_{\max} \le 2s_o$ fuera de $\ell_o$, y $h_x \le 350\text{ mm}$. Si $P_u \le 0.10 A_g f'_c$, rige `C.21.3.4`. Empalmes únicamente en la mitad central y a tracción.</td>
+                                <td>Si $P_u &gt; 0.10 A_g f'_c$ (`C.21.3.5`): $s_o \le \min(8d_{b,\min},\; 16d_{b,\text{est}},\; b_{\min}/3,\; 150\text{ mm})$ en $\ell_o$, $s_{\max} \le 2s_o$ fuera de $\ell_o$, y $h_x \le 350\text{ mm}$. Si $P_u \le 0.10 A_g f'_c$, rige `C.21.3.4`. Empalmes únicamente en la mitad central y a tracción (`C.21.3.5.3`).</td>
                             </tr>
                         </tbody>
                     </table>
@@ -523,7 +575,7 @@
 
             <!-- ALERTAS CONTEXTUALES DINÁMICAS -->
             <div id="msgColumnaSismica" class="w3-panel w3-pale-red w3-leftbar w3-border-red w3-padding-small w3-round w3-small w3-margin-top oculto">
-                <b>⚠️ Disposición Sísmica en Columnas DES / DMO (C.21.6.3.2 / C.21.3.5.3):</b> Los empalmes por traslapo deben ubicarse únicamente en la <b>mitad central</b> de la longitud libre de la columna y deben diseñarse como <b>empalmes a tracción</b> (no aplica empalme a compresión). La <b>Clase A</b> solo procede si se cumplen simultáneamente las condiciones de C.12.15.2.
+                <b>⚠️ Disposición Sísmica en Columnas DES / DMO (C.21.6.3.2 / C.21.3.5.3):</b> Los empalmes por traslapo deben ubicarse únicamente en la <b>mitad central</b> de la longitud libre de la columna y deben diseñarse como <b>empalmes a tracción</b> (no aplica empalme a compresión). La <b>Clase A</b> solo procede si se cumplen simultáneamente las condiciones estrictas de C.12.15.2 (en zonas sísmicas rara vez se satisface).
             </div>
         </div>
 
@@ -539,8 +591,8 @@
         <!-- TABLA DE RESULTADOS -->
         <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 40px; border-bottom: 2px solid var(--azul-profundo); padding-bottom: 10px; flex-wrap: wrap; gap: 15px;">
             <div>
-                <h3 style="border: none; margin: 0; padding: 0;">2. TABLA PARA DESPIECE (MÉTODO DETALLADO C.12.2.3)</h3>
-                <span class="w3-small w3-text-grey" id="txtEcuacion">Evaluación explícita de $c_b$ y $K_{tr} = \frac{40 A_{tr}}{s n}$ con $\frac{c_b + K_{tr}}{d_b} \le 2.50$ y $\sqrt{f'_c} \le 8.3\text{ MPa}$</span>
+                <h3 style="border: none; margin: 0; padding: 0;">2. TABLA PARA DESPIECE Y CABIDA EN SECCIÓN (MÉTODO DETALLADO C.12.2.3)</h3>
+                <span class="w3-small w3-text-grey" id="txtEcuacion">Evaluación crítica de $c_b$ en zona traslapada (`C.7.6.4`), $K_{tr} = \frac{40 A_{tr}}{s n}$ con $\frac{c_b + K_{tr}}{d_b} \le 2.50$ y $\sqrt{f'_c} \le 8.3\text{ MPa}$</span>
             </div>
             
             <div class="no-print" style="display: flex; gap: 20px; flex-wrap: wrap; align-items: flex-end;">
@@ -571,6 +623,11 @@
             </div>
         </div>
 
+        <!-- ADVERTENCIA DE CÁLCULO PRELIMINAR DE CABIDA -->
+        <div class="w3-panel w3-pale-yellow w3-leftbar w3-border-amber w3-padding-small w3-round w3-small w3-margin-top">
+            <b>📐 Nota sobre la cabida máxima de barras en la tabla:</b> El número máximo de barras reportado en esta tabla es <b>preliminar</b>: asume que <b>todas las barras de la fila/perímetro tienen el mismo calibre</b> y que <b>todas se traslapan simultáneamente en esa sección</b> cumpliendo $s_{\text{libre,mín}}$ (`C.7.6.4`). Si combina dos calibres distintos en el despiece, utilice el <b>Módulo 3</b> inferior para afinar la cabida según el calibre mayor.
+        </div>
+
         <div class="tabla-container">
             <table class="tabla-traslapos" id="tablaMain">
                 <thead id="theadTabla">
@@ -582,8 +639,9 @@
             </table>
         </div>
 
-        <div id="noteConf" class="w3-small w3-text-grey w3-margin-top" style="font-style: italic;">
-            * Cuando el índice calculado $\frac{c_b + K_{tr}}{d_b}$ supera <b>2.50</b>, se limita automáticamente a <b>2.50</b> conforme a NSR-10 C.12.2.3 para prevenir falla por arrancamiento (pullout).
+        <div id="noteConf" class="w3-small w3-text-grey w3-margin-top" style="font-style: italic; line-height: 1.55;">
+            * Cuando el índice calculado $\frac{c_b + K_{tr}}{d_b}$ supera <b>2.50</b>, se limita automáticamente a <b>2.50</b> conforme a NSR-10 C.12.2.3 para prevenir falla por arrancamiento (pullout).<br>
+            <span id="noteCabidaDetalle"></span>
         </div>
 
         <div class="w3-panel w3-sand w3-leftbar w3-border-orange w3-padding-small w3-round w3-small w3-margin-top no-print">
@@ -595,24 +653,30 @@
             <button class="btn-accion btn-imprimir" onclick="exportarPDF()"><i class="fa fa-file-pdf-o"></i> Generar Memoria PDF</button>
         </div>
 
-        <!-- MÓDULO: BARRAS DIFERENTES -->
+        <!-- MÓDULO: BARRAS DIFERENTES Y CABIDA AFINADA -->
         <div class="panel-control no-print w3-margin-top">
-            <h4 style="margin-top:0; font-weight: bold; color: var(--azul-profundo);">3. EMPALME DE BARRAS DE DIFERENTE DIÁMETRO (C.12.15.3)</h4>
-            <p class="w3-small w3-text-grey">Según NSR-10 C.12.15.3, cuando se empalman por traslapo barras de diferente diámetro a tracción, la longitud de empalme debe ser el mayor valor entre $l_d$ de la barra mayor y la longitud de empalme por traslapo de la barra menor. Este módulo evalúa de forma conservadora el <b>empalme Clase B ($1.3 l_d$)</b> para la barra menor ($\max(l_{d,\text{mayor}},\; 1.3 l_{d,\text{menor}},\; 300\text{ mm})$) y no evalúa la excepción de Clase A.</p>
+            <h4 style="margin-top:0; font-weight: bold; color: var(--azul-profundo);">3. EMPALME DE BARRAS DE DIFERENTE DIÁMETRO (C.12.15.3) Y CABIDA AFINADA EN SECCIÓN</h4>
+            <p class="w3-small w3-text-grey">Según NSR-10 C.12.15.3, cuando se empalman por traslapo barras de diferente diámetro a tracción, la longitud de empalme debe ser el mayor valor entre $l_d$ de la barra mayor y la longitud de empalme por traslapo de la barra menor. Este módulo evalúa de forma conservadora el <b>empalme Clase B ($1.3 l_d$)</b> para la barra menor ($\max(l_{d,\text{mayor}},\; 1.3 l_{d,\text{menor}},\; 300\text{ mm})$) y afina la <b>cabida máxima de barras en la sección gobernada por el calibre mayor</b>.</p>
             
-            <div class="w3-row-padding">
-                <div class="w3-col m4 w3-margin-bottom">
+            <div class="w3-row-padding" style="margin: 0 -16px;">
+                <div class="w3-col l3 m6 w3-margin-bottom">
                     <label class="w3-tiny"><b>Barra 1 (Menor)</b></label>
                     <select id="selBarra1" class="w3-select w3-border w3-round w3-small" onchange="calcularEmpalmeMixto()"></select>
                 </div>
-                <div class="w3-col m4 w3-margin-bottom">
+                <div class="w3-col l3 m6 w3-margin-bottom">
                     <label class="w3-tiny"><b>Barra 2 (Mayor)</b></label>
                     <select id="selBarra2" class="w3-select w3-border w3-round w3-small" onchange="calcularEmpalmeMixto()"></select>
                 </div>
-                <div class="w3-col m4">
-                    <div class="w3-card w3-round w3-padding w3-center" style="background: #fdf6f0; border-left: 3px solid var(--naranja-estructural);">
+                <div class="w3-col l3 m6 w3-margin-bottom">
+                    <div class="w3-card w3-round w3-padding w3-center" style="background: #fdf6f0; border-left: 3px solid var(--naranja-estructural); height: 100%;">
                         <span class="w3-tiny">TRASLAPO CLASE B REQUERIDO</span><br>
                         <b class="w3-xlarge w3-text-red" id="resMixto">--</b>
+                    </div>
+                </div>
+                <div class="w3-col l3 m6 w3-margin-bottom">
+                    <div class="w3-card w3-round w3-padding w3-center" style="background: #ecfdf5; border-left: 3px solid #10b981; height: 100%;">
+                        <span class="w3-tiny" id="lblTituloCabidaMixta">MÁX. BARRAS (SEGÚN CALIBRE MAYOR)</span><br>
+                        <b class="w3-medium" style="color: #065f46;" id="resCabidaMixta">--</b>
                     </div>
                 </div>
             </div>
@@ -622,7 +686,7 @@
         <div class="w3-row-padding w3-margin-top no-print" style="margin-top: 50px !important;">
             <div class="w3-col l12">
                 <blockquote style="border-left: 5px solid var(--azul-profundo); padding: 15px 20px; background: white; font-style: italic; font-size: 1.1em; color: #475569; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.02);">
-                    "El método detallado C.12.2.3 no es un recurso para acortar traslapos por conveniencia: es la herramienta normativa para cuantificar el confinamiento transversal que realmente existe en el detalle constructivo."
+                    "El método detallado C.12.2.3 no es un recurso para acortar traslapos por conveniencia: es la herramienta normativa para cuantificar el confinamiento transversal que realmente existe en el detalle constructivo, respetando siempre las separaciones libres mínimas en la zona empalmada."
                 </blockquote>
             </div>
         </div>
@@ -631,7 +695,7 @@
         <div class="w3-row-padding w3-margin-top no-print">
             <details class="w3-panel w3-border w3-round w3-white" style="cursor: pointer;">
                 <summary style="font-weight: bold; padding: 12px 10px; color: var(--azul-profundo);">
-                    🧩 Formulación Normativa Aplicada (NSR-10 C.12.1.2 y C.12.2.3)
+                    🧩 Formulación Normativa Aplicada (NSR-10 C.12.1.2, C.12.2.3 y C.7.6)
                 </summary>
                 <div class="w3-padding w3-small" style="border-top: 1px solid #eee;">
                     <div class="math-scroll">
@@ -642,8 +706,8 @@
                         <p>$$K_{tr} = \frac{40 A_{tr}}{s \cdot n} \qquad \text{sujeto a:} \quad \frac{c_b + K_{tr}}{d_b} \le 2.50, \quad \psi_t \psi_e \le 1.70, \quad \sqrt{f'_c} \le 8.3\text{ MPa (C.12.1.2)}$$</p>
                     </div>
                     <ul>
-                        <li>$c_c = r_{\text{libre}} + d_{b,\text{estribo}}$, donde $r_{\text{libre}}$ es el recubrimiento libre hasta el borde exterior del estribo.</li>
-                        <li>$c_b = \min\left(c_c + \frac{d_b}{2},\; \frac{s_b}{2}\right)$, donde $s_b$ es la separación centro a centro entre barras longitudinales.</li>
+                        <li>$c_c = r_{\text{libre}} + d_{b,\text{estribo}}$, donde $r_{\text{libre}}$ es el recubrimiento libre hasta el borde exterior del estribo o espiral.</li>
+                        <li><b>Control crítico de $c_b$ en zona de traslapo (`C.7.6.4`):</b> $c_b = \min\left(c_c + \frac{d_b}{2},\; \frac{d_b + s_{\text{libre,mín}}}{2}\right)$, con $s_{\text{libre,mín}} = \max(d_b,\; 25\text{ mm})$ en vigas (`C.7.6.1`) y $s_{\text{libre,mín}} = \max(1.5d_b,\; 40\text{ mm})$ en columnas (`C.7.6.3`).</li>
                         <li>$A_{tr} = N_{\text{ramas efectivas}} \cdot A_{b,\text{estribo}}$ dentro del espaciamiento $s$ que atraviesan el plano potencial de hendimiento.</li>
                     </ul>
                 </div>
@@ -657,11 +721,11 @@
                     <ul style="margin-top:0;">
                         <li><b>$K_{tr}$ (Índice de confinamiento transversal):</b> Cuantifica la restricción aportada por las ramas de estribos que cruzan el plano potencial de hendimiento longitudinal del concreto.</li>
                         <li><b>$n$ (Barras empalmadas en el plano):</b> Número de barras que se desarrollan o traslapan simultáneamente a lo largo del plano de hendimiento considerado.</li>
-                        <li><b>$c_c$ (Recubrimiento libre a barra longitudinal):</b> Calculado como la suma del recubrimiento libre al estribo ($r_{\text{libre}}$) más el diámetro del estribo ($d_{b,\text{est}}$).</li>
+                        <li><b>$c_c$ (Recubrimiento libre a barra longitudinal):</b> Suma del recubrimiento libre al estribo ($r_{\text{libre}}$) más el diámetro del estribo ($d_{b,\text{est}}$).</li>
                         <li><b>$\psi_t$ (Ubicación):</b> $1.3$ cuando se vacían más de $300\text{ mm}$ de concreto fresco debajo del refuerzo horizontal; $1.0$ en otros casos.</li>
                         <li><b>$\psi_e$ (Epóxico):</b> $1.5$ o $1.2$ para barras con recubrimiento epóxico; $1.0$ para barras sin recubrimiento ($\psi_t \psi_e \le 1.7$).</li>
                         <li><b>$\psi_s$ (Tamaño de barra):</b> $0.8$ para barras N.º 6 o menores; $1.0$ para barras N.º 7 o mayores.</li>
-                        <li><b>$\lambda$ (Concreto liviano):</b> Máximo $0.75$ para concreto liviano (salvo determinación mediante $f_{ct}$); $1.0$ para concreto de peso normal.</li>
+                        <li><b>$\lambda$ (Concreto liviano):</b> $1.0$ para peso normal; $0.85$ para concreto liviano con arena de peso normal; $0.75$ para otros concretos livianos.</li>
                     </ul>
                 </div>
             </details>
@@ -678,7 +742,7 @@
         <div class="w3-panel w3-sand w3-leftbar w3-border-red w3-padding-16 w3-margin-top no-print" style="max-width: 1000px; margin: 20px auto; font-style: italic;">
             <h5 class="w3-text-dark-grey" style="margin-top: 0;"><b>⚠️ Protocolo de Integridad Técnica y Académica</b></h5>
             <p class="w3-small w3-margin-0">
-                Esta herramienta implementa la ecuación general <b>NSR-10 C.12.2.3</b> para el cálculo detallado de longitudes de desarrollo y empalmes por traslapo en vigas y columnas DES–DMO. 
+                Esta herramienta implementa la ecuación general <b>NSR-10 C.12.2.3</b> junto con los criterios de separación libre mínima de <b>NSR-10 C.7.6</b> para el cálculo detallado de longitudes de desarrollo, empalmes por traslapo y cabida máxima en vigas y columnas DES–DMO. 
                 Es responsabilidad del ingeniero diseñador verificar el plano potencial de hendimiento real, las ramas efectivas que lo atraviesan ($A_{tr}$), el número real de barras empalmadas ($n$) y los requisitos sísmicos integrales de <b>NSR-10 Capítulo C.21</b>. <b>Todo proyecto constructivo debe contar con la revisión y firma de un ingeniero estructural con matrícula profesional vigente.</b>
             </p>
         </div>
@@ -796,6 +860,19 @@
         });
     }
 
+    // CAMBIAR TIPO DE COLUMNA (RECTANGULAR VS CIRCULAR)
+    function cambiarTipoColumna() {
+        const tipo = document.getElementById('selTipoColumna').value;
+        if (tipo === 'rectangular') {
+            document.getElementById('wrapColRect').classList.remove('oculto');
+            document.getElementById('wrapColCirc').classList.add('oculto');
+        } else {
+            document.getElementById('wrapColRect').classList.add('oculto');
+            document.getElementById('wrapColCirc').classList.remove('oculto');
+        }
+        generarTabla();
+    }
+
     // TOGGLE DEL VERIFICADOR GEOMÉTRICO C.21
     function toggleVerificadorC21() {
         const activo = document.getElementById('chkVerificarC21').checked;
@@ -812,7 +889,7 @@
         }
     }
 
-    // EVALUACIÓN GEOMÉTRICA DE SMAX SEGÚN C.21 (RETORNA OBJETO DE ESTADO PARA INTERFAZ Y PDF)
+    // EVALUACIÓN GEOMÉTRICA DE SMAX SEGÚN C.21
     function evaluarSmaxC21() {
         const activo = document.getElementById('chkVerificarC21').checked;
         if (!activo) {
@@ -832,7 +909,6 @@
         const resDiv = document.getElementById('resultadoVerificadorC21');
         const avisoHxDiv = document.getElementById('avisoTransversalHx');
 
-        // Ocultar subcampos primero
         document.getElementById('camposVigaDES').classList.add('oculto');
         document.getElementById('camposColumnaDES').classList.add('oculto');
         document.getElementById('camposVigaDMO').classList.add('oculto');
@@ -861,7 +937,7 @@
             const dbmin = parseFloat(document.getElementById('selDbMinDES').value);
             const hx = parseFloat(document.getElementById('inpHxDES').value);
             if (isNaN(bmin) || bmin < 150 || bmin > 3000 || isNaN(hx) || hx < 50 || hx > 1000) {
-                errorGeom = "Verifique b_min (150–3000 mm) y h_x (50–1000 mm) en Columna DES.";
+                errorGeom = "Verifique b_min / D (150–3000 mm) y h_x (50–1000 mm) en Columna DES.";
             } else {
                 const soRaw = 100 + ((350 - hx) / 3);
                 const so = Math.min(Math.max(soRaw, 100), 150);
@@ -899,7 +975,6 @@
             if (isNaN(puRatio) || puRatio < 0 || puRatio > 1.2) {
                 errorGeom = "La relación axial Pu / (Ag·f'c) debe ser un número entre 0.00 y 1.20.";
             } else if (puRatio <= 0.10) {
-                // C.21.3.2: Pu <= 0.10 Ag f'c -> aplica C.21.3.4
                 document.getElementById('wrapBminColDMO').classList.add('oculto');
                 document.getElementById('wrapHxColDMO').classList.add('oculto');
                 document.getElementById('wrapDColDMO').classList.remove('oculto');
@@ -916,14 +991,13 @@
                     detalleTexto = `C.21.3.2 / C.21.3.4.8 (Columna DMO Pu <= 0.10 Ag f'c, fuera de lo): s_max = d/2 = ${smax.toFixed(1)} mm`;
                 }
             } else {
-                // C.21.3.2: Pu > 0.10 Ag f'c -> aplica C.21.3.5
                 document.getElementById('wrapBminColDMO').classList.remove('oculto');
                 document.getElementById('wrapHxColDMO').classList.remove('oculto');
                 document.getElementById('wrapDColDMO').classList.add('oculto');
                 const bmin = parseFloat(document.getElementById('inpBminDMO').value);
                 const hxDMO = parseFloat(document.getElementById('inpHxDMO').value);
                 if (isNaN(bmin) || bmin < 150 || bmin > 3000 || isNaN(hxDMO) || hxDMO < 50 || hxDMO > 1000) {
-                    errorGeom = "Verifique b_min (150–3000 mm) y h_x (50–1000 mm) en Columna DMO.";
+                    errorGeom = "Verifique b_min / D (150–3000 mm) y h_x (50–1000 mm) en Columna DMO.";
                 } else {
                     const soDMO = Math.min(8 * dbmin, 16 * dbEst, bmin / 3, 150);
                     if (region === 'dentroLo') {
@@ -977,7 +1051,6 @@
         const sismo = document.getElementById('selSismo').value;
         const panelPos = document.getElementById('panelPosicion');
         
-        // Resaltar fila activa en la tabla normativa C.21
         document.getElementById('rowRefVigaDES').classList.remove('fila-c21-activa');
         document.getElementById('rowRefColDES').classList.remove('fila-c21-activa');
         document.getElementById('rowRefVigaDMO').classList.remove('fila-c21-activa');
@@ -988,18 +1061,20 @@
         if (elemento === 'viga' && sismo === 'DMO') document.getElementById('rowRefVigaDMO').classList.add('fila-c21-activa');
         if (elemento === 'columna' && sismo === 'DMO') document.getElementById('rowRefColDMO').classList.add('fila-c21-activa');
 
-        // Alerta específica de columna DES / DMO
         const msgCol = document.getElementById('msgColumnaSismica');
         if (elemento === 'viga') {
             panelPos.style.opacity = '1';
             document.getElementById('selPsiT').disabled = false;
             msgCol.classList.add('oculto');
+            document.getElementById('grupoGeomViga').classList.remove('oculto');
+            document.getElementById('grupoGeomColumna').classList.add('oculto');
         } else {
-            // En columnas las barras son verticales -> psi_t = 1.0 siempre
             document.getElementById('selPsiT').value = "1.0";
             document.getElementById('selPsiT').disabled = true;
             panelPos.style.opacity = '0.6';
             msgCol.classList.remove('oculto');
+            document.getElementById('grupoGeomViga').classList.add('oculto');
+            document.getElementById('grupoGeomColumna').classList.remove('oculto');
         }
         
         generarTabla();
@@ -1019,7 +1094,6 @@
         const rawSepEst = parseFloat(document.getElementById('inpSepEstribos').value);
         const rawNumBarras = parseFloat(document.getElementById('inpNumBarras').value);
         const rawRecEst = parseFloat(document.getElementById('inpRecubrimiento').value);
-        const rawSepBarras = parseFloat(document.getElementById('inpSepBarras').value);
 
         const errores = [];
         if (isNaN(rawRamas) || !Number.isInteger(rawRamas) || rawRamas < 1 || rawRamas > 12) {
@@ -1034,8 +1108,38 @@
         if (isNaN(rawRecEst) || rawRecEst < 15 || rawRecEst > 150) {
             errores.push("El recubrimiento libre al estribo (r) debe estar entre 15 mm y 150 mm.");
         }
-        if (isNaN(rawSepBarras) || rawSepBarras < 25 || rawSepBarras > 500) {
-            errores.push("La separación entre ejes de barras longitudinales (sb) debe estar entre 25 mm y 500 mm.");
+
+        const cc = (!isNaN(rawRecEst)) ? (rawRecEst + estriboObj.db) : 50;
+        let geom = {};
+
+        if (elemento === 'viga') {
+            const rawBw = parseFloat(document.getElementById('inpBwViga').value);
+            if (isNaN(rawBw) || rawBw < 150 || rawBw > 2500) {
+                errores.push("El ancho de viga (bw) debe estar entre 150 mm y 2500 mm.");
+            } else if (rawBw - 2 * cc <= 40) {
+                errores.push("El ancho de viga (bw) es insuficiente para alojar el recubrimiento y los estribos.");
+            }
+            geom = { tipo: 'viga', bw: rawBw };
+        } else {
+            const tipoCol = document.getElementById('selTipoColumna').value;
+            if (tipoCol === 'rectangular') {
+                const rawB = parseFloat(document.getElementById('inpColB').value);
+                const rawH = parseFloat(document.getElementById('inpColH').value);
+                if (isNaN(rawB) || rawB < 200 || rawB > 3000 || isNaN(rawH) || rawH < 200 || rawH > 3000) {
+                    errores.push("Los lados b y h de la columna rectangular deben estar entre 200 mm y 3000 mm.");
+                } else if (rawB - 2 * cc <= 60 || rawH - 2 * cc <= 60) {
+                    errores.push("Las dimensiones de la columna rectangular son insuficientes para el recubrimiento ingresado.");
+                }
+                geom = { tipo: 'rectangular', b: rawB, h: rawH };
+            } else {
+                const rawD = parseFloat(document.getElementById('inpColD').value);
+                if (isNaN(rawD) || rawD < 250 || rawD > 3000) {
+                    errores.push("El diámetro D de la columna circular debe estar entre 250 mm y 3000 mm.");
+                } else if (rawD - 2 * cc <= 80) {
+                    errores.push("El diámetro D de la columna circular es insuficiente para el recubrimiento ingresado.");
+                }
+                geom = { tipo: 'circular', D: rawD };
+            }
         }
 
         if (errores.length > 0) {
@@ -1046,10 +1150,6 @@
         const numBarras = Math.floor(rawNumBarras);
         const sepEstribos = rawSepEst;
         const recEstribo = rawRecEst;
-        const sb = rawSepBarras;
-
-        // Cálculo detallado de cc = recubrimiento libre al estribo + diámetro del estribo
-        const cc = recEstribo + estriboObj.db;
 
         // Tope NSR-10 C.12.1.2: sqrt(f'c) <= 8.3 MPa
         const sqrtFc = Math.min(Math.sqrt(fc), 8.3);
@@ -1069,16 +1169,71 @@
             valido: true,
             fc, sqrtFc, fy, elemento, sismo,
             estriboObj, numRamas, sepEstribos, numBarras,
-            recEstribo, cc, sb,
+            recEstribo, cc, geom,
             psi_t, psi_e, psi_te, lambda,
             Atr, Ktr
         };
     }
 
-    // CALCULAR ld BASE EN MM SEGÚN C.12.2.3
+    // CALCULAR CABIDA MÁXIMA DE BARRAS EN SECCIÓN SEGÚN CALIBRE Y ELEMENTO (NSR-10 C.7.6)
+    function calcularCabidaSeccion(db, p) {
+        if (p.elemento === 'viga') {
+            // C.7.6.1 + C.7.6.4: s_libre_min = max(db, 25 mm)
+            const sLibreMin = Math.max(db, 25.0);
+            const bDisp = p.geom.bw - 2 * p.cc;
+            // En una fila con traslapo horizontal lado a lado, cada posición ocupa 2*db + sLibreMin (excepto el último espacio)
+            const nMax = Math.max(0, Math.floor((bDisp + sLibreMin + 1e-6) / (2 * db + sLibreMin)));
+            return {
+                sLibreMin,
+                nMaxViga: nMax
+            };
+        } else {
+            // Columna C.7.6.3 + C.7.6.4: s_libre_min = max(1.5*db, 40 mm)
+            const sLibreMin = Math.max(1.5 * db, 40.0);
+            if (p.geom.tipo === 'rectangular') {
+                const bInt = p.geom.b - 2 * p.cc;
+                const hInt = p.geom.h - 2 * p.cc;
+
+                // 1. Barra traslapada paralela al estribo (cada posición en la cara ocupa 2*db)
+                const nbPar = Math.floor((bInt + sLibreMin + 1e-6) / (2 * db + sLibreMin));
+                const nhPar = Math.floor((hInt + sLibreMin + 1e-6) / (2 * db + sLibreMin));
+                const nMaxParalela = (nbPar >= 2 && nhPar >= 2) ? (2 * nbPar + 2 * nhPar - 4) : 0;
+
+                // 2. Barra traslapada perpendicular al estribo (cada posición en el perímetro ocupa 1*db; verificación radial interior)
+                const nbPerp = Math.floor((bInt + sLibreMin + 1e-6) / (db + sLibreMin));
+                const nhPerp = Math.floor((hInt + sLibreMin + 1e-6) / (db + sLibreMin));
+                const holguraRadialOK = (bInt >= 4 * db + sLibreMin) && (hInt >= 4 * db + sLibreMin);
+                const nMaxPerp = (holguraRadialOK && nbPerp >= 2 && nhPerp >= 2) ? (2 * nbPerp + 2 * nhPerp - 4) : 0;
+
+                return { sLibreMin, nMaxParalela, nMaxPerp };
+            } else {
+                // Columna circular
+                const dInt = p.geom.D - 2 * p.cc;
+                // 1. Barra traslapada paralela al estribo/espiral (tangencial en círculo de centros D_int - db)
+                const perimCentrosExt = Math.PI * Math.max(0, dInt - db);
+                const nMaxParalela = Math.max(0, Math.floor((perimCentrosExt + 1e-6) / (2 * db + sLibreMin)));
+
+                // 2. Barra traslapada perpendicular (radial hacia el centro: gobierna el círculo interior de centros D_int - 3*db)
+                const dCentrosInt = dInt - 3 * db;
+                const holguraCentroOK = (dInt - 4 * db) >= sLibreMin;
+                const nMaxPerp = (holguraCentroOK && dCentrosInt > 0)
+                    ? Math.max(0, Math.floor((Math.PI * dCentrosInt + 1e-6) / (db + sLibreMin)))
+                    : 0;
+
+                return { sLibreMin, nMaxParalela, nMaxPerp };
+            }
+        }
+    }
+
+    // CALCULAR ld BASE EN MM SEGÚN C.12.2.3 CON cb CRÍTICO AUTOMÁTICO
     function calcularLdBarra(b, p) {
+        const cabida = calcularCabidaSeccion(b.db, p);
+
+        // cb crítico en zona de traslapo (C.7.6.4):
+        // cb1 = cc + db/2 (recubrimiento al centro de la barra)
+        // cb2 = (db + s_libre_min) / 2 (mitad de distancia entre ejes de barras más cercanas a través del espacio libre mínimo)
         const cb1 = p.cc + (b.db / 2);
-        const cb2 = p.sb / 2;
+        const cb2 = (b.db + cabida.sLibreMin) / 2;
         const cb = Math.min(cb1, cb2);
 
         const indice_raw = (cb + p.Ktr) / b.db;
@@ -1093,14 +1248,15 @@
             psi_s,
             indice_raw,
             indice_capped,
-            ld_mm
+            ld_mm,
+            cabida
         };
     }
 
-    // UTILIDAD DE REDONDEO Y FORMATEO DE UNIDADES
+    // UTILIDAD DE REDONDEO (CON PROTECCIÓN DE PUNTO FLOTANTE) Y FORMATEO DE UNIDADES
     const redondearCm = (mm, incrementoCm) => {
         let cm = mm / 10;
-        return Math.ceil(cm / incrementoCm) * incrementoCm;
+        return Math.ceil((cm / incrementoCm) - 1e-9) * incrementoCm;
     };
 
     const formatearUnidad = (mm_val, unidad) => {
@@ -1119,8 +1275,9 @@
         if (!p.valido) {
             panelError.classList.remove('oculto');
             panelError.innerHTML = `<b>❌ Error de validación en los datos ingresados (cálculo detenido):</b><ul style="margin: 5px 0 0 20px;">${p.errores.map(e => `<li>${e}</li>`).join('')}</ul>`;
-            tbody.innerHTML = `<tr><td colspan="9" style="color: #dc2626; font-weight: bold; padding: 20px;">Corrija los parámetros marcados arriba para generar la tabla de despiece.</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="11" style="color: #dc2626; font-weight: bold; padding: 20px;">Corrija los parámetros marcados arriba para generar la tabla de despiece.</td></tr>`;
             document.getElementById('resMixto').innerText = "--";
+            document.getElementById('resCabidaMixta').innerText = "--";
             return;
         }
 
@@ -1137,19 +1294,25 @@
 
         const isColumna = (p.elemento === 'columna');
         
-        // Renderizar Encabezados
+        // Encabezados dinámicos (Viga tiene 1 columna de cabida; Columna tiene 2 columnas: Paralela y Perpendicular)
         const thead = document.getElementById('theadTabla');
+        const colsCabidaHeader = isColumna
+            ? `<th class="col-cap">Máx. Barras<br><span style="font-size:0.78em; font-weight:normal;">Trasl. Paralelo</span></th>
+               <th class="col-cap">Máx. Barras<br><span style="font-size:0.78em; font-weight:normal;">Trasl. Perpend.</span></th>`
+            : `<th class="col-cap">Máx. Barras / Fila<br><span style="font-size:0.78em; font-weight:normal;">(bw=${p.geom.bw} mm)</span></th>`;
+
         thead.innerHTML = `
             <tr>
                 <th>Barra</th>
                 <th>$d_b$<br><span style="font-size:0.8em; font-weight:normal;">(mm)</span></th>
                 <th>$\\psi_s$</th>
-                <th>$c_b$<br><span style="font-size:0.8em; font-weight:normal;">(mm)</span></th>
+                <th>$c_b$ mín.<br><span style="font-size:0.8em; font-weight:normal;">(mm)</span></th>
                 <th class="col-conf">$\\frac{c_b + K_{tr}}{d_b}$</th>
                 <th class="col-ld" id="thDesarrollo">Desarrollo<br><span style="font-size:0.8em; font-weight:normal;">($l_d$) [${unidad}]</span></th>
-                <th id="thClaseA">Traslapo Clase A<br><span style="font-size:0.8em; font-weight:normal;">(1.0 $l_d$) [${unidad}]</span></th>
+                <th id="thClaseA">Traslapo Clase A<br><span style="font-size:0.75em; font-weight:normal;">(1.0 $l_d$ · C.12.15.2) [${unidad}]</span></th>
                 <th class="col-claseb" id="thClaseB">Traslapo Clase B<br><span style="font-size:0.8em; font-weight:normal;">(1.3 $l_d$) [${unidad}]</span></th>
                 <th id="thCompresion">Compresión<br><span style="font-size:0.8em; font-weight:normal;">($l_{sc}$) [${unidad}]</span></th>
+                ${colsCabidaHeader}
             </tr>
         `;
 
@@ -1159,6 +1322,17 @@
             thComp.innerHTML = isColumna 
                 ? `Compresión<br><span style="font-size:0.75em;">(No Aplica C.21)</span>` 
                 : `Compresión<br><span style="font-size:0.8em; font-weight:normal;">($l_{sc}$) [${unidad}]</span>`;
+        }
+
+        // Nota explicativa de cabida al pie de tabla
+        const noteCabida = document.getElementById('noteCabidaDetalle');
+        if (isColumna) {
+            const descSec = (p.geom.tipo === 'rectangular')
+                ? `columna rectangular ${p.geom.b}×${p.geom.h} mm`
+                : `columna circular D = ${p.geom.D} mm (mínimo normativo 6 barras en C.10.9.3)`;
+            noteCabida.innerHTML = `* Cabida preliminar en ${descSec} (c<sub>c</sub> = ${p.cc.toFixed(1)} mm) con s<sub>libre,mín</sub> = max(1.5d<sub>b</sub>, 40 mm) en zona traslapada (C.7.6.3/.4): <b>Paralelo</b> = barra traslapada paralela al estribo/espiral; <b>Perpend.</b> = barra traslapada radialmente hacia el interior (verifique soporte lateral con ganchos suplementarios según C.21.6.4.2 / C.21.3.5.8).`;
+        } else {
+            noteCabida.innerHTML = `* Cabida preliminar en una sola capa horizontal para viga b<sub>w</sub> = ${p.geom.bw} mm (ancho útil interno b<sub>disp</sub> = ${(p.geom.bw - 2*p.cc).toFixed(1)} mm) con traslapo horizontal lado a lado (2d<sub>b</sub> por posición) y s<sub>libre,mín</sub> = max(d<sub>b</sub>, 25 mm) (C.7.6.1/.4).`;
         }
 
         tbody.innerHTML = '';
@@ -1188,6 +1362,18 @@
                 lsc_out = formatearUnidad(lsc_mm, unidad);
             }
 
+            let celdasCabida = '';
+            if (isColumna) {
+                const warnCircPar = (p.geom.tipo === 'circular' && calc.cabida.nMaxParalela > 0 && calc.cabida.nMaxParalela < 6) ? ' (<6)' : '';
+                const warnCircPerp = (p.geom.tipo === 'circular' && calc.cabida.nMaxPerp > 0 && calc.cabida.nMaxPerp < 6) ? ' (<6)' : '';
+                celdasCabida = `
+                    <td class="col-cap">${calc.cabida.nMaxParalela} bar.${warnCircPar}</td>
+                    <td class="col-cap">${calc.cabida.nMaxPerp} bar.${warnCircPerp}</td>
+                `;
+            } else {
+                celdasCabida = `<td class="col-cap">${calc.cabida.nMaxViga} bar.</td>`;
+            }
+
             let tr = document.createElement('tr');
             if (calibresDestacados.has(b.n)) {
                 tr.className = "fila-destacada";
@@ -1204,6 +1390,7 @@
                 <td>${cla_out}</td>
                 <td class="col-claseb">${clb_out}</td>
                 <td style="${compStyle}">${lsc_out}</td>
+                ${celdasCabida}
             `;
             tbody.appendChild(tr);
         });
@@ -1216,7 +1403,7 @@
         }
     }
 
-    // CÁLCULO DE BARRAS MIXTAS
+    // CÁLCULO DE BARRAS MIXTAS Y CABIDA AFINADA SEGÚN CALIBRE MAYOR
     function calcularEmpalmeMixto() {
         const p = obtenerParametrosDetallados();
         if (!p.valido) return;
@@ -1229,8 +1416,11 @@
         let bMenor = barras[Math.min(idx1, idx2)];
         let bMayor = barras[Math.max(idx1, idx2)];
 
-        const ld_mayor_base = calcularLdBarra(bMayor, p).ld_mm;
-        const ld_menor_base = calcularLdBarra(bMenor, p).ld_mm;
+        const calcMayor = calcularLdBarra(bMayor, p);
+        const calcMenor = calcularLdBarra(bMenor, p);
+
+        const ld_mayor_base = calcMayor.ld_mm;
+        const ld_menor_base = calcMenor.ld_mm;
 
         let traslapo_menor_base = ld_menor_base * 1.3;
         let empalme_req_mm = Math.max(Math.max(ld_mayor_base, traslapo_menor_base), 300);
@@ -1243,6 +1433,16 @@
             resultado = formatearUnidad(empalme_req_mm, unidad) + ` ${unidad}`;
         }
         document.getElementById('resMixto').innerText = resultado;
+
+        // Afinamiento de cabida máxima gobernado por el calibre mayor
+        document.getElementById('lblTituloCabidaMixta').innerText = `MÁX. BARRAS (CALIBRE MAYOR: ${bMayor.name})`;
+        const cabMayor = calcMayor.cabida;
+        if (p.elemento === 'viga') {
+            document.getElementById('resCabidaMixta').innerHTML = `${cabMayor.nMaxViga} barras / fila<br><span class="w3-tiny w3-text-grey">bw = ${p.geom.bw} mm · s_libre ≥ ${cabMayor.sLibreMin.toFixed(1)} mm</span>`;
+        } else {
+            const dimTxt = (p.geom.tipo === 'rectangular') ? `${p.geom.b}×${p.geom.h} mm` : `D = ${p.geom.D} mm`;
+            document.getElementById('resCabidaMixta').innerHTML = `Paralela: <b>${cabMayor.nMaxParalela}</b> | Perpend.: <b>${cabMayor.nMaxPerp}</b><br><span class="w3-tiny w3-text-grey">${dimTxt} · s_libre ≥ ${cabMayor.sLibreMin.toFixed(1)} mm</span>`;
+        }
     }
 
     // COPIAR A PORTAPAPELES
@@ -1259,21 +1459,28 @@
         const modoSelect = document.getElementById('selRedondeo');
         const modoText = modoSelect.options[modoSelect.selectedIndex].text;
         const verifC21 = evaluarSmaxC21();
+        const isColumna = (p.elemento === 'columna');
+
+        const geomStr = isColumna
+            ? (p.geom.tipo === 'rectangular' ? `Columna Rectangular ${p.geom.b}x${p.geom.h} mm` : `Columna Circular D = ${p.geom.D} mm`)
+            : `Viga bw = ${p.geom.bw} mm`;
         
         let texto = "CRITERIO ESTRUCTURAL\nCalculadora de Traslapos — Método Detallado C.12.2.3 | DES–DMO\n";
         texto += `-------------------------------------------------------------------\n`;
-        texto += `ELEMENTO: ${elemento} (${p.sismo})\n`;
+        texto += `ELEMENTO: ${elemento} (${p.sismo}) · ${geomStr}\n`;
         texto += `f'c: ${p.fc} MPa (√f'c usado = ${p.sqrtFc.toFixed(2)} MPa, tope C.12.1.2) | fy: ${p.fy} MPa | λ: ${p.lambda}\n`;
         texto += `Estribos: ${p.numRamas} ramas efectivas ${p.estriboObj.name} (${p.estriboObj.area} mm², db=${p.estriboObj.db} mm) @ s = ${p.sepEstribos} mm (Atr = ${p.Atr} mm²)\n`;
         texto += `Barras en plano de hendimiento (n): ${p.numBarras} | Ktr: ${p.Ktr.toFixed(2)} mm\n`;
-        texto += `Recub. libre estribo (r): ${p.recEstribo} mm -> Recub. libre a barra cc: ${p.cc.toFixed(1)} mm | Sep. ejes barras (sb): ${p.sb} mm\n`;
+        texto += `Recub. libre estribo (r): ${p.recEstribo} mm -> Recub. libre a barra cc: ${p.cc.toFixed(1)} mm\n`;
+        texto += `cb crítico (C.7.6.4): min(cc + db/2, (db + s_libre_min)/2)\n`;
         texto += `Factores: ψt = ${p.psi_t} | ψe = ${p.psi_e} (ψt·ψe usado = ${p.psi_te.toFixed(2)})\n`;
         texto += `Control s_max (C.21): ${verifC21.textoPlano}\n`;
         texto += `Modo: ${modoText}\n`;
         texto += `-------------------------------------------------------------------\n\n`;
         
         let tabla = document.getElementById('tablaMain');
-        texto += `Barra\tdb (mm)\tψs\tcb (mm)\t(cb+Ktr)/db\tDesarrollo (${un})\tClase A (${un})\tClase B (${un})\tCompresión (${un})\n`;
+        const cabHeaders = isColumna ? `Máx. Barras (Paralela)\tMáx. Barras (Perpend.)` : `Máx. Barras / Fila`;
+        texto += `Barra\tdb (mm)\tψs\tcb mín (mm)\t(cb+Ktr)/db\tDesarrollo (${un})\tClase A (${un})\tClase B (${un})\tCompresión (${un})\t${cabHeaders}\n`;
         
         for (let i = 1; i < tabla.rows.length; i++) {
             let fila = tabla.rows[i];
@@ -1308,6 +1515,12 @@
             return;
         }
 
+        const printWindow = window.open('', '_blank', 'width=950,height=700');
+        if (!printWindow) {
+            alert("El navegador bloqueó la ventana emergente de impresión. Habilite las ventanas emergentes para este sitio o use Ctrl+P.");
+            return;
+        }
+
         const btn = document.querySelector('.btn-imprimir');
         const originalText = btn.innerHTML;
         btn.innerHTML = "<i class='fa fa-spinner fa-spin'></i> Preparando...";
@@ -1319,6 +1532,15 @@
         const modoText = modoSelect.options[modoSelect.selectedIndex].text;
         const logoSrc = document.querySelector('.brand-logo-footer').src;
         const verifC21 = evaluarSmaxC21();
+        const isColumna = (p.elemento === 'columna');
+
+        const geomStr = isColumna
+            ? (p.geom.tipo === 'rectangular' ? `Rectangular ${p.geom.b} × ${p.geom.h} mm` : `Circular D = ${p.geom.D} mm`)
+            : `Ancho b<sub>w</sub> = ${p.geom.bw} mm`;
+
+        const thCabidaPDF = isColumna
+            ? `<th>Máx. Barras<br>Paralela</th><th>Máx. Barras<br>Perpend.</th>`
+            : `<th>Máx. Barras<br>por Fila</th>`;
         
         const filas = Array.from(document.querySelectorAll('#tbodyResultados tr'));
         let filasPDF = '';
@@ -1327,6 +1549,10 @@
             const esDestacada = fila.classList.contains('fila-destacada');
             const bgDestacada = esDestacada ? 'background: #fff4ed;' : '';
             const boldDestacada = esDestacada ? 'font-weight: 800; color: #E67E22; border-left: 4px solid #E67E22;' : '';
+            const tdCabidaPDF = isColumna
+                ? `<td style="${bgDestacada} background-color: #ecfdf5; font-weight: bold; color: #065f46;">${celdas[9].innerText}</td>
+                   <td style="${bgDestacada} background-color: #ecfdf5; font-weight: bold; color: #065f46;">${celdas[10].innerText}</td>`
+                : `<td style="${bgDestacada} background-color: #ecfdf5; font-weight: bold; color: #065f46;">${celdas[9].innerText}</td>`;
 
             filasPDF += `
                 <tr>
@@ -1339,12 +1565,11 @@
                     <td style="${bgDestacada}">${celdas[6].innerText}</td>
                     <td style="${bgDestacada} background-color: ${esDestacada? '#fcece3' : '#fdf2ee'}; font-weight: bold; color: #c0392b;">${celdas[7].innerText}</td>
                     <td style="${bgDestacada}">${celdas[8].innerText}</td>
+                    ${tdCabidaPDF}
                 </tr>
             `;
         });
 
-        const printWindow = window.open('', '_blank', 'width=900,height=650');
-        
         printWindow.document.write(`
     <!DOCTYPE html>
     <html lang="es">
@@ -1376,7 +1601,7 @@
             }
             .pdf-title { 
                 font-family: 'Montserrat', sans-serif;
-                font-size: 17px; 
+                font-size: 16px; 
                 font-weight: 700; 
                 margin-top: 6px; 
             }
@@ -1403,11 +1628,11 @@
             .pdf-param-table { 
                 width: 100%; 
                 border-collapse: collapse; 
-                font-size: 10.5px; 
+                font-size: 10px; 
             }
             .pdf-param-table td { 
                 width: 50%; 
-                padding: 6px 8px; 
+                padding: 5px 8px; 
                 border: 1px solid #dce2e8; 
                 vertical-align: top; 
             }
@@ -1421,40 +1646,40 @@
             .pdf-main-table { 
                 width: 100%; 
                 border-collapse: collapse; 
-                font-size: 10.5px; 
+                font-size: 10px; 
                 margin-bottom: 14px;
             }
             .pdf-main-table th { 
                 background: #1A2530; 
                 color: white; 
-                padding: 8px 5px; 
+                padding: 7px 4px; 
                 text-align: center; 
                 border: 1px solid #1A2530; 
                 font-weight: 700; 
             }
             .pdf-main-table td { 
-                padding: 7px 5px; 
+                padding: 6px 4px; 
                 text-align: center; 
                 border: 1px solid #dce2e8; 
             }
-            .pdf-main-table tr:nth-child(even) td:not([style*="background: #fff4ed"]) { 
+            .pdf-main-table tr:nth-child(even) td:not([style*="background: #fff4ed"]):not([style*="background-color: #ecfdf5"]) { 
                 background: #f8fafc; 
             }
             .pdf-warning { 
-                margin-top: 18px; 
-                padding: 12px; 
+                margin-top: 16px; 
+                padding: 11px; 
                 border-left: 5px solid #E67E22; 
                 background: #fdf6f0; 
-                font-size: 9.5px; 
+                font-size: 9px; 
                 line-height: 1.5; 
             }
             .pdf-warning b { 
                 display: block; 
-                margin-bottom: 5px; 
-                font-size: 10.5px;
+                margin-bottom: 4px; 
+                font-size: 10px;
             }
             .pdf-footer { 
-                margin-top: 22px; 
+                margin-top: 18px; 
                 padding-top: 10px; 
                 border-top: 1px solid #dce2e8; 
                 text-align: center; 
@@ -1463,21 +1688,21 @@
                 color: #94a3b8; 
             }
             @media print {
-                body { padding: 12px; }
+                body { padding: 10px; }
                 .no-print { display: none !important; }
             }
         </style>
     </head>
     <body>
         <div class="pdf-header">
-            <img src="${logoSrc}" alt="Logo Criterio Estructural" style="max-width: 180px; height: auto; margin-bottom: 8px;">
+            <img src="${logoSrc}" alt="Logo Criterio Estructural" style="max-width: 170px; height: auto; margin-bottom: 6px;">
             <div class="pdf-brand">CRITERIO ESTRUCTURAL</div>
             <div class="pdf-title">CALCULADORA DE TRASLAPOS — MÉTODO DETALLADO C.12.2.3 | DES–DMO</div>
-            <div class="pdf-subtitle">ELEMENTO: ${elemento} · CAPACIDAD DE DISIPACIÓN: ${p.sismo}</div>
+            <div class="pdf-subtitle">ELEMENTO: ${elemento} (${geomStr}) · CAPACIDAD DE DISIPACIÓN: ${p.sismo}</div>
         </div>
 
         <div class="pdf-parameters">
-            <div class="pdf-section-title">PARÁMETROS DEL PROYECTO Y CONFINAMIENTO TRANSVERSAL</div>
+            <div class="pdf-section-title">PARÁMETROS DEL PROYECTO, CONFINAMIENTO TRANSVERSAL Y SECCIÓN</div>
             <table class="pdf-param-table">
                 <tr>
                     <td><b>Concreto (f'c) / Acero (fy):</b> ${p.fc} MPa (√f'c = ${p.sqrtFc.toFixed(2)} MPa) / ${p.fy} MPa</td>
@@ -1489,7 +1714,10 @@
                 </tr>
                 <tr>
                     <td><b>Barras en Plano (n):</b> ${p.numBarras} barras en plano de hendimiento</td>
-                    <td><b>Geometría (r<sub>libre</sub> → c<sub>c</sub> / s<sub>b</sub>):</b> r = ${p.recEstribo} mm → c<sub>c</sub> = ${p.cc.toFixed(1)} mm &nbsp;|&nbsp; s<sub>b</sub> = ${p.sb} mm</td>
+                    <td><b>Recubrimiento (r<sub>libre</sub> → c<sub>c</sub>):</b> r = ${p.recEstribo} mm → c<sub>c</sub> = ${p.cc.toFixed(1)} mm</td>
+                </tr>
+                <tr>
+                    <td colspan="2"><b>Control Crítico c<sub>b</sub> en Zona de Traslapo (C.7.6.4):</b> c<sub>b</sub> = min(c<sub>c</sub> + d<sub>b</sub>/2, (d<sub>b</sub> + s<sub>libre,mín</sub>)/2), con s<sub>libre,mín</sub> = ${isColumna ? 'max(1.5d<sub>b</sub>, 40 mm)' : 'max(d<sub>b</sub>, 25 mm)'}</td>
                 </tr>
                 <tr>
                     <td colspan="2"><b>Control Espaciamiento Longitudinal s<sub>max</sub> (NSR-10 C.21):</b> ${verifC21.textoPlano}</td>
@@ -1501,8 +1729,8 @@
         </div>
 
         <div class="pdf-section-title tabla-title">
-            <span>TABLA DE DESPIECE DETALLADA (Unidades: ${un})</span>
-            <span style="font-size: 9.5px; font-weight: normal; color: #64748b;">Ecuación General NSR-10 C.12.2.3</span>
+            <span>TABLA DE DESPIECE Y CABIDA DETALLADA (Unidades: ${un})</span>
+            <span style="font-size: 9px; font-weight: normal; color: #64748b;">Ecuación General NSR-10 C.12.2.3 + C.7.6</span>
         </div>
 
         <table class="pdf-main-table">
@@ -1511,12 +1739,13 @@
                     <th>Barra</th>
                     <th>d<sub>b</sub> (mm)</th>
                     <th>ψ<sub>s</sub></th>
-                    <th>c<sub>b</sub> (mm)</th>
+                    <th>c<sub>b</sub> mín. (mm)</th>
                     <th>(c<sub>b</sub>+K<sub>tr</sub>)/d<sub>b</sub></th>
                     <th>Desarrollo<br>l<sub>d</sub></th>
                     <th>Clase A<br>1.0 l<sub>d</sub></th>
                     <th>Clase B<br>1.3 l<sub>d</sub></th>
                     <th>Compresión<br>l<sub>sc</sub></th>
+                    ${thCabidaPDF}
                 </tr>
             </thead>
             <tbody>
@@ -1524,19 +1753,21 @@
             </tbody>
         </table>
 
-        <div style="font-size: 9px; color: #64748b; margin-top: -8px; margin-bottom: 12px; font-style: italic; line-height: 1.5;">
-            * Topes normativos aplicados: (c<sub>b</sub> + K<sub>tr</sub>)/d<sub>b</sub> ≤ 2.50 (C.12.2.3), ψ<sub>t</sub>·ψ<sub>e</sub> ≤ 1.70 (C.12.2.4) y √f'c ≤ 8.3 MPa (C.12.1.2).<br>
-            * Nota sobre barras de distinto diámetro (C.12.15.3): El módulo de empalmes mixtos evalúa el criterio conservador de empalme Clase B (1.3 l<sub>d</sub> para la barra menor) y no evalúa la excepción de Clase A.
+        <div style="font-size: 8.8px; color: #64748b; margin-top: -8px; margin-bottom: 12px; font-style: italic; line-height: 1.5;">
+            * Cuando el índice (c<sub>b</sub> + K<sub>tr</sub>)/d<sub>b</sub> supera 2.50 (*), gobierna el tope normativo de NSR-10 C.12.2.3 para prevenir falla por arrancamiento (pullout).<br>
+            * Topes aplicados: (c<sub>b</sub> + K<sub>tr</sub>)/d<sub>b</sub> ≤ 2.50 (C.12.2.3), ψ<sub>t</sub>·ψ<sub>e</sub> ≤ 1.70 (C.12.2.4) y √f'c ≤ 8.3 MPa (C.12.1.2).<br>
+            * La cabida máxima de barras en la tabla asume el mismo calibre en toda la fila/perímetro y 100% de barras traslapadas simultáneamente cumpliendo s<sub>libre,mín</sub> (C.7.6.4).<br>
+            * Nota sobre barras de distinto diámetro (C.12.15.3): El módulo de empalmes mixtos evalúa el criterio conservador de empalme Clase B (1.3 l<sub>d</sub> para la barra menor) y afina la cabida según el calibre mayor.
         </div>
 
         <div class="pdf-warning">
             <b>⚠️ NOTA DE RESPONSABILIDAD PROFESIONAL</b>
             <p>
-                Los valores presentados constituyen una memoria de cálculo basada en el método detallado NSR-10 C.12.2.3. 
+                Los valores presentados constituyen una memoria de cálculo basada en el método detallado NSR-10 C.12.2.3 y los requisitos de separación mínima NSR-10 C.7.6. 
                 La verificación de s<sub>max</sub> evalúa únicamente el espaciamiento longitudinal de estribos y no sustituye la revisión integral de cuantía de confinamiento (A<sub>sh</sub>), 
                 configuración de estribos cerrados, ganchos suplementarios (h<sub>x</sub> ≤ 350 mm), soporte lateral ni ubicación permitida de los empalmes según NSR-10 Capítulo C.21.
             </p>
-            <p style="margin-top: 6px;">
+            <p style="margin-top: 5px;">
                 <b>Todo proyecto constructivo debe contar con la revisión y firma de un ingeniero estructural con matrícula profesional vigente.</b>
             </p>
         </div>
@@ -1557,13 +1788,19 @@
 
         printWindow.document.close();
         
-        printWindow.onload = function() {
+        let impreso = false;
+        const dispararImpresion = () => {
+            if (impreso) return;
+            impreso = true;
             printWindow.focus();
             setTimeout(() => {
                 printWindow.print();
                 btn.innerHTML = originalText;
             }, 250);
         };
+
+        printWindow.onload = dispararImpresion;
+        setTimeout(dispararImpresion, 800);
     }
 
 </script>
